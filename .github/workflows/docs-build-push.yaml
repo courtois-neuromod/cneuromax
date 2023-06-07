@@ -1,0 +1,22 @@
+name: Build the Sphinx documentation & push it to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+    - docs/**
+    - cneuroml/**
+
+jobs:
+  docs-build-push:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Build the documentation
+      id: build-docs
+      uses: sphinx-notes/pages@v3
+      with:
+        publish: false
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ${{ steps.build-docs.outputs.artifact }}
