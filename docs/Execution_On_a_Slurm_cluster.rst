@@ -16,7 +16,7 @@ Run the library.
 .. code-block:: console
 
     $ # Example of a simple MNIST training run
-    $ python3 -m cneuroml.train.dl experiment=visual/tabular/classification/mnist/mlp_beluga
+    $ python3 -m cneuroml.dl task=visual/tabular/classification/mnist/mlp_slurm
 
 Run Jupyter-lab
 ---------------

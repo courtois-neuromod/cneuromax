@@ -24,6 +24,21 @@ a ``-u origin <BRANCH_NAME>`` flag when pushing/pulling to the repository.
 
     $ git config --global push.autoSetupRemote true
 
+Make sure your git version is at least 2.37 to take advantage of the
+``push.autoSetupRemote`` feature.
+
+.. code-block:: console
+
+    $ git --version
+
+If not, you can update it with the following command.
+
+.. code-block:: console
+
+    $ sudo add-apt-repository ppa:git-core/ppa && \
+        sudo apt update && \
+        sudo apt install -y git
+
 Define a persisting ``CNEUROML_PATH`` user-variable on your system.
 
 .. code-block:: console
