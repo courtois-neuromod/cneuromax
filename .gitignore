@@ -1,0 +1,17 @@
+**/cneuroml.egg-info/
+**/data/
+**/extra/
+**/.ipynb_checkpoints/
+**/lightning_logs/
+**/outputs/
+**/__pycache__/
+**/venv/
+**/wandb/
+**/.ruff_cache/
+**/.mypy_cache/
+**/*.swp
+**/_build/
+**/doctrees
+**/*.pyc
+**/build/
+**/.vscode/

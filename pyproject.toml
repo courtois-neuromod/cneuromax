@@ -1,0 +1,35 @@
+[tool.black]
+line-length = 79
+
+[tool.ruff]
+line-length = 79
+select = ["ALL"]
+ignore = [
+    "F722", # https://beta.ruff.rs/docs/rules/#pyflakes-f
+            # Disabled to utilize Jaxtyping
+            # https://docs.kidger.site/jaxtyping/faq/#flake8-or-ruff-are-throwing-an-error
+    "G004", # https://beta.ruff.rs/docs/rules/#flake8-logging-format-g
+            # Disabled to prettify logging
+    "SLF001", # https://beta.ruff.rs/docs/rules/private-member-access/
+              # Disabled to make use of certain private Lightning classes
+    "N812", # https://beta.ruff.rs/docs/rules/lowercase-imported-as-non-lowercase/
+            # Disabled to be able to run `import torch.nn.functional as F`
+]
+
+[tool.ruff.per-file-ignores]
+
+"*_test.py" = [
+    "S101",  # Use of `assert` detected
+]
+
+[tool.doc8]
+max-line-length = 79
+
+[tool.ruff.pycodestyle]
+max-doc-length = 72
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+strict = true

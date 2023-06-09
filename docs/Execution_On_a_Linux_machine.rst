@@ -1,5 +1,3 @@
-.. _execution_on_a_linux_machine:
-
 On a Linux machine
 ==================
 

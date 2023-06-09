@@ -1,5 +1,3 @@
-.. _execution_on_a_slurm_cluster:
-
 On a Slurm cluster
 ==================
 
