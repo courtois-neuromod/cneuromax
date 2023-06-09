@@ -1,9 +1,9 @@
-# Configuration file for the Sphinx documentation builder.
+"""Configuration file for the Sphinx documentation builder."""
 
-import os
 import sys
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath("../cneuroml"))  # noqa: PTH100
+sys.path.insert(0, str(Path("../cneuroml").resolve()))
 
 # -- Project information
 

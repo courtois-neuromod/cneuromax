@@ -1,5 +1,3 @@
-.. _installation_on_a_linux_machine:
-
 On a Linux machine
 ==================
 
@@ -8,7 +6,7 @@ On a Linux machine
 
 .. note::
 
-    `Official installation guide
+    `Official NVIDIA driver installation guide
     <https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html>`_.
 
 .. code-block:: console
@@ -21,7 +19,7 @@ On a Linux machine
 
 .. note::
 
-    `Official installation guide
+    `Official Podman installation guide
     <https://podman.io/getting-started/installation>`_.
 
 .. code-block:: console
@@ -31,12 +29,11 @@ On a Linux machine
 3. Install the NVIDIA Container Toolkit
 ---------------------------------------
 
-Follow the Ubuntu section of the following `installation guide
-<https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#id12>_`.
+Follow the Ubuntu section of the following `installation gudide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#id12>`_.
 
 .. note::
 
-    `Official installation guide
+    `Official NVIDIA Container Toolkit installation guide
     <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#id9>`_.
 
 4. Pull the Podman image

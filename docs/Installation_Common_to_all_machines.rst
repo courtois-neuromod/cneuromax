@@ -1,5 +1,3 @@
-.. _installation_common_to_all_machines:
-
 Common to all machines
 ======================
 
@@ -18,6 +16,13 @@ Clone the repository.
 .. code-block:: console
 
     $ git clone git@github.com:courtois-neuromod/cneuroml.git
+
+If you haven't already, enable ``autoSetupRemote`` to not have to specify
+a ``-u origin <BRANCH_NAME>`` flag when pushing/pulling to the repository.
+
+.. code-block:: console
+
+    $ git config --global push.autoSetupRemote true
 
 Define a persisting ``CNEUROML_PATH`` user-variable on your system.
 

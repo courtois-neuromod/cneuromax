@@ -1,5 +1,3 @@
-.. _execution:
-
 *********
 Execution
 *********

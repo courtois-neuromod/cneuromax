@@ -1,3 +1,3 @@
 {
-    "ansible.python.interpreterPath": "/home/max/venv/bin/python3.10"
+    "esbonio.sphinx.confDir": "${workspaceFolder}/docs"
 }
