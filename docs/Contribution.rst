@@ -21,23 +21,26 @@ Those checks are:
 * Making sure that the Python code follows a clean common format and is
   PEP8 compliant. In order to do so we make use of the following libraries:
 
-  * Formatting: `black <https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html>`_
+  * Formatting: `black
+    <https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html>`_
     (79 lines for code, 72 for comments)
   * Linting: `ruff <https://beta.ruff.rs/docs/tutorial/#getting-started>`_
     (all rules that don't create conflicts with existing libraries)
-  * Type checking: `mypy <https://mypy.readthedocs.io/en/stable/getting_started.html>`_
-    (strict)
+  * Type checking: `mypy
+    <https://mypy.readthedocs.io/en/stable/getting_started.html>`_ (strict)
 
 * Making sure that the Python code passes all of the existing tests. If
   they do not, it means that your code is breaking a portion of the
-  code base. We currently only make use of unit tests (leveraging `pytest <https://docs.pytest.org/en/7.3.x/getting-started.html>`_) but will most likely develop
-  tests with broader coverage.
+  code base. We currently only make use of unit tests (leveraging `pytest
+  <https://docs.pytest.org/en/7.3.x/getting-started.html>`_) but will most
+  likely develop tests with broader coverage.
 
 * Making sure that the reST documentation files are formatted and linted
   (using `doc8 <https://github.com/PyCQA/doc8>`_ 79 lines).
 
 * Making sure that the YAML files are formatted and linted
-  (using `yamllint <https://yamllint.readthedocs.io/en/stable/quickstart.html#running-yamllint>`_).
+  (using `yamllint
+  <https://yamllint.readthedocs.io/en/stable/quickstart.html#running-yamllint>`_).
 
 * Making sure that there are no trailing whitespaces and that all files,
   regardless of the extension end with a newline.
@@ -82,12 +85,17 @@ issues before you commit.
 
 On VSCode, this means installing the following extensions:
 
-* `ms-python.python <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
-* `ms-python.black-formatter <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>`_
-* `charliermarsh.ruff <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
-* `lextudio.restructuredtext <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`_
+* `ms-python.python
+  <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
+* `ms-python.black-formatter
+  <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>`_
+* `charliermarsh.ruff
+  <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
+* `lextudio.restructuredtext
+  <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`_
   (``doc8`` enabler, make sure you followed the previous section)
-* `fnando.linter <https://marketplace.visualstudio.com/items?itemName=fnando.linter>`_
+* `fnando.linter
+  <https://marketplace.visualstudio.com/items?itemName=fnando.linter>`_
   (``yamllint`` enabler, make sure you followed the previous section)
 
 And here are the settings to insert into your
