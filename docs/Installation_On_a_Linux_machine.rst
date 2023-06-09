@@ -29,7 +29,8 @@ On a Linux machine
 3. Install the NVIDIA Container Toolkit
 ---------------------------------------
 
-Follow the Ubuntu section of the following `installation gudide <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#id12>`_.
+Follow the Ubuntu section of the following `installation guide
+<https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#id12>`_.
 
 .. note::
 

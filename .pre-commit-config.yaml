@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Ensures that a file is either empty, or ends with one newline.
+      - id: end-of-file-fixer
+      # Trims trailing whitespace.
+      - id: trailing-whitespace
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.3.0
+    hooks:
+      # Static Typing for Python
+      -   id: mypy
+          args: [--config=pyproject.toml]
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      # Code formatting for Python
+      - id: black-jupyter
+        args: [--config=pyproject.toml]
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.0.270
+    hooks:
+      # Linting for Python
+      - id: ruff
+        args: [--config=pyproject.toml]
+  - repo: https://github.com/PyCQA/doc8
+    rev: v1.1.1
+    hooks:
+      # Linting for reStructuredText
+      - id: doc8
+        args: [--config=pyproject.toml]
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.32.0
+    hooks:
+      # Linting for YAML
+      - id: yamllint
+        args: [--strict, --config-file=.yamllint.yaml]

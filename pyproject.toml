@@ -16,6 +16,13 @@ ignore = [
             # Disabled to be able to run `import torch.nn.functional as F`
 ]
 
+
+[tool.ruff.pycodestyle]
+max-doc-length = 72
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
 [tool.ruff.per-file-ignores]
 
 "*_test.py" = [
@@ -24,12 +31,6 @@ ignore = [
 
 [tool.doc8]
 max-line-length = 79
-
-[tool.ruff.pycodestyle]
-max-doc-length = 72
-
-[tool.ruff.pydocstyle]
-convention = "google"
 
 [tool.mypy]
 strict = true
