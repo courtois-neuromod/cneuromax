@@ -30,6 +30,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps_only/all_deps/Containerfile
+          file: containers/deps_only/all_deps/Dockerfile
           push: true
           tags: cneuroml:latest-deps_only-all_deps
