@@ -17,6 +17,8 @@ jobs:
   container-build-push:
     runs-on: ubuntu-22.04
     steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -30,6 +32,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps_only/all_deps/Dockerfile
+          file: containers/deps_only/all_deps/Containerfile
           push: true
           tags: cneuroml:latest-deps_only-all_deps
