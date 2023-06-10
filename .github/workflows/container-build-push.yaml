@@ -1,0 +1,37 @@
+name: >
+  Build the container image with full dependencies & push it to the registry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - containers/**
+      - pyreqs/**
+
+env:
+  REGISTRY: docker.io
+  REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+
+jobs:
+  container-build-push:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: containers/deps_only/all_deps/Containerfile
+          push: true
+          tags: cneuroml:latest-deps_only-all_deps

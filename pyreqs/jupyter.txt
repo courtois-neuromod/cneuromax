@@ -1,0 +1,17 @@
+# Packages required to work with Jupyter notebooks
+
+###############################
+# Package full name: JupyterLab
+# Quickstart link: https://jupyterlab.readthedocs.io
+jupyterlab==4.0.1
+
+##############################################
+# Package full name: JupyterLab Code Formatter
+# Quickstart link: https://ryantam626.github.io/jupyterlab_code_formatter
+jupyterlab-code-formatter==2.2.1
+
+####################################
+# Package full name: Jupyter Widgets
+# Quickstart link: https://ipywidgets.readthedocs.io
+# Note: HTML widgets for notebooks
+ipywidgets==8.0.6

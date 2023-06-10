@@ -172,4 +172,4 @@ Freezing the repositories for publication
 -----------------------------------------
 
 For your code to remain reproducible after publication, we suggest that you
-create a new branch or fork the repository.
+create a new branch or fork the repository. TODO: Add pruning instructions.
