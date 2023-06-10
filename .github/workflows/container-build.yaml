@@ -6,6 +6,7 @@ on:
     paths:
       - containers/**
       - pyreqs/**
+      - .github/workflows/container-build.yaml
 
 jobs:
   container-build:

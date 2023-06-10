@@ -2,11 +2,12 @@ name: >
   Build the container image with full dependencies & push it to the registry
 
 on:
-  pull_request:
+  push:
     branches: [main]
     paths:
       - containers/**
       - pyreqs/**
+      - .github/workflows/container-build-push.yaml
 
 env:
   REGISTRY: docker.io

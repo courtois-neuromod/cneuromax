@@ -6,6 +6,7 @@ on:
     paths:
       - docs/**
       - cneuroml/**
+      - .github/workflows/docs-build.yaml
 
 jobs:
   docs-build:
