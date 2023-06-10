@@ -1,6 +1,6 @@
 
 # ~ CUDA + cuDNN on Ubuntu ~ #
-FROM nvcr.io/nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
+FROM nvcr.io/nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 # Prevents `apt install opencv-python` from prompting geographical details
 ENV DEBIAN_FRONTEND=noninteractive
