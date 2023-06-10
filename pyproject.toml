@@ -24,6 +24,12 @@ optional-dependencies.all = {file = ["pyreqs/core.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/ne.txt",
                                      "pyreqs/wandb.txt"]}
+optional-dependencies.allbutdev = {file = ["pyreqs/core.txt",
+                                           "pyreqs/dl.txt",
+                                           "pyreqs/hpo.txt",
+                                           "pyreqs/jupyter.txt",
+                                           "pyreqs/ne.txt",
+                                           "pyreqs/wandb.txt"]}
 
 [tool.black]
 line-length = 79
