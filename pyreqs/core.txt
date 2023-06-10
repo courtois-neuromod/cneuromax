@@ -1,0 +1,20 @@
+# Packages required to run any component of the CNeuroML library
+
+#############################
+# Package full name: Submitit
+# Quickstart link: https://github.com/facebookincubator/submitit#submit-it
+# Note: Submitit with configurable Python path when running on Slurm
+#       (ex: for use with Podman/Apptainer)
+# Remark: Could eventually be fine to install the PyPi package but
+#         if the following feature is ever merged and released:
+#         https://github.com/facebookincubator/submitit/pull/1729
+submitit@git+https://github.com/facebookincubator/submitit.git@f52443f15a3a71cb83458cffc848176920d4590d
+
+##########################
+# Package full name: Hydra
+# Quickstart link: https://hydra.cc/docs/intro
+# Note: Hydra with integration of above updated Submitit package
+# Remark: Could eventually be fine to install the PyPi package but won't
+#         happen before the above Submitit change is accepted
+#         https://github.com/facebookresearch/hydra/pull/2654
+hydra-core@git+https://github.com/MaximilienLC/hydra.git@74858d61cb8b37dc0af6c988623807cb027b29f2

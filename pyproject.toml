@@ -1,3 +1,30 @@
+[tool.setuptools.packages.find]
+include = ["cneuroml"]
+
+[project]
+
+name = "cneuroml"
+authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
+description = "The Courtois Neuromod Project's centralized Machine Learning repository"
+version = "0.0.1"
+dynamic = ["dependencies", "optional-dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = "pyreqs/core.txt"}
+optional-dependencies.dev = {file = "pyreqs/dev.txt"}
+optional-dependencies.dl = {file = "pyreqs/dl.txt"}
+optional-dependencies.hpo = {file = "pyreqs/hpo.txt"}
+optional-dependencies.jupyter = {file = "pyreqs/jupyter.txt"}
+optional-dependencies.ne = {file = "pyreqs/ne.txt"}
+optional-dependencies.wandb = {file = "pyreqs/wandb.txt"}
+optional-dependencies.all = {file = ["pyreqs/core.txt",
+                                     "pyreqs/dev.txt",
+                                     "pyreqs/dl.txt",
+                                     "pyreqs/hpo.txt",
+                                     "pyreqs/jupyter.txt",
+                                     "pyreqs/ne.txt",
+                                     "pyreqs/wandb.txt"]}
+
 [tool.black]
 line-length = 79
 

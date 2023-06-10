@@ -1,0 +1,43 @@
+name: >
+  Build the container image with full dependencies & push it to the registry
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - containers/**
+      - pyreqs/**
+
+env:
+  REGISTRY: docker.io
+  REGISTRY_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+  REGISTRY_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+
+jobs:
+  container-build-push:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v3
+      - name: Extract branch name
+        id: extract-branch-name
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
+      - name: Build the image with Buildah
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: cneuroml
+          tags: >
+            ${{ steps.extract-branch-name.outputs.branch }}
+            latest deps_only all_deps
+          containerfiles: ./containers/deps_only/all_deps/Containerfile
+          context: .
+      - name: Push the image to registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ env.REGISTRY_USERNAME }}
+          password: ${{ env.REGISTRY_PASSWORD }}

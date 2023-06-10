@@ -1,0 +1,37 @@
+# Packages required to contribute to the library
+
+##########################
+# Package full name: Black
+# Quickstart link: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html
+# Note: Black with .ipynb file support
+black[jupyter]==23.3.0
+
+#########################
+# Package full name: Ruff
+# Quickstart link: https://beta.ruff.rs/docs/tutorial
+ruff==0.0.270
+
+###############################
+# Package full name: Pre-Commit
+# Quickstart link: https://pre-commit.com/
+pre-commit==3.3.2
+
+##############################
+# Package full name: JaxTyping
+# Quickstart link: https://github.com/google/jaxtyping
+jaxtyping==0.2.20
+
+#############################
+# Package full name: Beartype
+# Quickstart link: https://beartype.readthedocs.io/en/latest/
+beartype==0.14.0
+
+###########################
+# Package full name: Einops
+# Quickstart link: https://einops.rocks/1-einops-basics/
+einops==0.6.1
+
+#########################
+# Package full name: Mypy
+# Quickstart link: https://mypy.readthedocs.io/en/stable/getting_started.html
+mypy==1.2.0
