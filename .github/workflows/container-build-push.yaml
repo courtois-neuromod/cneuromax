@@ -29,5 +29,7 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v4
         with:
+          context: .
+          file: containers/deps_only/all_deps/Containerfile
           push: true
           tags: cneuroml:latest-deps_only-all_deps
