@@ -7,6 +7,7 @@ on:
     paths:
       - containers/**
       - pyreqs/**
+      - .github/workflows/container-build-push.yaml
 
 env:
   REGISTRY: docker.io
@@ -32,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps_only/all_deps/Containerfile
+          file: containers/deps_only/all_but_dev/Containerfile
           push: true
-          tags: cneuroml:latest-deps_only-all_deps
+          tags: maximilienlc/cneuroml:latest-deps_only-all_but_dev
