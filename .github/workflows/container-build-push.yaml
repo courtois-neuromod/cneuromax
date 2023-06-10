@@ -17,27 +17,17 @@ jobs:
   container-build-push:
     runs-on: ubuntu-22.04
     steps:
-      - name: Checkout the GitHub repo
-        uses: actions/checkout@v3
-      - name: Extract branch name
-        id: extract-branch-name
-        shell: bash
-        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
-      - name: Build the image with Buildah
-        id: build-image
-        uses: redhat-actions/buildah-build@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
         with:
-          image: cneuroml
-          tags: >
-            ${{ steps.extract-branch-name.outputs.branch }}
-            latest deps_only all_deps
-          containerfiles: ./containers/deps_only/all_deps/Containerfile
-          context: .
-      - name: Push the image to registry
-        uses: redhat-actions/push-to-registry@v2
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build
+        uses: docker/build-push-action@v4
         with:
-          image: ${{ steps.build-image.outputs.image }}
-          tags: ${{ steps.build-image.outputs.tags }}
-          registry: ${{ env.REGISTRY }}
-          username: ${{ env.REGISTRY_USERNAME }}
-          password: ${{ env.REGISTRY_PASSWORD }}
+          push: true
+          tags: cneuroml:latest-deps_only-all_deps
