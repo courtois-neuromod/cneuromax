@@ -3,7 +3,7 @@
 ###############################
 # Package full name: JupyterLab
 # Quickstart link: https://jupyterlab.readthedocs.io
-jupyterlab==4.0.1
+jupyterlab==4.0.2
 
 ##############################################
 # Package full name: JupyterLab Code Formatter
