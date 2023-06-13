@@ -11,6 +11,8 @@ jobs:
   typecheck-unittest:
     runs-on: ubuntu-22.04
     steps:
+      - name: Install OpenMPI
+        run: sudo apt install -y libopenmpi-dev
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
       - name: Setup Python
