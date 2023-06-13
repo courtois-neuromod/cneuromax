@@ -22,7 +22,7 @@ dependencies. This can be done by running the following commands:
     $ cd ${CNEUROML_PATH}
     $ python -m venv venv
     $ . venv/bin/activate
-    $ pip install -e .[dev]
+    $ pip install --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
 
 You now have all the dependencies needed to develop locally (do note that
 these libraries and their version are not meant for actually running the

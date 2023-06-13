@@ -20,7 +20,10 @@ jobs:
       - name: Activate virtual environment
         run: . venv/bin/activate
       - name: Install dependencies
-        run: pip install --no-cache-dir --upgrade pip && pip install -e .[dev]
+        run: >
+          pip install --no-cache-dir --upgrade pip &&
+          pip install --extra-index-url https://download.pytorch.org/whl/cpu
+                       -e .[dev]
       - name: Run mypy
         run: mypy --strict cneuroml
       - name: Run pytest

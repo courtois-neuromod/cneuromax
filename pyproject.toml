@@ -15,7 +15,7 @@ dynamic = ["dependencies", "optional-dependencies"]
 [tool.setuptools.dynamic]
 dependencies = {file = "pyreqs/core.txt"}
 optional-dependencies.dev = {file = ["pyreqs/core_testing.txt",
-                                     "pyreqs/dl_testing.txt",
+                                     "pyreqs/dl.txt",
                                      "pyreqs/hpo.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/ne.txt",
