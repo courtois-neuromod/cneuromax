@@ -4,13 +4,36 @@
 Contribution
 ************
 
+.. note::
+
+    Make sure to have completed the installation steps before moving to
+    this section.
+
 Link to the GitHub repository: https://github.com/courtois-neuromod/cneuroml.
 
-The main branch is protected meaning that contributions happen through
-pull requests rather than direct pushes.
+Developping locally
+-------------------
+
+In order to develop locally, you will need to install the development
+dependencies. This can be done by running the following commands:
+
+.. code-block:: console
+
+    $ cd ${CNEUROML_PATH}
+    $ python -m venv venv
+    $ . venv/bin/activate
+    $ pip install -e .[dev]
+
+You now have all the dependencies needed to develop locally (do note that
+these libraries and their version are not meant for actually running the
+code, to do so it is preferable to work with containers for reproducibility
+purposes).
 
 Making sure the code doesn't break
 ----------------------------------
+
+The main branch is protected meaning that contributions happen through
+pull requests rather than direct pushes.
 
 In order for any pull request to go through, it will need to pass a number of
 common and standard checks that ensure that the code is of high quality and
@@ -29,11 +52,11 @@ Those checks are:
   * Type checking: `mypy
     <https://mypy.readthedocs.io/en/stable/getting_started.html>`_ (strict)
 
-* Making sure that the Python code passes all of the existing tests. If
+* Making sure that the Python code passes all of the existing unit-tests. If
   they do not, it means that your code is breaking a portion of the
-  code base. We currently only make use of unit tests (leveraging `pytest
+  code base. We currently only make use of unit-tests (leveraging `pytest
   <https://docs.pytest.org/en/7.3.x/getting-started.html>`_) but will most
-  likely develop tests with broader coverage.
+  likely eventually develop tests with broader purposes.
 
 * Making sure that the reST documentation files are formatted and linted
   (using `doc8 <https://github.com/PyCQA/doc8>`_ 79 lines).
@@ -51,20 +74,24 @@ Those checks are:
 * If any change is made to the ``docs/`` or ``cneuroml/`` folder, that the
   documentation can still be built and pushed to Github Pages.
 
-Running tests locally
----------------------
+Testing locally
+---------------
 
-Rather than having to wait for the CI (continuous integration) tests to run on
-GitHub, you can run some of the tests locally (the ones that are fast to
-check). The most common way to do so is through the
-`pre-commit <https://pre-commit.com/#quick-start>`_ library, which will run
-some tests upon each ``git commit`` command, preventing the commit from going
-through if the tests fail.
+Rather than having to wait for the GitHub CI (continuous integration) tests to
+finish verifying your code, you can run some of the tests locally.
+
+**Fast Tests (sub 1 second)**
+
+Formatting and linting tests are quick to run. The most common way to execute
+them is through pre-commit hooks. We use the
+`pre-commit <https://pre-commit.com/#quick-start>`_ library, which after being
+installed runs formatting and linting tests upon each ``git commit`` command,
+preventing the commit from going through if the tests fail.
 
 .. code-block:: console
 
-    $ pip install black[jupyter] ruff mypy doc8 yamllint pre-commit
     $ cd ${CNEUROML_PATH}
+    $ . venv/bin/activate
     $ pre-commit install
 
 From now on, ``git commit`` commands in this repository will automatically make
@@ -76,12 +103,26 @@ sure that all important files are functional and well formatted.
     dev/local branch and don't want to deal with formatting / code validity,
     you can instead run ``git commit --no-verify``.
 
+**Slow Tests**
+
+Unit-tests and typecheck tests are slower, hence not suitable to run upon each
+commit. However they are pretty useful to save time right before merging your
+branch. To run those tests, you can use the following commands:
+
+.. code-block:: console
+
+    $ cd ${CNEUROML_PATH}
+    $ . venv/bin/activate
+    $ pytest cneuroml
+    $ mypy --strict cneuroml
+
+
 Setting up VSCode
 -----------------
 
 Rather than being welcomed to a red wave of errors and warnings every time you
-``git commit``, we suggest that you set up your editor to notify you of any
-issues before you commit.
+``git commit`` or run the slow tests, we suggest that you set up your editor to
+notify you of any issues before you commit.
 
 On VSCode, this means installing the following extensions:
 
@@ -93,10 +134,10 @@ On VSCode, this means installing the following extensions:
   <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
 * `lextudio.restructuredtext
   <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`_
-  (``doc8`` enabler, make sure you followed the previous section)
+  (``doc8`` enabler)
 * `fnando.linter
   <https://marketplace.visualstudio.com/items?itemName=fnando.linter>`_
-  (``yamllint`` enabler, make sure you followed the previous section)
+  (``yamllint`` enabler)
 
 And here are the settings to insert into your
 ``~/.config/Code/User/settings.json`` file.
@@ -133,6 +174,18 @@ And here are the settings to insert into your
     // Miscellaneous
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+    // Pylance
+    "python.analysis.ignore": [
+        "/**"
+    ],
+
+.. note::
+
+    Pylance throws some incorrect errors with pytest and is otherwise
+    redundant due to using mypy, so we suggest disabling its analysis
+    (even though the setting is called ``python.analysis.ignore``, it actually
+    only applies to Pylance). We suggest not uninstalling it, as it is
+    has other useful features like syntax highlighting.
 
 Git/GitHub workflow for contributing
 ------------------------------------
@@ -159,6 +212,19 @@ Make your changes, commit them and push them to the remote repository.
     $ git commit -m "<COMMIT_MESSAGE>"
     $ git push
 
+If you are done with your contribution, you can create a pull request on
+GitHub. If new changes have been introducted to the ``main`` branch while you
+were working on your development branch, you will need to update your branch
+with the latest changes from ``main``, you can do so by running the following
+commands.
+
+.. code-block:: console
+
+    $ git checkout main
+    $ git pull
+    $ git checkout <YOUR_BRANCH_NAME>
+    $ git rebase main
+
 Now, create a pull request on GitHub, once it is approved, delete your branch
 and pull the changes to your local repository.
 
@@ -172,4 +238,6 @@ Freezing the repositories for publication
 -----------------------------------------
 
 For your code to remain reproducible after publication, we suggest that you
-create a new branch or fork the repository. TODO: Add pruning instructions.
+create a new branch or fork the repository.
+
+TODO: Add pruning instructions.

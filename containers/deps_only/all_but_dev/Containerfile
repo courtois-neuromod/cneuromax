@@ -32,7 +32,7 @@ ADD cneuroml /cneuroml/cneuroml
 ADD pyreqs /cneuroml/pyreqs
 
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -e cneuroml/.[all_but_dev] \
+    && pip install --no-cache-dir -e cneuroml/.[run] \
     && pip uninstall -y cneuroml
 
 RUN apt remove -y \

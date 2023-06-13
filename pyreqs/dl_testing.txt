@@ -1,0 +1,13 @@
+# Packages required to run the Deep Learning component of the CNeuroML library
+
+############################
+# Package full name: PyTorch
+# Quickstart link: https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.0.1
+
+##############################
+# Package full name: Lightning
+# Quickstart links: https://lightning.ai/
+#                   https://lightning.ai/docs/pytorch/latest/starter/introduction.html
+lightning==2.0.3

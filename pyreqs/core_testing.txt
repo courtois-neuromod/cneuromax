@@ -1,0 +1,6 @@
+# Packages required solely for testing
+
+##########################
+# Package full name: Hydra
+# Quickstart link: https://hydra.cc/docs/intro
+hydra-core==1.3.2

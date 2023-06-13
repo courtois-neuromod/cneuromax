@@ -3,7 +3,7 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path("../cneuroml").resolve()))
+sys.path.insert(0, str(Path("..").resolve()))
 
 # -- Project information
 
@@ -15,6 +15,7 @@ version = "0.0.1"
 # -- General configuration
 
 extensions = [
+    "autoapi.extension",
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",
@@ -36,7 +37,5 @@ templates_path = ["_templates"]
 
 html_theme = "sphinx_rtd_theme"
 
-# -- Options for EPUB output
-epub_show_urls = "footnote"
-
-autodoc_mock_imports = ["packages", "to", "mock"]
+autoapi_type = "python"
+autoapi_dirs = ["../cneuroml"]
