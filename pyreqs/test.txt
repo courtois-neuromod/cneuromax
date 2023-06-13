@@ -1,4 +1,4 @@
-# Packages required to contribute to the library
+# Packages required for development
 
 ##########################
 # Package full name: Black
@@ -11,6 +11,16 @@ black[jupyter]==23.3.0
 # Quickstart link: https://beta.ruff.rs/docs/tutorial
 ruff==0.0.272
 
+#########################
+# Package full name: Doc8
+# Quickstart link: https://doc8.readthedocs.io/en/stable/readme.html#usage
+doc8==1.1.1
+
+#############################
+# Package full name: Yamllint
+# Quickstart link: https://yamllint.readthedocs.io/en/stable/quickstart.html
+yamllint==1.32.0
+
 ###############################
 # Package full name: Pre-Commit
 # Quickstart link: https://pre-commit.com/
@@ -20,3 +30,8 @@ pre-commit==3.3.2
 # Package full name: Mypy
 # Quickstart link: https://mypy.readthedocs.io/en/stable/getting_started.html
 mypy==1.3.0
+
+###########################
+# Package full name: Pytest
+# Quickstart link: https://docs.pytest.org/en/stable/getting-started.html
+pytest==7.3.2

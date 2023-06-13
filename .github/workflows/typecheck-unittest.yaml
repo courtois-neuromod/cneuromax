@@ -1,0 +1,31 @@
+name: Runs pytest & mypy (type checking and unit tests)
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  typecheck-unittest:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install OpenMPI
+        run: sudo apt install -y libopenmpi-dev
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+      - name: Create virtual environment
+        run: python -m venv venv
+      - name: Activate virtual environment
+        run: . venv/bin/activate
+      - name: Install dependencies
+        run: >
+          pip install --no-cache-dir --upgrade pip && pip install
+          --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
+      - name: Run mypy
+        run: mypy --strict cneuroml
+      - name: Run pytest
+        run: pytest cneuroml
