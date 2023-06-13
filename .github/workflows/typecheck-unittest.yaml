@@ -18,7 +18,7 @@ jobs:
       - name: Create virtual environment
         run: python -m venv venv
       - name: Activate virtual environment
-        run: source venv/bin/activate
+        run: . venv/bin/activate
       - name: Install dependencies
         run: python -m pip install -e .[dev]
       - name: Run mypy
