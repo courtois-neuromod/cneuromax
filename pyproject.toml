@@ -17,7 +17,7 @@ optional-dependencies.run = {file = ["pyreqs/dl.txt",
                                      "pyreqs/ne.txt",
                                      "pyreqs/utils.txt",
                                      "pyreqs/wandb.txt"]}
-optional-dependencies.test = {file = ["pyreqs/dl.txt",
+optional-dependencies.dev = {file = ["pyreqs/dl.txt",
                                       "pyreqs/hpo.txt",
                                       "pyreqs/hydra_test.txt",
                                       "pyreqs/jupyter.txt",

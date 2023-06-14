@@ -1,4 +1,5 @@
 # Runs the pre-commit workflow (formatting & linting)
+name: Format & Lint
 
 on:
   pull_request:

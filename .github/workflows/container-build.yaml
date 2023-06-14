@@ -1,4 +1,5 @@
 # Build the container image with full dependencies
+name: Container Build
 
 on:
   pull_request:

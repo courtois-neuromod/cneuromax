@@ -1,4 +1,5 @@
 # Build the container image with full dependencies & push it to the registry
+name: Container Build & Push
 
 on:
   push:

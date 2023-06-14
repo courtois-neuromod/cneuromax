@@ -1,4 +1,5 @@
 # Build the Sphinx documentation & push it to GitHub Pages
+name: Docs Build & Push
 
 on:
   push:
