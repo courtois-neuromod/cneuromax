@@ -10,19 +10,21 @@ dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = "pyreqs/core.txt"}
-optional-dependencies.dev = {file = ["pyreqs/dl.txt",
-                                     "pyreqs/hpo.txt",
-                                     "pyreqs/jupyter.txt",
-                                     "pyreqs/ne.txt",
-                                     "pyreqs/test.txt",
-                                     "pyreqs/utils.txt",
-                                     "pyreqs/wandb.txt"]}
 optional-dependencies.run = {file = ["pyreqs/dl.txt",
                                      "pyreqs/hpo.txt",
+                                     "pyreqs/hydra_run.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/ne.txt",
                                      "pyreqs/utils.txt",
                                      "pyreqs/wandb.txt"]}
+optional-dependencies.dev = {file = ["pyreqs/dl.txt",
+                                      "pyreqs/hpo.txt",
+                                      "pyreqs/hydra_test.txt",
+                                      "pyreqs/jupyter.txt",
+                                      "pyreqs/ne.txt",
+                                      "pyreqs/test.txt",
+                                      "pyreqs/utils.txt",
+                                      "pyreqs/wandb.txt"]}
 
 [tool.black]
 line-length = 79

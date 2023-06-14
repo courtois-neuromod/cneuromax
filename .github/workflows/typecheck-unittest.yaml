@@ -1,4 +1,5 @@
-name: Runs pytest & mypy (type checking and unit tests)
+# Runs pytest & mypy (type checking and unit tests)
+name: Typecheck & Unittest
 
 on:
   pull_request:
@@ -28,4 +29,8 @@ jobs:
       - name: Run mypy
         run: mypy --strict cneuroml
       - name: Run pytest
-        run: pytest cneuroml
+        run: pytest --cov cneuroml
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

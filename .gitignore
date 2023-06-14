@@ -1,6 +1,7 @@
 **/_build/
 **/build/
 **/cneuroml.egg-info/
+**/.coverage
 **/data/
 **/doctrees/
 **/extra/

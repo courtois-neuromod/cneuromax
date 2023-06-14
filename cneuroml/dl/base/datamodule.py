@@ -12,10 +12,15 @@ class BaseDataModule(pl.LightningDataModule):
 
     Subclasses should implement any of the following attributes that
     are to be utilized:
-    - train_data (torch.utils.data.Dataset): Training dataset.
-    - val_data (torch.utils.data.Dataset): Validation dataset.
-    - test_data (torch.utils.data.Dataset): Testing dataset.
-    - predict_data (torch.utils.data.Dataset): Prediction dataset.
+
+    - ``train_data`` (``torch.utils.data.Dataset``): Training dataset.
+
+    - ``val_data`` (``torch.utils.data.Dataset``): Validation dataset.
+
+    - ``test_data`` (``torch.utils.data.Dataset``): Testing dataset.
+
+    - ``predict_data`` (``torch.utils.data.Dataset``): Prediction
+        dataset.
 
     Attributes:
         data_dir (str): Path to the data directory.

@@ -39,3 +39,4 @@ html_theme = "sphinx_rtd_theme"
 
 autoapi_type = "python"
 autoapi_dirs = ["../cneuroml"]
+autoapi_python_class_content = "both"

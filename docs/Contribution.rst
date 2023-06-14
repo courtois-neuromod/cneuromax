@@ -24,7 +24,8 @@ dependencies. This can be done by running the following commands:
     $ . venv/bin/activate
     $ # Install OpenMPI if it's not already installed
     $ sudo apt install -y libopenmpi-dev
-    $ pip install --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
+    $ pip install --extra-index-url https://download.pytorch.org/whl/cpu \
+        -e .[dev]
 
 You now have all the dependencies needed to develop locally (do note that
 these libraries and their version are not meant for actually running the

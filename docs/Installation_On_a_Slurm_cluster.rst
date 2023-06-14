@@ -34,7 +34,7 @@ Pull the image.
 .. code-block:: console
 
     $ module load podman \
-        && podman pull docker://maximilienlc/cneuroml:deps_only-all_deps-latest
+        && podman pull docker://maximilienlc/cneuroml:deps-run-latest
 
 Compress the Podman container folder.
 
