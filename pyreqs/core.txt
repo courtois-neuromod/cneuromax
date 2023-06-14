@@ -14,12 +14,3 @@
 #         automatically synchronizes with the main one through a GitHub Action
 #         workflow to keep it up to date.
 submitit@git+https://github.com/courtois-neuromod/submitit
-
-##########################
-# Package full name: Hydra
-# Quickstart link: https://hydra.cc/docs/intro
-# Note: Hydra with integration of above updated Submitit package
-# Remark: Based on the lack of recent GitHub activity, it looks like we will
-#         also need to install Hydra this way for the foreseable future.
-#         This repository also automatically synchronizes with the main one.
-hydra-core@git+https://github.com/courtois-neuromod/hydra

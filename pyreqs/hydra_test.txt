@@ -1,4 +1,4 @@
-# Packages required solely for testing
+# Hydra used when testing the code (lets us not have to install Java)
 
 ##########################
 # Package full name: Hydra

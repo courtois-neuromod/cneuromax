@@ -21,7 +21,7 @@ RUN apt update && apt install -y \
     python3-opencv \
     # GitHub packages
     git \
-    # Java to install Hydra from source (can be removed once Hydra PR is merged)
+    # Java (to build our fork of Hydra)
     default-jre \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
@@ -34,10 +34,3 @@ ADD pyreqs /cneuroml/pyreqs
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -e cneuroml/.[run] \
     && pip uninstall -y cneuroml
-
-RUN apt remove -y \
-    python3-pip \
-    git \
-    default-jre \
-    && apt autoremove -y \
-    && rm -rf /var/lib/apt/lists/*

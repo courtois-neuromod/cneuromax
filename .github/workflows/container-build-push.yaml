@@ -1,5 +1,4 @@
-name: >
-  Build the container image with full dependencies & push it to the registry
+# Build the container image with full dependencies & push it to the registry
 
 on:
   push:
@@ -33,6 +32,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps_only/all_but_dev/Containerfile
+          file: containers/deps/run/Containerfile
           push: true
-          tags: maximilienlc/cneuroml:latest-deps_only-all_but_dev
+          tags: maximilienlc/cneuroml:deps-run-latest

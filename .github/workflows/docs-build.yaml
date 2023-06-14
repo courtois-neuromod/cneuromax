@@ -1,4 +1,4 @@
-name: Build the Sphinx documentation
+# Build the Sphinx documentation
 
 on:
   pull_request:

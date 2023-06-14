@@ -41,16 +41,16 @@ def test_instantiate_datamodule_non_default_arguments() -> None:
 
 @pytest.fixture()
 def datamodule() -> BaseDataModule:
-    """Instantiates and returns a generic BaseDataModule.
+    """Instantiates and returns a generic ``BaseDataModule``.
 
     Returns:
-        A generic BaseDataModule.
+        A generic ``BaseDataModule``.
     """
     return BaseDataModule(data_dir=".")
 
 
 def test_load_state_dict(datamodule: BaseDataModule) -> None:
-    """Test load_state_dict.
+    """Testing ``load_state_dict`` method.
 
     Args:
         datamodule: A generic datamodule.
@@ -65,7 +65,7 @@ def test_load_state_dict(datamodule: BaseDataModule) -> None:
 
 
 def test_state_dict(datamodule: BaseDataModule) -> None:
-    """Test state_dict.
+    """Testing ``state_dict`` method.
 
     Args:
         datamodule: A generic datamodule.
@@ -148,7 +148,7 @@ def test_train_dataloader_correct_values(
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Test 'train_dataloader' behaviour.
+    """Testing ``train_dataloader`` behaviour.
 
     Args:
         datamodule: A generic datamodule.
@@ -164,12 +164,28 @@ def test_train_dataloader_correct_values(
     assert new_dataloader.pin_memory == dataloader.pin_memory
 
 
+def test_train_dataloader_missing_data(datamodule: BaseDataModule) -> None:
+    """Testing ``train_dataloader`` behaviour with missing attribute.
+
+    Missing ``train_data`` attribute should raise an ``AttributeError``
+    exception.
+
+    Args:
+        datamodule: A generic datamodule.
+
+    Raises:
+        AttributeError: If ``train_data`` is not set.
+    """
+    with pytest.raises(AttributeError):
+        datamodule.train_dataloader()
+
+
 def test_val_dataloader_correct_values(
     datamodule: BaseDataModule,
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Test 'val_dataloader' behaviour.
+    """Testing ``val_dataloader`` behaviour.
 
     Args:
         datamodule: A generic datamodule.
@@ -185,12 +201,28 @@ def test_val_dataloader_correct_values(
     assert new_dataloader.pin_memory == dataloader.pin_memory
 
 
+def test_val_dataloader_missing_data(datamodule: BaseDataModule) -> None:
+    """Testing ``val_dataloader`` behaviour with missing attribute.
+
+    Missing ``val_data`` attribute should raise an ``AttributeError``
+    exception.
+
+    Args:
+        datamodule: A generic datamodule.
+
+    Raises:
+        AttributeError: If ``val_data`` is not set.
+    """
+    with pytest.raises(AttributeError):
+        datamodule.val_dataloader()
+
+
 def test_test_dataloader_correct_values(
     datamodule: BaseDataModule,
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Test 'test_dataloader' behaviour.
+    """Testing ``test_dataloader`` behaviour.
 
     Args:
         datamodule: A generic datamodule.
@@ -204,6 +236,22 @@ def test_test_dataloader_correct_values(
     assert isinstance(new_dataloader.sampler, type(dataloader.sampler))
     assert new_dataloader.num_workers == dataloader.num_workers
     assert new_dataloader.pin_memory == dataloader.pin_memory
+
+
+def test_test_dataloader_missing_data(datamodule: BaseDataModule) -> None:
+    """Testing ``test_dataloader`` behaviour with missing attribute.
+
+    Missing ``test_data`` attribute should raise an ``AttributeError``
+    exception.
+
+    Args:
+        datamodule: A generic datamodule.
+
+    Raises:
+        AttributeError: If ``test_data`` is not set.
+    """
+    with pytest.raises(AttributeError):
+        datamodule.test_dataloader()
 
 
 @pytest.fixture()
@@ -234,7 +282,7 @@ def test_predict_dataloader_correct_values(
     dataset: Dataset[torch.Tensor],
     dataloader2: DataLoader[torch.Tensor],
 ) -> None:
-    """Test 'predict_dataloader' behaviour.
+    """Testing ``predict_dataloader`` behaviour.
 
     Args:
         datamodule: A generic datamodule.
@@ -248,3 +296,19 @@ def test_predict_dataloader_correct_values(
     assert isinstance(new_dataloader.sampler, type(dataloader2.sampler))
     assert new_dataloader.num_workers == dataloader2.num_workers
     assert new_dataloader.pin_memory == dataloader2.pin_memory
+
+
+def test_predict_dataloader_missing_data(datamodule: BaseDataModule) -> None:
+    """Testing ``predict_dataloader`` behaviour with missing attribute.
+
+    Missing ``predict_data`` attribute should raise an
+    ``AttributeError`` exception.
+
+    Args:
+        datamodule: A generic datamodule.
+
+    Raises:
+        AttributeError: If ``predict_data`` is not set.
+    """
+    with pytest.raises(AttributeError):
+        datamodule.predict_dataloader()

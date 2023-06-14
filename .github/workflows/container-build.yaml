@@ -1,4 +1,4 @@
-name: Build the container image with full dependencies
+# Build the container image with full dependencies
 
 on:
   pull_request:
@@ -22,5 +22,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps_only/all_but_dev/Containerfile
+          file: containers/deps/run/Containerfile
           push: false
