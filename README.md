@@ -12,6 +12,9 @@
 [![typecheck-unittest](
     https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml/badge.svg)](
         https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml)
+[![codecov](
+    https://codecov.io/gh/courtois-neuromod/cneuroml/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
+        https://codecov.io/gh/courtois-neuromod/cneuroml)
 [![code style: black](
     https://img.shields.io/badge/code%20style-black-000000.svg)](
         https://github.com/psf/black)

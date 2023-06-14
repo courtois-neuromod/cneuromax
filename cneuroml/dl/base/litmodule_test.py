@@ -14,30 +14,31 @@ from cneuroml.dl.base import BaseLitModule
 
 @pytest.fixture()
 def nnmodule() -> nn.Module:
-    """Instantiates and returns a generic PyTorch network module.
+    """Instantiates and returns a generic ``torch.nn.Module`` object.
 
     Returns:
-        A generic PyTorch network module.
+        A generic ``torch.nn.Module`` object.
     """
     return nn.Linear(1, 1)
 
 
 @pytest.fixture()
 def optimizer_partial() -> partial[torch.optim.Optimizer]:
-    """Returns a generic PyTorch optimizer.
+    """Returns a generic ``torch.optim.Optimizer`` partial object.
 
     Returns:
-        A generic PyTorch optimizer partial.
+        A generic ``torch.optim.Optimizer`` partial object.
     """
     return partial(torch.optim.Adam, lr=0.01)
 
 
 @pytest.fixture()
 def scheduler_partial() -> partial[torch.optim.lr_scheduler.LRScheduler]:
-    """Returns a generic PyTorch scheduler.
+    """Returns a generic PyTorch ``LRScheduler`` partial object.
 
     Returns:
-        A generic PyTorch scheduler partial.
+        A generic ``torch.optim.lr_scheduler.LRScheduler`` partial
+            object.
     """
     return partial(torch.optim.lr_scheduler.StepLR, step_size=1)
 
@@ -46,9 +47,9 @@ class GenericLitModule(BaseLitModule):
     """Generic Lightning Module.
 
     Attributes:
-    nnmodule (nn.Module): The PyTorch network module.
-    optimizer (torch.optim.Optimizer): The PyTorch optimizer.
-    scheduler (torch.optim.lr_scheduler.LRScheduler): The PyTorch
+    nnmodule (``torch.nn.Module``): The PyTorch network module.
+    optimizer (``torch.optim.Optimizer``): The PyTorch optimizer.
+    scheduler (``torch.optim.lr_scheduler.LRScheduler``): The PyTorch
         scheduler.
     """
 
@@ -85,9 +86,11 @@ def test_constructor(
     """Test constructor.
 
     Args:
-        nnmodule: A generic PyTorch network module.
-        optimizer_partial: A generic PyTorch optimizer partial.
-        scheduler_partial: A generic PyTorch scheduler partial.
+        nnmodule: A generic ``torch.nn.Module`` object.
+        optimizer_partial: A generic ``torch.optim.Optimizer`` partial
+            object.
+        scheduler_partial: A generic
+            ``torch.optim.lr_scheduler.LRScheduler`` partial object.
     """
     torch.manual_seed(0)
 
@@ -121,54 +124,56 @@ def litmodule(
     optimizer_partial: partial[torch.optim.Optimizer],
     scheduler_partial: partial[torch.optim.lr_scheduler.LRScheduler],
 ) -> BaseLitModule:
-    """Instantiates and returns a generic Lightning Module.
+    """Instantiates and returns a generic ``BaseLitModule`` object.
 
     Args:
-        nnmodule: A generic PyTorch network module.
-        optimizer_partial: A generic PyTorch optimizer partial.
-        scheduler_partial: A generic PyTorch scheduler partial.
+        nnmodule: A generic ``torch.nn.Module`` object.
+        optimizer_partial: A generic ``torch.optim.Optimizer`` partial
+            object.
+        scheduler_partial: A generic
+            ``torch.optim.lr_scheduler.LRScheduler`` partial object.
 
     Returns:
-        A generic Lightning Module.
+        A generic ``BaseLitModule`` object.
     """
     return GenericLitModule(nnmodule, optimizer_partial, scheduler_partial)
 
 
 def test_training_step(litmodule: GenericLitModule) -> None:
-    """Test training_step.
+    """Test ``training_step`` method.
 
     Args:
-        litmodule: A generic Lightning Module.
+        litmodule: A generic ``BaseLitModule`` object.
     """
     loss = litmodule.training_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(0.0))
 
 
 def test_validation_step(litmodule: GenericLitModule) -> None:
-    """Test validation_step.
+    """Test ``validation_step`` method.
 
     Args:
-        litmodule: A generic litmodule.
+        litmodule: A generic ``BaseLitModule`` object.
     """
     loss = litmodule.validation_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(1.0))
 
 
 def test_test_step(litmodule: GenericLitModule) -> None:
-    """Test test_step.
+    """Test ``test_step`` method.
 
     Args:
-        litmodule: A generic litmodule.
+        litmodule: A generic ``BaseLitModule`` object.
     """
     loss = litmodule.test_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(2.0))
 
 
 def test_configure_optimizers(litmodule: GenericLitModule) -> None:
-    """Test configure_optimizers.
+    """Test ``configure_optimizers`` method.
 
     Args:
-        litmodule: A generic litmodule.
+        litmodule: A generic ``BaseLitModule`` object.
     """
     [optimizer], [scheduler] = litmodule.configure_optimizers()
     assert optimizer == litmodule.optimizer

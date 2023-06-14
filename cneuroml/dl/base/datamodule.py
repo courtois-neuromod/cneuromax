@@ -20,17 +20,18 @@ class BaseDataModule(pl.LightningDataModule):
     - ``test_data`` (``torch.utils.data.Dataset``): Testing dataset.
 
     - ``predict_data`` (``torch.utils.data.Dataset``): Prediction
-        dataset.
+    dataset.
 
     Attributes:
         data_dir (str): Path to the data directory.
         per_device_batch_size (int): Per-device number of samples to
             load per iteration.
         per_device_num_workers (int): Number of CPU processes to use
-            for data loading (0 means that the data will be loaded by
-            each main process)
+            for data loading (``0`` means that the data will be loaded
+            by each main process)
         pin_memory (bool): Whether to copy tensors into device pinned
-            memory before returning them (recommended if using GPU).
+            memory before returning them (is set to ``True`` if using
+            GPUs).
     """
 
     def __init__(
@@ -40,16 +41,19 @@ class BaseDataModule(pl.LightningDataModule):
         per_device_num_workers: int = 0,
         device_type: Literal["cpu", "gpu"] = "gpu",
     ) -> None:
-        """Constructor, calls parent constructor and stores arguments.
+        """Constructor.
+
+        Calls parent constructor and stores arguments.
 
         Args:
             data_dir: Path to the data directory.
             per_device_batch_size: Per-device number of samples to load
-            per iteration.
+                per iteration.
             per_device_num_workers: Number of CPU processes to use for
-                data loading (0 means that the data will be loaded by
-                each main process)
-            device_type: The compute device type to use (cpu or gpu).
+                data loading (``0`` means that the data will be loaded
+                by each main process)
+            device_type: The compute device type to use (``cpu`` or
+                ``gpu``).
         """
         super().__init__()
 
@@ -63,35 +67,40 @@ class BaseDataModule(pl.LightningDataModule):
         self: "BaseDataModule",
         state_dict: dict[str, int],
     ) -> None:
-        """Loads an existing state (for now: a defined batch size).
+        """Loads an existing ``state_dict``.
+
+        Currently this is only used to load the
+        ``per_device_batch_size``.
 
         Args:
-            state_dict: State dict to load.
+            state_dict: The state dictionary to load.
         """
         self.per_device_batch_size = state_dict["per_device_batch_size"]
 
     @final
     def state_dict(self: "BaseDataModule") -> dict[str, int]:
-        """Returns the DM's state (for now: the defined batch size).
+        """Returns this datamodule's ``state_dict``.
+
+        Currently this is only used to save the
+        ``per_device_batch_size``.
 
         Returns:
-            The data module's state.
+            A copy of this datamodule's state dictionary.
         """
         return {"per_device_batch_size": self.per_device_batch_size}
 
     @final
     def train_dataloader(self: "BaseDataModule") -> DataLoader[torch.Tensor]:
-        """Returns the train dataloader.
+        """Returns the train ``torch.utils.data.DataLoader`` object.
 
-        Asserts that the 'train_data' (torch.utils.data.Dataset)
-        attribute is defined before returning a new dataloader built
-        using the train dataset and previously defined attributes.
+        Builds and returns a new ``torch.utils.data.DataLoader`` object
+        using ``train_data`` and previously defined attributes.
 
         Returns:
-            The train dataloader.
+            The training ``torch.utils.data.DataLoader`` object.
 
         Raises:
-            AttributeError: If 'train_data' is not defined.
+            AttributeError: If ``train_data`` is not defined.
         """
         if not hasattr(self, "train_data"):
             self.train_data = Dataset[torch.Tensor]()  # appeases mypy
@@ -107,17 +116,16 @@ class BaseDataModule(pl.LightningDataModule):
 
     @final
     def val_dataloader(self: "BaseDataModule") -> DataLoader[torch.Tensor]:
-        """Returns the val dataloader.
+        """Returns the val ``torch.utils.data.DataLoader`` object.
 
-        Asserts that the 'val_data' (torch.utils.data.Dataset)
-        attribute is defined before returning a new dataloader built
-        using the val dataset and previously defined attributes.
+        Builds and returns a new ``torch.utils.data.DataLoader`` object
+        using ``val_data`` and previously defined attributes.
 
         Returns:
-            The val dataloader.
+            The validation ``torch.utils.data.DataLoader`` object.
 
         Raises:
-            AttributeError: If 'val_data' is not defined.
+            AttributeError: If ``val_data`` is not defined.
         """
         if not hasattr(self, "val_data"):
             self.val_data = Dataset[torch.Tensor]()  # appeases mypy
@@ -133,17 +141,16 @@ class BaseDataModule(pl.LightningDataModule):
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[torch.Tensor]:
-        """Returns the test dataloader.
+        """Returns the test ``torch.utils.data.DataLoader`` object.
 
-        Asserts that the 'test_data' (torch.utils.data.Dataset)
-        attribute is defined before returning a new dataloader built
-        using the test dataset and previously defined attributes.
+        Builds and returns a new ``torch.utils.data.DataLoader`` object
+        using ``test_data`` and previously defined attributes.
 
         Returns:
-            The test dataloader.
+            The testing ``torch.utils.data.DataLoader`` object.
 
         Raises:
-            AttributeError: If 'test_data' is not defined.
+            AttributeError: If ``test_data`` is not defined.
         """
         if not hasattr(self, "test_data"):
             self.test_data = Dataset[torch.Tensor]()  # appeases mypy
@@ -159,17 +166,16 @@ class BaseDataModule(pl.LightningDataModule):
 
     @final
     def predict_dataloader(self: "BaseDataModule") -> DataLoader[torch.Tensor]:
-        """Returns the predict dataloader.
+        """Returns the predict ``torch.utils.data.DataLoader`` object.
 
-        Asserts that the 'predict_data' (torch.utils.data.Dataset)
-        attribute is defined before returning a new dataloader built
-        using the predict dataset and previously defined attributes.
+        Builds and returns a new ``torch.utils.data.DataLoader`` object
+        using ``predict_data`` and previously defined attributes.
 
         Returns:
-            The predict dataloader.
+            The prediction ``torch.utils.data.DataLoader`` object.
 
         Raises:
-            AttributeError: If 'predict_data' is not defined.
+            AttributeError: If ``predict_data`` is not defined.
         """
         if not hasattr(self, "predict_data"):
             self.predict_data = Dataset[torch.Tensor]()  # appeases mypy

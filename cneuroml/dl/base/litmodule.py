@@ -14,14 +14,16 @@ from torch import nn
 class BaseLitModule(pl.LightningModule, metaclass=ABCMeta):
     """Base LitModule.
 
-    Interfaces with the abstract pl.LightningModule methods.
-    Subclasses should implement the 'step' method.
+    Interfaces with the abstract
+    ``lightning.pytorch.LightningModule`` methods.
+
+    Subclasses should implement the ``step`` method.
 
     Attributes:
-        nnmodule (nn.Module): The PyTorch network module.
-        optimizer (torch.optim.Optimizer): The PyTorch optimizer.
-        scheduler (torch.optim.lr_scheduler.LRScheduler): The PyTorch
-            scheduler.
+        nnmodule (``nn.Module``): The PyTorch network module.
+        optimizer (``torch.optim.Optimizer``): The PyTorch optimizer.
+        scheduler (``torch.optim.lr_scheduler.LRScheduler``): The
+            PyTorch scheduler.
     """
 
     def __init__(
@@ -30,12 +32,17 @@ class BaseLitModule(pl.LightningModule, metaclass=ABCMeta):
         optimizer_partial: partial[torch.optim.Optimizer],
         scheduler_partial: partial[torch.optim.lr_scheduler.LRScheduler],
     ) -> None:
-        """Constructor, calls parent constructor and handles arguments.
+        """Constructor.
+
+        Calls parent constructor and handles arguments.
 
         Args:
-            nnmodule: The PyTorch network module.
-            optimizer_partial: The partial PyTorch optimizer.
-            scheduler_partial: The partial PyTorch scheduler.
+            nnmodule: The ``torch.nn.Module`` object.
+            optimizer_partial: The ``torch.optim.Optimizer`` partial
+                object.
+            scheduler_partial: The
+                ``torch.optim.lr_scheduler.LRScheduler`` partial
+                object.
         """
         super().__init__()
 
@@ -124,9 +131,10 @@ class BaseLitModule(pl.LightningModule, metaclass=ABCMeta):
         list[torch.optim.Optimizer],
         list[torch.optim.lr_scheduler.LRScheduler],
     ]:
-        """Configure the scheduler and optimizer.
+        """Configure the PyTorch ``Optimizer`` & ``LRScheduler`` objs.
 
         Returns:
-            The optimizer and scheduler objects.
+            The ``torch.optim.Optimizer`` and
+            ``torch.optim.lr_scheduler.LRScheduler`` objects.
         """
         return [self.optimizer], [self.scheduler]

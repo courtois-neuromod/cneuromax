@@ -1,4 +1,4 @@
-"""Testing for base datamodule."""
+"""Test for base datamodule."""
 from typing import Literal
 
 import pytest
@@ -9,8 +9,8 @@ from torch.utils.data import DataLoader, Dataset
 from cneuroml.dl.base import BaseDataModule
 
 
-def test_instantiate_generic_datamodule() -> None:
-    """Testing instantiation with a generic datamodule."""
+def test_instantiate_datamodule_default_arguments() -> None:
+    """Test instantiation with default arguments."""
     datamodule = BaseDataModule(data_dir=".")
 
     assert datamodule.data_dir == "."
@@ -20,7 +20,7 @@ def test_instantiate_generic_datamodule() -> None:
 
 
 def test_instantiate_datamodule_non_default_arguments() -> None:
-    """Testing instantiation with non-default arguments."""
+    """Test instantiation with non-default arguments."""
     data_dir = "/"
     per_device_batch_size = 2
     per_device_num_workers = 1
@@ -41,19 +41,19 @@ def test_instantiate_datamodule_non_default_arguments() -> None:
 
 @pytest.fixture()
 def datamodule() -> BaseDataModule:
-    """Instantiates and returns a generic ``BaseDataModule``.
+    """Instantiates and returns a generic ``BaseDataModule`` object.
 
     Returns:
-        A generic ``BaseDataModule``.
+        A generic ``BaseDataModule`` object.
     """
     return BaseDataModule(data_dir=".")
 
 
 def test_load_state_dict(datamodule: BaseDataModule) -> None:
-    """Testing ``load_state_dict`` method.
+    """Test ``load_state_dict`` method.
 
     Args:
-        datamodule: A generic datamodule.
+        datamodule: A generic ``BaseDataModule`` object.
     """
     per_device_batch_size = 2
 
@@ -65,10 +65,10 @@ def test_load_state_dict(datamodule: BaseDataModule) -> None:
 
 
 def test_state_dict(datamodule: BaseDataModule) -> None:
-    """Testing ``state_dict`` method.
+    """Test ``state_dict`` method.
 
     Args:
-        datamodule: A generic datamodule.
+        datamodule: A generic ``BaseDataModule`` object.
     """
     assert (
         datamodule.state_dict()["per_device_batch_size"]
@@ -78,17 +78,17 @@ def test_state_dict(datamodule: BaseDataModule) -> None:
 
 @pytest.fixture()
 def dataset() -> Dataset[torch.Tensor]:
-    """Instantiates and returns a generic PyTorch Dataset.
+    """Instantiates and returns a generic PyTorch ``Dataset`` object.
 
     Returns:
-        A generic PyTorch dataset.
+        A generic ``torch.utils.data.Dataset`` object.
     """
 
     class GenericDataset(Dataset[torch.Tensor]):
-        """A generic PyTorch dataset.
+        """A generic PyTorch dataset class.
 
         Attributes:
-            data: The data.
+            data (``torch.Tensor``): A tensor of shape ``(1, 1)``.
         """
 
         def __init__(self: "GenericDataset") -> None:
@@ -99,21 +99,21 @@ def dataset() -> Dataset[torch.Tensor]:
             self: "GenericDataset",
             index: int,
         ) -> Float[torch.Tensor, "1"]:
-            """Returns the item at the given index.
+            """Returns the data item at the given index.
 
             Args:
                 index: The index of the item to return.
 
             Returns:
-                The item at the given index.
+                The data item at the given index.
             """
             return self.data[index]
 
         def __len__(self: "GenericDataset") -> int:
-            """Returns the length of the dataset.
+            """Returns the length of this dataset.
 
             Returns:
-                The length of the dataset.
+                The length of this dataset.
             """
             return len(self.data)
 
@@ -125,14 +125,14 @@ def dataloader(
     datamodule: BaseDataModule,
     dataset: Dataset[torch.Tensor],
 ) -> DataLoader[torch.Tensor]:
-    """Instantiates and returns a generic PyTorch DataLoader.
+    """Instantiates and returns a generic PyTorch ``DataLoader`` object.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
 
     Returns:
-        A generic PyTorch DataLoader.
+        A generic ``torch.utils.data.DataLoader`` object.
     """
     return DataLoader(
         dataset=dataset,
@@ -148,12 +148,12 @@ def test_train_dataloader_correct_values(
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Testing ``train_dataloader`` behaviour.
+    """Test ``train_dataloader`` method behaviour.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset with random values.
-        dataloader: A generic dataloader.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
+        dataloader: A generic ``torch.utils.data.DataLoader`` object.
     """
     datamodule.train_data = dataset
     new_dataloader = datamodule.train_dataloader()
@@ -165,13 +165,13 @@ def test_train_dataloader_correct_values(
 
 
 def test_train_dataloader_missing_data(datamodule: BaseDataModule) -> None:
-    """Testing ``train_dataloader`` behaviour with missing attribute.
+    """Test ``train_dataloader`` method behaviour with missing data.
 
     Missing ``train_data`` attribute should raise an ``AttributeError``
     exception.
 
     Args:
-        datamodule: A generic datamodule.
+        datamodule: A generic ``BaseDataModule`` object.
 
     Raises:
         AttributeError: If ``train_data`` is not set.
@@ -185,12 +185,12 @@ def test_val_dataloader_correct_values(
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Testing ``val_dataloader`` behaviour.
+    """Test ``val_dataloader`` method behaviour.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset with random values.
-        dataloader: A generic dataloader.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
+        dataloader: A generic ``torch.utils.data.DataLoader`` object.
     """
     datamodule.val_data = dataset
     new_dataloader = datamodule.val_dataloader()
@@ -202,7 +202,7 @@ def test_val_dataloader_correct_values(
 
 
 def test_val_dataloader_missing_data(datamodule: BaseDataModule) -> None:
-    """Testing ``val_dataloader`` behaviour with missing attribute.
+    """Test ``val_dataloader`` behaviour with missing attribute.
 
     Missing ``val_data`` attribute should raise an ``AttributeError``
     exception.
@@ -222,12 +222,12 @@ def test_test_dataloader_correct_values(
     dataset: Dataset[torch.Tensor],
     dataloader: DataLoader[torch.Tensor],
 ) -> None:
-    """Testing ``test_dataloader`` behaviour.
+    """Test ``test_dataloader`` behaviour.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset with random values.
-        dataloader: A generic dataloader.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
+        dataloader: A generic ``torch.utils.data.DataLoader`` object.
     """
     datamodule.test_data = dataset
     new_dataloader = datamodule.test_dataloader()
@@ -239,7 +239,7 @@ def test_test_dataloader_correct_values(
 
 
 def test_test_dataloader_missing_data(datamodule: BaseDataModule) -> None:
-    """Testing ``test_dataloader`` behaviour with missing attribute.
+    """Test ``test_dataloader`` behaviour with missing attribute.
 
     Missing ``test_data`` attribute should raise an ``AttributeError``
     exception.
@@ -255,18 +255,18 @@ def test_test_dataloader_missing_data(datamodule: BaseDataModule) -> None:
 
 
 @pytest.fixture()
-def dataloader2(
+def dataloader_predict(
     datamodule: BaseDataModule,
     dataset: Dataset[torch.Tensor],
 ) -> DataLoader[torch.Tensor]:
-    """Instantiates and returns a generic PyTorch DataLoader.
+    """Instantiates and returns a generic PyTorch ``DataLoader`` object.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
 
     Returns:
-        A generic PyTorch DataLoader.
+        A generic ``torch.utils.data.DataLoader`` object.
     """
     return DataLoader(
         dataset=dataset,
@@ -280,32 +280,33 @@ def dataloader2(
 def test_predict_dataloader_correct_values(
     datamodule: BaseDataModule,
     dataset: Dataset[torch.Tensor],
-    dataloader2: DataLoader[torch.Tensor],
+    dataloader_predict: DataLoader[torch.Tensor],
 ) -> None:
-    """Testing ``predict_dataloader`` behaviour.
+    """Test ``predict_dataloader`` behaviour.
 
     Args:
-        datamodule: A generic datamodule.
-        dataset: A generic dataset with random values.
-        dataloader2: A generic dataloader.
+        datamodule: A generic ``BaseDataModule`` object.
+        dataset: A generic ``torch.utils.data.Dataset`` object.
+        dataloader_predict: A generic ``torch.utils.data.DataLoader``
+            object.
     """
     datamodule.predict_data = dataset
     new_dataloader = datamodule.predict_dataloader()
     assert isinstance(new_dataloader, DataLoader)
-    assert new_dataloader.batch_size == dataloader2.batch_size
-    assert isinstance(new_dataloader.sampler, type(dataloader2.sampler))
-    assert new_dataloader.num_workers == dataloader2.num_workers
-    assert new_dataloader.pin_memory == dataloader2.pin_memory
+    assert new_dataloader.batch_size == dataloader_predict.batch_size
+    assert isinstance(new_dataloader.sampler, type(dataloader_predict.sampler))
+    assert new_dataloader.num_workers == dataloader_predict.num_workers
+    assert new_dataloader.pin_memory == dataloader_predict.pin_memory
 
 
 def test_predict_dataloader_missing_data(datamodule: BaseDataModule) -> None:
-    """Testing ``predict_dataloader`` behaviour with missing attribute.
+    """Test ``predict_dataloader`` method behaviour with missing data.
 
     Missing ``predict_data`` attribute should raise an
     ``AttributeError`` exception.
 
     Args:
-        datamodule: A generic datamodule.
+        datamodule: A generic ``BaseDataModule`` object.
 
     Raises:
         AttributeError: If ``predict_data`` is not set.
