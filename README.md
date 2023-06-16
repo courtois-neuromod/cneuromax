@@ -21,3 +21,40 @@
 
 Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
     https://courtois-neuromod.github.io/cneuroml/).
+
+
+    Project Organization
+    ------------
+
+        ├── LICENSE
+        ├── README.md
+        ├── pyproject.toml                  <- Project config and dependencies
+        ├── renovate.json                   <- ...
+        ├── cneuroml                        <- Main code repository
+        │   └── app        
+        │   └── dl        
+        │   │   └── base    
+        │   │       └── datamodule.tsv      <- Base code for Lightning DataModule       
+        │   │       └── litmodule.tsv       <- Base code for Lightning Module             
+        │   └── ne                        
+        ├── containers                      
+        │   └── deps  
+        │       └── run        
+        │           └── Contrainerfile     <- ...   
+        ├── docs
+        │   └── *.rst                       <- Various documentation pages on installation, development, execution, etc
+        │   └── Makefile                    <- Makefile for Sphinx documentation
+        │   └── conf.py                     <- Configuration file for the Sphinx documentation builder
+        │   └── make.bat                    <- Command to build Sphinx documentation
+        │   └── requirements.txt            <- Requirements to build Sphinx documentation
+        │
+        └── pyreqs                          <- Required packages
+            └── core.txt                    <- Packages required to run any component of the CNeuroML library
+            └── dl.txt                      <- Packages required to run the Deep Learning  component of the CNeuroML library
+            └── hpo.txt                     <- Packages required to run Hyperparameter Optimization
+            └── hydra_run.txt               <- Hydra used when running the code
+            └── hydra_test.txt              <- Hydra used when testing the code
+            └── jupyter.txt                 <- Packages required to work with Jupyter notebooks   
+            └── ne.txt                    <- Packages required to run the Neuroevolution component of the CNeuroML library            
+
+    --------
