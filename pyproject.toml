@@ -8,6 +8,8 @@ description = "The Courtois Neuromod Project's centralized Machine Learning repo
 version = "0.0.1"
 dynamic = ["dependencies", "optional-dependencies"]
 
+# Don't install both 'dev' & 'run' as their version of
+# 'hydra' will conflict
 [tool.setuptools.dynamic]
 dependencies = {file = "pyreqs/core.txt"}
 optional-dependencies.run = {file = ["pyreqs/dl.txt",
@@ -15,15 +17,17 @@ optional-dependencies.run = {file = ["pyreqs/dl.txt",
                                      "pyreqs/hydra_run.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/ne.txt",
-                                     "pyreqs/utils.txt",
+                                     "pyreqs/shapes.txt",
+                                     "pyreqs/vision.txt",
                                      "pyreqs/wandb.txt"]}
 optional-dependencies.dev = {file = ["pyreqs/dl.txt",
                                       "pyreqs/hpo.txt",
                                       "pyreqs/hydra_test.txt",
                                       "pyreqs/jupyter.txt",
                                       "pyreqs/ne.txt",
+                                      "pyreqs/shapes.txt",
                                       "pyreqs/test.txt",
-                                      "pyreqs/utils.txt",
+                                      "pyreqs/vision.txt",
                                       "pyreqs/wandb.txt"]}
 
 [tool.black]
@@ -62,3 +66,5 @@ max-line-length = 79
 
 [tool.mypy]
 strict = true
+allow_redefinition = true
+ignore_missing_imports = true

@@ -27,7 +27,7 @@ jobs:
           pip install --no-cache-dir --upgrade pip && pip install
           --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
       - name: Run mypy
-        run: mypy --strict cneuroml
+        run: mypy --config-file=pyproject.toml cneuroml
       - name: Run pytest
         run: pytest --cov cneuroml
       - name: Upload coverage reports to Codecov
