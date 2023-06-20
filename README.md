@@ -24,60 +24,45 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
 
 
 ```
-cneuroml
-├─ .github
-│  └─ workflows                                    <-- Config files launched by github actions (test format, rebuild container image, etc)
-│     ├─ container-build-push.yaml
-│     ├─ container-build.yaml
-│     ├─ docs-build-push.yaml
-│     ├─ docs-build.yaml
-│     ├─ format-lint.yaml
-│     └─ typecheck-unittest.yaml
-├─ .gitignore
-├─ .pre-commit-config.yaml                         <-- Tests to check for errors before a commit
-├─ .yamllint.yaml                                  <-- Config file for .yaml files
-├─ LICENSE
-├─ README.md
-├─ cneuroml                                        <-- Core ML scripts
-│  ├─ __init__.py
-│  ├─ app
-│  │  └─ __init__.py
-│  ├─ dl                                           <-- Deep Learning scripts
-│  │  ├─ __init__.py
-│  │  └─ base                                      <-- Base/generic/examplar scripts
-│  │  │  ├─ __init__.py
-│  │  │  ├─ configs                                <-- Generic configuration files (.yaml)
-│  │  │  ├─ utils                                  <-- Generic utils scripts
-│  │  │  ├─ datamodule.py                          <-- Generic DataModule
-│  │  │  ├─ eval.py                                <-- Generic eval script
-│  │  │  ├─ litmodule.py                           <-- Generic model (lightning module)
-│  │  │  └─ train.py                               <-- Generic train script
-│  │  └─ projects                                  <-- Where to save your project scripts, per model and dataset (e.g., video_transformer/friends)
-│  │     └─ my_model_type
-│  │        ├─ __init__.py
-│  │        ├─ my_models.py                        <-- Project-specific models (lightning modules)
-│  │        └─ my_model_and_dataset
-│  │           ├─ __init__.py
-│  │           ├─ configs                          <-- Project-specific configuration files (.yaml)
-│  │           ├─ utils                            <-- Project-specific util scripts
-│  │           ├─ my_datamodules.py                <-- Project-specific DataModule(s)
-│  │           ├─ my_models.py                     <-- Project-specific model(s) (if needed)
-│  │           ├─ my_eval.py                       <-- Project-specific eval script (if needed)
-│  │           └─ my_train.py                      <-- Project-specific train script (if needed)
-│  └─ ne                                           <-- Neuro Evolution scripts
-│     └─ __init__.py
-├─ containers
-│  └─ deps
-│     └─ run
-│        └─ Containerfile                          <-- File to build container image
-├─ data                                            <-- Directory where to install datasets as datalad submodules
-├─ docs                                            <-- Documentation files and sphinx requirements
-│  ├─ *.rst
-│  ├─ Makefile
-│  ├─ conf.py
-│  ├─ make.bat
-│  └─ requirements.txt
-├─ pyproject.toml                                  <-- Library's general config file for anything python-related
-├─ pyreqs                                          <-- Python requirements for different project tools
-│  └─ *.txt
-└─ renovate.json                                   <-- Scans the web to keep config packages up-to-date
+cneuroml/
+├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
+│  └─ *
+├─ cneuroml/                    <-- Contains all of the Machine Learning code and config files
+│  ├─ app/                      <-- Contains the code to create applications (cozmo inference, etc)
+│  │  └─ *
+│  ├─ dl/                       <-- Contains the Deep Learning code
+│  │  ├─ common/                <-- Contains the code common to more than one DL experiment
+│  │  │  ├─ datamodule/         <-- Contains common Lightning DataModules
+│  │  │  │  ├─ base.py          <-- The base Lightning DataModule to build upon
+│  │  │  │  └─ *
+│  │  │  ├─ litmodule/          <-- Contains common Lightning Modules
+│  │  │  │  ├─ base.py          <-- The base Lightning Module to build upon
+│  │  │  │  └─ *
+│  │  │  └─ nnmodule/           <-- Contains common PyTorch Modules
+│  │  │     └─ *
+│  │  ├─ experiments/           <-- Contains the DL experiments
+│  │  │  ├─ my_new_experiment/  <-- ! Your new DL experiment folder
+│  │  │  │  ├─ datamodule.py    <-- ! Your Lightning DataModule
+│  │  │  │  ├─ litmodule.py     <-- ! Your Lightning Module
+│  │  │  │  ├─ nnmodule.py      <-- ! Your PyTorch Module
+│  │  │  │  ├─ config.yaml      <-- ! Your Hydra configuration file
+│  │  │  │  └─ *
+│  │  │  └─ *
+│  │  └─ *
+│  └─ ne/                       <-- Contains the code for Neuroevolution models
+│     └─ *
+├─ containers/                  <-- Contains the Containerfiles to build the Podman/Docker images
+│  └─ *
+├─ data/                        <-- Directory in which to download datasets
+│  └─ *
+├─ docs/                        <-- Contains the documentation files
+│  └─ *
+├─ pyreqs/                      <-- Python requirements for different experiments
+│  └─ *
+├─ .gitignore                   <-- Files to not track with Git/GitHub
+├─ .pre-commit-config.yaml      <-- Pre git commit configuration (for formatting, linting, etc)
+├─ .yamllint.yaml               <-- YAML files configuration
+├─ LICENSE                      <-- MIT License file
+├─ README.md                    <-- Repository description file
+├─ pyproject.toml               <-- Python files configuration
+└─ renovate.json                <-- Renovate Bot (keeps dependencies up-to-date) configuration
