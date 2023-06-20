@@ -45,26 +45,23 @@ cneuroml
 │  ├─ dl                                           <-- Deep Learning scripts
 │  │  ├─ __init__.py
 │  │  └─ base                                      <-- Base/generic/examplar scripts
-│  │     ├─ __init__.py
+│  │  │  ├─ __init__.py
 │  │  │  ├─ configs                                <-- Generic configuration files (.yaml)
-│  │  │  ├─ datasets                               <-- Generic DataModules
-│  │  │  │  ├─ datamodule.py
-│  │  │  │  └─ datamodule_test.py
-│  │  │  ├─ models                                 <-- Generic models (lightning modules)
-│  │  │  │  ├─ litmodule.py
-│  │  │  │  └─ litmodule_test.py
 │  │  │  ├─ utils                                  <-- Generic utils scripts
+│  │  │  ├─ datamodule.py                          <-- Generic DataModule
 │  │  │  ├─ eval.py                                <-- Generic eval script
+│  │  │  ├─ litmodule.py                           <-- Generic model (lightning module)
 │  │  │  └─ train.py                               <-- Generic train script
 │  │  └─ projects                                  <-- Where to save your project scripts, per model and dataset (e.g., video_transformer/friends)
 │  │     └─ my_model_type
-│  │        └─ models                              <-- Project-specific models (lightning modules)
+│  │        ├─ __init__.py
+│  │        ├─ my_models.py                        <-- Project-specific models (lightning modules)
 │  │        └─ my_model_and_dataset
 │  │           ├─ __init__.py
 │  │           ├─ configs                          <-- Project-specific configuration files (.yaml)
-│  │           ├─ datasets                         <-- Project-specific DataModules
-│  │           ├─ models                           <-- Project-specific models (if needed)
-│  │           ├─ utils                            <-- Project-specific utils scripts
+│  │           ├─ utils                            <-- Project-specific util scripts
+│  │           ├─ my_datamodules.py                <-- Project-specific DataModule(s)
+│  │           ├─ my_models.py                     <-- Project-specific model(s) (if needed)
 │  │           ├─ my_eval.py                       <-- Project-specific eval script (if needed)
 │  │           └─ my_train.py                      <-- Project-specific train script (if needed)
 │  └─ ne                                           <-- Neuro Evolution scripts
