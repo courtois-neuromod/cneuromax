@@ -26,7 +26,7 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
 ```
 cneuroml
 ├─ .github
-│  └─ workflows
+│  └─ workflows                                    <-- Config files launched by github actions (test format, rebuild container image, etc) 
 │     ├─ container-build-push.yaml
 │     ├─ container-build.yaml
 │     ├─ docs-build-push.yaml
@@ -34,127 +34,53 @@ cneuroml
 │     ├─ format-lint.yaml
 │     └─ typecheck-unittest.yaml
 ├─ .gitignore
-├─ .pre-commit-config.yaml
-├─ .yamllint.yaml
+├─ .pre-commit-config.yaml                         <-- Tests to check for errors before a commit
+├─ .yamllint.yaml                                  <-- Config file for .yaml files 
 ├─ LICENSE
 ├─ README.md
-├─ cneuroml
+├─ cneuroml                                        <-- Core ML scripts 
 │  ├─ __init__.py
 │  ├─ app
 │  │  └─ __init__.py
-│  ├─ dl
+│  ├─ dl                                           <-- Deep Learning scripts 
 │  │  ├─ __init__.py
-│  │  └─ base
+│  │  └─ base                                      <-- Base/generic/examplar scripts 
 │  │     ├─ __init__.py
-│  │     ├─ datamodule.py
-│  │     ├─ datamodule_test.py
-│  │     ├─ litmodule.py
-│  │     └─ litmodule_test.py
-│  └─ ne
+│  │  │  ├─ configs                                <-- Generic configuration files (.yaml)
+│  │  │  ├─ datasets                               <-- Generic DataModules
+│  │  │  │  ├─ datamodule.py
+│  │  │  │  └─ datamodule_test.py
+│  │  │  ├─ models                                 <-- Generic models (lightning modules)
+│  │  │  │  ├─ litmodule.py
+│  │  │  │  └─ litmodule_test.py
+│  │  │  ├─ utils                                  <-- Generic utils scripts
+│  │  │  ├─ eval.py                                <-- Generic eval script
+│  │  │  └─ train.py                               <-- Generic train script
+│  │  └─ projects                                  <-- Where to save your project scripts, per model and dataset (e.g., video_transformer/friends)
+│  │     └─ my_model_type
+│  │        └─ models                              <-- Project-specific models (lightning modules)
+│  │        └─ my_model_and_dataset
+│  │           ├─ __init__.py
+│  │           ├─ configs                          <-- Project-specific configuration files (.yaml)
+│  │           ├─ datasets                         <-- Project-specific DataModules
+│  │           ├─ models                           <-- Project-specific models (if needed)
+│  │           ├─ utils                            <-- Project-specific utils scripts
+│  │           ├─ my_eval.py                       <-- Project-specific eval script (if needed)
+│  │           └─ my_train.py                      <-- Project-specific train script (if needed)
+│  └─ ne                                           <-- Neuro Evolution scripts 
 │     └─ __init__.py
-├─ cneuroml.egg-info
-│  ├─ PKG-INFO
-│  ├─ SOURCES.txt
-│  ├─ dependency_links.txt
-│  ├─ requires.txt
-│  └─ top_level.txt
 ├─ containers
 │  └─ deps
 │     └─ run
-│        └─ Containerfile
-├─ docs
-│  ├─ Contribution.rst
-│  ├─ Execution.rst
-│  ├─ Execution_On_a_Linux_machine.rst
-│  ├─ Execution_On_a_Slurm_cluster.rst
-│  ├─ Installation.rst
-│  ├─ Installation_Common_to_all_machines.rst
-│  ├─ Installation_On_a_Linux_machine.rst
-│  ├─ Installation_On_a_Slurm_cluster.rst
+│        └─ Containerfile                          <-- File to build container image 
+├─ data                                            <-- Directory where to install datasets as datalad submodules  
+├─ docs                                            <-- Documentation files and sphinx requirements
+│  ├─ *.rst
 │  ├─ Makefile
-│  ├─ __init__.py
 │  ├─ conf.py
-│  ├─ index.rst
 │  ├─ make.bat
 │  └─ requirements.txt
-├─ pyproject.toml
-├─ pyreqs
-│  ├─ core.txt
-│  ├─ dl.txt
-│  ├─ hpo.txt
-│  ├─ hydra_run.txt
-│  ├─ hydra_test.txt
-│  ├─ jupyter.txt
-│  ├─ ne.txt
-│  ├─ test.txt
-│  ├─ utils.txt
-│  └─ wandb.txt
-└─ renovate.json
-
-```
-cneuroml
-├─ .github                                                                                                                    //
-│  └─ workflows                                                                                                               //
-│     ├─ container-build-push.yaml                                                                                            //
-│     ├─ container-build.yaml                                                                                                 //
-│     ├─ docs-build-push.yaml                                                                                                 //
-│     ├─ docs-build.yaml                                                                                                      //
-│     ├─ format-lint.yaml                                                                                                     //
-│     └─ typecheck-unittest.yaml                                                                                              //
-├─ .gitignore                                                                                                                 //
-├─ .pre-commit-config.yaml                                                                                                    //
-├─ .yamllint.yaml                                                                                                             //
-├─ LICENSE                                                                                                                    //
-├─ README.md                                                                                                                  //
-├─ cneuroml                                                                                                                   //
-│  ├─ __init__.py                                                                                                             //
-│  ├─ app                                                                                                                     //
-│  │  └─ __init__.py                                                                                                          //
-│  ├─ dl                                                                                                                      //
-│  │  ├─ __init__.py                                                                                                          //
-│  │  └─ base                                                                                                                 //
-│  │     ├─ __init__.py                                                                                                       //
-│  │     ├─ datamodule.py                                                                                                     //
-│  │     ├─ datamodule_test.py                                                                                                //
-│  │     ├─ litmodule.py                                                                                                      //
-│  │     └─ litmodule_test.py                                                                                                 //
-│  └─ ne                                                                                                                      //
-│     └─ __init__.py                                                                                                          //
-├─ cneuroml.egg-info                                                                                                          //
-│  ├─ PKG-INFO                                                                                                                //
-│  ├─ SOURCES.txt                                                                                                             //
-│  ├─ dependency_links.txt                                                                                                    //
-│  ├─ requires.txt                                                                                                            //
-│  └─ top_level.txt                                                                                                           //
-├─ containers                                                                                                                 //
-│  └─ deps                                                                                                                    //
-│     └─ run                                                                                                                  //
-│        └─ Containerfile                                                                                                     //
-├─ docs                                                                                                                       //
-│  ├─ Contribution.rst                                                                                                        //
-│  ├─ Execution.rst                                                                                                           //
-│  ├─ Execution_On_a_Linux_machine.rst                                                                                        //
-│  ├─ Execution_On_a_Slurm_cluster.rst                                                                                        //
-│  ├─ Installation.rst                                                                                                        //
-│  ├─ Installation_Common_to_all_machines.rst                                                                                 //
-│  ├─ Installation_On_a_Linux_machine.rst                                                                                     //
-│  ├─ Installation_On_a_Slurm_cluster.rst                                                                                     //
-│  ├─ Makefile                                                                                                                //
-│  ├─ __init__.py                                                                                                             //
-│  ├─ conf.py                                                                                                                 //
-│  ├─ index.rst                                                                                                               //
-│  ├─ make.bat                                                                                                                //
-│  └─ requirements.txt                                                                                                        //
-├─ pyproject.toml                                                                                                             //
-├─ pyreqs                                                                                                                     //
-│  ├─ core.txt                                                                                                                //
-│  ├─ dl.txt                                                                                                                  //
-│  ├─ hpo.txt                                                                                                                 //
-│  ├─ hydra_run.txt                                                                                                           //
-│  ├─ hydra_test.txt                                                                                                          //
-│  ├─ jupyter.txt                                                                                                             //
-│  ├─ ne.txt                                                                                                                  //
-│  ├─ test.txt                                                                                                                //
-│  ├─ utils.txt                                                                                                               //
-│  └─ wandb.txt                                                                                                               //
-├─ renovate.json                                                                                                              //
+├─ pyproject.toml                                  <-- Library's general config file for anything python-related 
+├─ pyreqs                                          <-- Python requirements for different project tools
+│  └─ *.txt
+└─ renovate.json                                   <-- Scans the web to keep config packages up-to-date  
