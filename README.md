@@ -26,7 +26,7 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
 ```
 cneuroml
 ├─ .github
-│  └─ workflows                                    <-- Config files launched by github actions (test format, rebuild container image, etc) 
+│  └─ workflows                                    <-- Config files launched by github actions (test format, rebuild container image, etc)
 │     ├─ container-build-push.yaml
 │     ├─ container-build.yaml
 │     ├─ docs-build-push.yaml
@@ -35,16 +35,16 @@ cneuroml
 │     └─ typecheck-unittest.yaml
 ├─ .gitignore
 ├─ .pre-commit-config.yaml                         <-- Tests to check for errors before a commit
-├─ .yamllint.yaml                                  <-- Config file for .yaml files 
+├─ .yamllint.yaml                                  <-- Config file for .yaml files
 ├─ LICENSE
 ├─ README.md
-├─ cneuroml                                        <-- Core ML scripts 
+├─ cneuroml                                        <-- Core ML scripts
 │  ├─ __init__.py
 │  ├─ app
 │  │  └─ __init__.py
-│  ├─ dl                                           <-- Deep Learning scripts 
+│  ├─ dl                                           <-- Deep Learning scripts
 │  │  ├─ __init__.py
-│  │  └─ base                                      <-- Base/generic/examplar scripts 
+│  │  └─ base                                      <-- Base/generic/examplar scripts
 │  │     ├─ __init__.py
 │  │  │  ├─ configs                                <-- Generic configuration files (.yaml)
 │  │  │  ├─ datasets                               <-- Generic DataModules
@@ -67,20 +67,20 @@ cneuroml
 │  │           ├─ utils                            <-- Project-specific utils scripts
 │  │           ├─ my_eval.py                       <-- Project-specific eval script (if needed)
 │  │           └─ my_train.py                      <-- Project-specific train script (if needed)
-│  └─ ne                                           <-- Neuro Evolution scripts 
+│  └─ ne                                           <-- Neuro Evolution scripts
 │     └─ __init__.py
 ├─ containers
 │  └─ deps
 │     └─ run
-│        └─ Containerfile                          <-- File to build container image 
-├─ data                                            <-- Directory where to install datasets as datalad submodules  
+│        └─ Containerfile                          <-- File to build container image
+├─ data                                            <-- Directory where to install datasets as datalad submodules
 ├─ docs                                            <-- Documentation files and sphinx requirements
 │  ├─ *.rst
 │  ├─ Makefile
 │  ├─ conf.py
 │  ├─ make.bat
 │  └─ requirements.txt
-├─ pyproject.toml                                  <-- Library's general config file for anything python-related 
+├─ pyproject.toml                                  <-- Library's general config file for anything python-related
 ├─ pyreqs                                          <-- Python requirements for different project tools
 │  └─ *.txt
-└─ renovate.json                                   <-- Scans the web to keep config packages up-to-date  
+└─ renovate.json                                   <-- Scans the web to keep config packages up-to-date
