@@ -1,19 +1,4 @@
-"""Base LitModule.
-
-Abbreviations used in this module:
-
-Lightning's ``LightningModule`` is short for
-``lightning.pytorch.LightningModule``.
-
-PyTorch ``nn.Module`` is short for ``torch.nn.Module``.
-
-PyTorch ``Optimizer`` is short for ``torch.optim.Optimizer``.
-
-PyTorch ``LRScheduler`` is short for
-``torch.optim.lr_scheduler.LRScheduler``.
-
-``Float`` is short for ``jaxtyping.Float``.
-"""
+"""Base LitModule."""
 
 from abc import ABCMeta
 from functools import partial
@@ -28,16 +13,14 @@ from torch.optim.lr_scheduler import LRScheduler
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
-    """The Base LitModule class.
+    """.
 
-    This class inherits from Lightning's ``LightningModule`` class.
     Subclasses need to implement the ``step`` instance method.
 
     Attributes:
-        nnmodule (``nn.Module``): The PyTorch ``nn.Module`` instance.
-        optimizer (``Optimizer``): The PyTorch ``Optimizer`` instance.
-        scheduler (``LRScheduler``): The PyTorch ``LRScheduler``
-            instance.
+        nnmodule (``nn.Module``): .
+        optimizer (``Optimizer``): .
+        scheduler (``LRScheduler``): .
     """
 
     def __init__(
@@ -46,11 +29,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         optimizer_partial: partial[Optimizer],
         scheduler_partial: partial[LRScheduler],
     ) -> None:
-        """Constructor.
+        """.
 
-        Calls parent constructor, stores the ``nnmodule`` and
-        instantiates the ``optimizer`` and ``scheduler`` instance
-        attributes.
+        Calls parent constructor, stores arguments, and instantiates
+        from partial functions.
 
         Args:
             nnmodule: A PyTorch ``nn.Module`` instance.
@@ -70,10 +52,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         self: "BaseLitModule",
         batch: Float[Tensor, "..."] | tuple[Float[Tensor, "..."], ...],
     ) -> Float[Tensor, "..."]:
-        """Training step method.
+        """.
 
         Args:
-            batch: An input data batch (images/sound/language/...).
+            batch: .
 
         Returns:
             The loss value(s).
@@ -96,10 +78,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         self: "BaseLitModule",
         batch: Float[Tensor, "..."] | tuple[Float[Tensor, ""], ...],
     ) -> Float[Tensor, ""]:
-        """Validation step method.
+        """.
 
         Args:
-            batch: An input data batch (images/sound/language/...).
+            batch: .
 
         Returns:
             The loss value(s).
@@ -122,10 +104,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         self: "BaseLitModule",
         batch: Float[Tensor, "..."] | tuple[Float[Tensor, ""], ...],
     ) -> Float[Tensor, ""]:
-        """Tests step method.
+        """.
 
         Args:
-            batch: An input data batch (images/sound/language/...).
+            batch: .
 
         Returns:
             The loss value(s).
@@ -146,11 +128,11 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[LRScheduler]]:
-        """Returns ``Optimizer`` & ``LRScheduler`` instance attributes.
+        """.
 
         Returns:
             A tuple containing the PyTorch ``Optimizer`` and
             ``LRScheduler`` instance attributes (each nested in a
-            list)
+            list).
         """
         return [self.optimizer], [self.scheduler]

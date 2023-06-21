@@ -37,15 +37,19 @@ line-length = 79
 line-length = 79
 select = ["ALL"]
 ignore = [
-    "F722", # https://beta.ruff.rs/docs/rules/#pyflakes-f
-            # Disabled to utilize Jaxtyping
+    "F722", # Syntax error in forward annotation: {body}
+            # https://beta.ruff.rs/docs/rules/#pyflakes-f
+            # Disabled to be able to make use of Jaxtyping
             # https://docs.kidger.site/jaxtyping/faq/#flake8-or-ruff-are-throwing-an-error
-    "G004", # https://beta.ruff.rs/docs/rules/#flake8-logging-format-g
-            # Disabled to prettify logging
-    "SLF001", # https://beta.ruff.rs/docs/rules/private-member-access/
-              # Disabled to make use of certain private Lightning classes
-    "N812", # https://beta.ruff.rs/docs/rules/lowercase-imported-as-non-lowercase/
-            # Disabled to be able to run `import torch.nn.functional as F`
+    "G004", # Logging statement uses f-string
+            # https://beta.ruff.rs/docs/rules/#flake8-logging-format-g
+            # Disabled to make it easier to log (since prints are disabled)
+    "N812", # Lowercase {name} imported as non-lowercase {asname}
+            # https://beta.ruff.rs/docs/rules/lowercase-imported-as-non-lowercase/
+            # Disabled to be able to run ``import torch.nn.functional as F`` (which is conventional)
+    "SLF001", # Private member accessed: {access}
+              # https://beta.ruff.rs/docs/rules/private-member-access/
+              # Disabled to make use of certain private Lightning classes (ex: Trainer checkpointing)
 ]
 
 

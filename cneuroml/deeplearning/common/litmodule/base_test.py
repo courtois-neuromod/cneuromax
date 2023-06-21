@@ -1,19 +1,4 @@
-"""Tests for the Base LitModule.
-
-Abbreviations used in this module:
-
-Lightning's ``LightningModule`` is short for
-``lightning.pytorch.LightningModule``.
-
-PyTorch ``nn.Module`` is short for ``torch.nn.Module``.
-
-PyTorch ``Optimizer`` is short for ``torch.optim.Optimizer``.
-
-PyTorch ``LRScheduler`` is short for
-``torch.optim.lr_scheduler.LRScheduler``.
-
-``Float`` is short for ``jaxtyping.Float``.
-"""
+"""."""
 
 from functools import partial
 from typing import Literal
@@ -26,12 +11,12 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuroml.dl.base import BaseLitModule
+from cneuroml.deeplearning.common.litmodule import BaseLitModule
 
 
 @pytest.fixture()
 def nnmodule() -> nn.Module:
-    """Creates and returns a generic PyTorch ``nn.Module`` instance.
+    """.
 
     Returns:
         A generic PyTorch ``nn.Module`` instance.
@@ -41,7 +26,7 @@ def nnmodule() -> nn.Module:
 
 @pytest.fixture()
 def optimizer_partial() -> partial[Optimizer]:
-    """Returns a generic PyTorch ``Optimizer`` partial function.
+    """.
 
     Returns:
         A generic PyTorch ``Optimizer`` partial function.
@@ -51,7 +36,7 @@ def optimizer_partial() -> partial[Optimizer]:
 
 @pytest.fixture()
 def scheduler_partial() -> partial[LRScheduler]:
-    """Returns a generic PyTorch ``LRScheduler`` partial function.
+    """.
 
     Returns:
         A generic PyTorch ``LRScheduler`` partial function.
@@ -60,13 +45,12 @@ def scheduler_partial() -> partial[LRScheduler]:
 
 
 class GenericLitModule(BaseLitModule):
-    """Generic Lightning Module.
+    """.
 
     Attributes:
-        nnmodule (``nn.Module``): The PyTorch ``nn.Module`` instance.
-        optimizer (``Optimizer``): The PyTorch ``Optimizer`` instance.
-        scheduler (``LRScheduler``): The PyTorch ``LRScheduler``
-            instance.
+        nnmodule (``nn.Module``): .
+        optimizer (``Optimizer``): .
+        scheduler (``LRScheduler``): .
     """
 
     @typechecker
@@ -74,12 +58,12 @@ class GenericLitModule(BaseLitModule):
         self: "GenericLitModule",
         batch: Tensor | tuple[Tensor],
         stage: Literal["train", "val", "test"],
-    ) -> Float[Tensor, ""]:
+    ) -> Float[Tensor, " "]:
         """Step method common to all stages.
 
         Args:
-            batch: An input data batch (images/sound/language/...).
-            stage: The current stage (train/val/test).
+            batch: .
+            stage: .
 
         Returns:
             The loss value.
@@ -102,7 +86,7 @@ def test_constructor(
     optimizer_partial: partial[Optimizer],
     scheduler_partial: partial[LRScheduler],
 ) -> None:
-    """Tests ``__init__`` method.
+    """.
 
     Args:
         nnmodule: A PyTorch ``nn.Module`` instance.
@@ -141,7 +125,7 @@ def litmodule(
     optimizer_partial: partial[Optimizer],
     scheduler_partial: partial[LRScheduler],
 ) -> BaseLitModule:
-    """Creates and returns a generic ``BaseLitModule`` instance.
+    """.
 
     Args:
         nnmodule: A PyTorch ``nn.Module`` instance.
@@ -149,20 +133,20 @@ def litmodule(
         scheduler_partial: A PyTorch ``LRScheduler`` partial function.
 
     Returns:
-        A generic ``BaseLitModule`` instance.
+        A generic ``LitModule`` instance.
     """
     return GenericLitModule(nnmodule, optimizer_partial, scheduler_partial)
 
 
 @pytest.fixture()
-def no_step_litmodule(
+def litmodule_with_no_step_method(
     nnmodule: nn.Module,
     optimizer_partial: partial[Optimizer],
     scheduler_partial: partial[LRScheduler],
 ) -> BaseLitModule:
-    """Creates & returns a ``BaseLitModule`` instance with no ``step``.
+    """.
 
-    This object is used to test the ``BaseLitModule`` functionality
+    This object is used to test the ``LitModule`` functionality
     when the ``step`` instance method is not implemented.
 
     Args:
@@ -171,80 +155,83 @@ def no_step_litmodule(
         scheduler_partial: A PyTorch ``LRScheduler`` partial function.
 
     Returns:
-        A ``BaseLitModule`` instance with no ``step`` instance method
+        A ``LitModule`` instance with no ``step`` instance method
         implemented.
     """
     return BaseLitModule(nnmodule, optimizer_partial, scheduler_partial)
 
 
 def test_training_step(litmodule: GenericLitModule) -> None:
-    """Tests ``training_step`` method.
+    """.
 
     Args:
-        litmodule: A generic ``BaseLitModule`` instance.
+        litmodule: .
     """
     loss = litmodule.training_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(0.0))
 
 
-def test_training_step_no_step(no_step_litmodule: BaseLitModule) -> None:
-    """Tests ``training_step`` method with no ``step``.
+def test_training_step_no_step_method(
+    litmodule_with_no_step_method: BaseLitModule,
+) -> None:
+    """.
 
     Args:
-        no_step_litmodule: A ``BaseLitModule`` instance with no ``step``
-            instance method implemented.
+        litmodule_with_no_step_method: .
     """
     with pytest.raises(AttributeError):
-        no_step_litmodule.training_step(torch.tensor(0.0))
+        litmodule_with_no_step_method.training_step(torch.tensor(0.0))
 
 
 def test_validation_step(litmodule: GenericLitModule) -> None:
-    """Tests ``validation_step`` method.
+    """.
 
     Args:
-        litmodule: A generic ``BaseLitModule`` instance.
+        litmodule: .
     """
     loss = litmodule.validation_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(1.0))
 
 
-def test_validation_step_no_step(no_step_litmodule: BaseLitModule) -> None:
-    """Tests ``validation_step`` method with no ``step``.
+def test_validation_step_no_step_method(
+    litmodule_with_no_step_method: BaseLitModule,
+) -> None:
+    """.
 
     Args:
-        no_step_litmodule: A ``BaseLitModule`` instance with no ``step``
-            instance method implemented.
+        litmodule_with_no_step_method: .
     """
     with pytest.raises(AttributeError):
-        no_step_litmodule.validation_step(torch.tensor(0.0))
+        litmodule_with_no_step_method.validation_step(torch.tensor(0.0))
 
 
 def test_test_step(litmodule: GenericLitModule) -> None:
-    """Tests ``test_step`` method.
+    """.
 
     Args:
-        litmodule: A generic ``BaseLitModule`` instance.
+        litmodule: .
     """
     loss = litmodule.test_step(torch.tensor(0.0))
     assert torch.isclose(loss, torch.tensor(2.0))
 
 
-def test_test_step_no_step(no_step_litmodule: BaseLitModule) -> None:
-    """Tests ``test_step`` method with no ``step``.
+def test_test_step_no_step_method(
+    litmodule_with_no_step_method: BaseLitModule,
+) -> None:
+    """.
 
     Args:
-        no_step_litmodule: A ``BaseLitModule`` instance with no ``step``
-            instance method implemented.
+        litmodule_with_no_step_method: .
     """
     with pytest.raises(AttributeError):
-        no_step_litmodule.test_step(torch.tensor(0.0))
+        litmodule_with_no_step_method.test_step(torch.tensor(0.0))
 
 
 def test_configure_optimizers(litmodule: GenericLitModule) -> None:
-    """Tests ``configure_optimizers`` method.
+    """.
 
     Args:
-        litmodule: A generic ``BaseLitModule`` instance.
+        litmodule: .
     """
     [optimizer], [scheduler] = litmodule.configure_optimizers()
     assert optimizer == litmodule.optimizer

@@ -1,16 +1,4 @@
-"""MNIST Classification LitModule.
-
-Abbreviations used in this module:
-
-PyTorch ``nn.Module`` is short for ``torch.nn.Module``.
-
-PyTorch ``Optimizer`` is short for ``torch.optim.Optimizer``.
-
-PyTorch ``LRScheduler`` is short for
-``torch.optim.lr_scheduler.LRScheduler``.
-
-``Float`` is short for ``jaxtyping.Float``.
-"""
+"""."""
 
 from functools import partial
 
@@ -20,18 +8,19 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuroml.dl.base.classification import BaseClassificationLitModule
+from cneuroml.deeplearning.common.litmodule.classification import (
+    BaseClasssificationLitModule,
+)
 
 
-class MNISTClassificationLitModule(BaseClassificationLitModule):
-    """MNIST Classification Model.
+class MNISTClassificationLitModule(BaseClasssificationLitModule):
+    """.
 
     Attributes:
         accuracy (``torchmetrics.Accuracy``): The accuracy metric.
-        nnmodule (``nn.Module``): The PyTorch ``nn.Module`` instance.
-        optimizer (``Optimizer``): The PyTorch ``Optimizer`` instance.
-        scheduler (``LRScheduler``): The PyTorch ``LRScheduler``
-            instance.
+        nnmodule (``nn.Module``): .
+        optimizer (``Optimizer``): .
+        scheduler (``LRScheduler``): .
     """
 
     def __init__(
@@ -40,9 +29,7 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         optimizer_partial: partial[Optimizer],
         scheduler_partial: partial[LRScheduler],
     ) -> None:
-        """Constructor.
-
-        Calls parent constructor
+        """Calls parent constructor.
 
         Args:
             nnmodule: A PyTorch ``nn.Module`` instance.
@@ -62,7 +49,7 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         self: "MNISTClassificationLitModule",
         x: Float[Tensor, " batch_size 1 28 28"],
     ) -> Float[Tensor, " batch_size 10"]:
-        """Forward method.
+        """Simple pass through the PyTorch ``nn.Module``.
 
         Args:
             x: The batched MNIST images.

@@ -1,12 +1,4 @@
-"""Simple multi-layer perceptron (MLP) module.
-
-Abbreviations:
-
-``Tensor`` is short for ``torch.Tensor``.
-``Float`` is short for ``jaxtyping.Float``.
-``nn.Module`` is short for ``torch.nn.Module``.
-"""
-
+"""."""
 
 from einops import rearrange
 from jaxtyping import Float
@@ -14,7 +6,10 @@ from torch import Tensor, nn
 
 
 class MLP(nn.Module):
-    """Multi-layer perceptron (MLP) with arbitrary number of layers.
+    """Multi-layer perceptron (MLP).
+
+    Allows for a variable number of layers, activation functions, and
+    dropout probability.
 
     Attributes:
         model: The MLP model.
@@ -26,7 +21,7 @@ class MLP(nn.Module):
         activation_fn: type[nn.Module] = nn.ReLU,
         p_dropout: float = 0.0,
     ) -> None:
-        """Constructor.
+        """Calls parent constructor and initializes model.
 
         Args:
             dims: List of dimensions for each layer.
@@ -48,10 +43,14 @@ class MLP(nn.Module):
         self: "MLP",
         x: Float[Tensor, " batch_size *d_input"],
     ) -> Float[Tensor, " batch_size output_size"]:
-        """Forward method.
+        """Flattens input dimensions and pass through the model.
+
+        Note:
+            This MLP isn't (yet?) suitable for cases where the output is
+            multidimensional.
 
         Args:
-            x: Input vector batch.
+            x: .
 
         Returns:
             The output vector batch.

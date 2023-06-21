@@ -28,9 +28,9 @@ cneuroml/
 ├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
 │  └─ *
 ├─ cneuroml/                    <-- Contains all of the Machine Learning code and config files
-│  ├─ app/                      <-- Contains the code to create applications (cozmo inference, etc)
+│  ├─ application/              <-- Contains the code to create applications (cozmo inference, etc)
 │  │  └─ *
-│  ├─ dl/                       <-- Contains the Deep Learning code
+│  ├─ deeplearning/             <-- Contains the Deep Learning code
 │  │  ├─ common/                <-- Contains the code common to more than one DL experiment
 │  │  │  ├─ datamodule/         <-- Contains common Lightning DataModules
 │  │  │  │  ├─ base.py          <-- The base Lightning DataModule to build upon
@@ -48,8 +48,9 @@ cneuroml/
 │  │  │  │  ├─ config.yaml      <-- ! Your Hydra configuration file
 │  │  │  │  └─ *
 │  │  │  └─ *
+│  │  ├─ fitter.py              <-- Contains the code to fit (train/val/test) a DL model
 │  │  └─ *
-│  └─ ne/                       <-- Contains the code for Neuroevolution models
+│  └─ neuroevolution/           <-- Contains the code for Neuroevolution models
 │     └─ *
 ├─ containers/                  <-- Contains the Containerfiles to build the Podman/Docker images
 │  └─ *
