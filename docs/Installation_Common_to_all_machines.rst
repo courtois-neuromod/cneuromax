@@ -49,6 +49,6 @@ You can now move on to either the Linux or Slurm specific steps.
 
 .. note:: 
 
-If you do not plan to run the library please skip to 
-
-`Contribution <https://courtois-neuromod.github.io/cneuroml/Contribution.html>`_
+    If you plan to contribute rather than run the library on this machine,
+    you can skip to
+    `Contribution <https://courtois-neuromod.github.io/cneuroml/Contribution.html>`_
