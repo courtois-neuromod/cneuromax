@@ -35,7 +35,7 @@ templates_path = ["_templates"]
 
 # -- Options for HTML output
 
-html_theme = "sphinx_rtd_theme"
+html_theme = "furo"
 
 autoapi_type = "python"
 autoapi_dirs = ["../cneuroml"]

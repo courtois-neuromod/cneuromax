@@ -7,10 +7,10 @@
     https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml/badge.svg)](
         https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml)
 [![format-lint](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml/badge.svg)](
+    https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml/badge.svg?event=push)](
         https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml)
 [![typecheck-unittest](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml/badge.svg)](
+    https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push)](
         https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml)
 [![codecov](
     https://codecov.io/gh/courtois-neuromod/cneuroml/branch/main/graph/badge.svg?token=AN8GLFP9CB)](

@@ -4,6 +4,14 @@ name: Typecheck & Unittest
 on:
   pull_request:
     branches: [main]
+    paths:
+      - cneuroml/**
+      - .github/workflows/typecheck-unittest.yaml
+  push:
+    branches: [main]
+    paths:
+      - cneuroml/**
+      - .github/workflows/typecheck-unittest.yaml
 
 permissions:
   contents: read

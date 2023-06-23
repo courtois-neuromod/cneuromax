@@ -1,15 +1,17 @@
 # Runs the pre-commit workflow (formatting & linting)
-name: Format & Lint
+name: Format & Lint on PR
 
 on:
   pull_request:
+    branches: [main]
+  push:
     branches: [main]
 
 permissions:
   contents: read
 
 jobs:
-  format-lint-typecheck:
+  format-lint:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout the GitHub repo

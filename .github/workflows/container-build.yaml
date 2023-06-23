@@ -1,4 +1,4 @@
-# Build the container image with full dependencies
+# Builds the container image with run dependencies
 name: Container Build
 
 on:
@@ -7,6 +7,9 @@ on:
     paths:
       - containers/**
       - pyreqs/**
+      - !pyreqs/documentation.txt
+      - !pyreqs/hydra_dev.txt
+      - !pyreqs/testing.txt
       - .github/workflows/container-build.yaml
 
 jobs:

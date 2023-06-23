@@ -21,7 +21,7 @@ def nnmodule() -> nn.Module:
     Returns:
         A generic PyTorch ``nn.Module`` instance.
     """
-    return nn.Linear(1, 1)
+    return nn.Linear(5, 3)
 
 
 @pytest.fixture()

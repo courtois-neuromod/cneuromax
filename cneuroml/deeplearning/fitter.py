@@ -129,7 +129,7 @@ class Fitter:
         num_workers = int(
             self.trainer.strategy.reduce(
                 torch.tensor(this_gpu_good_num_workers),
-                reduce_op=ReduceOp.MIN,  # type: ignore [arg-type]
+                reduce_op=ReduceOp.MAX,  # type: ignore [arg-type]
             ),
         )
 

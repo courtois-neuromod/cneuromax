@@ -1,0 +1,31 @@
+# Packages required to build the documentation with Sphinx
+
+##################################
+# Package full name: Sphinx
+# Quickstart link: https://www.sphinx-doc.org/en/master/
+sphinx==7.0.1
+
+#####################################
+# Package full name: Furo
+# Quickstart link: https://pradyunsg.me/furo/quickstart/
+furo==2023.5.20
+
+#####################################
+# Package full name: Sphinx-autobuild
+# Quickstart link: https://github.com/executablebooks/sphinx-autobuild
+sphinx-autobuild==2021.3.14
+
+#####################################
+# Package full name: Sphinx-copybutton
+# Quickstart link: https://sphinx-copybutton.readthedocs.io/en/latest/
+sphinx-copybutton==0.5.2
+
+#####################################
+# Package full name: Sphinxcontrib-autoyaml
+# Quickstart link: https://github.com/Jakski/sphinxcontrib-autoyaml
+sphinxcontrib-autoyaml==1.1.1
+
+#####################################
+# Package full name: Sphinx AutoAPI
+# Quickstart link: https://sphinx-autoapi.readthedocs.io/en/latest/tutorials.html
+sphinx-autoapi==2.1.1

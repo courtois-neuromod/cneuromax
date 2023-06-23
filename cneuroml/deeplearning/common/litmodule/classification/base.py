@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 import torchmetrics
 from beartype import beartype as typechecker
-from jaxtyping import Float
+from jaxtyping import Float, Int
 from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
@@ -52,7 +52,7 @@ class BaseClasssificationLitModule(BaseLitModule, metaclass=ABCMeta):
         self: "BaseClasssificationLitModule",
         batch: tuple[
             Float[Tensor, " batch_size *x_shape"],
-            Float[Tensor, " batch_size"],
+            Int[Tensor, " batch_size"],
         ],
         stage: Literal["train", "val", "test"],
     ) -> Float[Tensor, " "]:
@@ -69,7 +69,7 @@ class BaseClasssificationLitModule(BaseLitModule, metaclass=ABCMeta):
         x, y = batch
 
         # BS x *XS -> BS x NC
-        logits = self(x)
+        logits = self.nnmodule(x)
 
         # BS x NC -> BS
         preds = torch.argmax(logits, dim=1)

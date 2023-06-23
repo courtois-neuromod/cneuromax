@@ -54,8 +54,8 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             config: .
         """
         super().__init__()
-        self.config = config
-        self.dataset: dict[
+        self.config: BaseDataModuleConfig = config
+        self.dataset: dict[  # For static type checking
             Literal["train", "val", "test", "predict"],
             Dataset[Tensor],
         ] = {}

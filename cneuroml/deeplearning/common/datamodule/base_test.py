@@ -2,6 +2,7 @@
 
 import pytest
 import torch
+from beartype import beartype as typechecker
 from jaxtyping import Float
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
@@ -76,10 +77,11 @@ def dataset() -> Dataset[Tensor]:
             """."""
             self.data = torch.zeros(2, 1)
 
+        @typechecker
         def __getitem__(
             self: "GenericDataset",
             index: int,
-        ) -> Float[Tensor, "1"]:
+        ) -> Float[Tensor, " 1"]:
             """.
 
             Returns:

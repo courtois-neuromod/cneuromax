@@ -55,6 +55,6 @@ class MLP(nn.Module):
         Returns:
             The output vector batch.
         """
-        x = rearrange(x, "batch_size (...) -> batch_size ...")
+        x = rearrange(x, "batch_size ... -> batch_size (...)")
         x: Tensor = self.model(x)
         return x

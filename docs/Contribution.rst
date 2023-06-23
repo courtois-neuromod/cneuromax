@@ -147,7 +147,7 @@ And here are the settings to insert into your
 
 .. code-block:: json
 
-    // Ruff
+   // Ruff
     "ruff.args": [
         "--config=pyproject.toml"
     ],
@@ -169,9 +169,7 @@ And here are the settings to insert into your
         "--config-file=pyproject.toml"
     ],
     // ReStructuredText
-    "esbonio.sphinx.buildDir" : "${workspaceFolder}/docs/_build/html",
-    "esbonio.sphinx.confDir"  : "${workspaceFolder}/docs",
-    "esbonio.sphinx.srcDir"   : "${workspaceFolder}/docs",
+    "esbonio.server.enabled": false,
     "restructuredtext.linter.doc8.executablePath": "/home/max/.local/bin/doc8",
     "restructuredtext.syntaxHighlighting.disabled": true,
     // Miscellaneous
@@ -223,18 +221,22 @@ commands.
 
 .. code-block:: console
 
+    $ git stash # Optional, if you have uncommited changes
     $ git checkout main
     $ git pull
     $ git checkout <YOUR_BRANCH_NAME>
     $ git rebase main
+    $ git stash pop # Optional, if you have uncommited changes
 
-Now, create a pull request on GitHub, once it is approved, delete your branch
-and pull the changes to your local repository.
+You can now go back to run the previous code block (you might need to add the
+``--force`` flag to your ``git push``). Then, create a pull request on GitHub,
+once it is approved, delete your branch and make sure to pull the changes to
+your local repository.
 
 .. code-block:: console
 
     $ git checkout main
-    $ git pull origin main
+    $ git pull
     $ git branch -d <YOUR_BRANCH_NAME>
 
 Freezing the repositories for publication
@@ -243,4 +245,6 @@ Freezing the repositories for publication
 For your code to remain reproducible after publication, we suggest that you
 create a new branch or fork the repository.
 
-TODO: Add pruning instructions.
+.. note::
+
+    TODO: Add pruning instructions.

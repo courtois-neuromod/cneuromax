@@ -3,32 +3,34 @@ include = ["cneuroml"]
 
 [project]
 name = "cneuroml"
+requires-python = ">=3.10" # Did not test with lower versions
 authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
 description = "The Courtois Neuromod Project's centralized Machine Learning repository"
 version = "0.0.1"
 dynamic = ["dependencies", "optional-dependencies"]
 
-# Don't install both 'dev' & 'run' as their version of
-# 'hydra' will conflict
 [tool.setuptools.dynamic]
-dependencies = {file = "pyreqs/core.txt"}
-optional-dependencies.run = {file = ["pyreqs/dl.txt",
-                                     "pyreqs/hpo.txt",
+optional-dependencies.run = {file = ["pyreqs/computer_vision.txt",
+                                     "pyreqs/deep_learning.txt",
                                      "pyreqs/hydra_run.txt",
+                                     "pyreqs/hyperparameters.txt",
                                      "pyreqs/jupyter.txt",
-                                     "pyreqs/ne.txt",
+                                     "pyreqs/neuroevolution.txt",
                                      "pyreqs/shapes.txt",
-                                     "pyreqs/vision.txt",
+                                     "pyreqs/slurm.txt",
                                      "pyreqs/wandb.txt"]}
-optional-dependencies.dev = {file = ["pyreqs/dl.txt",
-                                      "pyreqs/hpo.txt",
-                                      "pyreqs/hydra_test.txt",
-                                      "pyreqs/jupyter.txt",
-                                      "pyreqs/ne.txt",
-                                      "pyreqs/shapes.txt",
-                                      "pyreqs/test.txt",
-                                      "pyreqs/vision.txt",
-                                      "pyreqs/wandb.txt"]}
+# Don't install both 'dev' & 'run' as their version of 'hydra' will conflict
+optional-dependencies.dev = {file = ["pyreqs/computer_vision.txt",
+                                     "pyreqs/deep_learning.txt",
+                                     "pyreqs/documentation.txt",
+                                     "pyreqs/hydra_dev.txt",
+                                     "pyreqs/hyperparameters.txt",
+                                     "pyreqs/jupyter.txt",
+                                     "pyreqs/neuroevolution.txt",
+                                     "pyreqs/shapes.txt",
+                                     "pyreqs/slurm.txt",
+                                     "pyreqs/testing.txt",
+                                     "pyreqs/wandb.txt"]}
 
 [tool.black]
 line-length = 79
@@ -62,7 +64,18 @@ convention = "google"
 [tool.ruff.per-file-ignores]
 
 "*_test.py" = [
-    "S101",  # Use of `assert` detected
+    "S101",  # Use of assert detected
+             # https://beta.ruff.rs/docs/rules/assert/
+             # Disabled to be able to use asserts in tests
+    "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
+               # https://beta.ruff.rs/docs/rules/magic-value-comparison/
+               # Disabled to be able to use magic values in tests
+]
+
+"conftest.py" = [
+    "F401",  # {name} imported but unused; consider using importlib.util.find_spec to test for availability
+             # https://beta.ruff.rs/docs/rules/unused-import/
+             # Disabled to import fixtures.
 ]
 
 [tool.doc8]

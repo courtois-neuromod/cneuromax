@@ -1,4 +1,4 @@
-# Utilities
+# Packages required to check matrices shapes
 
 ##############################
 # Package full name: JaxTyping
