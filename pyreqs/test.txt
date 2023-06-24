@@ -34,7 +34,7 @@ mypy==1.4.0
 ###########################
 # Package full name: Pytest
 # Quickstart link: https://docs.pytest.org/en/stable/getting-started.html
-pytest==7.3.2
+pytest==7.4.0
 
 ###############################
 # Package full name: Pytest-cov
