@@ -1,0 +1,11 @@
+# Optimizer class. Needs to be specified.
+_target_: ???
+
+# Partial instantiation. Need model parameters for full instantiation.
+_partial_: True
+
+# Learning rate.
+lr: 0.001
+
+# .
+weight_decay: 0.01

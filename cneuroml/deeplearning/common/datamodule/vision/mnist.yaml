@@ -1,0 +1,7 @@
+defaults:
+  - ../base@_here_
+  - _self_
+
+_target_: cneuroml.deeplearning.common.datamodule.vision.MNISTDataModule
+val_percentage: 0.1
+transform: null

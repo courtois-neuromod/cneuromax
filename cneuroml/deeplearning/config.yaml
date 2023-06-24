@@ -1,0 +1,7 @@
+defaults:
+  - common/logger@logger: wandb
+  - common/optimizer@litmodule.optimizer_partial: adamw
+  - common/scheduler@litmodule.scheduler_partial: none
+  - common/trainer@trainer: base
+  - experiment: null
+  - _self_

@@ -1,0 +1,25 @@
+# https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.trainer.trainer.Trainer.html
+
+# Lightning Trainer
+_target_: lightning.pytorch.trainer.Trainer
+# Accelerator type
+accelerator: gpu # gpu, cpu
+# Training strategy
+strategy: auto # auto, ddp, deepspeed
+# Number of devices per node
+devices: 1 # 1, 2, ..., -1
+# Number of nodes
+num_nodes: 1 # 1, 2, ...
+# Parameters precision
+precision: 32-true # 32-true, 16, 16-mixed, bf16, bf16-mixed
+# Maximum number of epochs (I prefer to use `max_steps` w/ PB2)
+max_epochs: null # null, 1, 2, ...
+# Number of gradient updates
+max_steps: 1e3
+# How often to run validation
+# integer (float in [0, 1] if you use `max_epochs`)
+val_check_interval: ${.max_steps}
+# How often to log the training information
+log_every_n_steps: ${.max_steps}//10 # integer
+# Whether to make PyTorch deterministic (potentially makes training slower)
+deterministic: False # bool

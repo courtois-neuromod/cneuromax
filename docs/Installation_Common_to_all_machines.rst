@@ -43,7 +43,7 @@ Define a persisting ``CNEUROML_PATH`` user-variable on your system.
 
 .. code-block:: console
 
-    $ echo -e "\nCNEUROML_PATH=${PWD}/cneuroml" >> ~/.bashrc && source ~/.bashrc
+    $ echo -e "\nexport CNEUROML_PATH=${PWD}/cneuroml" >> ~/.bashrc && source ~/.bashrc
 
 You can now move on to either the Linux or Slurm specific steps.
 

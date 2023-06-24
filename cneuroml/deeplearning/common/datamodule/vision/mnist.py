@@ -31,7 +31,7 @@ class MNISTDataModule(BaseDataModule):
         self: "MNISTDataModule",
         config: "BaseDataModuleConfig",
         val_percentage: float = 0.1,
-        transform: transforms.Compose = transforms.ToTensor,
+        transform: transforms.Compose | None = transforms.ToTensor,
     ) -> None:
         """Calls parent constructor and stores arguments.
 

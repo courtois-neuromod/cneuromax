@@ -10,3 +10,8 @@ torch==2.0.1
 # Quickstart links: https://lightning.ai/
 #                   https://lightning.ai/docs/pytorch/latest/starter/introduction.html
 lightning==2.0.4
+
+#################################
+# Package full name: Transformers
+# Quickstart link: https://huggingface.co/docs/transformers/index
+transformers==4.30.2

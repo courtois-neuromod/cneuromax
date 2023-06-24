@@ -1,0 +1,10 @@
+_target_: cneuroml.deeplearning.common.nnmodule.MLP
+
+# (list) Layer dimensions
+dims: ???
+
+# Activation function
+activation_fn: torch.nn.ReLU
+
+# Dropout probability
+p_dropout: 0.0

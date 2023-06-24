@@ -67,6 +67,9 @@ convention = "google"
     "S101",  # Use of assert detected
              # https://beta.ruff.rs/docs/rules/assert/
              # Disabled to be able to use asserts in tests
+    "PGH001", # No builtin eval() allowed
+              # https://beta.ruff.rs/docs/rules/eval/
+              # Disabled to be able to use eval in tests
     "PLR2004", # Magic value used in comparison, consider replacing {value} with a constant variable
                # https://beta.ruff.rs/docs/rules/magic-value-comparison/
                # Disabled to be able to use magic values in tests

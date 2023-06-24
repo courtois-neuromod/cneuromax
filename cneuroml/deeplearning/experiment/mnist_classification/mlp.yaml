@@ -1,0 +1,12 @@
+# @package _global_
+
+defaults:
+  - /common/datamodule/vision@datamodule: mnist
+  - /common/nnmodule@litmodule.nnmodule: mlp
+  - override /common/trainer@trainer: cpu
+
+litmodule:
+  _target_: "cneuroml.deeplearning.experiment.mnist_classification.\
+    litmodule.MNISTClassificationLitModule"
+  nnmodule:
+    dims: [784, 10]

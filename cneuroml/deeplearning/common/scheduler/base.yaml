@@ -1,0 +1,9 @@
+
+# Scheduler class. Needs to be specified.
+_target_: ???
+
+# Partial instantiation. Optimizer object required for full instantiation.
+_partial_: True
+
+# Index of the last epoch when resuming training (not sure what this does).
+last_epoch: -1

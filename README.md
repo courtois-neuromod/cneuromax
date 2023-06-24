@@ -40,7 +40,7 @@ cneuroml/
 │  │  │  │  └─ *
 │  │  │  └─ nnmodule/           <-- Contains common PyTorch Modules
 │  │  │     └─ *
-│  │  ├─ experiments/           <-- Contains the DL experiments
+│  │  ├─ experiment/           <-- Contains the DL experiments
 │  │  │  ├─ my_new_experiment/  <-- ! Your new DL experiment folder
 │  │  │  │  ├─ datamodule.py    <-- ! Your Lightning DataModule
 │  │  │  │  ├─ litmodule.py     <-- ! Your Lightning Module
