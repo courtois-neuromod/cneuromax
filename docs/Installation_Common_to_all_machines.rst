@@ -46,3 +46,9 @@ Define a persisting ``CNEUROML_PATH`` user-variable on your system.
     $ echo -e "\nCNEUROML_PATH=${PWD}/cneuroml" >> ~/.bashrc && source ~/.bashrc
 
 You can now move on to either the Linux or Slurm specific steps.
+
+.. note::
+
+    If you plan to contribute rather than run the library on this machine,
+    you can skip to
+    `Contribution <https://courtois-neuromod.github.io/cneuroml/Contribution.html>`_
