@@ -19,5 +19,5 @@ jobs:
         with:
           publish: false
           pyproject_extras: null
-          requirements_path: ./pyreqs/docs.txt
+          requirements_path: ./pyreqs/documentation.txt
           sphinx_version: null

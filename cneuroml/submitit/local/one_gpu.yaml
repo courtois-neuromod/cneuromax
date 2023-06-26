@@ -1,0 +1,10 @@
+defaults:
+  - base
+  - _self_
+
+num_cpus_per_task: 2
+num_gpus_per_node: 1
+num_mem_gb: 4
+num_mins: 2
+num_nodes: 1
+num_tasks_per_node: 1

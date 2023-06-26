@@ -16,6 +16,7 @@ version = "0.0.1"
 
 extensions = [
     "autoapi.extension",
+    "sphinxcontrib.autoyaml",
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
     "sphinx.ext.autodoc",

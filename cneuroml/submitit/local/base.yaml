@@ -1,0 +1,5 @@
+defaults:
+  - ../base@_here_
+  - _self_
+
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.LocalLauncher

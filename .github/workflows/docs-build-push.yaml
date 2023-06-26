@@ -3,7 +3,7 @@ name: Docs Build & Push
 
 on:
   push:
-    branches: [main]
+    branches: [main, add_mnist_example]
     paths:
       - docs/**
       - cneuroml/**
@@ -19,7 +19,7 @@ jobs:
         with:
           publish: false
           pyproject_extras: null
-          requirements_path: ./pyreqs/docs.txt
+          requirements_path: ./pyreqs/documentation.txt
           sphinx_version: null
       - uses: peaceiris/actions-gh-pages@v3
         with:

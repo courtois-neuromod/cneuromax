@@ -2,7 +2,7 @@
 
 from hydra import compose, initialize
 
-from cneuroml.deeplearning.common.scheduler.base_test import LAST_EPOCH
+from cneuroml.deeplearning.common.lrscheduler.base_test import LAST_EPOCH
 
 
 def test() -> None:

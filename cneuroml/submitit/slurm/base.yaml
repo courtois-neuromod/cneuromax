@@ -1,0 +1,22 @@
+defaults:
+  - ../base@_here_
+  - _self_
+
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+account: null
+additional_parameters: {}
+array_parallelism: 256
+comment: null
+constraint: null
+cpus_per_gpu: null
+exclude: null
+gpus_per_task: null
+gres: null
+max_num_timeout: 0
+mem_per_cpu: null
+mem_per_gpu: null
+partition: null
+qos: null
+setup: null
+signal_delay_s: 120
+srun_args: null
