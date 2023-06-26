@@ -41,3 +41,4 @@ html_theme = "furo"
 autoapi_type = "python"
 autoapi_dirs = ["../cneuroml"]
 autoapi_python_class_content = "both"
+autoyaml_level = 999
