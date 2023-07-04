@@ -7,9 +7,9 @@ On a Slurm cluster
 .. code-block:: console
 
     $ module load python/3.10
-    $ python3 -m venv ${CNEUROML_PATH}/venv
-    $ . ${CNEUROML_PATH}/venv/bin/activate
-    $ pip install -r ${CNEUROML_PATH}/pipreqs/0_experiment_manager.txt
+    $ python3 -m venv ${cneuromax_PATH}/venv
+    $ . ${cneuromax_PATH}/venv/bin/activate
+    $ pip install -r ${cneuromax_PATH}/pipreqs/0_experiment_manager.txt
 
 2. Prepare the Podman image for use on the cluster
 --------------------------------------------------
@@ -34,7 +34,7 @@ Pull the image.
 .. code-block:: console
 
     $ module load podman \
-        && podman pull docker://maximilienlc/cneuroml:deps-run-latest
+        && podman pull docker://maximilienlc/cneuromax:deps-run-latest
 
 Compress the Podman container folder.
 

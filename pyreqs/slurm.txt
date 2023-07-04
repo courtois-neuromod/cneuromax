@@ -1,4 +1,4 @@
-# Packages required to run any component of the CNeuroML library on Slurm
+# Packages required to run any component of the cneuromax library on Slurm
 
 #############################
 # Package full name: Submitit

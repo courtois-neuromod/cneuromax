@@ -1,7 +1,0 @@
-_target_: cneuroml.deeplearning.common.datamodule.DataModuleBase
-config:
-  _target_: cneuroml.deeplearning.common.datamodule.DataModuleConfig
-  per_device_batch_size: 1
-  per_device_num_workers: 0
-  device_type: gpu
-  pin_memory: true

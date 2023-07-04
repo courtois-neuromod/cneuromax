@@ -6,7 +6,7 @@ on:
     branches: [main, add_mnist_example]
     paths:
       - docs/**
-      - cneuroml/**
+      - cneuromax/**
       - .github/workflows/docs-build-push.yaml
 
 jobs:

@@ -28,10 +28,10 @@ RUN apt update && apt install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
-ADD pyproject.toml /cneuroml/pyproject.toml
-ADD cneuroml /cneuroml/cneuroml
-ADD pyreqs /cneuroml/pyreqs
+ADD pyproject.toml /cneuromax/pyproject.toml
+ADD cneuromax /cneuromax/cneuromax
+ADD pyreqs /cneuromax/pyreqs
 
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -e cneuroml/.[run] \
-    && pip uninstall -y cneuroml
+    && pip install --no-cache-dir -e cneuromax/.[run] \
+    && pip uninstall -y cneuromax

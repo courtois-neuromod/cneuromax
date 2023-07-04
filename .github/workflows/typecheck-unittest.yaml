@@ -5,12 +5,12 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - cneuroml/**
+      - cneuromax/**
       - .github/workflows/typecheck-unittest.yaml
   push:
     branches: [main]
     paths:
-      - cneuroml/**
+      - cneuromax/**
       - .github/workflows/typecheck-unittest.yaml
 
 permissions:
@@ -35,9 +35,9 @@ jobs:
           pip install --no-cache-dir --upgrade pip && pip install
           --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
       - name: Run mypy
-        run: mypy --config-file=pyproject.toml cneuroml
+        run: mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest
-        run: pytest --cov cneuroml
+        run: pytest --cov cneuromax
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:

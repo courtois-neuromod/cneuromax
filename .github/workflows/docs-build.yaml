@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - docs/**
-      - cneuroml/**
+      - cneuromax/**
       - pyreqs/documentation.txt
       - .github/workflows/docs-build.yaml
 

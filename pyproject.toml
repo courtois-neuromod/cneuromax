@@ -1,8 +1,8 @@
 [tool.setuptools.packages.find]
-include = ["cneuroml"]
+include = ["cneuromax"]
 
 [project]
-name = "cneuroml"
+name = "cneuromax"
 requires-python = ">=3.10" # Did not test with lower versions
 authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
 description = "The Courtois Neuromod Project's centralized Machine Learning repository"
@@ -13,7 +13,7 @@ dynamic = ["dependencies", "optional-dependencies"]
 optional-dependencies.run = {file = ["pyreqs/computer_vision.txt",
                                      "pyreqs/deep_learning.txt",
                                      "pyreqs/hydra_run.txt",
-                                     "pyreqs/hyperparameters.txt",
+                                     "pyreqs/hydra_extensions.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/neuroevolution.txt",
                                      "pyreqs/shapes.txt",
@@ -24,7 +24,7 @@ optional-dependencies.dev = {file = ["pyreqs/computer_vision.txt",
                                      "pyreqs/deep_learning.txt",
                                      "pyreqs/documentation.txt",
                                      "pyreqs/hydra_dev.txt",
-                                     "pyreqs/hyperparameters.txt",
+                                     "pyreqs/hydra_extensions.txt",
                                      "pyreqs/jupyter.txt",
                                      "pyreqs/neuroevolution.txt",
                                      "pyreqs/shapes.txt",
@@ -52,6 +52,7 @@ ignore = [
     "SLF001", # Private member accessed: {access}
               # https://beta.ruff.rs/docs/rules/private-member-access/
               # Disabled to make use of certain private Lightning classes (ex: Trainer checkpointing)
+    "ERA001",
 ]
 
 

@@ -38,4 +38,4 @@ jobs:
           context: .
           file: containers/deps/run/Containerfile
           push: true
-          tags: maximilienlc/cneuroml:deps-run-latest
+          tags: maximilienlc/cneuromax:deps-run-latest

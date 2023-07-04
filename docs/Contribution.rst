@@ -9,7 +9,7 @@ Contribution
     Make sure to have completed the installation steps before moving to
     this section.
 
-Link to the GitHub repository: https://github.com/courtois-neuromod/cneuroml.
+Link to the GitHub repository: https://github.com/courtois-neuromod/cneuromax.
 
 Developping locally
 -------------------
@@ -19,7 +19,7 @@ dependencies. This can be done by running the following commands:
 
 .. code-block:: console
 
-    $ cd ${CNEUROML_PATH}
+    $ cd ${cneuromax_PATH}
     $ python -m venv venv
     $ . venv/bin/activate
     $ # Install OpenMPI if it's not already installed
@@ -74,7 +74,7 @@ Those checks are:
 * If any change is made to the ``pyreqs/`` or ``containers/`` folder, that the
   Docker/Podman image can still be built.
 
-* If any change is made to the ``docs/`` or ``cneuroml/`` folder, that the
+* If any change is made to the ``docs/`` or ``cneuromax/`` folder, that the
   documentation can still be built and pushed to Github Pages.
 
 Testing locally
@@ -93,7 +93,7 @@ preventing the commit from going through if the tests fail.
 
 .. code-block:: console
 
-    $ cd ${CNEUROML_PATH}
+    $ cd ${cneuromax_PATH}
     $ . venv/bin/activate
     $ pre-commit install
 
@@ -114,10 +114,10 @@ branch. To run those tests, you can use the following commands:
 
 .. code-block:: console
 
-    $ cd ${CNEUROML_PATH}
+    $ cd ${cneuromax_PATH}
     $ . venv/bin/activate
-    $ pytest cneuroml
-    $ mypy --strict cneuroml
+    $ pytest cneuromax
+    $ mypy --strict cneuromax
 
 
 Setting up VSCode
@@ -191,11 +191,11 @@ And here are the settings to insert into your
 Git/GitHub workflow for contributing
 ------------------------------------
 
-In a terminal window, change directory to the cneuroml repository.
+In a terminal window, change directory to the cneuromax repository.
 
 .. code-block:: console
 
-    $ cd ${CNEUROML_PATH}
+    $ cd ${cneuromax_PATH}
 
 Create a new branch for your contribution.
 

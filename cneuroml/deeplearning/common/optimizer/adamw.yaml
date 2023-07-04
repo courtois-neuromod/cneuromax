@@ -1,6 +1,0 @@
-defaults:
-  - adam
-  - _self_
-
-# https://pytorch.org/docs/stable/generated/torch.optim.AdamW.html
-_target_: torch.optim.AdamW

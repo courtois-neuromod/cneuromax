@@ -1,4 +1,4 @@
-# Packages required to run the Deep Learning Computer Vision component of the CNeuroML library
+# Packages required to run the Deep Learning Computer Vision component of the cneuromax library
 
 ############################
 # Package full name: PyTorch

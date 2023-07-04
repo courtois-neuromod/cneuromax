@@ -42,4 +42,4 @@ Follow the Ubuntu section of the following `installation guide
 
 .. code-block:: console
 
-    $ podman pull docker://maximilienlc/cneuroml:deps-run-latest
+    $ podman pull docker://maximilienlc/cneuromax:deps-run-latest

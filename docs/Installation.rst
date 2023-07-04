@@ -3,7 +3,7 @@ Installation
 ************
 
 Below are full installation steps (catered towards Ubuntu & Slurm users) so as
-to maximize CNeuroML's reproducibility across platforms, utilizing container
+to maximize cneuromax's reproducibility across platforms, utilizing container
 technology Podman.
 
 .. include:: Installation_Common_to_all_machines.rst

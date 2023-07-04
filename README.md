@@ -1,33 +1,33 @@
-# CNeuroML
+# CNeuroMAX
 
 [![container-build-push](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/container-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/container-build-push.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml/badge.svg)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml)
 [![docs-build-push](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml/badge.svg)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml)
 [![format-lint](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml/badge.svg?event=push)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml/badge.svg?event=push)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml)
 [![typecheck-unittest](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml)
 [![codecov](
-    https://codecov.io/gh/courtois-neuromod/cneuroml/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
-        https://codecov.io/gh/courtois-neuromod/cneuroml)
+    https://codecov.io/gh/courtois-neuromod/cneuromax/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
+        https://codecov.io/gh/courtois-neuromod/cneuromax)
 [![code style: black](
     https://img.shields.io/badge/code%20style-black-000000.svg)](
         https://github.com/psf/black)
 
-Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
-    https://courtois-neuromod.github.io/cneuroml/).
+Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
+    https://courtois-neuromod.github.io/cneuromax/).
 
 
 ```
-cneuroml/
+cneuromax/
 ├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
 │  └─ *
-├─ cneuroml/                    <-- Contains all of the Machine Learning code and config files
+├─ cneuromax/                    <-- Contains all of the Machine Learning code and config files
 │  ├─ application/              <-- Contains the code to create applications (cozmo inference, etc)
 │  │  └─ *
 │  ├─ deeplearning/             <-- Contains the Deep Learning code
