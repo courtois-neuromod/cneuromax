@@ -61,7 +61,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     Attributes:
         config (``BaseDataModuleConfig``): .
         dataset (``dict[Literal["train", "val", "test", "predict"],\
-            Dataset]``): .
+        Dataset]``): .
         pin_memory (``bool``): Whether to copy tensors into device
             pinned memory before returning them (is set to ``True`` by
             default if using GPUs).

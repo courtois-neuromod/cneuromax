@@ -77,7 +77,7 @@ class MNISTDataModule(BaseDataModule):
 
     def setup(
         self: "MNISTDataModule",
-        stage: Annotated[str, Is[lambda x: x in ["fit", "test"]]],
+        stage: Annotated[str, Is[lambda x: x == "fit" or x == "test"]],
     ) -> None:
         """Creates the train/val/test datasets.
 
