@@ -1,7 +1,7 @@
 """."""
 
 from cneuromax.deeplearning.common.litmodule.classification.base import (
-    BaseClasssificationLitModule,
+    BaseClassificationLitModule,
 )
 
-__all__ = ["BaseClasssificationLitModule"]
+__all__ = ["BaseClassificationLitModule"]

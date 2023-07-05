@@ -9,11 +9,11 @@ from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.deeplearning.common.litmodule.classification import (
-    BaseClasssificationLitModule,
+    BaseClassificationLitModule,
 )
 
 
-class MNISTClassificationLitModule(BaseClasssificationLitModule):
+class MNISTClassificationLitModule(BaseClassificationLitModule):
     """.
 
     Attributes:

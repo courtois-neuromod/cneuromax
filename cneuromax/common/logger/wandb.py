@@ -1,12 +1,18 @@
 """."""
-from hydra_zen import hydrated_dataclass, store
-from lightning.pytorch.loggers.wandb import WandbLogger
+
+from hydra_zen import store
 
 
 @store(name="wandb", group="logger")
-@hydrated_dataclass(target=WandbLogger)
 class WandbLoggerConfig:
-    """."""
+    """.
 
+    Attributes:
+        target_: Logger class.
+        name: The name of the run.
+        project: The name of the project to which this run will belong.
+    """
+
+    _target_: str = "lightning.pytorch.loggers.wandb.WandbLogger"
     name: str | None = None
     project: str | None = None

@@ -9,7 +9,7 @@ class BaseOptimizerConfig:
 
     Attributes:
         _target_: Optimizer class needs to be specified in child class.
-        _partial_: (Need model parameters for instantiation).
+        _partial_: NNModule parameters required for instantiation.
         lr: Learning rate.
         weight_decay: L2 penalty.
     """

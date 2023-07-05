@@ -16,7 +16,7 @@ from torch.optim.lr_scheduler import LRScheduler
 from cneuromax.deeplearning.common.litmodule import BaseLitModule
 
 
-class BaseClasssificationLitModule(BaseLitModule, metaclass=ABCMeta):
+class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
     """.
 
     Attributes:
@@ -27,7 +27,7 @@ class BaseClasssificationLitModule(BaseLitModule, metaclass=ABCMeta):
     """
 
     def __init__(
-        self: "BaseClasssificationLitModule",
+        self: "BaseClassificationLitModule",
         nnmodule: nn.Module,
         optimizer_partial: partial[Optimizer],
         scheduler_partial: partial[LRScheduler],
@@ -50,7 +50,7 @@ class BaseClasssificationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     @typechecker
     def step(
-        self: "BaseClasssificationLitModule",
+        self: "BaseClassificationLitModule",
         batch: tuple[
             Float[Tensor, " batch_size *x_shape"],
             Int[Tensor, " batch_size"],

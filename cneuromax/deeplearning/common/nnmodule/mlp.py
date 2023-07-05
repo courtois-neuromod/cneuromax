@@ -3,10 +3,12 @@
 from dataclasses import dataclass
 
 from einops import rearrange
+from hydra_zen import store
 from jaxtyping import Float
 from torch import Tensor, nn
 
 
+@store(name="mlp", group="nnmodule/config")
 @dataclass
 class MLPConfig:
     """.
@@ -22,6 +24,7 @@ class MLPConfig:
     p_dropout: float = 0.0
 
 
+@store(name="mlp", group="nnmodule")
 class MLP(nn.Module):
     """Multi-layer perceptron (MLP).
 
