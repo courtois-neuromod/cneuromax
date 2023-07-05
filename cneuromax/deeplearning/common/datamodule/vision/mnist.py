@@ -1,9 +1,7 @@
 """."""
 
 from dataclasses import dataclass
-from typing import Annotated
 
-from beartype.vale import Is
 from hydra_zen import store
 from torch.utils.data import random_split
 from torchvision import transforms
@@ -12,6 +10,10 @@ from torchvision.datasets import MNIST
 from cneuromax.deeplearning.common.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
+)
+from cneuromax.deeplearning.common.utils.annotations import (
+    float_gt0_lt1,
+    str_fit_test,
 )
 
 
@@ -27,7 +29,7 @@ class MNISTDataModuleConfig(BaseDataModuleConfig):
         fit_dataset_std: .
     """
 
-    val_percentage: Annotated[float, Is[lambda x: 0 < x < 1]] = 0.1
+    val_percentage: float_gt0_lt1 = 0.1
     fit_dataset_mean: tuple[float] = (0.1307,)
     fit_dataset_std: tuple[float] = (0.3081,)
 
@@ -77,7 +79,7 @@ class MNISTDataModule(BaseDataModule):
 
     def setup(
         self: "MNISTDataModule",
-        stage: Annotated[str, Is[lambda x: x == "fit" or x == "test"]],
+        stage: str_fit_test,
     ) -> None:
         """Creates the train/val/test datasets.
 
