@@ -1,7 +1,9 @@
 """."""
 
 from dataclasses import dataclass
+from typing import Annotated
 
+from beartype.vale import Is
 from hydra_zen import store
 from torch.utils.data import random_split
 from torchvision import transforms
@@ -11,10 +13,9 @@ from cneuromax.deeplearning.common.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from cneuromax.deeplearning.common.utils.annotations import (
-    float_gt0_lt1,
-    str_fit_test,
-)
+
+float_gt0_lt1 = Annotated[float, Is[lambda x: 0 < x < 1]]
+str_fit_test = Annotated[str, Is[lambda x: x in ("fit", "test")]]
 
 
 @store(name="mnist", group="datamodule/config")
