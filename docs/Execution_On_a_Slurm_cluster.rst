@@ -8,8 +8,8 @@ Activate the previously installed virtual environment.
 
 .. code-block:: console
 
-    $ cd ${cneuromax_PATH}
-    $ . ${cneuromax_PATH}/venv/bin/activate
+    $ cd ${CNEUROMAX_PATH}
+    $ . ${CNEUROMAX_PATH}/venv/bin/activate
 
 Run the library.
 
@@ -38,5 +38,5 @@ Run the lab.
         mkdir -p ${SLURM_TMPDIR}/${SCRATCH}; \
         cp ${SCRATCH}/containers.tar ${SLURM_TMPDIR}/${SCRATCH}/.; \
         tar -xf ${SLURM_TMPDIR}/${SCRATCH}/containers.tar -C ${SLURM_TMPDIR}/${SCRATCH}/.; \
-        podman run -w ${cneuromax_PATH} -v ${cneuromax_PATH}:${cneuromax_PATH} \
+        podman run -w ${CNEUROMAX_PATH} -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
         cneuromax:deps_only-all_deps-latest jupyter-lab --allow-root --ip $(hostname -f) --port 8888"

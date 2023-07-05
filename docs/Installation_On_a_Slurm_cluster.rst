@@ -7,9 +7,9 @@ On a Slurm cluster
 .. code-block:: console
 
     $ module load python/3.10
-    $ python3 -m venv ${cneuromax_PATH}/venv
-    $ . ${cneuromax_PATH}/venv/bin/activate
-    $ pip install -r ${cneuromax_PATH}/pipreqs/0_experiment_manager.txt
+    $ python3 -m venv ${CNEUROMAX_PATH}/venv
+    $ . ${CNEUROMAX_PATH}/venv/bin/activate
+    $ pip install -r ${CNEUROMAX_PATH}/pipreqs/0_experiment_manager.txt
 
 2. Prepare the Podman image for use on the cluster
 --------------------------------------------------

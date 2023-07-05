@@ -39,11 +39,11 @@ If not, you can update it with the following command.
         sudo apt update && \
         sudo apt install -y git
 
-Define a persisting ``cneuromax_PATH`` user-variable on your system.
+Define a persisting ``CNEUROMAX_PATH`` user-variable on your system.
 
 .. code-block:: console
 
-    $ echo -e "\nexport cneuromax_PATH=${PWD}/cneuromax" >> ~/.bashrc && source ~/.bashrc
+    $ echo -e "\nexport CNEUROMAX_PATH=${PWD}/cneuromax" >> ~/.bashrc && source ~/.bashrc
 
 You can now move on to either the Linux or Slurm specific steps.
 

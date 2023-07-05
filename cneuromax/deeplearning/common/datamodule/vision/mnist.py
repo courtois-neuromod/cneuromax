@@ -22,17 +22,12 @@ class MNISTDataModuleConfig(BaseDataModuleConfig):
 
     Attributes:
         val_percentage: Percentage of the training dataset to use
-            for validation (value in ``]0, 1[``).
-        train_val_split: The train/validation split (sums to ``1``).
+            for validation (float in ``]0, 1[``).
         fit_dataset_mean: .
         fit_dataset_std: .
     """
 
     val_percentage: Annotated[float, Is[lambda x: 0 < x < 1]] = 0.1
-    train_val_split: tuple[float, float] = (
-        1 - val_percentage,
-        val_percentage,
-    )
     fit_dataset_mean: tuple[float] = (0.1307,)
     fit_dataset_std: tuple[float] = (0.3081,)
 
@@ -62,6 +57,10 @@ class MNISTDataModule(BaseDataModule):
         """
         super().__init__(config)
         self.config: MNISTDataModuleConfig
+        self.train_val_split: tuple[float, float] = (
+            1 - self.config.val_percentage,
+            self.config.val_percentage,
+        )
         self.transform: transforms.Compose = transforms.Compose(
             [
                 transforms.ToTensor(),
@@ -78,7 +77,7 @@ class MNISTDataModule(BaseDataModule):
 
     def setup(
         self: "MNISTDataModule",
-        stage: Annotated[str, Is[lambda x: x in ("fit", "test")]],
+        stage: Annotated[str, Is[lambda x: x in ["fit", "test"]]],
     ) -> None:
         """Creates the train/val/test datasets.
 
@@ -93,7 +92,7 @@ class MNISTDataModule(BaseDataModule):
             )
             self.dataset.train, self.dataset.val = random_split(
                 dataset=mnist_full,
-                lengths=self.config.train_val_split,
+                lengths=self.train_val_split,
             )
 
         else:  # stage == "test":

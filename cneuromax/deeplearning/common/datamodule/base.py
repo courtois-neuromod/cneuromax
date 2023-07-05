@@ -42,16 +42,12 @@ class BaseDataModuleConfig:
             loaded by each device's assigned CPU process)
         device_type: The compute device type to use (``cpu`` or
             ``gpu``).
-        pin_memory: Whether to copy tensors into device pinned
-            memory before returning them (is set to ``True`` by default
-            if using GPUs).
     """
 
     data_dir: str = "${data_dir}"
     per_device_batch_size: Annotated[int, Is[lambda x: x > 0]] = 1
     per_device_num_workers: Annotated[int, Is[lambda x: x >= 0]] = 0
     device_type: Annotated[str, Is[lambda x: x in ("cpu", "gpu")]] = "gpu"
-    pin_memory: bool = device_type == "gpu"
 
 
 @store(name="base", group="datamodule")
@@ -64,8 +60,11 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
 
     Attributes:
         config (``BaseDataModuleConfig``): .
-        dataset (``dict[Literal["train", "val", "test", "predict"],
+        dataset (``dict[Literal["train", "val", "test", "predict"],\
             Dataset]``): .
+        pin_memory (``bool``): Whether to copy tensors into device
+            pinned memory before returning them (is set to ``True`` by
+            default if using GPUs).
     """
 
     def __init__(self: "BaseDataModule", config: BaseDataModuleConfig) -> None:
@@ -76,6 +75,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         """
         super().__init__()
         self.config: BaseDataModuleConfig = config
+        self.pin_memory: bool = self.config.device_type == "gpu"
         self.dataset: BaseDataset = BaseDataset()
 
     @final

@@ -19,7 +19,7 @@ dependencies. This can be done by running the following commands:
 
 .. code-block:: console
 
-    $ cd ${cneuromax_PATH}
+    $ cd ${CNEUROMAX_PATH}
     $ python -m venv venv
     $ . venv/bin/activate
     $ # Install OpenMPI if it's not already installed
@@ -93,7 +93,7 @@ preventing the commit from going through if the tests fail.
 
 .. code-block:: console
 
-    $ cd ${cneuromax_PATH}
+    $ cd ${CNEUROMAX_PATH}
     $ . venv/bin/activate
     $ pre-commit install
 
@@ -114,7 +114,7 @@ branch. To run those tests, you can use the following commands:
 
 .. code-block:: console
 
-    $ cd ${cneuromax_PATH}
+    $ cd ${CNEUROMAX_PATH}
     $ . venv/bin/activate
     $ pytest cneuromax
     $ mypy --strict cneuromax
@@ -195,7 +195,7 @@ In a terminal window, change directory to the cneuromax repository.
 
 .. code-block:: console
 
-    $ cd ${cneuromax_PATH}
+    $ cd ${CNEUROMAX_PATH}
 
 Create a new branch for your contribution.
 
