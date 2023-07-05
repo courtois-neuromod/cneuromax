@@ -14,4 +14,4 @@ jupyterlab-code-formatter==2.2.1
 # Package full name: Jupyter Widgets
 # Quickstart link: https://ipywidgets.readthedocs.io
 # Note: HTML widgets for notebooks
-ipywidgets==8.0.6
+ipywidgets==8.0.7
