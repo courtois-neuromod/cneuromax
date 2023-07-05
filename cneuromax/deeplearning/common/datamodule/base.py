@@ -2,13 +2,22 @@
 
 from abc import ABCMeta
 from dataclasses import dataclass
-from typing import Annotated, final
+from typing import Annotated, TypeAlias, final
 
 from beartype.vale import Is
 from hydra_zen import store
 from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
+
+str_is_per_device_batch_size: TypeAlias = Annotated[
+    str,
+    Is[lambda x: x in ("per_device_batch_size")],
+]
+"""Runtime typing annotation for a string in
+``("per_device_batch_size")``."""
+int_is_gt0: TypeAlias = Annotated[int, Is[lambda x: x > 0]]
+"""Runtime typing annotation for an integer greater than ``0``."""
 
 
 @dataclass
@@ -40,8 +49,7 @@ class BaseDataModuleConfig:
         per_device_num_workers: Per-device number of CPU processes to
             use for data loading (``0`` means that the data will be
             loaded by each device's assigned CPU process)
-        device_type: The compute device type to use (``cpu`` or
-            ``gpu``).
+        device_type: The compute device type to use.
     """
 
     data_dir: str = "${data_dir}"
@@ -82,13 +90,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     @final
     def load_state_dict(
         self: "BaseDataModule",
-        state_dict: dict[
-            Annotated[
-                str,
-                Is[lambda x: x in ("per_device_batch_size")],
-            ],
-            Annotated[int, Is[lambda x: x > 0]],
-        ],
+        state_dict: dict[str_is_per_device_batch_size, int_is_gt0],
     ) -> None:
         """Sets the instance's batch size from a dictionary value.
 
@@ -100,13 +102,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     @final
     def state_dict(
         self: "BaseDataModule",
-    ) -> dict[
-        Annotated[
-            str,
-            Is[lambda x: x in ("per_device_batch_size")],
-        ],
-        Annotated[int, Is[lambda x: x > 0]],
-    ]:
+    ) -> dict[str_is_per_device_batch_size, int_is_gt0]:
         """.
 
         Returns:
@@ -133,7 +129,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             batch_size=self.config.per_device_batch_size,
             shuffle=True,
             num_workers=self.config.per_device_num_workers,
-            pin_memory=self.config.pin_memory,
+            pin_memory=self.pin_memory,
         )
 
     @final
@@ -155,7 +151,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             batch_size=self.config.per_device_batch_size,
             shuffle=True,
             num_workers=self.config.per_device_num_workers,
-            pin_memory=self.config.pin_memory,
+            pin_memory=self.pin_memory,
         )
 
     @final
@@ -177,7 +173,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             batch_size=self.config.per_device_batch_size,
             shuffle=True,
             num_workers=self.config.per_device_num_workers,
-            pin_memory=self.config.pin_memory,
+            pin_memory=self.pin_memory,
         )
 
     @final
@@ -202,5 +198,5 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             batch_size=self.config.per_device_batch_size,
             shuffle=False,
             num_workers=self.config.per_device_num_workers,
-            pin_memory=self.config.pin_memory,
+            pin_memory=self.pin_memory,
         )

@@ -6,7 +6,7 @@ import pytest
 from torch.utils.data import Subset
 from torchvision.datasets import MNIST
 
-from cneuromax.deeplearning.common.datamodule.vision import (
+from cneuromax.deeplearning.experiment.mnist_classification import (
     MNISTDataModule,
     MNISTDataModuleConfig,
 )

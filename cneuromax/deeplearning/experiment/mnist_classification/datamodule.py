@@ -14,13 +14,13 @@ from cneuromax.deeplearning.common.datamodule import (
     BaseDataModuleConfig,
 )
 
-float_gt0_lt1: TypeAlias = Annotated[float, Is[lambda x: 0 < x < 1]]
-"""``TypeAlias`` for a float in ``]0, 1[``."""
+float_is_gt0_lt1: TypeAlias = Annotated[float, Is[lambda x: 0 < x < 1]]
+"""Runtime typing annotation for a float in ``]0, 1[``."""
 str_is_fit_or_test: TypeAlias = Annotated[
     str,
     Is[lambda x: x in ("fit", "test")],
 ]
-"""``TypeAlias`` for a string in ``("fit", "test")``."""
+"""Runtime typing annotation for a string in ``("fit", "test")``."""
 
 
 @store(name="mnist", group="datamodule/config")
@@ -30,12 +30,12 @@ class MNISTDataModuleConfig(BaseDataModuleConfig):
 
     Attributes:
         val_percentage: Percentage of the training dataset to use
-            for validation (float in ``]0, 1[``).
+            for validation.
         fit_dataset_mean: .
         fit_dataset_std: .
     """
 
-    val_percentage: float_gt0_lt1 = 0.1
+    val_percentage: float_is_gt0_lt1 = 0.1
     fit_dataset_mean: tuple[float] = (0.1307,)
     fit_dataset_std: tuple[float] = (0.3081,)
 
@@ -58,7 +58,7 @@ class MNISTDataModule(BaseDataModule):
         """.
 
         Calls parent constructor, type-hints the config, sets the
-        train/validation split and creates the dataset transform.
+        train/val split and creates the dataset transform.
 
         Args:
             config: .
@@ -90,7 +90,7 @@ class MNISTDataModule(BaseDataModule):
         """Creates the train/val/test datasets.
 
         Args:
-            stage: ``"fit"`` or ``"test"``.
+            stage: .
         """
         if stage == "fit":
             mnist_full: MNIST = MNIST(
