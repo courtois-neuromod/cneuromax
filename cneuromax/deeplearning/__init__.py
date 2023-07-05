@@ -1,4 +1,4 @@
-"""Deep Learning component of the cneuromax library.
+"""Deep Learning component of the CNeuroMax library.
 
 Abbreviations used throughout this module:
 

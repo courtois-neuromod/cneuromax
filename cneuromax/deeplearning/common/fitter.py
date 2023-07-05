@@ -8,7 +8,7 @@ from hydra.utils import instantiate
 from omegaconf import DictConfig
 from torch.distributed import ReduceOp
 
-from cneuromax.deeplearning.utils.lightning import (
+from cneuromax.deeplearning.common.utils.lightning import (
     InitOptimParamsCheckpointConnector,
     find_good_batch_size,
     find_good_num_workers,
@@ -35,7 +35,7 @@ class Fitter:
     ``config.num_gpus_per_node`` processes.
 
     Attributes:
-        config (``DictConfig``): The Hydra configuration.
+        config (``DictConfig``): The Global Hydra configuration.
         logger (``WandbLogger``): .
         trainer (``Trainer``): .
         litmodule (``BaseLitModule``): .

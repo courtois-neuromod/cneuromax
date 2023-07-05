@@ -2,14 +2,20 @@
 
 import logging
 import time
+from typing import TYPE_CHECKING
 
-import lightning.pytorch as pl
 import numpy as np
 from hydra.utils import instantiate
+from lightning.pytorch import Trainer
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
 )
+from lightning.pytorch.tuner.tuning import Tuner
 from omegaconf import DictConfig
+
+if TYPE_CHECKING:
+    from cneuromax.deeplearning.common.datamodule import BaseDataModule
+    from cneuromax.deeplearning.common.litmodule import BaseLitModule
 
 
 def find_good_batch_size(config: DictConfig) -> int:
@@ -18,7 +24,7 @@ def find_good_batch_size(config: DictConfig) -> int:
     This functionality makes the following, not always correct, but
     generally reasonable assumptions:
     - As long as the ``batch_size / dataset_size`` ratio remains small
-    (e.g. < 0.01 so as to benefit from the stochasticity of gradient
+    (e.g. ``< 0.01`` so as to benefit from the stochasticity of gradient
     updates), running the same number of gradient updates with a larger
     batch size will yield faster training than running the same number
     of gradient updates with a smaller batch size.
@@ -28,39 +34,42 @@ def find_good_batch_size(config: DictConfig) -> int:
     same amount of VRAM.
 
     Args:
-        config: Task configuration.
+        config: The global Hydra configuration.
 
     Returns:
-        batch_size: An estimated proper batch size.
+        batch_size: The estimated proper batch size.
     """
     logging.info("Finding good `batch_size` parameter...")
 
-    # Instantiate a temporary Lightning Module.
-    litmodule = instantiate(config.litmodule)
+    # Instantiate a temporary LitModule.
+    litmodule: BaseLitModule = instantiate(config.litmodule)
 
-    # Instantiate a tempory Datamodule.
-    datamodule = instantiate(config.datamodule)
-    datamodule.num_workers = config.cpus_per_task
+    # Instantiate a temporary Datamodule.
+    datamodule: BaseDataModule = instantiate(config.datamodule)
+    datamodule.config.per_device_num_workers = config.cpus_per_task
 
     # Instantiate a temporary Trainer running on a single GPU.
-    trainer = pl.Trainer(
+    trainer: Trainer = Trainer(
         accelerator="gpu",
         devices=1,
         max_epochs=-1,
     )
 
     # Instantiate a batch size Tuner.
-    tuner = pl.tuner.tuning.Tuner(trainer=trainer)
+    tuner: Tuner = Tuner(trainer=trainer)
 
     # Find the maximum batch size that fits on the GPU.
-    tuner.scale_batch_size(
+    batch_size = tuner.scale_batch_size(
         model=litmodule,
         datamodule=datamodule,
         mode="binsearch",
-    )  # value is stored in `datamodule.batch_size`.
+    )
+
+    if batch_size is None:
+        raise ValueError
 
     # Return 90% of maximum batch size to account for fluctuations.
-    return int(datamodule.batch_size * 0.9)
+    return int(batch_size * 0.9)
 
 
 def find_good_num_workers(
@@ -71,7 +80,7 @@ def find_good_num_workers(
     """Finds an appropriate `num_workers` parameter.
 
     Args:
-        config: The task configuration.
+        config: The global Hydra configuration.
         batch_size: The estimated appropriate batch size.
         max_num_data_passes: Maximum number of data passes to iterate
             through.
@@ -86,9 +95,9 @@ def find_good_num_workers(
     # Loop over all reasonable `num_workers` values.
     for num_workers in range(1, config.cpus_per_task):
         # Instantiate a temporary datamodule.
-        datamodule = instantiate(config.datamodule)
-        datamodule.batch_size = batch_size
-        datamodule.num_workers = num_workers
+        datamodule: BaseDataModule = instantiate(config.datamodule)
+        datamodule.config.per_device_batch_size = batch_size
+        datamodule.config.per_device_num_workers = num_workers
         # Start a timer.
         start_time = time.time()
         # Iterate through the dataloader `max_num_data_passes` times.
@@ -104,7 +113,7 @@ def find_good_num_workers(
             f"num_workers: {num_workers}, time taken: {times[-1]}",
         )
 
-    # Find the `num_workers` value that took the least amount of time.
+    # Find the ``num_workers`` value that took the least amount of time.
     best_time = int(np.argmin(times))
     logging.info(f"Best `num_workers` parameter: {best_time + 1}.")
     return best_time + 1
@@ -116,9 +125,6 @@ class InitOptimParamsCheckpointConnector(_CheckpointConnector):
     Makes use of the newly initialized optimizers' parameters rather
     than the saved parameters. Useful for resuming training with
     different optimizer parameters (e.g. with the PBT Hydra sweeper).
-
-    Attributes:
-        trainer: The Lightning Trainer.
     """
 
     def restore_optimizers(self: "InitOptimParamsCheckpointConnector") -> None:
