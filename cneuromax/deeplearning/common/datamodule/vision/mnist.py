@@ -15,10 +15,12 @@ from cneuromax.deeplearning.common.datamodule import (
 )
 
 float_gt0_lt1: TypeAlias = Annotated[float, Is[lambda x: 0 < x < 1]]
+"""``TypeAlias`` for a float in ``]0, 1[``."""
 str_is_fit_or_test: TypeAlias = Annotated[
     str,
     Is[lambda x: x in ("fit", "test")],
 ]
+"""``TypeAlias`` for a string in ``("fit", "test")``."""
 
 
 @store(name="mnist", group="datamodule/config")
