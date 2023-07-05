@@ -1,7 +1,7 @@
 """."""
 
 from dataclasses import dataclass
-from typing import Annotated
+from typing import Annotated, TypeAlias
 
 from beartype.vale import Is
 from hydra_zen import store
@@ -14,8 +14,11 @@ from cneuromax.deeplearning.common.datamodule import (
     BaseDataModuleConfig,
 )
 
-float_gt0_lt1 = Annotated[float, Is[lambda x: 0 < x < 1]]
-str_fit_test = Annotated[str, Is[lambda x: x in ("fit", "test")]]
+float_gt0_lt1: TypeAlias = Annotated[float, Is[lambda x: 0 < x < 1]]
+str_is_fit_or_test: TypeAlias = Annotated[
+    str,
+    Is[lambda x: x in ("fit", "test")],
+]
 
 
 @store(name="mnist", group="datamodule/config")
@@ -80,7 +83,7 @@ class MNISTDataModule(BaseDataModule):
 
     def setup(
         self: "MNISTDataModule",
-        stage: str_fit_test,
+        stage: str_is_fit_or_test,
     ) -> None:
         """Creates the train/val/test datasets.
 
