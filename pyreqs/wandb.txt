@@ -11,7 +11,7 @@ protobuf==3.20.3
 #####################################
 # Package full name: Weights & Biases
 # Quickstart link: https://docs.wandb.ai/quickstart
-wandb==0.15.4
+wandb==0.15.5
 
 #####################################################################
 # Package full name: Weights & Biases - Offline Synchronization Hooks
