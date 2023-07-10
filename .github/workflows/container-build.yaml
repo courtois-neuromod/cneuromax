@@ -7,9 +7,9 @@ on:
     paths:
       - containers/**
       - pyreqs/**
-      - !pyreqs/documentation.txt
-      - !pyreqs/hydra_dev.txt
-      - !pyreqs/testing.txt
+      - '!pyreqs/documentation.txt'
+      - '!pyreqs/hydra_dev.txt'
+      - '!pyreqs/testing.txt'
       - .github/workflows/container-build.yaml
 
 jobs:
