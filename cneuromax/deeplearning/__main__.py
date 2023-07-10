@@ -4,9 +4,8 @@ import os
 from pathlib import Path
 
 import hydra
-from omegaconf import DictConfig, OmegaConf
-
 import wandb
+from omegaconf import DictConfig, OmegaConf
 
 
 @hydra.main(
