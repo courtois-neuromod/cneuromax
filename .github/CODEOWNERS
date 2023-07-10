@@ -1,11 +1,2 @@
-# Require MaximilienLC to review all pull requests (for now).
-# Comment out when things get going.
-* @maximilienlc
-
 # Require MaximilienLC to review all changes to .github/ files.
-# Probably keep this for a while.
 .github/ @maximilienlc
-
-# Require MaximilienLC to review all changes to python test files.
-# Probably keep this for a while.
-*_test.py @maximilienlc

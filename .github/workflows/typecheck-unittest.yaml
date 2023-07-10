@@ -6,11 +6,15 @@ on:
     branches: [main]
     paths:
       - cneuromax/**
+      - pyreqs/**
+      - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
   push:
     branches: [main]
     paths:
       - cneuromax/**
+      - pyreqs/**
+      - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
 
 permissions:

@@ -1,4 +1,4 @@
-# CNeuroMAX
+# CNeuroMax
 
 [![container-build-push](
     https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml/badge.svg)](
@@ -27,9 +27,16 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
 cneuromax/
 ├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
 │  └─ *
-├─ cneuromax/                    <-- Contains all of the Machine Learning code and config files
+├─ cneuromax/                   <-- Contains all of the Machine Learning code and config files
 │  ├─ application/              <-- Contains the code to create applications (cozmo inference, etc)
 │  │  └─ *
+│  ├─ common/                   <-- Contains the code common to apps, deep learning and neuroevolution
+│  │  ├─ launcher               <-- Contains the base configs to launch jobs
+│  │  |  └─ *
+|  |  ├─ sweeper                <-- Contains the base configs to run hyperparameter sweeps
+│  │  |  └─ *
+│  │  ├─ fitter.yaml            <-- The config common to all fitting jobs
+|  |  └─ *
 │  ├─ deeplearning/             <-- Contains the Deep Learning code
 │  │  ├─ common/                <-- Contains the code common to more than one DL experiment
 │  │  │  ├─ datamodule/         <-- Contains common Lightning DataModules
@@ -38,17 +45,26 @@ cneuromax/
 │  │  │  ├─ litmodule/          <-- Contains common Lightning Modules
 │  │  │  │  ├─ base.py          <-- The base Lightning Module to build upon
 │  │  │  │  └─ *
-│  │  │  └─ nnmodule/           <-- Contains common PyTorch Modules
-│  │  │     └─ *
-│  │  ├─ experiment/           <-- Contains the DL experiments
-│  │  │  ├─ my_new_experiment/  <-- ! Your new DL experiment folder
+│  │  │  ├─ logger/             <-- Contains common Lightning Logger configs
+│  │  │  │  └─ *
+│  │  │  ├─ lrscheduler/        <-- Contains common PyTorch Learning Rate Scheduler configs
+│  │  │  │  └─ *
+│  │  │  ├─ nnmodule/           <-- Contains common PyTorch Modules
+│  │  │  │  └─ *
+│  │  │  ├─ optimizer/          <-- Contains common PyTorch Optimizer configs
+│  │  │  │  └─ *
+│  │  │  ├─ trainer/            <-- Contains common Lightning Trainer configs
+│  │  │  │  └─ *
+|  |  |  └─ *
+│  │  ├─ experiment/            <-- Contains the Deep Learning experiments
+│  │  │  ├─ my_new_experiment/  <-- ! Your new Deep Learning experiment folder
 │  │  │  │  ├─ datamodule.py    <-- ! Your Lightning DataModule
 │  │  │  │  ├─ litmodule.py     <-- ! Your Lightning Module
 │  │  │  │  ├─ nnmodule.py      <-- ! Your PyTorch Module
-│  │  │  │  ├─ config.yaml      <-- ! Your Hydra configuration file
+│  │  │  │  ├─ test_0.yaml      <-- ! One of your Hydra configuration file
 │  │  │  │  └─ *
 │  │  │  └─ *
-│  │  ├─ fitter.py              <-- Contains the code to fit (train/val/test) a DL model
+│  │  ├─ __main__.py            <-- Main file to launch Deep Learning experiments
 │  │  └─ *
 │  └─ neuroevolution/           <-- Contains the code for Neuroevolution models
 │     └─ *

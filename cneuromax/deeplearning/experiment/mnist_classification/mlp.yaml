@@ -6,15 +6,15 @@ defaults:
 
 datamodule:
   _target_:
-    cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationDataModule
+    cneuromax.deeplearning.experiment.mnist_classification.MNISTClassificationDataModule
   config:
     _target_:
-      cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationDataModuleConfig
+      cneuromax.deeplearning.experiment.mnist_classification.MNISTClassificationDataModuleConfig
     val_percentage: 0.1
 
 litmodule:
   _target_:
-    cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationLitModule
+    cneuromax.deeplearning.experiment.mnist_classification.MNISTClassificationLitModule
   nnmodule:
     config:
       dims: [784, 128, 10]
@@ -22,3 +22,6 @@ litmodule:
 logger:
   name: mlp
   project: mnist_classification
+  entity: maximilienlc
+
+save_path: lightning_ckpt

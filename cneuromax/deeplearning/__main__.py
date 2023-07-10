@@ -4,13 +4,14 @@ import os
 from pathlib import Path
 
 import hydra
-import wandb
 from omegaconf import DictConfig, OmegaConf
+
+import wandb
 
 
 @hydra.main(
     version_base=None,
-    config_name="config",
+    config_name="dlfitter",
     config_path="common",
 )
 def run(config: DictConfig) -> float:
