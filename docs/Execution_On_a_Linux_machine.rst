@@ -7,11 +7,11 @@ Run a python script
 .. code-block:: console
 
     $ # Example of a simple MNIST training run
-    $ podman run -e CNEUROML_PATH=${CNEUROML_PATH} \
-                 -e PYTHONPATH=${PYTHONPATH}:${CNEUROML_PATH} \
-                 -v ${CNEUROML_PATH}:${CNEUROML_PATH} \
-                 -w ${CNEUROML_PATH} cneuroml:deps_only-all_deps-latest \
-                 python3 -m cneuroml.dl task=visual/tabular/classification/mnist/mlp
+    $ podman run -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
+                 -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
+                 -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
+                 -w ${CNEUROMAX_PATH} cneuromax:deps_only-all_deps-latest \
+                 python3 -m cneuromax.dl task=visual/tabular/classification/mnist/mlp
 
 Run a notebook
 --------------
@@ -27,8 +27,8 @@ Run the lab.
 
 .. code-block:: console
 
-    $ podman run -e CNEUROML_PATH=${CNEUROML_PATH} \
-                 -e PYTHONPATH=${PYTHONPATH}:${CNEUROML_PATH} \
-                 -v ${CNEUROML_PATH}:${CNEUROML_PATH} \
-                 -w ${CNEUROML_PATH} cneuroml:deps_only-all_deps-latest \
+    $ podman run -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
+                 -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
+                 -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
+                 -w ${CNEUROMAX_PATH} cneuromax:deps_only-all_deps-latest \
                  jupyter-lab --allow-root --ip 0.0.0.0 --port 8888

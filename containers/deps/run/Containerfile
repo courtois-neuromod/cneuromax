@@ -2,7 +2,7 @@
 # ~ CUDA + cuDNN on Ubuntu ~ #
 FROM nvcr.io/nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 
-# Prevents `apt install opencv-python` from prompting geographical details
+# Prevents `apt install python3-opencv` from prompting geographical details
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Prevents Python from creating __pycache__ and .pyc files in project folder
@@ -14,10 +14,11 @@ RUN apt update && apt install -y \
     libopenmpi-dev \
     # UCX for InfiniBand
     libucx0 \
-    # Python
+    # Python dev version to get header files for mpi4py
     python3-dev \
+    # Python package manager
     python3-pip \
-    # OpenCV requires system packages, best to install through apt
+    # OpenCV requires system packages, best to install through Ubuntu
     python3-opencv \
     # GitHub packages
     git \
@@ -27,10 +28,10 @@ RUN apt update && apt install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python packages
-ADD pyproject.toml /cneuroml/pyproject.toml
-ADD cneuroml /cneuroml/cneuroml
-ADD pyreqs /cneuroml/pyreqs
+ADD pyproject.toml /cneuromax/pyproject.toml
+ADD cneuromax /cneuromax/cneuromax
+ADD pyreqs /cneuromax/pyreqs
 
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -e cneuroml/.[run] \
-    && pip uninstall -y cneuroml
+    && pip install --no-cache-dir -e cneuromax/.[run] \
+    && pip uninstall -y cneuromax

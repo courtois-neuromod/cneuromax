@@ -1,0 +1,6 @@
+# Packages required to run the Neuroevolution component of the cneuromax library
+
+###################################
+# Package full name: MPI for Python
+# Quickstart links: https://mpi4py.readthedocs.io/en/stable/tutorial.html#running-python-scripts-with-mpi
+mpi4py==3.1.4

@@ -1,36 +1,36 @@
-# CNeuroML
+# CNeuroMAX
 
 [![container-build-push](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/container-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/container-build-push.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml/badge.svg)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml)
 [![docs-build-push](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/docs-build-push.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml/badge.svg)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml)
 [![format-lint](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/format-lint.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml/badge.svg?event=push)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml)
 [![typecheck-unittest](
-    https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuroml/actions/workflows/typecheck-unittest.yaml)
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml)
 [![codecov](
-    https://codecov.io/gh/courtois-neuromod/cneuroml/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
-        https://codecov.io/gh/courtois-neuromod/cneuroml)
+    https://codecov.io/gh/courtois-neuromod/cneuromax/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
+        https://codecov.io/gh/courtois-neuromod/cneuromax)
 [![code style: black](
     https://img.shields.io/badge/code%20style-black-000000.svg)](
         https://github.com/psf/black)
 
-Full documentation available at [https://courtois-neuromod.github.io/cneuroml](
-    https://courtois-neuromod.github.io/cneuroml/).
+Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
+    https://courtois-neuromod.github.io/cneuromax/).
 
 
 ```
-cneuroml/
+cneuromax/
 ├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
 │  └─ *
-├─ cneuroml/                    <-- Contains all of the Machine Learning code and config files
-│  ├─ app/                      <-- Contains the code to create applications (cozmo inference, etc)
+├─ cneuromax/                    <-- Contains all of the Machine Learning code and config files
+│  ├─ application/              <-- Contains the code to create applications (cozmo inference, etc)
 │  │  └─ *
-│  ├─ dl/                       <-- Contains the Deep Learning code
+│  ├─ deeplearning/             <-- Contains the Deep Learning code
 │  │  ├─ common/                <-- Contains the code common to more than one DL experiment
 │  │  │  ├─ datamodule/         <-- Contains common Lightning DataModules
 │  │  │  │  ├─ base.py          <-- The base Lightning DataModule to build upon
@@ -40,7 +40,7 @@ cneuroml/
 │  │  │  │  └─ *
 │  │  │  └─ nnmodule/           <-- Contains common PyTorch Modules
 │  │  │     └─ *
-│  │  ├─ experiments/           <-- Contains the DL experiments
+│  │  ├─ experiment/           <-- Contains the DL experiments
 │  │  │  ├─ my_new_experiment/  <-- ! Your new DL experiment folder
 │  │  │  │  ├─ datamodule.py    <-- ! Your Lightning DataModule
 │  │  │  │  ├─ litmodule.py     <-- ! Your Lightning Module
@@ -48,8 +48,9 @@ cneuroml/
 │  │  │  │  ├─ config.yaml      <-- ! Your Hydra configuration file
 │  │  │  │  └─ *
 │  │  │  └─ *
+│  │  ├─ fitter.py              <-- Contains the code to fit (train/val/test) a DL model
 │  │  └─ *
-│  └─ ne/                       <-- Contains the code for Neuroevolution models
+│  └─ neuroevolution/           <-- Contains the code for Neuroevolution models
 │     └─ *
 ├─ containers/                  <-- Contains the Containerfiles to build the Podman/Docker images
 │  └─ *

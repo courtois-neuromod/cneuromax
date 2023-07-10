@@ -15,7 +15,7 @@ Clone the repository.
 
 .. code-block:: console
 
-    $ git clone git@github.com:courtois-neuromod/cneuroml.git
+    $ git clone git@github.com:courtois-neuromod/cneuromax.git
 
 If you haven't already, enable ``autoSetupRemote`` to not have to specify
 a ``-u origin <BRANCH_NAME>`` flag when pushing/pulling to the repository.
@@ -39,11 +39,11 @@ If not, you can update it with the following command.
         sudo apt update && \
         sudo apt install -y git
 
-Define a persisting ``CNEUROML_PATH`` user-variable on your system.
+Define a persisting ``CNEUROMAX_PATH`` user-variable on your system.
 
 .. code-block:: console
 
-    $ echo -e "\nCNEUROML_PATH=${PWD}/cneuroml" >> ~/.bashrc && source ~/.bashrc
+    $ echo -e "\nexport CNEUROMAX_PATH=${PWD}/cneuromax" >> ~/.bashrc && source ~/.bashrc
 
 You can now move on to either the Linux or Slurm specific steps.
 
@@ -51,4 +51,5 @@ You can now move on to either the Linux or Slurm specific steps.
 
     If you plan to contribute rather than run the library on this machine,
     you can skip to
-    `Contribution <https://courtois-neuromod.github.io/cneuroml/Contribution.html>`_
+    `Contribution
+    <https://courtois-neuromod.github.io/cneuromax/Contribution.html>`_.

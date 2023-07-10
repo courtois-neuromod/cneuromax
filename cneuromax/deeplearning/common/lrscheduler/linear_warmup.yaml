@@ -1,0 +1,7 @@
+defaults:
+  - base
+  - _self_
+
+# https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.get_constant_schedule_with_warmup
+_target_: transformers.get_constant_schedule_with_warmup
+num_warmup_steps: 0

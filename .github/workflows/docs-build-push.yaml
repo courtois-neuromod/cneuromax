@@ -1,4 +1,4 @@
-# Build the Sphinx documentation & push it to GitHub Pages
+# Builds the Sphinx documentation & push it to GitHub Pages
 name: Docs Build & Push
 
 on:
@@ -6,7 +6,7 @@ on:
     branches: [main]
     paths:
       - docs/**
-      - cneuroml/**
+      - cneuromax/**
       - .github/workflows/docs-build-push.yaml
 
 jobs:
@@ -17,8 +17,10 @@ jobs:
         id: build-docs
         uses: sphinx-notes/pages@v3
         with:
-          pyproject_extras: null
           publish: false
+          pyproject_extras: null
+          requirements_path: ./pyreqs/documentation.txt
+          sphinx_version: null
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

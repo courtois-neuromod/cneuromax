@@ -1,0 +1,10 @@
+# https://hydra.cc/docs/plugins/submitit_launcher/
+_target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.LocalLauncher
+cpus_per_task: ${num_cpus_per_task}
+gpus_per_node: ${num_gpus_per_node}
+mem_gb: ${num_mem_gb}
+name: ${hydra.job.name}
+nodes: ${num_nodes}
+submitit_folder: ${hydra.sweep.dir}/.submitit/%j
+tasks_per_node: ${num_tasks_per_node}
+timeout_min: ${num_mins}

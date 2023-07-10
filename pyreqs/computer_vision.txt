@@ -1,0 +1,6 @@
+# Packages required to run the Deep Learning Computer Vision component of the cneuromax library
+
+############################
+# Package full name: PyTorch
+# Quickstart link: https://pytorch.org/vision/stable/index.html
+torchvision==0.15.2

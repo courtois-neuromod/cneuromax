@@ -1,0 +1,15 @@
+hydra:
+  job:
+    chdir: true
+
+data_dir: ./data
+device: cpu
+load_path: null
+load_path_hpo: null
+num_cpus_per_task: 1
+num_gpus_per_node: 0
+num_mem_gb: 4
+num_mins: 60
+num_nodes: 1
+num_tasks_per_node: 1
+save_path: null

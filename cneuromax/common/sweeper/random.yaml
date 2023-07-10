@@ -1,0 +1,15 @@
+# params:
+#   a: "uniform(0, 1)"
+#   b: "uniform(0, 1)"
+
+# experiment:
+#   name: 'experiment'
+#   version: '1'
+
+# algorithm:
+#   type: random
+#   config:
+#     seed: 1
+
+# worker:
+#   n_workers: -1

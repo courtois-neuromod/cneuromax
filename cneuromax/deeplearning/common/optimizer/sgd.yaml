@@ -1,0 +1,7 @@
+defaults:
+  - base
+  - _self_
+
+# https://pytorch.org/docs/stable/generated/torch.optim.SGD
+_target_: torch.optim.SGD
+momentum: 0

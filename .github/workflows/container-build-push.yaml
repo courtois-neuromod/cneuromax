@@ -1,4 +1,4 @@
-# Build the container image with full dependencies & push it to the registry
+# Builds the container image with run dependencies & push it to the registry
 name: Container Build & Push
 
 on:
@@ -7,6 +7,9 @@ on:
     paths:
       - containers/**
       - pyreqs/**
+      - '!pyreqs/documentation.txt'
+      - '!pyreqs/hydra_dev.txt'
+      - '!pyreqs/testing.txt'
       - .github/workflows/container-build-push.yaml
 
 env:
@@ -35,4 +38,4 @@ jobs:
           context: .
           file: containers/deps/run/Containerfile
           push: true
-          tags: maximilienlc/cneuroml:deps-run-latest
+          tags: maximilienlc/cneuromax:deps-run-latest

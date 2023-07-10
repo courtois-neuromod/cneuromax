@@ -1,7 +1,0 @@
-# Packages required to run Hyperparameter Optimization
-
-#########################################
-# Package full name : Hydra Orion Sweeper
-# Quickstart link : https://epistimio.github.io/hydra_orion_sweeper
-#                   https://orion.readthedocs.io
-hydra-orion-sweeper==1.6.3

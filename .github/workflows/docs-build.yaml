@@ -1,4 +1,4 @@
-# Build the Sphinx documentation
+# Builds the Sphinx documentation
 name: Docs Build
 
 on:
@@ -6,7 +6,8 @@ on:
     branches: [main]
     paths:
       - docs/**
-      - cneuroml/**
+      - cneuromax/**
+      - pyreqs/documentation.txt
       - .github/workflows/docs-build.yaml
 
 jobs:
@@ -16,5 +17,7 @@ jobs:
       - name: Build the documentation
         uses: sphinx-notes/pages@v3
         with:
-          pyproject_extras: null
           publish: false
+          pyproject_extras: null
+          requirements_path: ./pyreqs/documentation.txt
+          sphinx_version: null
