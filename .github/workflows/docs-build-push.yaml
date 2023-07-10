@@ -3,7 +3,7 @@ name: Docs Build & Push
 
 on:
   push:
-    branches: [main, add_mnist_example]
+    branches: [main]
     paths:
       - docs/**
       - cneuromax/**

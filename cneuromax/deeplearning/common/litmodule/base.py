@@ -2,10 +2,10 @@
 
 from abc import ABCMeta
 from functools import partial
-from typing import final
+from typing import Any, final
 
 from beartype import beartype as typechecker
-from jaxtyping import Float
+from jaxtyping import Num
 from lightning.pytorch import LightningModule
 from torch import Tensor, nn
 from torch.optim import Optimizer
@@ -20,14 +20,14 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     Attributes:
         nnmodule (``nn.Module``): .
         optimizer (``Optimizer``): .
-        scheduler (``LRScheduler``): .
+        lrscheduler (``LRScheduler``): .
     """
 
     def __init__(
         self: "BaseLitModule",
         nnmodule: nn.Module,
-        optimizer_partial: partial[Optimizer],
-        scheduler_partial: partial[LRScheduler],
+        optimizer: partial[Optimizer],
+        lrscheduler: partial[LRScheduler],
     ) -> None:
         """.
 
@@ -36,22 +36,24 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
 
         Args:
             nnmodule: A PyTorch ``nn.Module`` instance.
-            optimizer_partial: A PyTorch ``Optimizer`` partial function.
-            scheduler_partial: A PyTorch ``LRScheduler`` partial
+            optimizer: A PyTorch ``Optimizer`` partial function.
+            lrscheduler: A PyTorch ``LRScheduler`` partial
                 function.
         """
         super().__init__()
 
         self.nnmodule = nnmodule
-        self.optimizer = optimizer_partial(params=self.parameters())
-        self.scheduler = scheduler_partial(optimizer=self.optimizer)
+        self.optimizer = optimizer(params=self.parameters())
+        self.lrscheduler = lrscheduler(optimizer=self.optimizer)
 
     @final
     @typechecker
     def training_step(
         self: "BaseLitModule",
-        batch: Float[Tensor, " ..."] | tuple[Float[Tensor, " ..."], ...],
-    ) -> Float[Tensor, " ..."]:
+        batch: Num[Tensor, " ..."]
+        | tuple[Num[Tensor, " ..."], ...]
+        | list[Num[Tensor, " ..."]],
+    ) -> Num[Tensor, " ..."]:
         """.
 
         Args:
@@ -70,6 +72,9 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         if not (hasattr(self, "step") and callable(self.step)):
             raise AttributeError
 
+        if isinstance(batch, list):
+            batch = tuple(batch)
+
         loss = self.step(batch, "train")
         self.log("train/loss", loss)
 
@@ -79,12 +84,18 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @typechecker
     def validation_step(
         self: "BaseLitModule",
-        batch: Float[Tensor, " ..."] | tuple[Float[Tensor, " ..."], ...],
-    ) -> Float[Tensor, " ..."]:
+        batch: Num[Tensor, " ..."]
+        | tuple[Num[Tensor, " ..."], ...]
+        | list[Num[Tensor, " ..."]],
+        *args: Any,  # noqa: ANN401, ARG002
+        **kwargs: Any,  # noqa: ANN401, ARG002
+    ) -> Num[Tensor, " ..."]:
         """.
 
         Args:
             batch: .
+            *args: .
+            **kwargs: .
 
         Returns:
             The loss value(s).
@@ -96,6 +107,9 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         if not (hasattr(self, "step") and callable(self.step)):
             raise AttributeError
 
+        if isinstance(batch, list):
+            batch = tuple(batch)
+
         loss = self.step(batch, "val")
         self.log("val/loss", loss)
 
@@ -105,8 +119,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @typechecker
     def test_step(
         self: "BaseLitModule",
-        batch: Float[Tensor, " ..."] | tuple[Float[Tensor, " ..."], ...],
-    ) -> Float[Tensor, " ..."]:
+        batch: Num[Tensor, " ..."]
+        | tuple[Num[Tensor, " ..."], ...]
+        | list[Num[Tensor, " ..."]],
+    ) -> Num[Tensor, " ..."]:
         """.
 
         Args:
@@ -122,6 +138,9 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         if not (hasattr(self, "step") and callable(self.step)):
             raise AttributeError
 
+        if isinstance(batch, list):
+            batch = tuple(batch)
+
         loss = self.step(batch, "test")
         self.log("test/loss", loss)
 
@@ -130,7 +149,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @final
     def configure_optimizers(
         self: "BaseLitModule",
-    ) -> tuple[list[Optimizer], list[LRScheduler]]:
+    ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
         """.
 
         Returns:
@@ -138,4 +157,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             ``LRScheduler`` instance attributes (each nested in a
             list).
         """
-        return [self.optimizer], [self.scheduler]
+        return [self.optimizer], [
+            {
+                "scheduler": self.lrscheduler,
+                "interval": "step",
+                "frequency": 1,
+            },
+        ]

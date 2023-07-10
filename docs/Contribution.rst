@@ -226,6 +226,7 @@ commands.
     $ git pull
     $ git checkout <YOUR_BRANCH_NAME>
     $ git rebase main
+    $ git push --force
     $ git stash pop # Optional, if you have uncommited changes
 
 You can now go back to run the previous code block (you might need to add the

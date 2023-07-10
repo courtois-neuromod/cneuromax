@@ -1,5 +1,4 @@
-"""Lightning Data Modules."""
-
+"""."""
 
 from cneuromax.deeplearning.common.datamodule.base import (
     BaseDataModule,

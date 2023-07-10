@@ -10,8 +10,3 @@ hydra-orion-sweeper==1.6.3
 # Package full name : Hydra Submtit Launcher
 # Quickstart link : https://hydra.cc/docs/plugins/submitit_launcher/
 hydra-submitit-launcher==1.2.0
-
-###############################
-# Package full name : Hydra Zen
-# Quickstart link : https://mit-ll-responsible-ai.github.io/hydra-zen/
-hydra-zen==0.10.1

@@ -3,28 +3,25 @@
 from dataclasses import dataclass
 
 from einops import rearrange
-from hydra_zen import store
 from jaxtyping import Float
 from torch import Tensor, nn
 
+from cneuromax.common.utils.annotations import float_is_ge0_le1, int_is_gt0
 
-@store(name="mlp", group="nnmodule/config")
+
 @dataclass
 class MLPConfig:
     """.
 
     Attributes:
         dims: List of dimensions for each layer.
-        activation_fn: Activation function.
         p_dropout: Dropout probability.
     """
 
-    dims: list[int]
-    activation_fn: type[nn.Module] = nn.ReLU
-    p_dropout: float = 0.0
+    dims: list[int_is_gt0] | tuple[int_is_gt0]
+    p_dropout: float_is_ge0_le1
 
 
-@store(name="mlp", group="nnmodule")
 class MLP(nn.Module):
     """Multi-layer perceptron (MLP).
 
@@ -32,19 +29,21 @@ class MLP(nn.Module):
     dropout probability.
 
     Attributes:
-        config: The `MLPConfig` instance.
         model: The MLP model.
     """
 
-    def __init__(self: "MLP", config: MLPConfig) -> None:
-        """Calls parent constructor, stores config & initializes model.
+    def __init__(
+        self: "MLP",
+        config: MLPConfig,
+        activation_fn: nn.Module,
+    ) -> None:
+        """Calls parent constructor, initializes model.
 
         Args:
             config: .
+            activation_fn: .
         """
         super().__init__()
-
-        self.config = config
 
         self.model = nn.Sequential()
 
@@ -54,7 +53,7 @@ class MLP(nn.Module):
                 nn.Linear(config.dims[i], config.dims[i + 1]),
             )
             if i < len(config.dims) - 2:
-                self.model.add_module(f"act_{i}", config.activation_fn())
+                self.model.add_module(f"act_{i}", activation_fn)
                 if config.p_dropout:  # > 0.0:
                     self.model.add_module(
                         f"drop_{i}",

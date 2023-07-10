@@ -18,3 +18,4 @@
 **/.vscode/
 **/wandb/
 WANDB_KEY.txt
+.mignore

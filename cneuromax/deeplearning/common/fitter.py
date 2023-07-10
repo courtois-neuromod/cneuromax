@@ -10,13 +10,13 @@ from torch.distributed import ReduceOp
 
 from cneuromax.deeplearning.common.utils.lightning import (
     InitOptimParamsCheckpointConnector,
-    find_good_batch_size,
     find_good_num_workers,
+    find_good_per_device_batch_size,
 )
 
 if TYPE_CHECKING:
+    from lightning.pytorch import Trainer
     from lightning.pytorch.loggers.wandb import WandbLogger
-    from lightning.pytorch.trainer import Trainer
 
     from cneuromax.deeplearning.common.datamodule import BaseDataModule
     from cneuromax.deeplearning.common.litmodule import BaseLitModule
@@ -24,7 +24,21 @@ if TYPE_CHECKING:
 TORCH_COMPILE_MINIMUM_CUDA_VERSION = 7
 
 
-class Fitter:
+# @dataclass
+# class DeepLearningFitterConfig(FitterConfig):
+#     """.
+
+#     Attributes:
+#         trainer: .
+#     """
+
+#     datamodule: BaseDataModule
+#     litmodule: BaseLitModule
+#     trainer: Trainer
+#     logger: WandbLogger
+
+
+class DeepLearningFitter:
     """Deep Learning Fitter.
 
     This class is the main entry point of the Deep Learning module. It
@@ -35,14 +49,17 @@ class Fitter:
     ``config.num_gpus_per_node`` processes.
 
     Attributes:
-        config (``DictConfig``): The Global Hydra configuration.
+        config (``DeepLearningFitterConfig``): .
         logger (``WandbLogger``): .
         trainer (``Trainer``): .
         litmodule (``BaseLitModule``): .
         datamodule (``BaseDataModule``): .
     """
 
-    def __init__(self: "Fitter", config: DictConfig) -> None:
+    def __init__(
+        self: "DeepLearningFitter",
+        config: DictConfig,
+    ) -> None:
         """.
 
         Transforms the Hydra configuration instructions into Lightning
@@ -52,13 +69,13 @@ class Fitter:
         Args:
             config: The Hydra configuration object.
         """
-        self.config = config
+        self.config: DictConfig = config
 
         self.instantiate_lightning_objects()
         self.set_batch_size_and_num_workers()
         self.set_checkpoint_path()
 
-    def instantiate_lightning_objects(self: "Fitter") -> None:
+    def instantiate_lightning_objects(self: "DeepLearningFitter") -> None:
         """.
 
         Instantiates:
@@ -98,7 +115,7 @@ class Fitter:
             self.config.datamodule,
         )
 
-    def set_batch_size_and_num_workers(self: "Fitter") -> None:
+    def set_batch_size_and_num_workers(self: "DeepLearningFitter") -> None:
         """.
 
         If starting a new HPO run, finds and sets "good" ``batch_size``
@@ -114,20 +131,22 @@ class Fitter:
         good ``batch_size`` and ``num_workers`` parameters.
         """
         if not self.config.load_path_hpo:
-            this_gpu_good_batch_size = find_good_batch_size(self.config)
-            this_gpu_good_num_workers = find_good_num_workers(
+            this_gpu_good_batch_size: int = find_good_per_device_batch_size(
+                self.config,
+            )
+            this_gpu_good_num_workers: int = find_good_num_workers(
                 self.config,
                 this_gpu_good_batch_size,
             )
 
-        batch_size = int(
+        batch_size: int = int(
             self.trainer.strategy.reduce(
                 torch.tensor(this_gpu_good_batch_size),
                 reduce_op=ReduceOp.MIN,  # type: ignore [arg-type]
             ),
         )
 
-        num_workers = int(
+        num_workers: int = int(
             self.trainer.strategy.reduce(
                 torch.tensor(this_gpu_good_num_workers),
                 reduce_op=ReduceOp.MAX,  # type: ignore [arg-type]
@@ -137,7 +156,7 @@ class Fitter:
         self.datamodule.config.per_device_batch_size = batch_size
         self.datamodule.config.per_device_num_workers = num_workers
 
-    def set_checkpoint_path(self: "Fitter") -> None:
+    def set_checkpoint_path(self: "DeepLearningFitter") -> None:
         """Sets the path to the checkpoint to resume training from.
 
         Three cases are considered:
@@ -154,6 +173,7 @@ class Fitter:
         are set, we are starting a new training run. In this case, we
         set the checkpoint path to ``None``.
         """
+        self.ckpt_path: str | None
         if self.config.load_path_hpo:
             self.ckpt_path = self.config.load_path_hpo
             self.trainer._checkpoint_connector = (
@@ -166,7 +186,7 @@ class Fitter:
         else:
             self.ckpt_path = None
 
-    def fit(self: "Fitter") -> float:
+    def fit(self: "DeepLearningFitter") -> float:
         """Fitting method.
 
         Trains (or resumes training) the model, saves a checkpoint and
@@ -180,6 +200,9 @@ class Fitter:
             datamodule=self.datamodule,
             ckpt_path=self.ckpt_path,
         )
+
+        if not self.config.save_path:
+            raise ValueError
 
         self.trainer.save_checkpoint(self.config.save_path)
 

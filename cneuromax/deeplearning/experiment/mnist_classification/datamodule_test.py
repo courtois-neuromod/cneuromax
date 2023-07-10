@@ -7,13 +7,13 @@ from torch.utils.data import Subset
 from torchvision.datasets import MNIST
 
 from cneuromax.deeplearning.experiment.mnist_classification import (
-    MNISTDataModule,
-    MNISTDataModuleConfig,
+    MNISTClassificationDataModule,
+    MNISTClassificationDataModuleConfig,
 )
 
 
 @pytest.fixture()
-def datamodule(tmp_path: Path) -> MNISTDataModule:
+def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
     """.
 
     Args:
@@ -22,10 +22,18 @@ def datamodule(tmp_path: Path) -> MNISTDataModule:
     Returns:
         A generic ``MNISTDataModule`` instance.
     """
-    return MNISTDataModule(MNISTDataModuleConfig(data_dir=str(tmp_path) + "/"))
+    return MNISTClassificationDataModule(
+        MNISTClassificationDataModuleConfig(
+            data_dir=str(tmp_path) + "/",
+            per_device_batch_size=1,
+            per_device_num_workers=0,
+            device_type="cpu",
+            val_percentage=0.1,
+        ),
+    )
 
 
-def test_setup_fit(datamodule: MNISTDataModule) -> None:
+def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
     """.
 
     Args:
@@ -37,11 +45,11 @@ def test_setup_fit(datamodule: MNISTDataModule) -> None:
     assert isinstance(datamodule.dataset.train, Subset)
     assert isinstance(datamodule.dataset.val, Subset)
 
-    assert len(datamodule.dataset.train.indices) == 54000
-    assert len(datamodule.dataset.val.indices) == 6000
+    assert len(datamodule.dataset.train) == 54000
+    assert len(datamodule.dataset.val) == 6000
 
 
-def test_setup_test(datamodule: MNISTDataModule) -> None:
+def test_setup_test(datamodule: MNISTClassificationDataModule) -> None:
     """.
 
     Args:

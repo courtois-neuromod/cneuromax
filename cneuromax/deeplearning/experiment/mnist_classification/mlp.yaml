@@ -1,12 +1,24 @@
 # @package _global_
 
 defaults:
-  - datamodule: mnist
-  - litmodule.nnmodule: mlp
-  - trainer: cpu
+  - /nnmodule@litmodule.nnmodule: mlp
+  - _self_
+
+datamodule:
+  _target_:
+    cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationDataModule
+  config:
+    _target_:
+      cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationDataModuleConfig
+    val_percentage: 0.1
 
 litmodule:
-  _target_: "cneuromax.deeplearning.experiment.mnist_classification.\
-    litmodule.MNISTClassificationLitModule"
+  _target_:
+    cneuromax.deeplearning.experiment.mnist_classification.modules.MNISTClassificationLitModule
   nnmodule:
-    dims: [784, 10]
+    config:
+      dims: [784, 128, 10]
+
+logger:
+  name: mlp
+  project: mnist_classification

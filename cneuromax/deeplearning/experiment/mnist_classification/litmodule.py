@@ -1,5 +1,6 @@
 """."""
 
+from dataclasses import dataclass
 from functools import partial
 
 from beartype import beartype as typechecker
@@ -10,7 +11,19 @@ from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.deeplearning.common.litmodule.classification import (
     BaseClassificationLitModule,
+    BaseClassificationLitModuleConfig,
 )
+
+
+@dataclass
+class MNISTClassificationLitModuleConfig(BaseClassificationLitModuleConfig):
+    """.
+
+    Attributes:
+        num_classes: .
+    """
+
+    num_classes: int = 10
 
 
 class MNISTClassificationLitModule(BaseClassificationLitModule):
@@ -26,22 +39,22 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
     def __init__(
         self: "MNISTClassificationLitModule",
         nnmodule: nn.Module,
-        optimizer_partial: partial[Optimizer],
-        scheduler_partial: partial[LRScheduler],
+        optimizer: partial[Optimizer],
+        lrscheduler: partial[LRScheduler],
     ) -> None:
         """Calls parent constructor.
 
         Args:
             nnmodule: A PyTorch ``nn.Module`` instance.
-            optimizer_partial: A PyTorch ``Optimizer`` partial function.
-            scheduler_partial: A PyTorch ``LRScheduler`` partial
+            optimizer: A PyTorch ``Optimizer`` partial function.
+            lrscheduler: A PyTorch ``LRScheduler`` partial
                 function.
         """
         super().__init__(
             nnmodule,
-            optimizer_partial,
-            scheduler_partial,
-            num_classes=10,
+            optimizer,
+            lrscheduler,
+            config=MNISTClassificationLitModuleConfig(),
         )
 
     @typechecker

@@ -2,22 +2,19 @@
 
 from abc import ABCMeta
 from dataclasses import dataclass
-from typing import Annotated, TypeAlias, final
+from typing import final
 
-from beartype.vale import Is
-from hydra_zen import store
 from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-str_is_per_device_batch_size: TypeAlias = Annotated[
-    str,
-    Is[lambda x: x in ("per_device_batch_size")],
-]
-"""Runtime typing annotation for a string in
-``("per_device_batch_size")``."""
-int_is_gt0: TypeAlias = Annotated[int, Is[lambda x: x > 0]]
-"""Runtime typing annotation for an integer greater than ``0``."""
+from cneuromax.common.utils.annotations import (
+    int_is_ge0,
+    int_is_gt0,
+    non_empty_str,
+    str_is_cpu_or_gpu,
+    str_is_per_device_batch_size,
+)
 
 
 @dataclass
@@ -37,7 +34,6 @@ class BaseDataset:
     predict: Dataset[Tensor] | None = None
 
 
-@store(name="base", group="datamodule/config")
 @dataclass
 class BaseDataModuleConfig:
     """.
@@ -52,13 +48,12 @@ class BaseDataModuleConfig:
         device_type: The compute device type to use.
     """
 
-    data_dir: str = "${data_dir}"
-    per_device_batch_size: Annotated[int, Is[lambda x: x > 0]] = 1
-    per_device_num_workers: Annotated[int, Is[lambda x: x >= 0]] = 0
-    device_type: Annotated[str, Is[lambda x: x in ("cpu", "gpu")]] = "gpu"
+    data_dir: non_empty_str
+    per_device_batch_size: int_is_gt0
+    per_device_num_workers: int_is_ge0
+    device_type: str_is_cpu_or_gpu
 
 
-@store(name="base", group="datamodule")
 class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     """.
 
@@ -86,6 +81,8 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         self.config: BaseDataModuleConfig = config
         self.pin_memory: bool = self.config.device_type == "gpu"
         self.dataset: BaseDataset = BaseDataset()
+        # Attribute required to run Lightning's ``batch_size_finder``.
+        self.batch_size = 0
 
     @final
     def load_state_dict(

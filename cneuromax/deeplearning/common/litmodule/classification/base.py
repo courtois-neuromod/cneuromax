@@ -1,6 +1,7 @@
 """."""
 
 from abc import ABCMeta
+from dataclasses import dataclass
 from functools import partial
 from typing import Literal
 
@@ -16,36 +17,45 @@ from torch.optim.lr_scheduler import LRScheduler
 from cneuromax.deeplearning.common.litmodule import BaseLitModule
 
 
+@dataclass
+class BaseClassificationLitModuleConfig:
+    """.
+
+    Attributes:
+        num_classes: .
+    """
+
+    num_classes: int
+
+
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
     """.
 
     Attributes:
         accuracy (``torchmetrics.Accuracy``): The accuracy metric.
-        nnmodule (``nn.Module``): .
-        optimizer (``Optimizer``): .
-        scheduler (``LRScheduler``): .
+        config (``BaseClassificationLitModuleConfig``): .
     """
 
     def __init__(
         self: "BaseClassificationLitModule",
         nnmodule: nn.Module,
-        optimizer_partial: partial[Optimizer],
-        scheduler_partial: partial[LRScheduler],
-        num_classes: int,
+        optimizer: partial[Optimizer],
+        lrscheduler: partial[LRScheduler],
+        config: BaseClassificationLitModuleConfig,
     ) -> None:
         """Calls parent constructor and creates an accuracy metric.
 
         Args:
             nnmodule: .
-            optimizer_partial: .
-            scheduler_partial: .
-            num_classes: .
+            optimizer: .
+            lrscheduler: .
+            config: .
         """
-        super().__init__(nnmodule, optimizer_partial, scheduler_partial)
-
+        super().__init__(nnmodule, optimizer, lrscheduler)
+        self.config = config
         self.accuracy = torchmetrics.Accuracy(
             task="multiclass",
-            num_classes=num_classes,
+            num_classes=self.config.num_classes,
         )
 
     @typechecker

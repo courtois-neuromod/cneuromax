@@ -1,47 +1,31 @@
 """."""
 
 from dataclasses import dataclass
-from typing import Annotated, TypeAlias
 
-from beartype.vale import Is
-from hydra_zen import store
 from torch.utils.data import random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
 
+from cneuromax.common.utils.annotations import (
+    float_is_ge0_le1,
+    str_is_fit_or_test,
+)
 from cneuromax.deeplearning.common.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
 
-float_is_gt0_lt1: TypeAlias = Annotated[float, Is[lambda x: 0 < x < 1]]
-"""Runtime typing annotation for a float in ``]0, 1[``."""
-str_is_fit_or_test: TypeAlias = Annotated[
-    str,
-    Is[lambda x: x in ("fit", "test")],
-]
-"""Runtime typing annotation for a string in ``("fit", "test")``."""
 
-
-@store(name="mnist", group="datamodule/config")
 @dataclass
-class MNISTDataModuleConfig(BaseDataModuleConfig):
-    """.
+class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
+    """."""
 
-    Attributes:
-        val_percentage: Percentage of the training dataset to use
-            for validation.
-        fit_dataset_mean: .
-        fit_dataset_std: .
-    """
-
-    val_percentage: float_is_gt0_lt1 = 0.1
+    val_percentage: float_is_ge0_le1
     fit_dataset_mean: tuple[float] = (0.1307,)
     fit_dataset_std: tuple[float] = (0.3081,)
 
 
-@store(name="mnist", group="datamodule")
-class MNISTDataModule(BaseDataModule):
+class MNISTClassificationDataModule(BaseDataModule):
     """.
 
     Attributes:
@@ -52,8 +36,8 @@ class MNISTDataModule(BaseDataModule):
     """
 
     def __init__(
-        self: "MNISTDataModule",
-        config: MNISTDataModuleConfig,
+        self: "MNISTClassificationDataModule",
+        config: MNISTClassificationDataModuleConfig,
     ) -> None:
         """.
 
@@ -64,7 +48,7 @@ class MNISTDataModule(BaseDataModule):
             config: .
         """
         super().__init__(config)
-        self.config: MNISTDataModuleConfig
+        self.config: MNISTClassificationDataModuleConfig
         self.train_val_split: tuple[float, float] = (
             1 - self.config.val_percentage,
             self.config.val_percentage,
@@ -79,12 +63,12 @@ class MNISTDataModule(BaseDataModule):
             ],
         )
 
-    def prepare_data(self: "MNISTDataModule") -> None:
+    def prepare_data(self: "MNISTClassificationDataModule") -> None:
         """Downloads the MNIST dataset."""
         MNIST(root=self.config.data_dir, download=True)
 
     def setup(
-        self: "MNISTDataModule",
+        self: "MNISTClassificationDataModule",
         stage: str_is_fit_or_test,
     ) -> None:
         """Creates the train/val/test datasets.

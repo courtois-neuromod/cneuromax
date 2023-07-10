@@ -1,0 +1,4 @@
+_target_: lightning.pytorch.loggers.wandb.WandbLogger
+name: null
+project: null
+entity: cneuroml

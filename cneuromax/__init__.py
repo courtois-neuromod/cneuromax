@@ -1,1 +1,1 @@
-"""The cneuromax library."""
+"""."""

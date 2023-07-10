@@ -1,11 +1,15 @@
 """."""
 
 from cneuromax.deeplearning.experiment.mnist_classification.datamodule import (
-    MNISTDataModule,
-    MNISTDataModuleConfig,
+    MNISTClassificationDataModule,
+    MNISTClassificationDataModuleConfig,
+)
+from cneuromax.deeplearning.experiment.mnist_classification.litmodule import (
+    MNISTClassificationLitModule,
 )
 
 __all__ = [
-    "MNISTDataModule",
-    "MNISTDataModuleConfig",
+    "MNISTClassificationLitModule",
+    "MNISTClassificationDataModule",
+    "MNISTClassificationDataModuleConfig",
 ]
