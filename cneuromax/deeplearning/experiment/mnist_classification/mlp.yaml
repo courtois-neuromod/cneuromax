@@ -22,6 +22,5 @@ litmodule:
 logger:
   name: mlp
   project: mnist_classification
-  entity: maximilienlc
 
 save_path: lightning_ckpt
