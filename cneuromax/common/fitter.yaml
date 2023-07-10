@@ -1,7 +1,3 @@
-hydra:
-  job:
-    chdir: true
-
 data_dir: ./data
 device: cpu
 load_path: null
