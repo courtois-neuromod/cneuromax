@@ -4,7 +4,7 @@
 # Package full name: Black
 # Quickstart link: https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html
 # Note: Black with .ipynb file support
-black[jupyter]==23.3.0
+black[jupyter]==23.7.0
 
 #########################
 # Package full name: Ruff
