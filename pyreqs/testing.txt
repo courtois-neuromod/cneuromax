@@ -9,7 +9,7 @@ black[jupyter]==23.7.0
 #########################
 # Package full name: Ruff
 # Quickstart link: https://beta.ruff.rs/docs/tutorial
-ruff==0.0.277
+ruff==0.0.278
 
 #########################
 # Package full name: Doc8
