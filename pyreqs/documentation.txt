@@ -3,7 +3,7 @@
 ##################################
 # Package full name: Sphinx
 # Quickstart link: https://www.sphinx-doc.org/en/master/
-sphinx==7.0.1
+sphinx==7.2.6
 
 #####################################
 # Package full name: Furo
