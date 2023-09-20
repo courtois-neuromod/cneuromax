@@ -1,0 +1,34 @@
+defaults:
+  - data@vision_data: episodes_vision
+
+datamodule:
+  _target_:
+    cneuromax.deeplearning.experiment.friends_video_transformer.datamodule.FriendsDataModule
+  config:
+    _target_:
+      cneuromax.deeplearning.experiment.friends_video_transformer.datamodule.FriendsDataModuleConfig
+    subject: null
+    episode_list: ${experiment.vision_data.episodes}
+    use_bold: False
+    modalities: [frames]
+    mkv_data_dir: /home/mstlaure/projects/rrg-pbellec/mstlaure/deepgaze_mr/data/friends_s6
+    lazy_loading_dir: /home/mstlaure/projects/rrg-pbellec/mstlaure/multimodal_proj/lazy_loading/friends_frames
+    original_fps: 29.97
+    time_downsample: 2
+    n_chunks: 3
+    resize_dim: 128
+    dtype: float32
+    min_lag: 3
+    max_lag: 5
+    tr: 1.49
+    nifti_data_dir: null
+    mask_path: null
+    mask_is_atlas: False
+    fwhm: null
+    load_confounds_params: null
+
+
+
+
+
+
