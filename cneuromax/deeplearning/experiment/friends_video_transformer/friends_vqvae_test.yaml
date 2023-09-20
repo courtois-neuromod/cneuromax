@@ -1,18 +1,24 @@
+# @package _global_
+
 defaults:
-  - data@vision_data: episodes_test
+  - friends_video_transformer/data@vision_data: episodes_test
 
 datamodule:
   _target_:
-    cneuromax.deeplearning.experiment.friends_video_transformer.datamodule.FriendsDataModule
+    "cneuromax.deeplearning.experiment.friends_video_transformer.\
+    datamodule.FriendsDataModule"
   config:
     _target_:
-      cneuromax.deeplearning.experiment.friends_video_transformer.datamodule.FriendsDataModuleConfig
+      "cneuromax.deeplearning.experiment.friends_video_transformer.\
+      datamodule.FriendsDataModuleConfig"
     subject: null
-    episode_list: ${experiment.vision_data.episodes}
+    episode_list: ${vision_data.episodes}
     use_bold: False
     modalities: [frames]
-    mkv_data_dir: /home/labopb/Documents/Marie/neuromod/cneuromax_dev/stimuli
-    lazy_loading_dir: /home/labopb/Documents/Marie/neuromod/cneuromax_dev/lazy_loading
+    mkv_data_dir: "/home/labopb/Documents/Marie/neuromod/\
+      cneuromax_dev/stimuli"
+    lazy_loading_dir: "/home/labopb/Documents/Marie/neuromod/\
+      cneuromax_dev/lazy_loading"
     original_fps: 29.97
     time_downsample: 2
     n_chunks: 3
@@ -26,9 +32,3 @@ datamodule:
     mask_is_atlas: False
     fwhm: null
     load_confounds_params: null
-
-
-
-
-
-

@@ -320,7 +320,6 @@ class FriendsDataModule(BaseDataModule):
             dtype=c.dtype,
             tr=c.tr,
             n_chunks=c.n_chunks,  # num of frame sequences per bold volume
-            min_lag=c.min_lag,  # in TRs
             max_lag=c.max_lag,  # in TRs
             mask_path=c.mask_path,
             mask_is_atlas=c.mask_is_atlas,
@@ -346,7 +345,7 @@ class FriendsDataModule(BaseDataModule):
                 ll_path: str = f"{ll_dir}/{set_name}.h5"
 
             if not Path(ll_path).exists():
-                self.prepare_data(lazy_load_path=ll_path, set=set_name)
+                self.prepare_data(lazy_load_path=ll_path, set_name=set_name)
 
             setattr(
                 self.dataset,

@@ -1,5 +1,7 @@
+# @package _global_
+
 defaults:
-  - data@subject_data: ???
+  - friends_video_transformer/data@subject_data: ???
 
 datamodule:
   _target_:
@@ -7,9 +9,10 @@ datamodule:
     datamodule.FriendsDataModule"
   config:
     _target_:
-      cneuromax.deeplearning.experiment.friends_video_transformer.datamodule.FriendsDataModuleConfig
-    subject: ${experiment.subject_data.subject}
-    episode_list: ${experiment.subject_data.episodes}
+      "cneuromax.deeplearning.experiment.friends_video_transformer.\
+      datamodule.FriendsDataModuleConfig"
+    subject: ${subject_data.subject}
+    episode_list: ${subject_data.episodes}
     use_bold: True
     modalities: [frames, bold]
     mkv_data_dir: "/home/mstlaure/projects/rrg-pbellec/mstlaure/\
@@ -27,7 +30,7 @@ datamodule:
     nifti_data_dir: "/home/mstlaure/projects/rrg-pbellec/mstlaure\
       /deepgaze_mr/data/friends_T1w"
     mask_path: "/home/mstlaure/projects/rrg-pbellec/mstlaure/\
-      multimodal_proj/masks/${experiment.subject_data.subject}_mask.nii"
+      multimodal_proj/masks/${subject_data.subject}_mask.nii"
     mask_is_atlas: False
     fwhm: 8
     load_confounds_params:
