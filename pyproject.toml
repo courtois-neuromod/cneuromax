@@ -21,7 +21,7 @@ dependencies = [
     "hydra-orion-sweeper==1.6.3",
     # Required for cneuromax/fitting/deeplearning/
     "torch==2.1.0",
-    "lightning==2.0.9",
+    "lightning==2.1.0",
     # Required for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5",
     "torchvision==0.16.0",
