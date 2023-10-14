@@ -1,54 +1,31 @@
 On a Slurm cluster
 ==================
 
-1. Install the experiment manager packages
-------------------------------------------
+1. Update the ``APPTAINER_CACHEDIR`` variable
+---------------------------------------------
 
-.. code-block:: console
+.. note::
 
-    $ module load python/3.10
-    $ python3 -m venv ${CNEUROMAX_PATH}/venv
-    $ . ${CNEUROMAX_PATH}/venv/bin/activate
-    $ pip install -r ${CNEUROMAX_PATH}/pipreqs/0_experiment_manager.txt
+    This step assumes that storing the Apptainer cache folder in
+    your ``${HOME}`` directory is less favorable than storing it in
+    your ``${SCRATCH}`` directory (which is the case on Béluga).
 
-2. Prepare the Podman image for use on the cluster
---------------------------------------------------
+.. code-block:: bash
 
-Load Podman.
+    echo -e "\nexport APPTAINER_CACHEDIR=${SCRATCH}/.apptainer/" >> ~/.bashrc \
+        && source ~/.bashrc
 
-.. code-block:: console
+2. Build the image
+------------------
 
-    $ module load podman
+.. note::
 
-Set-up the Podman storage configuration file.
+    This command takes around 5-10 minutes to complete on the Béluga cluster.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ mkdir ~/.config/containers
-    $ echo -e "[storage]\ndriver = \"overlay\"\n \
-        graphRoot = \"$SLURM_TMPDIR/$SCRATCH/containers/storage\"" > \
-            ~/.config/containers/storage.conf
+    module load apptainer && apptainer build ${SCRATCH}/cneuromax.sif \
+        docker://cneuromod/cneuromax:latest
 
-Pull the image.
-
-.. code-block:: console
-
-    $ module load podman \
-        && podman pull docker://maximilienlc/cneuromax:deps-run-latest
-
-Compress the Podman container folder.
-
-.. code-block:: console
-
-    $ tar -cvf ${SCRATCH}/containers.tar ${SCRATCH}/containers/
-
-Delete ``bolt_state.db``.
-
-.. code-block:: console
-
-    $ rm ${SCRATCH}/containers/storage/libpod/bolt_state.db
-
-The image is now ready for use on the compute nodes. At the beginning of every
-Slurm job, we will (all through Hydra/Submitit) copy it over to the local
-drive, decompress it, and run the necessary Podman + NVIDIA Container Toolkit
-commands to start the container (which on average takes around 20 seconds).
+Make sure to re-run this command whenever you modify the Containerfile
+and want to make use of the latest changes.

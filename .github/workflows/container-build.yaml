@@ -5,16 +5,12 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - containers/**
-      - pyreqs/**
-      - '!pyreqs/documentation.txt'
-      - '!pyreqs/hydra_dev.txt'
-      - '!pyreqs/testing.txt'
+      - Containerfile
       - .github/workflows/container-build.yaml
 
 jobs:
   container-build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
@@ -26,5 +22,5 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps/run/Containerfile
+          file: Containerfile
           push: false

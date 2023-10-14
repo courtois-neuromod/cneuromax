@@ -1,6 +1,0 @@
-# Hydra used when testing the code (lets us not have to install Java)
-
-##########################
-# Package full name: Hydra
-# Quickstart link: https://hydra.cc/docs/intro
-hydra-core==1.3.2

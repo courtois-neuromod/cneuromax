@@ -1,6 +1,0 @@
-defaults:
-  - base
-  - _self_
-
-# https://huggingface.co/docs/transformers/main_classes/optimizer_schedules#transformers.get_constant_schedule
-_target_: transformers.get_constant_schedule

@@ -1,0 +1,39 @@
+# @package _global_
+defaults:
+  - /datamodule: classify_mnist
+  - /litmodule: classify_mnist
+  - /litmodule/nnmodule: mlp
+  - override /hydra/launcher: submitit_slurm
+  - _self_
+
+hydra:
+  launcher:
+    gpus_per_node: 1
+    cpus_per_task: 10
+    mem_gb: 46
+    timeout_min: 15
+    account: rrg-pbellec
+    python: "/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/\
+      apptainer/1.1.8/bin/apptainer \
+      exec --nv ${oc.env:SCRATCH}/cneuromax.sif python3"
+
+# Run the MLP.yaml version first locally, then copy the data over to Béluga
+# scp -r data/example_run/MNIST <USER>@beluga.computecanada.ca:<data_dir>
+data_dir: ${oc.env:CNEUROMAX_PATH}/data/example_run/
+
+litmodule:
+  nnmodule:
+    config:
+      dims: [784, 128, 10]
+    activation_fn:
+      _target_: torch.nn.ReLU
+
+logger:
+  name: mlp_beluga
+  project: classify_mnist
+  entity: maximilienlc
+
+device: gpu
+
+trainer:
+  max_epochs: 3

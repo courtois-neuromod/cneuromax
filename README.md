@@ -25,61 +25,45 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
 
 ```
 cneuromax/
-├─ .github/                     <-- Contains GitHub automation (tests, containers, etc) config files
-│  └─ *
-├─ cneuromax/                   <-- Contains all of the Machine Learning code and config files
-│  ├─ application/              <-- Contains the code to create applications (cozmo inference, etc)
-│  │  └─ *
-│  ├─ common/                   <-- Contains the code common to apps, deep learning and neuroevolution
-│  │  ├─ launcher               <-- Contains the base configs to launch jobs
-│  │  |  └─ *
-|  |  ├─ sweeper                <-- Contains the base configs to run hyperparameter sweeps
-│  │  |  └─ *
-│  │  ├─ fitter.yaml            <-- The config common to all fitting jobs
-|  |  └─ *
-│  ├─ deeplearning/             <-- Contains the Deep Learning code
-│  │  ├─ common/                <-- Contains the code common to more than one DL experiment
-│  │  │  ├─ datamodule/         <-- Contains common Lightning DataModules
-│  │  │  │  ├─ base.py          <-- The base Lightning DataModule to build upon
-│  │  │  │  └─ *
-│  │  │  ├─ litmodule/          <-- Contains common Lightning Modules
-│  │  │  │  ├─ base.py          <-- The base Lightning Module to build upon
-│  │  │  │  └─ *
-│  │  │  ├─ logger/             <-- Contains common Lightning Logger configs
-│  │  │  │  └─ *
-│  │  │  ├─ lrscheduler/        <-- Contains common PyTorch Learning Rate Scheduler configs
-│  │  │  │  └─ *
-│  │  │  ├─ nnmodule/           <-- Contains common PyTorch Modules
-│  │  │  │  └─ *
-│  │  │  ├─ optimizer/          <-- Contains common PyTorch Optimizer configs
-│  │  │  │  └─ *
-│  │  │  ├─ trainer/            <-- Contains common Lightning Trainer configs
-│  │  │  │  └─ *
-|  |  |  └─ *
-│  │  ├─ experiment/            <-- Contains the Deep Learning experiments
-│  │  │  ├─ my_new_experiment/  <-- ! Your new Deep Learning experiment folder
-│  │  │  │  ├─ datamodule.py    <-- ! Your Lightning DataModule
-│  │  │  │  ├─ litmodule.py     <-- ! Your Lightning Module
-│  │  │  │  ├─ nnmodule.py      <-- ! Your PyTorch Module
-│  │  │  │  ├─ test_0.yaml      <-- ! One of your Hydra configuration file
-│  │  │  │  └─ *
-│  │  │  └─ *
-│  │  ├─ __main__.py            <-- Main file to launch Deep Learning experiments
-│  │  └─ *
-│  └─ neuroevolution/           <-- Contains the code for Neuroevolution models
-│     └─ *
-├─ containers/                  <-- Contains the Containerfiles to build the Podman/Docker images
-│  └─ *
-├─ data/                        <-- Directory in which to download datasets
-│  └─ *
-├─ docs/                        <-- Contains the documentation files
-│  └─ *
-├─ pyreqs/                      <-- Python requirements for different experiments
-│  └─ *
-├─ .gitignore                   <-- Files to not track with Git/GitHub
-├─ .pre-commit-config.yaml      <-- Pre git commit configuration (for formatting, linting, etc)
-├─ .yamllint.yaml               <-- YAML files configuration
-├─ LICENSE                      <-- MIT License file
-├─ README.md                    <-- Repository description file
-├─ pyproject.toml               <-- Python files configuration
-└─ renovate.json                <-- Renovate Bot (keeps dependencies up-to-date) configuration
+├─ .github/                  <-- Config files for GitHub automation (tests, containers, etc)
+├─ cneuromax/                <-- Machine Learning code
+│  ├─ fitting/               <-- ML model fitting code
+│  │  ├─ common/             <-- Code common to all fitting workflows
+│  │  │  ├─ __init__.py      <-- Stores common Hydra configs
+│  │  │  └─ fitter.py        <-- Base Hydra config common to all fitting workflows
+│  │  ├─ deeplearning/       <-- Deep Learning code
+│  │  │  ├─ datamodule/      <-- Lightning DataModules
+│  │  │  │  ├─ base.py       <-- Base Lightning DataModule to build upon
+│  │  │  ├─ litmodule/       <-- Lightning Modules
+│  │  │  │  ├─ base.py       <-- Base Lightning Module to build upon
+│  │  │  ├─ nnmodule/        <-- PyTorch Modules & Hydra configs
+│  │  │  ├─ utils/           <-- Deep Learning utilities
+│  │  │  ├─ __init__.py      <-- Stores Deep Learning Hydra configs
+│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.deeplearning`
+│  │  │  ├─ config.yaml      <-- Default Hydra configs & settings
+│  │  │  └─ fitter.py        <-- Deep Learning fitting
+│  │  └─ neuroevolution/     <-- Neuroevolution code
+│  ├─ serving/               <-- Contains the code to create applications (cozmo inference, etc)
+│  ├─ task/                  <-- Contains the Deep Learning tasks
+│  │  │
+│  │  │                          ******************************************
+│  │  └─ my_new_task/        <-- *** Your new Deep Learning task folder ***
+│  │     ├─ __init__.py      <-- ********** Your Hydra Configs ************
+│  │     ├─ datamodule.py    <-- ******* Your Lightning DataModule ********
+│  │     ├─ litmodule.py     <-- ********* Your Lightning Module **********
+│  │     ├─ nnmodule.py      <-- ********** Your PyTorch Module ***********
+│  │     └─ config.yaml      <-- ****** Your Hydra configuration file *****
+│  │                             ******************************************
+│  │
+│  └─ utils/                 <-- CNeuroMax utilities
+├─ docs/                     <-- Documentation files
+├─ .devcontainer.json        <-- VSCode container development config
+├─ .gitignore                <-- Files to not track with Git/GitHub
+├─ .pre-commit-config.yaml   <-- Pre-"git commit" actions config (format, lint, etc)
+├─ .yamllint.yaml            <-- YAML files config
+├─ Containerfile                <-- To build the Docker image
+├─ LICENSE                   <-- MIT License file
+├─ README.md                 <-- Repository description file
+├─ pyproject.toml            <-- Python code & dependencies config
+└─ renovate.json             <-- Renovate Bot config (keeps dependencies up-to-date)
+```

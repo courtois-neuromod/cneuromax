@@ -1,0 +1,26 @@
+# @package _global_
+defaults:
+  - /datamodule: classify_mnist
+  - /litmodule: classify_mnist
+  - /litmodule/nnmodule: mlp
+  - override /hydra/launcher: submitit_local
+  - _self_
+
+litmodule:
+  optimizer:
+    lr: 0.002
+  nnmodule:
+    config:
+      dims: [784, 128, 10]
+    activation_fn:
+      _target_: torch.nn.ReLU
+
+logger:
+  name: mlp
+  project: classify_mnist
+  entity: maximilienlc
+
+trainer:
+  max_epochs: 3
+
+device: gpu

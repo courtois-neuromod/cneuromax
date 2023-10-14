@@ -6,14 +6,12 @@ on:
     branches: [main]
     paths:
       - cneuromax/**
-      - pyreqs/**
       - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
   push:
     branches: [main]
     paths:
       - cneuromax/**
-      - pyreqs/**
       - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
 
@@ -22,7 +20,7 @@ permissions:
 
 jobs:
   typecheck-unittest:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Install OpenMPI
         run: sudo apt install -y libopenmpi-dev

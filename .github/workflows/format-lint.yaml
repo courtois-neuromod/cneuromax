@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   format-lint:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3

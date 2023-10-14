@@ -1,0 +1,49 @@
+{
+    "image": "docker.io/cneuromod/cneuromax:latest",
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-python.python",
+          "ms-python.black-formatter",
+          "charliermarsh.ruff",
+          "lextudio.restructuredtext",
+          "fnando.linter",
+          "tamasfe.even-better-toml",
+          "GitHub.copilot",
+          "ms-toolsai.jupyter",
+          "matangover.mypy"
+        ],
+        "settings": {
+          "ruff.lint.arg": [
+              "--config=pyproject.toml"
+          ],
+          "black-formatter.args": [
+              "--config=pyproject.toml"
+          ],
+          "[python]": {
+              "editor.defaultFormatter": "ms-python.black-formatter",
+              "editor.formatOnSave": true,
+              "editor.codeActionsOnSave": {
+                  "source.organizeImports": true
+              }
+          },
+          "mypy.configFile": "pyproject.toml",
+          "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build/html",
+          "esbonio.sphinx.confDir": "${workspaceFolder}/docs/",
+          "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/",
+          "restructuredtext.linter.doc8.executablePath": "/usr/local/bin/doc8",
+          "restructuredtext.syntaxHighlighting.disabled": true,
+          "files.insertFinalNewline": true,
+          "files.trimTrailingWhitespace": true,
+          "python.analysis.ignore": [
+              "/**"
+          ]
+        }
+      }
+    },
+    "postAttachCommand": "pre-commit install",
+    "containerEnv": {
+      "PYTHONPATH": "/workspaces/cneuromax",
+      "CNEUROMAX_PATH": "/workspaces/cneuromax"
+    }
+  }

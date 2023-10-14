@@ -12,7 +12,7 @@ on:
 
 jobs:
   docs-build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Build the documentation
         uses: sphinx-notes/pages@v3

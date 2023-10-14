@@ -5,11 +5,8 @@ on:
   push:
     branches: [main]
     paths:
-      - containers/**
-      - pyreqs/**
-      - '!pyreqs/documentation.txt'
-      - '!pyreqs/hydra_dev.txt'
-      - '!pyreqs/testing.txt'
+      - Containerfile
+      - pyproject.toml
       - .github/workflows/container-build-push.yaml
 
 env:
@@ -19,7 +16,7 @@ env:
 
 jobs:
   container-build-push:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
@@ -36,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: containers/deps/run/Containerfile
+          file: Containerfile
           push: true
-          tags: maximilienlc/cneuromax:deps-run-latest
+          tags: cneuromod/cneuromax:deps-run-latest
