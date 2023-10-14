@@ -28,7 +28,7 @@ dependencies = [
     "transformers==4.34.0",
     # Torch shapes
     "jaxtyping==0.2.22",
-    "beartype==0.16.2",
+    "beartype==0.16.3",
     "einops==0.7.0",
     # Required for docs/
     "sphinx==7.2.6",
