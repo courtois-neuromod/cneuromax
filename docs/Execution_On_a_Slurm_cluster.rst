@@ -7,7 +7,7 @@ Run a python script
 .. code-block:: bash
 
     # Example of a simple MNIST training run
-    cd ${CNEUROMAX_PATH} && export PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} && \
+    module load apptainer && cd ${CNEUROMAX_PATH} && export PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} && \
         export APPTAINERENV_APPEND_PATH=/opt/software/slurm/bin:/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin && \
         apptainer exec -B /etc/passwd -B /etc/slurm/ -B /opt/software/slurm -B /usr/lib64/libmunge.so.2 \
                        -B /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer \

@@ -35,6 +35,6 @@ ADD pyproject.toml /cneuromax/pyproject.toml
 ADD cneuromax /cneuromax/cneuromax
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -e cneuromax \
+RUN pip install --user --no-cache-dir --upgrade pip \
+    && pip install --user --no-cache-dir -e cneuromax \
     && pip uninstall -y cneuromax

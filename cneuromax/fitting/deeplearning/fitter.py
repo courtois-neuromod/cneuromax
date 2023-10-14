@@ -1,5 +1,6 @@
 """Deep Learning Fitter Config & Class."""
 
+import logging
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
@@ -229,7 +230,9 @@ class DeepLearningFitter:
             ckpt_path=self.ckpt_path,
         )
         if self.config.save_path:
+            logging.info("Saving final checkpoint...")
             self.trainer.save_checkpoint(self.config.save_path)
+            logging.info("Final checkpoint saved.")
         return self.trainer.validate(
             model=self.litmodule,
             datamodule=self.datamodule,
