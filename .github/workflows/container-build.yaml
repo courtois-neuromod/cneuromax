@@ -5,26 +5,15 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - containers/**
-      - pyreqs/**
-      - '!pyreqs/documentation.txt'
-      - '!pyreqs/hydra_dev.txt'
-      - '!pyreqs/testing.txt'
+      - Containerfile
+      - pyproject.toml
       - .github/workflows/container-build.yaml
 
 jobs:
   container-build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Build
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: containers/deps/run/Containerfile
-          push: false
+      - name: Build the container image
+        run: podman build -f Containerfile .

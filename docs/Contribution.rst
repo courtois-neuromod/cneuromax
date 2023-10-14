@@ -4,33 +4,17 @@
 Contribution
 ************
 
+Link to the GitHub repository: https://github.com/courtois-neuromod/cneuromax.
+
 .. note::
 
     Make sure to have completed the installation steps before moving to
     this section.
 
-Link to the GitHub repository: https://github.com/courtois-neuromod/cneuromax.
-
-Developping locally
--------------------
-
-In order to develop locally, you will need to install the development
-dependencies. This can be done by running the following commands:
-
-.. code-block:: console
-
-    $ cd ${CNEUROMAX_PATH}
-    $ python -m venv venv
-    $ . venv/bin/activate
-    $ # Install OpenMPI if it's not already installed
-    $ sudo apt install -y libopenmpi-dev
-    $ pip install --extra-index-url https://download.pytorch.org/whl/cpu \
-        -e .[dev]
-
-You now have all the dependencies needed to develop locally (do note that
-these libraries and their version are not meant for actually running the
-code, to do so it is preferable to work with containers for reproducibility
-purposes).
+There are many ways to interact with the code base, with ranging levels of
+collaborativity. The following instructions are meant for people who wish to
+contribute to the code base, either by fixing bugs, adding new features or
+improving the documentation.
 
 Making sure the code doesn't break
 ----------------------------------
@@ -39,21 +23,26 @@ The main branch is protected meaning that contributions happen through
 pull requests rather than direct pushes.
 
 In order for any pull request to go through, it will need to pass a number of
-common and standard checks that ensure that the code is of high quality and
-does not break any portion of the existing code base.
+common and standard checks (using GitHub actions) that ensure that the code is
+of high quality and does not break any portion of the existing code base.
+
+.. note::
+
+    Do not be intimidated by the number of checks, we will later introduce how to
+    seemlessly integrate them in your workflow.
 
 Those checks are:
 
 * Making sure that the Python code follows a clean common format and is
   PEP8 compliant. In order to do so we make use of the following libraries:
 
-  * Formatting: `black
-    <https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html>`_
-    (79 lines for code, 72 for comments)
-  * Linting: `ruff <https://beta.ruff.rs/docs/tutorial/#getting-started>`_
-    (all rules that don't create conflicts with existing libraries)
-  * Type checking: `mypy
-    <https://mypy.readthedocs.io/en/stable/getting_started.html>`_ (strict)
+    * Formatting: `black
+      <https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html>`_
+      (79 lines for code, 72 for comments)
+    * Linting: `ruff <https://beta.ruff.rs/docs/tutorial/#getting-started>`_
+      (all rules that don't create conflicts with existing libraries)
+    * Type checking: `mypy
+      <https://mypy.readthedocs.io/en/stable/getting_started.html>`_ (strict)
 
 * Making sure that the Python code passes all of the existing unit-tests. If
   they do not, it means that your code is breaking a portion of the
@@ -71,34 +60,24 @@ Those checks are:
 * Making sure that there are no trailing whitespaces and that all files,
   regardless of the extension end with a newline.
 
-* If any change is made to the ``pyreqs/`` or ``containers/`` folder, that the
-  Docker/Podman image can still be built.
+* Making sure that the Docker image can still be built.
 
-* If any change is made to the ``docs/`` or ``cneuromax/`` folder, that the
-  documentation can still be built and pushed to Github Pages.
+* Making sure that the documentation can still be built and pushed to Github
+  Pages.
 
 Testing locally
 ---------------
 
-Rather than having to wait for the GitHub CI (continuous integration) tests to
-finish verifying your code, you can run some of the tests locally.
+Rather than having to wait for the GitHub tests to finish verifying your code,
+you can run some of the tests locally to debug preventively.
 
 **Fast Tests (sub 1 second)**
 
 Formatting and linting tests are quick to run. The most common way to execute
-them is through pre-commit hooks. We use the
-`pre-commit <https://pre-commit.com/#quick-start>`_ library, which after being
-installed runs formatting and linting tests upon each ``git commit`` command,
-preventing the commit from going through if the tests fail.
-
-.. code-block:: console
-
-    $ cd ${CNEUROMAX_PATH}
-    $ . venv/bin/activate
-    $ pre-commit install
-
-From now on, ``git commit`` commands in this repository will automatically make
-sure that all important files are functional and well formatted.
+them is through pre-commit hooks. We use the `pre-commit
+<https://pre-commit.com/#quick-start>`_ library, which configure to run
+formatting and linting tests upon each ``git commit`` command, preventing the
+commit from going through if the tests fail.
 
 .. note::
 
@@ -112,12 +91,10 @@ Unit-tests and typecheck tests are slower, hence not suitable to run upon each
 commit. However they are pretty useful to save time right before merging your
 branch. To run those tests, you can use the following commands:
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ cd ${CNEUROMAX_PATH}
-    $ . venv/bin/activate
-    $ pytest cneuromax
-    $ mypy --strict cneuromax
+    pytest cneuromax
+    mypy --config-file=pyproject.toml cneuromax
 
 
 Setting up VSCode
@@ -125,93 +102,58 @@ Setting up VSCode
 
 Rather than being welcomed to a red wave of errors and warnings every time you
 ``git commit`` or run the slow tests, we suggest that you set up your editor to
-notify you of any issues before you commit.
+notify you of most issues before you commit.
 
-On VSCode, this means installing the following extensions:
+We provide a ``.devcontainer.json`` file that allows you to develop locally
+using VSCode and the repository's Docker image (it should not be too hard to
+adapt this file to other IDEs). In order to use it, you will need to install
+the `Remote - Containers` extension.
 
-* `ms-python.python
-  <https://marketplace.visualstudio.com/items?itemName=ms-python.python>`_
-* `ms-python.black-formatter
-  <https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter>`_
-* `charliermarsh.ruff
-  <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
-* `lextudio.restructuredtext
-  <https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext>`_
-  (``doc8`` enabler)
-* `fnando.linter
-  <https://marketplace.visualstudio.com/items?itemName=fnando.linter>`_
-  (``yamllint`` enabler)
+.. code-block:: bash
 
-And here are the settings to insert into your
-``~/.config/Code/User/settings.json`` file.
+    code --install-extension ms-vscode-remote.remote-containers
 
-.. code-block:: json
+From then on, upon opening the repository in VSCode, you should be prompted to
+open the repository in a container. If you are not, you can open the command
+palette (``Ctrl+Shift+P``) and search for
+``Remote-Containers: Reopen in Container``.
 
-   // Ruff
-    "ruff.args": [
-        "--config=pyproject.toml"
-    ],
-    // Black
-    "black-formatter.args": [
-        "--config=pyproject.toml"
-    ],
-    // Black + Ruff
-    "[python]": {
-        "editor.defaultFormatter": "ms-python.black-formatter",
-        "editor.formatOnSave": true,
-        "editor.codeActionsOnSave": {
-            "source.organizeImports": true
-        }
-    },
-    // MyPy
-    "python.linting.mypyEnabled": true,
-    "python.linting.mypyArgs": [
-        "--config-file=pyproject.toml"
-    ],
-    // ReStructuredText
-    "esbonio.server.enabled": false,
-    "restructuredtext.linter.doc8.executablePath": "/home/max/.local/bin/doc8",
-    "restructuredtext.syntaxHighlighting.disabled": true,
-    // Miscellaneous
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    // Pylance
-    "python.analysis.ignore": [
-        "/**"
-    ],
+There are so far two small pain points:
 
-.. note::
+- The very first time you boot-up the Dev Container, some extensions won't be
+  loaded correctly. A window will pop-up asking you to reload the window which
+  you will need to do.
 
-    Pylance throws some incorrect errors with pytest and is otherwise
-    redundant due to using mypy, so we suggest disabling its analysis
-    (even though the setting is called ``python.analysis.ignore``, it actually
-    only applies to Pylance). We suggest not uninstalling it, as it is
-    has other useful features like syntax highlighting.
+- The esbonio server will sometimes announce a build error (bottom right),
+  which will prevent further documentation visualization. To fix this, you
+  should delete the contents of the ``docs/_build`` and ``docs/autoapi``
+  folders (do not delete the folders themselves if you use Dropbox/Maestral)
+  and restart the esbonio server (by its icon).
 
 Git/GitHub workflow for contributing
 ------------------------------------
 
 In a terminal window, change directory to the cneuromax repository.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ cd ${CNEUROMAX_PATH}
+    cd ${CNEUROMAX_PATH}
 
 Create a new branch for your contribution.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ git checkout main
-    $ git pull
-    $ git checkout -b <YOUR_BRANCH_NAME>
+    git checkout main
+    git pull
+    git checkout -b <YOUR_BRANCH_NAME>
 
 Make your changes, commit them and push them to the remote repository.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ git add .
-    $ git commit -m "<COMMIT_MESSAGE>"
-    $ git push
+    git add .
+    git commit -m "<COMMIT_MESSAGE>"
+    git push
 
 If you are done with your contribution, you can create a pull request on
 GitHub. If new changes have been introducted to the ``main`` branch while you
@@ -219,26 +161,97 @@ were working on your development branch, you will need to update your branch
 with the latest changes from ``main``, you can do so by running the following
 commands.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ git stash # Optional, if you have uncommited changes
-    $ git checkout main
-    $ git pull
-    $ git checkout <YOUR_BRANCH_NAME>
-    $ git rebase main
-    $ git push --force
-    $ git stash pop # Optional, if you have uncommited changes
+    git stash # Optional, if you have uncommited changes
+    git checkout main
+    git pull
+    git checkout <YOUR_BRANCH_NAME>
+    git rebase main
+    git push --force
+    git stash pop # Optional, if you have uncommited changes
 
 You can now go back to run the previous code block (you might need to add the
 ``--force`` flag to your ``git push``). Then, create a pull request on GitHub,
 once it is approved, delete your branch and make sure to pull the changes to
 your local repository.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ git checkout main
-    $ git pull
-    $ git branch -d <YOUR_BRANCH_NAME>
+    git checkout main
+    git pull
+    git branch -d <YOUR_BRANCH_NAME>
+
+Setting up Maestral/Dropbox to move code across machines
+-----------------------------------------------------------
+
+Rather than having to manually move code across machines, we suggest that you
+use a Dropbox folder to automatically sync your code across machines.
+
+On machines where you have root access, you can simply install Dropbox.
+On machines where you do not have root access, you can install Maestral as a
+drop-in replacement for Dropbox (Make sure not to install both Dropbox and
+Maestral on the same machine).
+
+.. code-block:: bash
+
+    tmux
+    module load python/3.10
+    pip install -U maestral
+    python -m maestral start
+
+You will be prompted the following question: **How would you like to you link
+your account?**
+
+Choose: **Print auth URL to console**
+
+Open the URL and press Allow.
+
+Copy the code that appears in the browser.
+
+**Enter the auth code:** Paste.
+
+**Please choose a local Dropbox folder:**  ``/scratch/<USER>/Dropbox``
+
+Would you like sync all folders? **No**
+
+Choose which folders to include: **cneuromax**
+
+You can now close the console window (``Ctrl+B``, ``D``) and the
+synchronization will continue in the background.
+
+You can reattach to the console window and check the status of the
+synchronization by running:
+
+.. code-block:: bash
+
+    tmux attach -t 0 # The number is the index of the window
+    python -m maestral status
+
+Finally, there are some files that you probably do not want to sync across
+all machines. On a machine with Dropbox, run:
+
+.. code-block:: bash
+
+    mkdir -p data/ docs/_build/ docs/autoapi/ .vscode/ .coverage \
+      .mypy_cache/ .pytest_cache/ .ruff_cache/
+    sudo attr -s com.dropbox.ignored -V 1 data/
+    sudo attr -s com.dropbox.ignored -V 1 docs/_build/
+    sudo attr -s com.dropbox.ignored -V 1 docs/autoapi/
+    sudo attr -s com.dropbox.ignored -V 1 .vscode/
+    sudo attr -s com.dropbox.ignored -V 1 .coverage
+    sudo attr -s com.dropbox.ignored -V 1 .mypy_cache/
+    sudo attr -s com.dropbox.ignored -V 1 .pytest_cache/
+    sudo attr -s com.dropbox.ignored -V 1 .ruff_cache/
+
+On a machine with Maestral, edit your `.mignore` file to exclude the files you
+do not want to sync.
+
+Example of the contents of a `.mignore` file:
+
+.. code-block:: python
+
+    **/data
 
 Freezing the repositories for publication
 -----------------------------------------
@@ -246,6 +259,18 @@ Freezing the repositories for publication
 For your code to remain reproducible after publication, we suggest that you
 create a new branch or fork the repository.
 
-.. note::
+If you want to freeze and make your branch/fork of this repository as light as
+possible, you can delete the following:
 
-    TODO: Add pruning instructions.
+- Any non-relevant folder inside ``cneuromax/fitting/deeplearning/datamodule/``
+- Any non-relevant folder inside ``cneuromax/fitting/deeplearning/litmodule/``
+- Any non-relevant folder inside ``cneuromax/fitting/deeplearning/nnmodule/``
+- If you are not doing Neuroevolution, the
+  ``cneuromax/fitting/neuroevolution/`` folder
+- The ``cneuromax/serving/`` folder
+- Any non-relevant folder inside ``cneuromax/task/``
+- The ``docs/`` folder
+- The ``LICENSE`` file
+- The ``Containerfile`` file
+- Most of the contents of the ``README.md`` file
+- The ``renovate.json`` file

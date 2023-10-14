@@ -7,7 +7,6 @@ on:
     paths:
       - docs/**
       - cneuromax/**
-      - pyreqs/documentation.txt
       - .github/workflows/docs-build.yaml
 
 jobs:
@@ -19,5 +18,4 @@ jobs:
         with:
           publish: false
           pyproject_extras: null
-          requirements_path: ./pyreqs/documentation.txt
           sphinx_version: null

@@ -1,7 +1,0 @@
-_target_: cneuromax.deeplearning.common.datamodule.BaseDataModule
-config:
-  _target_: cneuromax.deeplearning.common.datamodule.BaseDataModuleConfig
-  data_dir: ${data_dir}
-  per_device_batch_size: 1
-  per_device_num_workers: 0
-  device_type: ${device}

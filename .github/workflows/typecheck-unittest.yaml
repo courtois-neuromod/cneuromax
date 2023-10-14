@@ -6,14 +6,12 @@ on:
     branches: [main]
     paths:
       - cneuromax/**
-      - pyreqs/**
       - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
   push:
     branches: [main]
     paths:
       - cneuromax/**
-      - pyreqs/**
       - pyproject.toml
       - .github/workflows/typecheck-unittest.yaml
 
@@ -39,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: >
           pip install --no-cache-dir --upgrade pip && pip install
-          --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
+          --extra-index-url https://download.pytorch.org/whl/cpu -e .
       - name: Run mypy
         run: mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest

@@ -1,0 +1,17 @@
+hydra:
+  searchpath:
+    - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
+  run:
+    dir: ${data_dir}/hydra/
+  sweep:
+    dir: ${data_dir}/
+    subdir: hydra/
+
+defaults:
+  - dl_fitter
+  - trainer: base
+  - litmodule/scheduler: constant
+  - litmodule/optimizer: adamw
+  - logger: wandb
+  - _self_
+  - task: null

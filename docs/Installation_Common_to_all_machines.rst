@@ -1,55 +1,57 @@
 Common to all machines
 ======================
 
-1. Setup the repository
+The following commands are meant to set-up the repository.
+
+1. Move to the desired containing folder
+----------------------------------------
+
+.. code-block:: bash
+
+    # Examples
+    cd ${HOME}/Dropbox/
+    cd ${SCRATCH}/Dropbox/
+
+2. Clone the repository
 -----------------------
 
-Move to the desired containing folder.
+.. code-block:: bash
 
-.. code-block:: console
-
-    $ # Example
-    $ cd ${HOME}
-
-Clone the repository.
-
-.. code-block:: console
-
-    $ git clone git@github.com:courtois-neuromod/cneuromax.git
-
-If you haven't already, enable ``autoSetupRemote`` to not have to specify
-a ``-u origin <BRANCH_NAME>`` flag when pushing/pulling to the repository.
-
-.. code-block:: console
-
-    $ git config --global push.autoSetupRemote true
-
-Make sure your git version is at least 2.37 to take advantage of the
-``push.autoSetupRemote`` feature.
-
-.. code-block:: console
-
-    $ git --version
-
-If not, you can update it with the following command.
-
-.. code-block:: console
-
-    $ sudo add-apt-repository ppa:git-core/ppa && \
-        sudo apt update && \
-        sudo apt install -y git
-
-Define a persisting ``CNEUROMAX_PATH`` user-variable on your system.
-
-.. code-block:: console
-
-    $ echo -e "\nexport CNEUROMAX_PATH=${PWD}/cneuromax" >> ~/.bashrc && source ~/.bashrc
-
-You can now move on to either the Linux or Slurm specific steps.
+    git clone git@github.com:courtois-neuromod/cneuromax.git
 
 .. note::
 
-    If you plan to contribute rather than run the library on this machine,
-    you can skip to
-    `Contribution
-    <https://courtois-neuromod.github.io/cneuromax/Contribution.html>`_.
+    If you have administrator rights on the machine, in order to not have to
+    specify the ``-u origin <BRANCH_NAME>`` flag when pushing/pulling to the
+    repository (which forces you to keep the branch name in mind), you can
+    optionally enable git's ``autoSetupRemote`` option.
+
+    First, make sure your git version is at least 2.37.
+
+    .. code-block:: bash
+
+        git --version
+
+    If not, you can update it with the following command.
+
+    .. code-block:: bash
+
+        sudo add-apt-repository ppa:git-core/ppa && \
+            sudo apt update && \
+            sudo apt install -y git
+
+    Finally, enable the ``autoSetupRemote`` option.
+
+    .. code-block:: bash
+
+        git config --global push.autoSetupRemote true
+
+3. Define the ``CNEUROMAX_PATH`` variable
+-----------------------------------------
+
+.. code-block:: bash
+
+    echo -e "\nexport CNEUROMAX_PATH=${PWD}/cneuromax" >> ~/.bashrc \
+        && source ~/.bashrc
+
+You can now move on to either the Ubuntu or Slurm specific steps.

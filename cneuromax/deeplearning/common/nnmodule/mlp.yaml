@@ -1,7 +1,0 @@
-_target_: cneuromax.deeplearning.common.nnmodule.MLP
-config:
-  _target_: cneuromax.deeplearning.common.nnmodule.MLPConfig
-  dims: ???
-  p_dropout: 0.0
-activation_fn:
-  _target_: torch.nn.ReLU

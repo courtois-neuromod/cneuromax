@@ -4,39 +4,31 @@ On a Slurm cluster
 Run a python script
 -------------------
 
-Activate the previously installed virtual environment.
+.. code-block:: bash
 
-.. code-block:: console
-
-    $ cd ${CNEUROMAX_PATH}
-    $ . ${CNEUROMAX_PATH}/venv/bin/activate
-
-Run the library.
-
-.. code-block:: console
-
-    $ # Example of a simple MNIST training run
-    $ python3 -m cneuromax.dl task=visual/tabular/classification/mnist/mlp_slurm
+    # Example of a simple MNIST training run
+    module load apptainer && cd ${CNEUROMAX_PATH} && export PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} && \
+        export APPTAINERENV_APPEND_PATH=/opt/software/slurm/bin:/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin && \
+        apptainer exec -B /etc/passwd -B /etc/slurm/ -B /opt/software/slurm -B /usr/lib64/libmunge.so.2 \
+                       -B /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer \
+                       -B /var/run/munge/ --env LD_LIBRARY_PATH=/opt/software/slurm/lib64/slurm  -B $CNEUROMAX_PATH $SCRATCH/cneuromax.sif \
+                       python3 -m cneuromax.fitting.deeplearning -m task=classify_mnist/mlp_beluga
 
 Run Jupyter-lab
 ---------------
 
 From your own machine create a SSH tunnel to the compute node.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ # Fill in the appropriate values
-    $ sshuttle --dns -Nr USER@ADDRESS:8888
+    # Fill in the appropriate values
+    sshuttle --dns -Nr USER@ADDRESS:8888
 
 Run the lab.
 
-.. code-block:: console
+.. code-block:: bash
 
-    $ # Fill in the appropriate values
-    $ salloc --account=ACCOUNT bash -c "module load podman; \
-        nvidia-ctk cdi generate --output=/var/tmp/cdi/nvidia.yaml; \
-        mkdir -p ${SLURM_TMPDIR}/${SCRATCH}; \
-        cp ${SCRATCH}/containers.tar ${SLURM_TMPDIR}/${SCRATCH}/.; \
-        tar -xf ${SLURM_TMPDIR}/${SCRATCH}/containers.tar -C ${SLURM_TMPDIR}/${SCRATCH}/.; \
-        podman run -w ${CNEUROMAX_PATH} -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
-        cneuromax:deps_only-all_deps-latest jupyter-lab --allow-root --ip $(hostname -f) --port 8888"
+    # Fill in the appropriate values TODO FIX
+    # salloc --account=ACCOUNT bash -c "module load apptainer && cd ${CNEUROMAX_PATH} && \
+    #    apptainer exec -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
+    #    cneuromod/cneuromax:latest jupyter-lab --allow-root --ip $(hostname -f) --port 8888"
