@@ -96,14 +96,13 @@ class DeepLearningFitter:
                 SlurmLauncher,
             )
         """
-        self.logger: Logger | None = instantiate(
-            self.config.logger,
-        )  # **kwargs
-        self.logger = (
+        self.logger: Logger | None = (
             None
             if self.launcher_config._target_ == get_path(SlurmLauncher)
-            else self.logger
-        )
+            else instantiate(
+                self.config.logger,
+            )
+        )  # **kwargs
 
         callbacks = None
 

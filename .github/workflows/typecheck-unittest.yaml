@@ -20,7 +20,7 @@ permissions:
 
 jobs:
   typecheck-unittest:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     steps:
       - name: Install OpenMPI
         run: sudo apt install -y libopenmpi-dev
@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies
         run: >
           pip install --no-cache-dir --upgrade pip && pip install
-          --extra-index-url https://download.pytorch.org/whl/cpu -e .[dev]
+          --extra-index-url https://download.pytorch.org/whl/cpu -e .
       - name: Run mypy
         run: mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest

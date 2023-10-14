@@ -16,7 +16,7 @@ env:
 
 jobs:
   container-build-push:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
@@ -35,4 +35,4 @@ jobs:
           context: .
           file: Containerfile
           push: true
-          tags: cneuromod/cneuromax:deps-run-latest
+          tags: cneuromod/cneuromax:latest

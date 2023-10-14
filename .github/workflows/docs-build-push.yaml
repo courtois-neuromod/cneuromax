@@ -11,7 +11,7 @@ on:
 
 jobs:
   docs-build-push:
-    runs-on: self-hosted
+    runs-on: ubuntu-22.04
     steps:
       - name: Build the documentation
         id: build-docs
@@ -19,7 +19,6 @@ jobs:
         with:
           publish: false
           pyproject_extras: null
-          requirements_path: ./pyreqs/documentation.txt
           sphinx_version: null
       - uses: peaceiris/actions-gh-pages@v3
         with:
