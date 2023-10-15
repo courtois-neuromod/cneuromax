@@ -1,6 +1,10 @@
 On a Slurm cluster
 ==================
 
+.. note ::
+
+    Suggestion: open a tmux session to run the following commands.
+
 Run a python script
 -------------------
 

@@ -133,6 +133,39 @@ There are so far two small pain points:
 Git/GitHub workflow for contributing
 ------------------------------------
 
+.. note::
+
+    In order to not have to specify the ``-u origin <BRANCH_NAME>`` flag when
+    pushing/pulling to the repository (which forces you to keep the branch name
+    in mind), you can optionally enable git's ``autoSetupRemote`` option.
+
+    First, make sure your git version is at least 2.37.
+
+    .. code-block:: bash
+
+        git --version
+
+    If not, you can update it with the following command.
+
+    .. code-block:: bash
+
+        sudo add-apt-repository ppa:git-core/ppa && \
+            sudo apt update && \
+            sudo apt install -y git
+
+    Finally, enable the ``autoSetupRemote`` option.
+
+    .. code-block:: bash
+
+        git config --global push.autoSetupRemote true
+
+    Additionally, you can also enable the ``push.default`` option to make it so
+    that ``git push`` pushes to the current branch.
+
+    .. code-block:: bash
+
+          git config --global push.default current
+
 In a terminal window, change directory to the cneuromax repository.
 
 .. code-block:: bash
@@ -252,6 +285,14 @@ Example of the contents of a `.mignore` file:
 .. code-block:: python
 
     **/data
+
+If you use both Dropbox & Devcontainers, you might run into permission issues
+when trying to upload files. To make it so that any new file created in your
+Devcontainer is owned by your user, you can run the following command:
+
+.. code-block:: bash
+
+    sudo setfacl -d -m user:<USER>:rwx <DROPBOX_PATH>
 
 Freezing the repositories for publication
 -----------------------------------------
