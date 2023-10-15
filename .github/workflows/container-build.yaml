@@ -15,5 +15,5 @@ jobs:
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
-      - name: Build the container image
+      - name: Build the tentative CNeuroMax image
         run: podman build -f Containerfile .
