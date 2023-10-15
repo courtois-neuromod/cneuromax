@@ -21,8 +21,6 @@ RUN apt update && apt install -y \
     python3-dev \
     # Python package manager
     python3-pip \
-    # OpenCV requires system packages, best to install through Ubuntu
-    python3-opencv \
     # To pip install GitHub packages
     git \
     # Java (to build our fork of Hydra)
@@ -35,6 +33,6 @@ ADD pyproject.toml /cneuromax/pyproject.toml
 ADD cneuromax /cneuromax/cneuromax
 
 # Install Python dependencies
-RUN pip install --user --no-cache-dir --upgrade pip \
-    && pip install --user --no-cache-dir -e cneuromax \
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -e cneuromax \
     && pip uninstall -y cneuromax

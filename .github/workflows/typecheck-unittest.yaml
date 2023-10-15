@@ -20,28 +20,22 @@ permissions:
 
 jobs:
   typecheck-unittest:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
-      - name: Install OpenMPI
-        run: sudo apt install -y libopenmpi-dev
+      - name: Pull the container image
+        run: podman pull docker.io/cneuromod/cneuromax:latest
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Create virtual environment
-        run: python3 -m venv venv
-      - name: Activate virtual environment
-        run: . venv/bin/activate
-      - name: Install dependencies
-        run: >
-          pip install --no-cache-dir --upgrade pip && pip install
-          --extra-index-url https://download.pytorch.org/whl/cpu -e .
       - name: Run mypy
-        run: mypy --config-file=pyproject.toml cneuromax
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          docker.io/cneuromod/cneuromax:latest
+          mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest
-        run: pytest --cov cneuromax
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          docker.io/cneuromod/cneuromax:latest
+          pytest --cov cneuromax
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
