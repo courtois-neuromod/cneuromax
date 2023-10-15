@@ -24,14 +24,18 @@ jobs:
     steps:
       - name: Pull the container image
         run: podman pull docker.io/cneuromod/cneuromax:latest
-      - name: Run the container image
-        run: podman run --rm -it docker.io/cneuromod/cneuromax:latest
       - name: Checkout the GitHub repo
         uses: actions/checkout@v3
       - name: Run mypy
-        run: mypy --config-file=pyproject.toml cneuromax
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          docker.io/cneuromod/cneuromax:latest
+          mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest
-        run: pytest --cov cneuromax
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          docker.io/cneuromod/cneuromax:latest
+          pytest --cov cneuromax
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
