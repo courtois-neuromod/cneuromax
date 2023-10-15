@@ -253,6 +253,14 @@ Example of the contents of a `.mignore` file:
 
     **/data
 
+If you use both Dropbox & Devcontainers, you might run into permission issues
+when trying to upload files. To make it so that any new file created in your
+Devcontainer is owned by your user, you can run the following command:
+
+.. code-block:: bash
+
+    sudo setfacl -d -m user:<USER>:rwx <DROPBOX_PATH>
+
 Freezing the repositories for publication
 -----------------------------------------
 

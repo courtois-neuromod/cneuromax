@@ -19,7 +19,3 @@ jobs:
         run: podman build -t cneuromod/cneuromax:latest -f Containerfile .
       - name: Push the CNeuroMax image to Docker Hub
         run: podman push docker.io/cneuromod/cneuromax:latest
-      - name: Remove Buildah containers
-        run: buildah rm --all
-      - name: Remove dangling images
-        run: podman image prune -f
