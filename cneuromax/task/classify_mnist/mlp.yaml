@@ -18,7 +18,7 @@ litmodule:
 logger:
   name: mlp
   project: classify_mnist
-  entity: maximilienlc
+  entity: cneuroml
 
 trainer:
   max_epochs: 3

@@ -35,7 +35,7 @@ litmodule:
 logger:
   name: mlp_beluga
   project: classify_mnist
-  entity: maximilienlc
+  entity: cneuroml
 
 device: gpu
 
