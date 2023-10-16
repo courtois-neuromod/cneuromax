@@ -7,17 +7,17 @@ On an Ubuntu machine
 
     .. code-block:: bash
 
-        docker run --rm --privileged --gpus all
+        docker run --privileged --gpus all
 
     with
 
     .. code-block:: bash
 
-        podman run --rm --security-opt=label=disable --device=nvidia.com/gpu=all
+        podman run --security-opt=label=disable --device=nvidia.com/gpu=all
 
     if you are using Podman.
 
-    You can remove all the above flags if you are not using a GPU.
+    Make sure to remove the above flags if you are not using a GPU.
 
 Run a python script
 -------------------
@@ -25,7 +25,7 @@ Run a python script
 .. code-block:: bash
 
     # Example of a simple MNIST training run
-    docker run --rm --privileged --gpus all -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
+    docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
                -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
                -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm \
                -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest \

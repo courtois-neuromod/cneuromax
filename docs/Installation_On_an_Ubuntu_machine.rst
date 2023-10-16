@@ -30,7 +30,14 @@ On an Ubuntu machine
 
 .. code-block:: bash
 
+    # Install Docker
     sudo apt install -y docker.io
+    # Create the `docker` group
+    sudo groupadd docker
+    # Add your user to the `docker` group
+    sudo usermod -aG docker ${USER}
+
+Now, log out and log back in so that your group membership is re-evaluated.
 
 **Option B) Install Podman**
 

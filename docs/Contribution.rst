@@ -130,6 +130,9 @@ There are so far two small pain points:
   folders (do not delete the folders themselves if you use Dropbox/Maestral)
   and restart the esbonio server (by its icon).
 
+GitHub Copilot is installed in the DevContainer. Simply discard the log-in
+notifications if you do not want to make use of it.
+
 Git/GitHub workflow for contributing
 ------------------------------------
 

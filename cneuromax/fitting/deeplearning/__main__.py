@@ -7,6 +7,7 @@ from importlib import import_module
 from pathlib import Path
 
 import hydra
+import torch
 import wandb
 from hydra.core.config_store import ConfigStore
 from omegaconf import OmegaConf
@@ -84,6 +85,10 @@ def run(config: DeepLearningFitterHydraConfig) -> float:
     Returns:
         The validation loss.
     """
+    if not torch.cuda.is_available():
+        logging.info("CUDA is not available, setting device to CPU.")
+        config.device = "cpu"
+
     OmegaConf.resolve(config)
     fitter = DeepLearningFitter(config)
     return fitter.fit()
@@ -91,9 +96,11 @@ def run(config: DeepLearningFitterHydraConfig) -> float:
 
 def login_wandb() -> None:
     """Login to W&B using the key stored in ``WANDB_KEY.txt``."""
-    key_path = Path(str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt")
-    if key_path.exists():
-        with key_path.open("r") as f:
+    wandb_key_path = Path(
+        str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
+    )
+    if wandb_key_path.exists():
+        with wandb_key_path.open("r") as f:
             key = f.read().strip()
         wandb.login(key=key)
     else:
