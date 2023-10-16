@@ -121,14 +121,19 @@ palette (``Ctrl+Shift+P``) and search for
 There are so far two small pain points:
 
 - The very first time you boot-up the Dev Container, some extensions won't be
-  loaded correctly. A window will pop-up asking you to reload the window which
-  you will need to do.
+  loaded correctly. A window could pop-up asking you to reload the window which
+  you will need to do. If it doesn't pop up, open the command palette
+  (``Ctrl+Shift+P``) and search for ``Developer: Reopen folder locally`` before
+  reopening the Dev Container.
 
 - The esbonio server will sometimes announce a build error (bottom right),
   which will prevent further documentation visualization. To fix this, you
   should delete the contents of the ``docs/_build`` and ``docs/autoapi``
   folders (do not delete the folders themselves if you use Dropbox/Maestral)
   and restart the esbonio server (by its icon).
+
+GitHub Copilot is installed in the DevContainer. Simply discard the log-in
+notifications if you do not want to make use of it.
 
 Git/GitHub workflow for contributing
 ------------------------------------

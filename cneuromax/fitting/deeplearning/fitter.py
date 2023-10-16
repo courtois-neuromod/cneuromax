@@ -1,7 +1,9 @@
 """Deep Learning Fitter Config & Class."""
 
 import logging
+import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 import torch
@@ -10,6 +12,7 @@ from hydra.utils import instantiate
 from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
     SlurmLauncher,
 )
+from lightning.pytorch.loggers.wandb import WandbLogger
 from omegaconf import MISSING
 from torch.distributed import ReduceOp
 
@@ -97,13 +100,26 @@ class DeepLearningFitter:
                 SlurmLauncher,
             )
         """
-        self.logger: Logger | None = (
-            None
-            if self.launcher_config._target_ == get_path(SlurmLauncher)
-            else instantiate(
-                self.config.logger,
+
+        self.logger: Logger | None
+
+        if self.config.logger._target_ == get_path(WandbLogger):
+            wandb_key_path = Path(
+                str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
             )
-        )  # **kwargs
+            if wandb_key_path.exists():
+                kwargs = {}
+                if self.launcher_config._target_ == get_path(SlurmLauncher):
+                    kwargs["offline"] = True
+                self.logger = instantiate(self.config.logger, **kwargs)
+            else:
+                logging.info(
+                    "W&B key not found. Logging disabled.",
+                )
+                self.logger = None
+
+        else:
+            self.logger = instantiate(self.config.logger)
 
         callbacks = None
 
@@ -125,7 +141,8 @@ class DeepLearningFitter:
 
         self.litmodule: BaseLitModule = instantiate(self.config.litmodule)
         if (
-            torch.cuda.get_device_capability()[0]
+            self.config.device == "gpu"
+            and torch.cuda.get_device_capability()[0]
             >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
         ):
             self.litmodule = torch.compile(  # type: ignore [assignment]
