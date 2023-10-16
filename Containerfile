@@ -3,10 +3,7 @@
 # but does not install CNeuroMax itself, for development purposes.
 
 # ~ CUDA + cuDNN on Ubuntu ~ #
-FROM nvcr.io/nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
-
-# Prevents `apt install python3-opencv` from prompting geographical details
-ENV DEBIAN_FRONTEND=noninteractive
+FROM nvcr.io/nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 
 # Prevents Python from creating __pycache__ and .pyc files in project folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
