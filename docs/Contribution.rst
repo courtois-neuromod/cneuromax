@@ -121,8 +121,10 @@ palette (``Ctrl+Shift+P``) and search for
 There are so far two small pain points:
 
 - The very first time you boot-up the Dev Container, some extensions won't be
-  loaded correctly. A window will pop-up asking you to reload the window which
-  you will need to do.
+  loaded correctly. A window could pop-up asking you to reload the window which
+  you will need to do. If it doesn't pop up, open the command palette
+  (``Ctrl+Shift+P``) and search for ``Developer: Reopen folder locally`` before
+  reopening the Dev Container.
 
 - The esbonio server will sometimes announce a build error (bottom right),
   which will prevent further documentation visualization. To fix this, you
