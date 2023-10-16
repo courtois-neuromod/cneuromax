@@ -7,6 +7,9 @@ defaults:
   - _self_
 
 hydra:
+  callbacks:
+    log_job_return:
+      _target_: hydra.experimental.callbacks.LogJobReturnCallback
   launcher:
     gpus_per_node: 1
     cpus_per_task: 10
@@ -18,7 +21,8 @@ hydra:
       exec --nv ${oc.env:SCRATCH}/cneuromax.sif python3"
 
 # Run the MLP.yaml version first locally, then copy the data over to Béluga
-# scp -r data/example_run/MNIST <USER>@beluga.computecanada.ca:<data_dir>
+# Example: scp -r data/example_run/MNIST/ \
+# mleclei@beluga.computecanada.ca:/scratch/mleclei/Dropbox/cneuromax/data/example_run/.
 data_dir: ${oc.env:CNEUROMAX_PATH}/data/example_run/
 
 litmodule:
