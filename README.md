@@ -24,15 +24,7 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
 
 <h2>Introduction</h2>
 
-CNeuroMax is a machine learning tool being developed in the context of the Courtois Project on Neuronal Modelling, also
-known as the Courtois NeuroMod / CNeuroMod project. Launched in 2018, the
-project aims to create more human-like AI models by training them to emulate
-both human brain dynamics and behaviour. Phase I (2018-2023) of the
-project saw large-scale data acquisition and preliminary unimodal modelling.
-Phase II (2023-2027) of the project aims to create multimodal phantom models
-of the subjects.
-
-CNeuroMax aims to:
+CNeuroMax is a framework for large-scale training of machine learning models, with an emphasis on easy deployment in academic high-performance computing environments. CNeuroMax aims to:
 
 1. **Facilitate the configuration of complex models and training runs through
    tools like:** Hydra, Hydra-Zen, Lightning etc.
@@ -98,3 +90,10 @@ cneuromax/
 ├─ pyproject.toml            <-- Python code & dependencies config
 └─ renovate.json             <-- Renovate Bot config (keeps dependencies up-to-date)
 ```
+
+The cneuromax library is developed in the context of the [Courtois Project on Neuronal Modelling](https://cneuromod.ca), also
+known as CNeuroMod. Launched in 2018, CNeuroMod aims to create more human-like AI models by training them to emulate
+both human brain dynamics and behaviour. Phase I (2018-2023) of the
+project saw large-scale data acquisition and preliminary unimodal modelling.
+Phase II (2023-2027) of the project aims to create multimodal phantom models
+of the subjects, and cneuromax is used as the framework to train these phantom models.
