@@ -55,6 +55,8 @@ dependencies = [
     # W&B
     "wandb==0.15.12",
     "wandb-osh==1.1.2",
+    # Miscellanous
+    "h5py==3.10.0",
 ]
 
 [tool.black]
