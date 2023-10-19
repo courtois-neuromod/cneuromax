@@ -22,7 +22,7 @@ dependencies = [
     # Required for cneuromax/fitting/deeplearning/
     "torch==2.0.1",
     "lightning==2.1.0",
-    "transformers==4.34.0",
+    "transformers==4.34.1",
     # Required for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5",
     # Computer Vision packages
