@@ -20,8 +20,12 @@ def get_path(clb: Callable[..., Any]) -> str:
     return f"{clb.__module__}.{clb.__name__}"
 
 
-fs_builds = make_custom_builds_fn(populate_full_signature=True)
-pfs_builds = make_custom_builds_fn(
+fs_builds = make_custom_builds_fn(
     populate_full_signature=True,
+    hydra_convert="partial",
+)
+pfs_builds = make_custom_builds_fn(
     zen_partial=True,
+    populate_full_signature=True,
+    hydra_convert="partial",
 )

@@ -16,4 +16,8 @@ def store_configs(cs: ConfigStore) -> None:
     Args:
         cs: .
     """
-    cs.store(group="litmodule/nnmodule", name="mlp", node=fs_builds(MLP))
+    cs.store(
+        group="litmodule/nnmodule",
+        name="mlp",
+        node=fs_builds(MLP, config=MLPConfig()),
+    )

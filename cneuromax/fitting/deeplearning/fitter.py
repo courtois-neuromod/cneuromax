@@ -4,33 +4,29 @@ import logging
 import os
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 import torch
 from hydra.core.hydra_config import HydraConfig
 from hydra.utils import instantiate
+from hydra_plugins.hydra_submitit_launcher.config import (
+    LocalQueueConf,
+    SlurmQueueConf,
+)
 from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
+    LocalLauncher,
     SlurmLauncher,
 )
+from lightning.pytorch import Trainer
+from lightning.pytorch.loggers import Logger
 from lightning.pytorch.loggers.wandb import WandbLogger
-from omegaconf import MISSING
+from omegaconf import MISSING, DictConfig, OmegaConf
 from torch.distributed import ReduceOp
 
 from cneuromax.fitting.common import BaseFitterHydraConfig
+from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
+from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.hydra import get_path
-
-if TYPE_CHECKING:
-    from hydra_plugins.hydra_submitit_launcher.config import (
-        LocalQueueConf,
-        SlurmQueueConf,
-    )
-    from lightning.pytorch import Trainer
-    from lightning.pytorch.loggers import Logger
-
-    from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
-    from cneuromax.fitting.deeplearning.litmodule import (
-        BaseLitModule,
-    )
 
 TORCH_COMPILE_MINIMUM_CUDA_VERSION = 7
 
@@ -46,10 +42,10 @@ class DeepLearningFitterHydraConfig(BaseFitterHydraConfig):
         logger: .
     """
 
-    trainer: Any = MISSING
-    litmodule: Any = MISSING
-    datamodule: Any = MISSING
-    logger: Any = MISSING
+    trainer: Any = MISSING  # Implicit TrainerHydraConfig
+    litmodule: Any = MISSING  # Implicit LitModuleHydraConfig
+    datamodule: Any = MISSING  # Implicit DataModuleHydraConfig
+    logger: Any = MISSING  # Implicit LoggerHydraConfig
 
 
 class DeepLearningFitter:
@@ -84,25 +80,31 @@ class DeepLearningFitter:
             config: .
         """
         self.config = config
-        self.launcher_config: LocalQueueConf | SlurmQueueConf = (
-            HydraConfig.get().launcher
-        )
+        self.launcher_config = self.retrieve_launcher_config()
         self.instantiate_lightning_objects()
         self.set_batch_size_and_num_workers()
         self.set_checkpoint_path()
 
+    def retrieve_launcher_config(
+        self: "DeepLearningFitter",
+    ) -> LocalQueueConf | SlurmQueueConf:
+        """."""
+        launcher_dict_config: DictConfig = HydraConfig.get().launcher
+        launcher_container_config = OmegaConf.to_container(
+            launcher_dict_config,
+        )
+        if not isinstance(launcher_container_config, dict):
+            raise TypeError
+        launcher_config_dict = dict(launcher_container_config)
+        return (
+            LocalQueueConf(**launcher_config_dict)
+            if launcher_dict_config._target_ == get_path(LocalLauncher)
+            else SlurmQueueConf(**launcher_config_dict)
+        )
+
     def instantiate_lightning_objects(self: "DeepLearningFitter") -> None:
         """."""
-        """
-        kwargs = {}
-        if self.config.logger._target_ == get_path(WandbLogger):
-            kwargs["offline"] = self.launcher_config._target_ = get_path
-                SlurmLauncher,
-            )
-        """
-
         self.logger: Logger | None
-
         if self.config.logger._target_ == get_path(WandbLogger):
             wandb_key_path = Path(
                 str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
@@ -117,21 +119,18 @@ class DeepLearningFitter:
                     "W&B key not found. Logging disabled.",
                 )
                 self.logger = None
-
         else:
             self.logger = instantiate(self.config.logger)
 
         callbacks = None
-
         """
         if self.launcher_config._target_ == get_path(SlurmLauncher):
             callbacks = [TriggerWandbSyncLightningCallback()]
         """
-
         self.trainer: Trainer = instantiate(
             config=self.config.trainer,
             devices=self.launcher_config.gpus_per_node or 1
-            if self.config.trainer.accelerator == "gpu"
+            if self.config.device == "gpu"
             else self.launcher_config.tasks_per_node,
             logger=self.logger,
             callbacks=callbacks,
@@ -165,7 +164,7 @@ class DeepLearningFitter:
         good ``batch_size`` and ``num_workers`` parameters.
         """
         from cneuromax.fitting.deeplearning.utils.lightning import (
-            find_good_num_workers,
+            find_good_num_workers,  # Prevent circular import
             find_good_per_device_batch_size,
         )
 

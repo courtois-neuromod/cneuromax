@@ -10,7 +10,7 @@ import hydra
 import torch
 import wandb
 from hydra.core.config_store import ConfigStore
-from omegaconf import OmegaConf
+from omegaconf import DictConfig, OmegaConf
 
 from cneuromax.fitting.common import store_configs as store_base_fitter_configs
 from cneuromax.fitting.deeplearning import (
@@ -75,8 +75,39 @@ def store_configs() -> None:
     store_task_configs(cs)
 
 
+def verify_config(config: DictConfig) -> None:
+    """Verifies that various config elements are set correctly.
+
+    Currently, it only makes sure that the ``device`` is set correctly.
+
+    Args:
+        config: .
+    """
+    # Verify device
+    if not torch.cuda.is_available():
+        logging.info("CUDA is not available, setting device to CPU.")
+        config.device = "cpu"
+
+
+def process_config(config: DictConfig) -> DeepLearningFitterHydraConfig:
+    """Process the Hydra config.
+
+    Args:
+        config: .
+
+    Returns:
+        The processed Hydra config.
+    """
+    OmegaConf.resolve(config)
+    OmegaConf.set_struct(config, value=True)
+    dl_config = OmegaConf.to_object(config)
+    if not isinstance(dl_config, DeepLearningFitterHydraConfig):
+        raise TypeError
+    return dl_config
+
+
 @hydra.main(config_name="config", config_path=".", version_base=None)
-def run(config: DeepLearningFitterHydraConfig) -> float:
+def run(config: DictConfig) -> None:
     """.
 
     Args:
@@ -85,13 +116,10 @@ def run(config: DeepLearningFitterHydraConfig) -> float:
     Returns:
         The validation loss.
     """
-    if not torch.cuda.is_available():
-        logging.info("CUDA is not available, setting device to CPU.")
-        config.device = "cpu"
-
-    OmegaConf.resolve(config)
-    fitter = DeepLearningFitter(config)
-    return fitter.fit()
+    verify_config(config)
+    dl_config = process_config(config)
+    fitter = DeepLearningFitter(dl_config)
+    fitter.fit()
 
 
 def login_wandb() -> None:
@@ -115,8 +143,4 @@ def login_wandb() -> None:
 if __name__ == "__main__":
     store_configs()
     login_wandb()
-    out = run()
-    """
-    # if out: DICTCONFIG
-    #     OmegaConf.save(out, "out.yaml")
-    """
+    run()

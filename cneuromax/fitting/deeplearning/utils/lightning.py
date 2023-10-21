@@ -3,29 +3,29 @@
 import copy
 import logging
 import time
-from typing import TYPE_CHECKING
 
 import numpy as np
 from hydra.utils import instantiate
-from hydra_plugins.hydra_submitit_launcher.config import BaseQueueConf
+from hydra_plugins.hydra_submitit_launcher.config import (
+    LocalQueueConf,
+    SlurmQueueConf,
+)
 from lightning.pytorch import Trainer
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
 )
 from lightning.pytorch.tuner.tuning import Tuner
 
+from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.fitter import (
     DeepLearningFitterHydraConfig,
 )
-
-if TYPE_CHECKING:
-    from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
-    from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 
 
 def find_good_per_device_batch_size(
     config: DeepLearningFitterHydraConfig,
-    launcher_config: BaseQueueConf,
+    launcher_config: LocalQueueConf | SlurmQueueConf,
 ) -> int:
     """Finds an appropriate ``per_device_batch_size`` parameter.
 
@@ -85,7 +85,7 @@ def find_good_per_device_batch_size(
 
 def find_good_num_workers(
     config: DeepLearningFitterHydraConfig,
-    launcher_config: BaseQueueConf,
+    launcher_config: LocalQueueConf | SlurmQueueConf,
     per_device_batch_size: int,
     max_num_data_passes: int = 100,
 ) -> int:

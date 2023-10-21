@@ -86,16 +86,18 @@ cneuromax/
 ├─ .gitignore                <-- Files to not track with Git/GitHub
 ├─ .pre-commit-config.yaml   <-- Pre-"git commit" actions config (format, lint, etc)
 ├─ .yamllint.yaml            <-- YAML files config
-├─ Containerfile                <-- To build the Docker image
+├─ Containerfile             <-- To build the Docker image
 ├─ LICENSE                   <-- MIT License file
 ├─ README.md                 <-- Repository description file
 ├─ pyproject.toml            <-- Python code & dependencies config
 └─ renovate.json             <-- Renovate Bot config (keeps dependencies up-to-date)
 ```
 
-The cneuromax library is developed in the context of the [Courtois Project on Neuronal Modelling](https://cneuromod.ca), also
-known as CNeuroMod. Launched in 2018, CNeuroMod aims to create more human-like AI models by training them to emulate
-both human brain dynamics and behaviour. Phase I (2018-2023) of the
-project saw large-scale data acquisition and preliminary unimodal modelling.
-Phase II (2023-2027) of the project aims to create multimodal phantom models
-of the subjects, and cneuromax is used as the framework to train these phantom models.
+CNeuroMax is developed in the context of the
+[Courtois Project on Neuronal Modelling](https://cneuromod.ca), also known as
+CNeuroMod. Launched in 2018, CNeuroMod aims to create more human-like AI models
+by training them to emulate both human brain dynamics and behaviour. Phase I
+(2018-2023) of the project saw large-scale data acquisition and preliminary
+unimodal modelling. Phase II (2023-2027) of the project aims to create
+multimodal phantom models of the subjects. CNeuroMax is used as the framework
+to train these phantom models.

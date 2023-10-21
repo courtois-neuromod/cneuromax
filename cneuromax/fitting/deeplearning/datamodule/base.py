@@ -9,7 +9,7 @@ from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-from cneuromax.utils.annotations import ge, has_keys_annots, not_empty, one_of
+from cneuromax.utils.annotations import not_empty, one_of
 
 
 @dataclass
@@ -80,15 +80,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     @final
     def load_state_dict(
         self: "BaseDataModule",
-        state_dict: An[
-            dict[str, int],
-            has_keys_annots(
-                {
-                    "per_device_batch_size": [int, ge(1)],
-                    "per_device_num_workers": [int, ge(0)],
-                },
-            ),
-        ],
+        state_dict: dict[str, int],
     ) -> None:
         """Sets the instance's per-device batch_size & num_workers.
 
