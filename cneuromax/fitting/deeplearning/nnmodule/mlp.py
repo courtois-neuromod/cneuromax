@@ -8,7 +8,7 @@ from jaxtyping import Float
 from omegaconf import MISSING
 from torch import Tensor, nn
 
-from cneuromax.utils.annotations import ge, gt, lt
+from cneuromax.utils.annotations import ge, lt
 
 
 @dataclass
@@ -20,7 +20,7 @@ class MLPConfig:
         p_dropout: Dropout probability.
     """
 
-    dims: list[An[int, gt(0)]] = MISSING
+    dims: list[int] = MISSING
     p_dropout: An[float, ge(0), lt(1)] = 0.0
 
 

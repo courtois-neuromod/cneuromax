@@ -46,14 +46,14 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         self.scheduler: LRScheduler = scheduler(optimizer=self.optimizer)
 
     @final
-    def x_step(
+    def stage_step(
         self: "BaseLitModule",
         batch: Num[Tensor, " ..."]
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
-        """Generic wrapper around the ``step`` instance method.
+        """Generic stage wrapper around the ``step`` instance method.
 
         Verifies that the ``step`` instance method is callable, calls
         it and logs the loss value(s).
@@ -87,12 +87,12 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
     ) -> Num[Tensor, " ..."]:
-        """Calls ``x_step`` method with argument ``train``.
+        """Calls ``stage_step`` method with argument ``stage=train``.
 
         Returns:
             The loss value(s).
         """
-        return self.x_step(batch, "train")
+        return self.stage_step(batch=batch, stage="train")
 
     @final
     def validation_step(
@@ -103,7 +103,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         *args: Any,  # noqa: ANN401, ARG002
         **kwargs: Any,  # noqa: ANN401, ARG002
     ) -> Num[Tensor, " ..."]:
-        """Calls ``x_step`` method with argument ``val``.
+        """Calls ``stage_step`` method with argument ``stage=val``.
 
         Args:
             batch: .
@@ -113,7 +113,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         Returns:
             The loss value(s).
         """
-        return self.x_step(batch, "val")
+        return self.stage_step(batch=batch, stage="val")
 
     @final
     def test_step(
@@ -122,7 +122,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
     ) -> Num[Tensor, " ..."]:
-        """Calls ``x_step`` method with argument ``test``.
+        """Calls ``stage_step`` method with argument ``stage=test``.
 
         Args:
             batch: .
@@ -130,7 +130,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         Returns:
             The loss value(s).
         """
-        return self.x_step(batch, "test")
+        return self.stage_step(batch=batch, stage="test")
 
     @final
     def configure_optimizers(
@@ -144,9 +144,5 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             list).
         """
         return [self.optimizer], [
-            {
-                "scheduler": self.scheduler,
-                "interval": "step",
-                "frequency": 1,
-            },
+            {"scheduler": self.scheduler, "interval": "step", "frequency": 1},
         ]

@@ -1,9 +1,9 @@
 """Lightning Module for MNIST classification."""
 
+
 from functools import partial
 
-from jaxtyping import Float
-from torch import Tensor, nn
+from torch import nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
@@ -29,18 +29,3 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
             scheduler: .
         """
         super().__init__(nnmodule, optimizer, scheduler, num_classes=10)
-
-    def forward(
-        self: "MNISTClassificationLitModule",
-        x: Float[Tensor, " BS 1 28 28"],
-    ) -> Float[Tensor, " BS 10"]:
-        """Simple pass through the PyTorch ``nn.Module``.
-
-        Args:
-            x: The batched MNIST images.
-
-        Returns:
-            The batched output logits.
-        """
-        out: Float[Tensor, " BS 10"] = self.nnmodule(x)
-        return out

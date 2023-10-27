@@ -1,8 +1,5 @@
 """Type annotations validated through Beartype."""
 
-from typing import Annotated as An
-
-from beartype.door import is_bearable
 from beartype.vale import Is
 from beartype.vale._core._valecore import BeartypeValidator
 
@@ -52,7 +49,7 @@ def one_of(*elements: object) -> BeartypeValidator:
         .
     """
 
-    def _one_of(x: object, *elements: object) -> bool:
+    def _one_of(x: object, elements: tuple[object, ...]) -> bool:
         if x in elements:
             return True
         return False
@@ -76,35 +73,6 @@ def has_keys(keys: list[str]) -> BeartypeValidator:
         return False
 
     return Is[lambda x: _has_keys(x, keys)]
-
-
-def has_keys_annots(
-    keys_annots: dict[object, list[object]],
-) -> BeartypeValidator:
-    """Makes sure the dictionary has the given keys and annotations.
-
-    Args:
-        keys_annots: The keys and annotations to check for.
-
-    Returns:
-        .
-    """
-
-    def _has_keys_annots(
-        x: object,
-        keys_annots: dict[object, list[object]],
-    ) -> bool:
-        if isinstance(x, dict):
-            for key, value in keys_annots.items():
-                if key not in x or not is_bearable(
-                    x[key],
-                    An[value[0], value[1]],
-                ):
-                    return False
-            return True
-        return False
-
-    return Is[lambda x: _has_keys_annots(x, keys_annots)]
 
 
 def ge(val: float) -> BeartypeValidator:

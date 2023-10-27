@@ -15,10 +15,10 @@ version = "0.0.1"
 dependencies = [
     ### Packages required for cneuromax/fitting/
     "submitit==1.5.0",
-    "hydra-core@git+https://github.com/courtois-neuromod/hydra@f89f83fc4095b3fa4fefd858b5fef00a296c3aec", # Hydra w/ updated Submitit
+    "hydra-core==1.3.2",
     "hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@f89f83fc4095b3fa4fefd858b5fef00a296c3aec#subdirectory=plugins/hydra_submitit_launcher/",
-    "hydra-zen==0.11.0",
     "hydra-orion-sweeper==1.6.3",
+    "hydra-zen==0.11.0",
     # Required for cneuromax/fitting/deeplearning/
     "torch==2.0.1",
     "lightning==2.1.0",
@@ -66,19 +66,29 @@ line-length = 79
 line-length = 79
 select = ["ALL"]
 ignore = [
-    "F722", # Syntax error in forward annotation: {body}.
-            # https://beta.ruff.rs/docs/rules/forward-annotation-syntax-error/
+    "F722", # `forward-annotation-syntax-error`
+            # Syntax error in forward annotation: {body}.
+            # https://docs.astral.sh/ruff/rules/forward-annotation-syntax-error/
             # Disabled to be able to utilize Jaxtyping, see:
             # https://docs.kidger.site/jaxtyping/faq/#flake8-or-ruff-are-throwing-an-error
-    "G004", # Logging statement uses f-string.
-            # https://beta.ruff.rs/docs/rules/#flake8-logging-format-g
+    "G004", # `logging-f-string`
+            # Logging statement uses f-string.
+            # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
-            # disabled, see: https://beta.ruff.rs/docs/rules/print/
-    "SLF001", # Private member accessed: {access}.
-              # https://beta.ruff.rs/docs/rules/private-member-access/
+            # disabled, see: https://docs.astral.sh/ruff/rules/print/
+    "SLF001", # `private-member-access`
+              # Private member accessed: {access}.
+              # https://docs.astral.sh/ruff/rules/private-member-access/
               # Disabled to make use of certain private Lightning classes (ex:
               # Trainer checkpointing)
-
+    "TCH001", # `typing-only-first-party-import`
+              # Move application import {} into a type-checking block
+              # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
+              # Disabled as we use Beartype for dynamic type checking.
+    "TCH002", # `typing-only-third-party-import`
+              # Move third-party import {} into a type-checking block
+              # https://docs.astral.sh/ruff/rules/typing-only-third-party-import/
+              # Disabled as we use Beartype for dynamic type checking.
 ]
 
 [tool.ruff.pycodestyle]
@@ -89,19 +99,15 @@ convention = "google"
 
 [tool.ruff.per-file-ignores]
 "*_test.py" = [
-    "S101",  # Use of assert detected.
-             # https://beta.ruff.rs/docs/rules/assert/
+    "S101",  # `assert`
+             # Use of assert detected.
+             # https://docs.astral.sh/ruff/rules/assert/
              # Disabled to be able to use assertions in test files.
-    "PLR2004", # Magic value used in comparison, consider replacing {value}
+    "PLR2004", # `magic-value-comparison`
+               # Magic value used in comparison, consider replacing {value}
                # with a constant variable.
-               # https://beta.ruff.rs/docs/rules/magic-value-comparison/
+               # https://docs.astral.sh/ruff/rules/magic-value-comparison/
                # Disabled to be able to use magic values in test files.
-]
-
-"conftest.py" = [
-    "F401",  # {name} imported but unused; consider using importlib.util.find_spec to test for availability
-             # https://beta.ruff.rs/docs/rules/unused-import/
-             # Disabled to import fixtures.
 ]
 
 [tool.doc8]

@@ -3,13 +3,11 @@
 from dataclasses import dataclass
 from typing import Annotated as An
 
-from omegaconf import DictConfig
-
 from cneuromax.utils.annotations import not_empty, one_of
 
 
 @dataclass
-class BaseFitterHydraConfig(DictConfig):
+class BaseFitterHydraConfig:
     """Root Fitter Hydra configuration.
 
     Attributes:
