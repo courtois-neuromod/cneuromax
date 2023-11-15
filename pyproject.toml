@@ -54,7 +54,7 @@ dependencies = [
     "pytest-cov==4.1.0",
     # W&B
     "wandb==0.16.0",
-    "wandb-osh==1.1.2",
+    "wandb-osh==1.2.0",
     # Miscellanous
     "h5py==3.10.0",
 ]
