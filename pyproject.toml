@@ -21,7 +21,7 @@ dependencies = [
     "hydra-zen==0.11.0",
     # Required for cneuromax/fitting/deeplearning/
     "torch==2.0.1",
-    "lightning==2.1.1",
+    "lightning==2.1.2",
     "transformers==4.35.2",
     "datasets==2.14.7",
     # Required for cneuromax/fitting/neuroevolution/
