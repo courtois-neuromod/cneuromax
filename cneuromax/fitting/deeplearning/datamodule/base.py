@@ -121,11 +121,15 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         if dataset is None:
             raise AttributeError
 
+        if not hasattr(self, "collate_fn"):
+            self.collate_fn = None
+        
         return DataLoader(
             dataset=dataset,
             batch_size=self.per_device_batch_size,
             shuffle=shuffle,
             num_workers=self.per_device_num_workers,
+            collate_fn=self.collate_fn,
             pin_memory=self.pin_memory,
         )
 
