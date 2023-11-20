@@ -42,7 +42,7 @@ dependencies = [
     "sphinx-autoapi==3.0.0",
     "esbonio==0.16.2",
     # Jupyter
-    "jupyterlab==4.0.8",
+    "jupyterlab==4.0.9",
     "jupyterlab-code-formatter==2.2.1",
     "ipywidgets==8.1.1",
     # Testing
