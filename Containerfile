@@ -9,7 +9,8 @@ FROM nvcr.io/nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
 
 # Install system packages
-RUN add-apt-repository ppa:git-core/ppa && apt update && apt install -y \
+RUN apt update && apt install -y software-properties-common && \
+    add-apt-repository ppa:git-core/ppa && apt install -y \
     # OpenMPI
     libopenmpi-dev \
     # UCX for InfiniBand
