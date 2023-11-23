@@ -9,7 +9,7 @@ FROM nvcr.io/nvidia/cuda:11.7.1-cudnn8-devel-ubuntu22.04
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
 
 # Install system packages
-RUN apt update && apt install -y \
+RUN add-apt-repository ppa:git-core/ppa && apt update && apt install -y \
     # OpenMPI
     libopenmpi-dev \
     # UCX for InfiniBand
@@ -24,6 +24,9 @@ RUN apt update && apt install -y \
     default-jre \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
+
+RUN git config --global push.autoSetupRemote true
+RUN git config --global push.default current
 
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
