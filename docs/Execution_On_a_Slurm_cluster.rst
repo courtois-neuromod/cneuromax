@@ -3,10 +3,15 @@ On a Slurm cluster
 
 .. note ::
 
-    Suggestion: open a tmux session to run the following commands.
+    Suggestion: Open a tmux session to run the following commands.
 
 Run a python script
 -------------------
+
+.. note::
+
+    The following command was designed for the Béluga cluster. It will most
+    likely need refining on other clusters.
 
 .. code-block:: bash
 
@@ -32,7 +37,8 @@ Run the lab.
 
 .. code-block:: bash
 
-    # Fill in the appropriate values TODO FIX
-    # salloc --account=ACCOUNT bash -c "module load apptainer && cd ${CNEUROMAX_PATH} && \
-    #    apptainer exec -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
-    #    cneuromod/cneuromax:latest jupyter-lab --allow-root --ip $(hostname -f) --port 8888"
+    # Fill in the appropriate values
+    salloc --account=ACCOUNT bash -c "module load apptainer && \
+        cd ${CNEUROMAX_PATH} && \
+        apptainer exec --nv -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} \
+        ${SCRATCH}/cneuromax.sif jupyter-lab --allow-root --ip $(hostname -f) --port 8888"

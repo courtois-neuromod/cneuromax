@@ -16,41 +16,31 @@ On an Ubuntu machine
       (Development Containers are smoother with Docker than Podman).
     - You are an administrator of this machine, do not want to install Podman
       and are fine with adding users to the ``docker`` group. See this `link
-      <https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user>`_
-      for security implications.
+      on security implications
+      <https://docs.docker.com/engine/install/linux-postinstall/#manage-docker-as-a-non-root-user>`_.
 
     Otherwise, install Podman.
 
 **Option A) Install Docker**
 
+Follow the `Docker installation guide
+<https://docs.docker.com/desktop/install/ubuntu/>`_.
+Do not forget the `Docker post-installation steps
+<https://docs.docker.com/engine/install/linux-postinstall/>`_.
+
 .. note::
 
-    `Official Docker installation guide
-    <https://docs.docker.com/engine/install/ubuntu/>`_.
-
-.. code-block:: bash
-
-    # Install Docker
-    sudo apt install -y docker.io
-    # Create the `docker` group
-    sudo groupadd docker
-    # Add your user to the `docker` group
-    sudo usermod -aG docker ${USER}
-
-Now, log out and log back in so that your group membership is re-evaluated.
+    You could be interested in setting up Rootless mode if you plan
+    to make use of the library's Development Container (so that files created
+    by the container are owned by your user and not by root). See this `link
+    <https://docs.docker.com/engine/security/rootless/>`_ for more information.
 
 **Option B) Install Podman**
 
-.. note::
+Follow the `Podman installation guide
+<https://podman.io/getting-started/installation>`_.
 
-    `Official Podman installation guide
-    <https://podman.io/getting-started/installation>`_.
-
-.. code-block:: bash
-
-    sudo apt install -y podman
-
-1. Install the NVIDIA driver
+2. Install the NVIDIA driver
 ----------------------------
 
 .. note::
@@ -59,13 +49,13 @@ Now, log out and log back in so that your group membership is re-evaluated.
 
 .. note::
 
-    `Official NVIDIA driver installation guide
-    <https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html>`_.
+    In addition to the method described below, Ubuntu users can also install
+    the driver by opening the "Software & Updates" application, going to the
+    "Additional Drivers" tab and selecting the "Using NVIDIA driver
+    metapackage from nvidia-driver-XXX (proprietary, tested)" option.
 
-.. code-block:: bash
-
-    # Example (latest version as of Apr 2023)
-    sudo apt install -y nvidia-driver-525
+Follow the `NVIDIA driver installation guide
+<https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html>`_.
 
 3. Install the NVIDIA Container Toolkit
 ---------------------------------------
@@ -74,8 +64,12 @@ Now, log out and log back in so that your group membership is re-evaluated.
 
     Skip this step if your machine does not have an NVIDIA GPU.
 
-Follow the following `installation guide
+Follow the `NVIDIA Container Toolkit installation guide
 <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html>`_.
+
+If you are using a Rootless Docker or Podman, make sure to follow the
+`Rootless setup
+<https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/1.13.5/install-guide.html#step-3-rootless-containers-setup>`_.
 
 4. Pull the image
 -----------------
