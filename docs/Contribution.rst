@@ -138,39 +138,6 @@ notifications if you do not want to make use of it.
 Git/GitHub workflow for contributing
 ------------------------------------
 
-.. note::
-
-    In order to not have to specify the ``-u origin <BRANCH_NAME>`` flag when
-    pushing/pulling to the repository (which forces you to keep the branch name
-    in mind), you can optionally enable git's ``autoSetupRemote`` option.
-
-    First, make sure your git version is at least 2.37.
-
-    .. code-block:: bash
-
-        git --version
-
-    If not, you can update it with the following command.
-
-    .. code-block:: bash
-
-        sudo add-apt-repository ppa:git-core/ppa && \
-            sudo apt update && \
-            sudo apt install -y git
-
-    Finally, enable the ``autoSetupRemote`` option.
-
-    .. code-block:: bash
-
-        git config --global push.autoSetupRemote true
-
-    Additionally, you can also enable the ``push.default`` option to make it so
-    that ``git push`` pushes to the current branch.
-
-    .. code-block:: bash
-
-          git config --global push.default current
-
 In a terminal window, change directory to the cneuromax repository.
 
 .. code-block:: bash
@@ -271,8 +238,8 @@ all machines. On a machine with Dropbox, run:
 
 .. code-block:: bash
 
-    mkdir -p data/ docs/_build/ docs/autoapi/ .vscode/ .coverage \
-      .mypy_cache/ .pytest_cache/ .ruff_cache/
+    mkdir -p data/ docs/_build/ docs/autoapi/ .vscode/ .coverage
+    mkdir -p .mypy_cache/ .pytest_cache/ .ruff_cache/
     sudo attr -s com.dropbox.ignored -V 1 data/
     sudo attr -s com.dropbox.ignored -V 1 docs/_build/
     sudo attr -s com.dropbox.ignored -V 1 docs/autoapi/
@@ -290,14 +257,6 @@ Example of the contents of a `.mignore` file:
 .. code-block:: python
 
     **/data
-
-If you use both Dropbox & Devcontainers, you might run into permission issues
-when trying to upload files. To make it so that any new file created in your
-Devcontainer is owned by your user, you can run the following command:
-
-.. code-block:: bash
-
-    sudo setfacl -d -m user:<USER>:rwx <DROPBOX_PATH>
 
 Freezing the repositories for publication
 -----------------------------------------
