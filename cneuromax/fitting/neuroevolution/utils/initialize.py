@@ -9,8 +9,6 @@ from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
-    agents_batch_type,
-    agents_type,
     exchange_and_mutate_info_batch_type,
     exchange_and_mutate_info_type,
     generation_results_batch_type,
@@ -26,13 +24,12 @@ def initialize_common_variables(
     num_pops: An[int, ge(1), le(2)],
 ) -> tuple[
     An[int, ge(1)],  # pop_size
-    agents_type | None,  # agents
-    agents_batch_type,  # agents_batch
+    list[list[BaseSingularAgent]],  # agents_batch
     exchange_and_mutate_info_type | None,  # exchange_and_mutate_info
     exchange_and_mutate_info_batch_type,  # exchange_and_mutate_info_batch
     generation_results_type | None,  # generation_results
     generation_results_batch_type,  # generation_results_batch
-    An[int, ge(0)],  # total_num_env_steps
+    An[int, ge(0)] | None,  # total_num_env_steps
 ]:
     """Initializes variables common to all execution modes.
 
@@ -46,20 +43,15 @@ def initialize_common_variables(
         pop_size: Number of agents per population, computed from\
             :paramref:`agents_per_task` and Hydra launcher values\
             `nodes` and `tasks_per_node`.
-        agents: An array maintained only by the primary process\
-            (secondary processes set this to `None`) containing\
-            all current\
-            :class:`cneuromax.fitting.neuroevolution.agent.singular.base.BaseSingularAgent`\
-            instances.
-        agents_batch: A sub-array of :paramref:`agents` maintained\
-            by this process.
+        agents_batch: A 2D list of agents maintained by this process
+            during a given generation.
         exchange_and_mutate_info: An array maintained only by the\
             primary process (secondary processes set this to\
             `None`) containing information for all processes on\
             how to exchange and mutate agents. Precisions on the 3rd\
-            dimension: 1) The size of the agent when serialized, 2)\
-            The position of the process with which to exchange the\
-            agent, 3) Whether to send or receive the agent, 4) The\
+            dimension: 0) The size of the agent when serialized, 1)\
+            The position of the agent paired for with the current\
+            agent, 2) Whether to send or receive the agent, 3) The\
             seed to randomize the mutation and evaluation of the\
             agent.
         exchange_and_mutate_info_batch: A sub-array of\
@@ -69,8 +61,8 @@ def initialize_common_variables(
             process (secondary processes set this to `None`)\
             containing several pieces of information about the\
             results of a given generation. Precisions on the 3rd\
-            dimension: 1) Agent fitness, 2) Number of environment\
-            steps taken by the agent during the evaluation, 3) Size\
+            dimension: 0) Agent fitness, 1) Number of environment\
+            steps taken by the agent during the evaluation, 2) Size\
             of the agent when serialized.
         generation_results_batch: A sub-array of\
             :paramref:`generation_results` maintained by this\
@@ -84,33 +76,22 @@ def initialize_common_variables(
         * (agents_per_task)
     )
     len_agents_batch = pop_size // size
-    agents_batch = np.empty(
-        shape=(num_pops, len_agents_batch),
-        dtype=BaseSingularAgent,
-    )
-    exchange_and_mutate_info_batch = np.empty(
-        shape=(num_pops, len_agents_batch, 4),
-        dtype=np.int32,
-    )
-    generation_results_batch = np.empty(
-        shape=(num_pops, len_agents_batch, 3),
-        dtype=np.float32,
-    )
-    agents = (
-        None
-        if rank != 0
-        else np.empty(
-            shape=(num_pops, pop_size),
-            dtype=BaseSingularAgent,
-        )
-    )
+    agents_batch: list[list[BaseSingularAgent]] = []
     exchange_and_mutate_info = (
         None
         if rank != 0
         else np.empty(
             shape=(num_pops, pop_size, 4),
-            dtype=np.int32,
+            dtype=np.uint32,
         )
+    )
+    exchange_and_mutate_info_batch = np.empty(
+        shape=(num_pops, len_agents_batch, 4),
+        dtype=np.uint32,
+    )
+    generation_results_batch = np.empty(
+        shape=(num_pops, len_agents_batch, 3),
+        dtype=np.float32,
     )
     generation_results = (
         None
@@ -123,7 +104,6 @@ def initialize_common_variables(
     total_num_env_steps = None if rank != 0 else 0
     return (
         pop_size,
-        agents,
         agents_batch,
         exchange_and_mutate_info,
         exchange_and_mutate_info_batch,
