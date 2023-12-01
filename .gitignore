@@ -11,3 +11,4 @@
 **/.ruff_cache/
 **/.vscode/
 WANDB_KEY.txt
+test.ipynb

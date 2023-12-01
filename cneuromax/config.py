@@ -13,7 +13,7 @@ from cneuromax.utils.annotations import not_empty
 
 
 class BaseHydraConfig:
-    """Root :mod:`cneuromax` :mod:`hydra-core` configuration.
+    """Base structured :mod:`hydra-core` configuration.
 
     Attributes:
         data_dir: Path to the root data directory.
@@ -86,8 +86,7 @@ def store_task_configs(cs: ConfigStore) -> None:
             return
 
     module_not_found_error_2 = (
-        "The task module must be specified in the script "
-        "arguments. Example: ``python -m "
-        "cneuromax.fitting.deeplearning task=classify_mnist/mlp``."
+        "The task must be specified in the script arguments. Example: "
+        "`python -m cneuromax.fitting.deeplearning task=classify_mnist/mlp`."
     )
     raise ModuleNotFoundError(module_not_found_error_2)

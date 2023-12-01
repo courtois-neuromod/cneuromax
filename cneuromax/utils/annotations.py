@@ -1,4 +1,4 @@
-"""Type annotations validated through Beartype."""
+"""Type annotations validator through :mod:`beartype`."""
 
 from beartype.vale import Is
 from beartype.vale._core._valecore import BeartypeValidator
@@ -8,7 +8,7 @@ def not_empty() -> BeartypeValidator:
     """Makes sure the string is not empty.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _not_empty(x: object) -> bool:
@@ -26,7 +26,7 @@ def equal(element: object) -> BeartypeValidator:
         element: The object to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _equal(x: object, element: object) -> bool:
@@ -40,13 +40,14 @@ def equal(element: object) -> BeartypeValidator:
 def one_of(*elements: object) -> BeartypeValidator:
     """Makes sure the value is one of the input arguments.
 
-    Used to replace Typing ``Literal`` which is not supported by Hydra.
+    Used to replace :class:`typing.Literal` which is not supported by
+    :mod:`omegaconf`.
 
     Args:
         elements: The objects to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _one_of(x: object, elements: tuple[object, ...]) -> bool:
@@ -57,32 +58,14 @@ def one_of(*elements: object) -> BeartypeValidator:
     return Is[lambda x: _one_of(x, elements)]
 
 
-def has_keys(keys: list[str]) -> BeartypeValidator:
-    """Makes sure the dictionary has the given keys.
-
-    Args:
-        keys: The keys to check for.
-
-    Returns:
-        .
-    """
-
-    def _has_keys(x: object, keys: list[str]) -> bool:
-        if isinstance(x, dict):
-            return all(key in x for key in keys)
-        return False
-
-    return Is[lambda x: _has_keys(x, keys)]
-
-
 def ge(val: float) -> BeartypeValidator:
-    """Validates greater than or equal to input argument.
+    """Makes sure the input is greater of equal than `val`.
 
     Args:
         val: The value to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _ge(x: object, val: float) -> bool:
@@ -94,13 +77,13 @@ def ge(val: float) -> BeartypeValidator:
 
 
 def gt(val: float) -> BeartypeValidator:
-    """Validates greater than input argument.
+    """Makes sure the input is greater than `val`.
 
     Args:
         val: The value to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _gt(x: object, val: float) -> bool:
@@ -112,13 +95,13 @@ def gt(val: float) -> BeartypeValidator:
 
 
 def le(val: float) -> BeartypeValidator:
-    """Validate less than or equal to input argument.
+    """Makes sure the input is less or equal than `val`.
 
     Args:
         val: The value to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _le(x: object, val: float) -> bool:
@@ -130,13 +113,13 @@ def le(val: float) -> BeartypeValidator:
 
 
 def lt(val: float) -> BeartypeValidator:
-    """Validate less than input argument.
+    """Makes sure the input is less than `val`.
 
     Args:
         val: The value to compare against.
 
     Returns:
-        .
+        The corresponding validator.
     """
 
     def _lt(x: object, val: float) -> bool:

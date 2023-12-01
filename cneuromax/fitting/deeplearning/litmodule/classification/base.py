@@ -1,6 +1,7 @@
-"""."""
+"""Base classification LitModule config & class."""
 
 from abc import ABCMeta
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 
@@ -16,42 +17,48 @@ from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.annotations import ge, one_of
 
 
+@dataclass
 class BaseClassificationLitModuleConfig:
-    """Base classification Lightning Module config.
+    """Config for :class:`BaseClassificationLitModule` instances.
 
     Attributes:
-        num_classes: .
+        num_classes: Number of classes to classify.
     """
 
     num_classes: An[int, ge(2)]
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
-    """Base classification Lightning Module.
+    """Base Classification :class:`~lightning.pytorch.LightningModule`.
 
     Attributes:
-        accuracy (``MulticlassAccuracy``): The accuracy metric.
-        config (``BaseClassificationLitModuleConfig``): .
+        accuracy\
+            (:class:`~torchmetrics.classification.MulticlassAccuracy`):\
+            The accuracy metric.
     """
 
     def __init__(
         self: "BaseClassificationLitModule",
+        config: BaseClassificationLitModuleConfig,
         nnmodule: nn.Module,
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
-        num_classes: An[int, ge(2)],
     ) -> None:
-        """Calls parent constructor & initializes accuracy metric.
+        """Calls parent constructor & initializes instance attributes.
 
         Args:
-            nnmodule: .
-            optimizer: .
-            scheduler: .
-            num_classes: .
+            config: This instance's configuration, see\
+                :class:`BaseClassificationLitModuleConfig`.
+            nnmodule: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule`.
+            optimizer: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer`.
+            scheduler: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler`.
         """
         super().__init__(nnmodule, optimizer, scheduler)
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
-            num_classes=num_classes,
+            num_classes=config.num_classes,
         )
 
     def step(
@@ -62,11 +69,11 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         ],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
-        """Computes accuracy and cross entropy loss.
+        """Computes the model accuracy and cross entropy loss.
 
         Args:
-            batch: .
-            stage: .
+            batch: The input data batch.
+            stage: The current stage.
 
         Returns:
             The cross entropy loss.

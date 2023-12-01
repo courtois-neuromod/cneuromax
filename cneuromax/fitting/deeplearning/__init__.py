@@ -1,6 +1,6 @@
 """Fitting with Deep Learning.
 
-Stores several useful Hydra configs.
+Stores several Hydra configs, both required and optional.
 """
 
 from hydra.core.config_store import ConfigStore
@@ -13,9 +13,8 @@ from transformers import (
     get_constant_schedule_with_warmup,
 )
 
-from cneuromax.fitting.deeplearning.fitter import (
-    DeepLearningFitter,
-    DeepLearningFitterHydraConfig,
+from cneuromax.fitting.deeplearning.fit import (
+    DeepLearningFittingHydraConfig,
 )
 from cneuromax.fitting.deeplearning.nnmodule import (
     store_configs as store_nnmodule_configs,
@@ -45,16 +44,17 @@ def store_configs(cs: ConfigStore) -> None:
     store_scheduler_configs(cs)
     store_trainer_configs(cs)
 
-    cs.store(name="dl_fitter", node=DeepLearningFitterHydraConfig)
+    cs.store(name="dl_fitting", node=DeepLearningFittingHydraConfig)
 
 
 def store_logger_configs(cs: ConfigStore) -> None:
-    """Stores Hydra ``logger`` group configs.
+    """Stores Hydra `logger` group configs.
 
-    Names: ``wandb``, ``wandb_simexp``.
+    Names: `wandb`, `wandb_simexp`.
 
     Args:
-        cs: .
+        cs: See\
+            :paramref:`cneuromax.config.store_configs.cs`.
     """
     base_args = {
         "name": MISSING,
@@ -75,12 +75,13 @@ def store_logger_configs(cs: ConfigStore) -> None:
 
 
 def store_optimizer_configs(cs: ConfigStore) -> None:
-    """Stores Hydra ``litmodule/optimizer`` group configs.
+    """Stores Hydra `litmodule/optimizer` group configs.
 
-    Names: ``adam``, ``adamw``, ``sgd``.
+    Names: `adam`, `adamw`, `sgd`.
 
     Args:
-        cs: .
+        cs: See\
+            :paramref:`cneuromax.config.store_configs.cs`.
     """
     cs.store(group="litmodule/optimizer", name="adam", node=pfs_builds(Adam))
     cs.store(group="litmodule/optimizer", name="adamw", node=pfs_builds(AdamW))
@@ -88,12 +89,13 @@ def store_optimizer_configs(cs: ConfigStore) -> None:
 
 
 def store_scheduler_configs(cs: ConfigStore) -> None:
-    """Stores Hydra ``litmodule/scheduler`` group configs.
+    """Stores Hydra `litmodule/scheduler` group configs.
 
-    Names: ``constant``, ``linear_warmup``.
+    Names: `constant`, `linear_warmup`.
 
     Args:
-        cs: .
+        cs: See\
+            :paramref:`cneuromax.config.store_configs.cs`.
     """
     cs.store(
         group="litmodule/scheduler",
@@ -108,12 +110,13 @@ def store_scheduler_configs(cs: ConfigStore) -> None:
 
 
 def store_trainer_configs(cs: ConfigStore) -> None:
-    """Stores Hydra ``trainer`` group configs.
+    """Stores Hydra `trainer` group configs.
 
-    Names: ``base``.
+    Names: `base`.
 
     Args:
-        cs: .
+        cs: See\
+            :paramref:`cneuromax.config.store_configs.cs`.
     """
     cs.store(
         group="trainer",

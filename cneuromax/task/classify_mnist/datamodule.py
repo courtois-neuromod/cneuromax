@@ -16,10 +16,10 @@ from cneuromax.utils.annotations import ge, lt, one_of
 
 @dataclass
 class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
-    """.
+    """Configuration for :class:`MNISTClassificationDataModuleConfig`s.
 
     Attributes:
-        val_percentage: Percentage of the training dataset to use for
+        val_percentage: Percentage of the training dataset to use for\
             validation.
     """
 
@@ -30,10 +30,10 @@ class MNISTClassificationDataModule(BaseDataModule):
     """.
 
     Attributes:
-        train_val_split (``tuple[float, float]``): The train/validation
-            split (sums to ``1``).
-        transform (``transforms.Compose``): The Torchvision dataset
-            transformations.
+        train_val_split (`tuple[float, float]`): The train/validation\
+            split (sums to `1`).
+        transform (:class:`~transforms.Compose`): The\
+            :mod:`torchvision` dataset transformations.
     """
 
     def __init__(
@@ -43,7 +43,8 @@ class MNISTClassificationDataModule(BaseDataModule):
         """Calls parent constructor & initializes instance attributes.
 
         Args:
-            config: .
+            config: A :class:`MNISTClassificationDataModuleConfig`\
+                instance.
         """
         super().__init__(config)
         self.train_val_split = (

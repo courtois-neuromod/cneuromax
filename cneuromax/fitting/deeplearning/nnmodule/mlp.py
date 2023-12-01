@@ -1,4 +1,4 @@
-"""MLP class & config."""
+"""MLP config & class."""
 
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -13,7 +13,7 @@ from cneuromax.utils.annotations import ge, lt
 
 @dataclass
 class MLPConfig:
-    """Multi-layer perceptron (MLP) configuration.
+    """Config for :class:`MLP` instances.
 
     Attributes:
         dims: List of dimensions for each layer.
@@ -31,8 +31,9 @@ class MLP(nn.Module):
     dropout probability.
 
     Attributes:
-        config (``MLPConfig``): .
-        model (``nn.Sequential``): .
+        config (:class:`MLPConfig`): This instance's configuration,\
+            see :class:`MLPConfig`.
+        model (:class:`~torch.nn.Sequential`): The MLP model.
     """
 
     def __init__(
@@ -43,8 +44,9 @@ class MLP(nn.Module):
         """Calls parent constructor & initializes model.
 
         Args:
-            config: .
-            activation_fn: .
+            config: This instance's configuration, see\
+                :class:`MLPConfig`.
+            activation_fn: Activation function to use between layers.
         """
         super().__init__()
         self.config = config
@@ -70,14 +72,14 @@ class MLP(nn.Module):
         """Flattens input dimensions and pass through the model.
 
         Note:
-            This MLP isn't (yet?) suitable for cases where the output is
-            multidimensional.
+            This MLP isn't currently suitable for cases where the output
+            is multidimensional.
 
         Args:
-            x: .
+            x: The data input batch.
 
         Returns:
-            The output vector batch.
+            The output batch.
         """
         out: Float[Tensor, " batch_size flattened_d_input"] = rearrange(
             x,

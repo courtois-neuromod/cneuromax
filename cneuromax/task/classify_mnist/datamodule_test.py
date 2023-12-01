@@ -1,4 +1,4 @@
-"""."""
+"""Tests for :mod:`cneuromax.task.classify_mnist.datamodule`."""
 
 from pathlib import Path
 
@@ -14,13 +14,14 @@ from cneuromax.task.classify_mnist import (
 
 @pytest.fixture()
 def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
-    """.
+    """`MNISTClassificationDataModule` fixture.
 
     Args:
-        tmp_path: .
+        tmp_path: The temporary path for the\
+            :class:`cneuromax.task.classify_mnist.datamodule.MNISTClassificationDataModule`.
 
     Returns:
-        A generic ``MNISTDataModule`` instance.
+        A generic `MNISTDataModule` instance.
     """
     return MNISTClassificationDataModule(
         MNISTClassificationDataModuleConfig(
@@ -32,10 +33,11 @@ def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
 
 
 def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
-    """.
+    """Tests the `MNISTClassificationDataModule.setup` method #1.
 
     Args:
-        datamodule: .
+        datamodule: A generic `MNISTDataModule` instance, see
+            :func:`datamodule`.
     """
     datamodule.prepare_data()
     datamodule.setup("fit")
@@ -48,10 +50,11 @@ def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
 
 
 def test_setup_test(datamodule: MNISTClassificationDataModule) -> None:
-    """.
+    """Tests the `MNISTClassificationDataModule.setup` method #2.
 
     Args:
-        datamodule: .
+        datamodule: A generic `MNISTDataModule` instance, see
+            :func:`datamodule`.
     """
     datamodule.prepare_data()
     datamodule.setup("test")

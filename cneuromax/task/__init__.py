@@ -1,1 +1,1 @@
-"""Repository of tasks."""
+"""Task repository, either model fitting or model serving."""

@@ -1,6 +1,5 @@
 """Lightning Module for MNIST classification."""
 
-
 from functools import partial
 
 from torch import nn
@@ -9,6 +8,7 @@ from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.fitting.deeplearning.litmodule.classification import (
     BaseClassificationLitModule,
+    BaseClassificationLitModuleConfig,
 )
 
 
@@ -24,8 +24,16 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         """Calls parent constructor.
 
         Args:
-            nnmodule: .
-            optimizer: .
-            scheduler: .
+            nnmodule: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule`.
+            optimizer: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer`.
+            scheduler: See\
+                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler`.
         """
-        super().__init__(nnmodule, optimizer, scheduler, num_classes=10)
+        super().__init__(
+            BaseClassificationLitModuleConfig(num_classes=10),
+            nnmodule,
+            optimizer,
+            scheduler,
+        )

@@ -30,7 +30,7 @@ dependencies = [
     # Computer Vision packages
     "torchvision==0.15.2",
     "opencv-python==4.8.1.78",
-    # Shape manipulation & type checking
+    # Shapes & Dynamic Type checking
     "jaxtyping==0.2.24",
     "nptyping==2.5.0",
     "beartype==0.16.4",
@@ -80,6 +80,10 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
             # disabled, see: https://docs.astral.sh/ruff/rules/print/
+    "NPY002", # `numpy-legacy-random`
+              # Replace legacy np.random.{method_name} call with np.random.Generator
+              # Disabled as we use `lightning.seed_everything` to set the randomness
+              # which still uses the legacy seeding method.
     "S301", # `suspicious-pickle-usage`
             # `pickle` and modules that wrap it can be unsafe when used to
             # deserialize untrusted data, possible security issue

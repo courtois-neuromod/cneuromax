@@ -1,9 +1,8 @@
-"""Lightning DataModules."""
+""":mod:`~lightning.pytorch.LightningDataModule` Classes."""
 
 from cneuromax.fitting.deeplearning.datamodule.base import (
     BaseDataModule,
     BaseDataModuleConfig,
-    BaseDataset,
 )
 
-__all__ = ["BaseDataModule", "BaseDataModuleConfig", "BaseDataset"]
+__all__ = ["BaseDataModule", "BaseDataModuleConfig"]

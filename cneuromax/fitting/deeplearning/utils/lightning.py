@@ -1,15 +1,12 @@
-"""Lightning utilities."""
+""":mod:`lightning` utilities."""
 
 import copy
 import logging
 import time
+from typing import Any
 
 import numpy as np
 from hydra.utils import instantiate
-from hydra_plugins.hydra_submitit_launcher.config import (
-    LocalQueueConf,
-    SlurmQueueConf,
-)
 from lightning.pytorch import Trainer
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
@@ -17,49 +14,57 @@ from lightning.pytorch.trainer.connectors.checkpoint_connector import (
 from lightning.pytorch.tuner.tuning import Tuner
 
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
-from cneuromax.fitting.deeplearning.fitter import (
-    DeepLearningFitterHydraConfig,
-)
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.utils.hydra import get_launcher_config
 
 
 def find_good_per_device_batch_size(
-    config: DeepLearningFitterHydraConfig,
-    launcher_config: LocalQueueConf | SlurmQueueConf,
+    litmodule: BaseLitModule,
+    datamodule: BaseDataModule,
+    device: str,
+    data_dir: str,
 ) -> int:
-    """Finds an appropriate ``per_device_batch_size`` parameter.
+    """Finds an appropriate `per_device_batch_size` parameter.
 
     This functionality makes the following, not always correct, but
     generally reasonable assumptions:
-    - As long as the ``total_batch_size / dataset_size`` ratio remains
-    small (e.g. ``< 0.01`` so as to benefit from the stochasticity of
+    - As long as the `total_batch_size / dataset_size` ratio remains
+    small (e.g. `< 0.01` so as to benefit from the stochasticity of
     gradient updates), running the same number of gradient updates with
-    a larger batch size will yield faster training than running the same
-    number of gradient updates with a smaller batch size.
+    a larger batch size will yield better training performance than
+    running the same number of gradient updates with a smaller batch
+    size.
     - Loading data from disk to RAM is a larger bottleneck than loading
     data from RAM to GPU VRAM.
     - If you are training on multiple GPUs, each GPU has roughly the
     same amount of VRAM.
 
     Args:
-        config: .
-        launcher_config: The Hydra launcher configuration.
+        litmodule: A temporary :class:`BaseLitModule` instance\
+            instantiated with the same configuration as the\
+            :class:`BaseLitModule` instance that will be trained.
+        datamodule: A temporary :class:`BaseDataModule` instance\
+            instantiated with the same configuration as the\
+            :class:`BaseDataModule` instance that will be used for\
+            training.
+        device: See
+            :paramref:`cneuromax.fitting.common.fit.BaseFittingHydraConfig.dvice`.
+        data_dir: See
+            :paramref:`cneuromax.fitting.common.fit.BaseFittingHydraConfig.data_dir`.
 
     Returns:
-        per_device_batch_size: The estimated proper batch size per
-            device.
+        The estimated proper batch size per device.
     """
-    logging.info("Finding good `batch_size` parameter...")
-    litmodule: BaseLitModule = instantiate(config.litmodule)
-    datamodule: BaseDataModule = instantiate(config.datamodule)
+    launcher_config = get_launcher_config()
     datamodule.per_device_num_workers = launcher_config.cpus_per_task or 1
     trainer = Trainer(
-        accelerator=config.device,
+        accelerator=device,
         devices=1,
         max_epochs=-1,
-        default_root_dir=config.data_dir + "/lightning/tuner/",
+        default_root_dir=data_dir + "/lightning/tuner/",
     )
     tuner = Tuner(trainer=trainer)
+    logging.info("Finding good `batch_size` parameter...")
     per_device_batch_size = tuner.scale_batch_size(
         model=litmodule,
         datamodule=datamodule,
@@ -70,7 +75,7 @@ def find_good_per_device_batch_size(
         raise ValueError  # Won't happen according to Lightning source code.
     num_computing_devices = launcher_config.nodes * (
         launcher_config.gpus_per_node or 1
-        if config.device == "gpu"
+        if device == "gpu"
         else launcher_config.tasks_per_node
     )
     per_device_batch_size: int = min(
@@ -84,24 +89,22 @@ def find_good_per_device_batch_size(
 
 
 def find_good_num_workers(
-    config: DeepLearningFitterHydraConfig,
-    launcher_config: LocalQueueConf | SlurmQueueConf,
+    config: Any,  # noqa: ANN401
     per_device_batch_size: int,
     max_num_data_passes: int = 100,
 ) -> int:
     """Finds an appropriate `num_workers` parameter.
 
-    This function makes use of the ``per_device_batch_size`` parameter
-    found by the ``find_good_per_device_batch_size`` function in order
-    to find an appropriate ``num_workers`` parameter.
-    It does so by iterating through a range of ``num_workers`` values
+    This function makes use of the `per_device_batch_size` parameter
+    found by the `find_good_per_device_batch_size` function in order
+    to find an appropriate `num_workers` parameter.
+    It does so by iterating through a range of `num_workers` values
     and measuring the time it takes to iterate through a fixed number of
-    data passes; picking the ``num_workers`` value that yields the
+    data passes; picking the `num_workers` value that yields the
     shortest time.
 
     Args:
-        config: .
-        launcher_config: The Hydra launcher configuration.
+        config: The Hydra datamodule configuration.
         per_device_batch_size: .
         max_num_data_passes: Maximum number of data passes to iterate
             through.
@@ -109,13 +112,14 @@ def find_good_num_workers(
     Returns:
         num_workers: An estimated proper number of workers.
     """
+    launcher_config = get_launcher_config()
     logging.info("Finding good `num_workers` parameter...")
     if launcher_config.cpus_per_task in [None, 1]:
         logging.info("Only 1 worker available/provided. Returning 0.")
         return 0
     times = []
     for num_workers in range(launcher_config.cpus_per_task or 1 + 1):
-        datamodule: BaseDataModule = instantiate(config.datamodule)
+        datamodule: BaseDataModule = instantiate(config)
         datamodule.per_device_batch_size = per_device_batch_size
         datamodule.per_device_num_workers = num_workers
         datamodule.prepare_data()
@@ -139,10 +143,10 @@ def find_good_num_workers(
 class InitOptimParamsCheckpointConnector(_CheckpointConnector):
     """Initialized optimizer parameters Lightning checkpoint connector.
 
-    Makes use of the newly instantiated optimizers' hyper-parameters
-    rather than the checkpointed hyper-parameters. For use when resuming
-    training with different optimizer hyper-parameters (e.g. with the
-    PBT Hydra sweeper).
+    Allows to make use of the newly instantiated optimizers'
+    hyper-parameters rather than the checkpointed hyper-parameters.
+    For use when resuming training with different optimizer
+    hyper-parameters (e.g. with the PBT :mod:`hydra-score` sweeper).
     """
 
     def restore_optimizers(self: "InitOptimParamsCheckpointConnector") -> None:
@@ -160,7 +164,7 @@ class InitOptimParamsCheckpointConnector(_CheckpointConnector):
                 strict=True,
             ):
                 for ckpt_optim_param_group_key in ckpt_optim_param_group:
-                    # Skip the `params`` key as it is not a HP.
+                    # Skip the `params` key as it is not a HP.
                     if ckpt_optim_param_group_key != "params":
                         # Place the new Hydra instantiated optimizers'
                         # HPs back into the restored optimizers.
