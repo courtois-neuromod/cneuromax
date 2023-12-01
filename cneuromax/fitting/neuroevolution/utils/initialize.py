@@ -67,6 +67,10 @@ def initialize_common_variables(
         generation_results_batch: A sub-array of\
             :paramref:`generation_results` maintained by this\
             process.
+        total_num_env_steps: The total number of environment steps\
+            taken by all agents during the entire experiment. This\
+            variable is maintained only by the primary process\
+            (secondary processes set this to `None`).
     """
     comm, rank, size = retrieve_mpi_variables()
     launcher_config = get_launcher_config()
@@ -81,23 +85,23 @@ def initialize_common_variables(
         None
         if rank != 0
         else np.empty(
-            shape=(num_pops, pop_size, 4),
+            shape=(pop_size, num_pops, 4),
             dtype=np.uint32,
         )
     )
     exchange_and_mutate_info_batch = np.empty(
-        shape=(num_pops, len_agents_batch, 4),
+        shape=(len_agents_batch, num_pops, 4),
         dtype=np.uint32,
     )
     generation_results_batch = np.empty(
-        shape=(num_pops, len_agents_batch, 3),
+        shape=(len_agents_batch, num_pops, 3),
         dtype=np.float32,
     )
     generation_results = (
         None
         if rank != 0
         else np.empty(
-            shape=(num_pops, pop_size, 3),
+            shape=(pop_size, num_pops, 3),
             dtype=np.float32,
         )
     )
@@ -127,11 +131,12 @@ def initialize_gpu_comm() -> MPI.Comm:
     """
     comm, rank, size = retrieve_mpi_variables()
     launcher_config = get_launcher_config()
-    # `gpus_per_node` will have already been narrowed to a
-    # positive integer by the
-    # :func:`cneuromax.fitting.neuroevolution.fit.validate_config`
-    # function.
-    assert launcher_config.gpus_per_node  # noqa: S101
+    if not launcher_config.gpus_per_node:
+        error_msg = (
+            "The number of GPUs per node must be a positive integer "
+            "in order to setup GPU work queueing."
+        )
+        raise ValueError(error_msg)
     tasks_per_gpu = size // launcher_config.gpus_per_node
     gpu_idx = rank // tasks_per_gpu
     ith_gpu_comm_task_list = np.arange(

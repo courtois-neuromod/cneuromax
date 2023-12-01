@@ -3,7 +3,9 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
-from typing import Generic, TypeVar
+
+import numpy as np
+from numpy.typing import NDArray
 
 from cneuromax.fitting.neuroevolution.agent.singular.base import (
     BaseSingularAgent,
@@ -19,10 +21,7 @@ class BaseSpaceConfig:
     wandb_entity: str | None
 
 
-T = TypeVar("T", bound=list[BaseSingularAgent])
-
-
-class BaseSpace(Generic[T], metaclass=ABCMeta):
+class BaseSpace(metaclass=ABCMeta):
     """.
 
     Spaces are virtual environments in which agents produce behaviour
@@ -30,7 +29,7 @@ class BaseSpace(Generic[T], metaclass=ABCMeta):
     """
 
     def __init__(
-        self: "BaseSpace[T]",
+        self: "BaseSpace",
         config: BaseSpaceConfig,
     ) -> None:
         """.
@@ -41,7 +40,7 @@ class BaseSpace(Generic[T], metaclass=ABCMeta):
         self.config = config
 
     @property
-    def num_pops(self: "BaseSpace[T]") -> An[int, ge(1), le(2)]:
+    def num_pops(self: "BaseSpace") -> An[int, ge(1), le(2)]:
         """Number of agents interacting in a given space.
 
         As of now, there are two optimization paradigms for spaces:
@@ -58,7 +57,7 @@ class BaseSpace(Generic[T], metaclass=ABCMeta):
         raise NotImplementedError
 
     @property
-    def evaluates_on_gpu(self: "BaseSpace[T]") -> bool:
+    def evaluates_on_gpu(self: "BaseSpace") -> bool:
         """Whether this space evaluates agents on GPU or not.
 
         As of now, there are two execution paradigms for spaces:
@@ -68,10 +67,10 @@ class BaseSpace(Generic[T], metaclass=ABCMeta):
 
     @abstractmethod
     def evaluate(
-        self: "BaseSpace[T]",
-        agent_s: list[BaseSingularAgent],
+        self: "BaseSpace",
+        agent_s: list[list[BaseSingularAgent]],
         curr_gen: An[int, ge(0)],
-    ) -> array:
+    ) -> NDArray[np.float32]:
         """.
 
         Method called once per iteration (every generation) in order to

@@ -22,51 +22,6 @@ from cneuromax.fitting.deeplearning.fitter import (
 )
 
 
-def store_task_configs(cs: ConfigStore) -> None:
-    """Store pre-defined task Hydra configurations.
-
-    Parse the task config path from the script arguments, import
-    its ``store_configs`` function if it exists, and call it.
-
-    Args:
-        cs: .
-
-    Raises:
-        ModuleNotFoundError: If the task module cannot be found.
-        AttributeError: If the task module does not have a
-            ``store_configs`` function.
-    """
-    for arg in sys.argv:
-        if "task" in arg:
-            try:
-                task_module = import_module(
-                    "cneuromax.task." + arg.split("=")[1].split("/")[0],
-                )
-            except ModuleNotFoundError:
-                logging.exception(
-                    "The task module cannot be found. Make sure it exists in "
-                    "``cneuromax/task`` and is spelled correctly.",
-                )
-
-            try:
-                task_module.store_configs(cs)
-            except AttributeError:
-                logging.exception(
-                    "The task module must have a ``store_configs`` function. "
-                    "Check-out ``cneuromax/tasks/classify_mnist/__init__.py``"
-                    "for an example.",
-                )
-
-            return
-
-    module_not_found_error_2 = (
-        "The task module must be specified in the script "
-        "arguments. Example: ``python -m "
-        "cneuromax.fitting.deeplearning task=classify_mnist/mlp``."
-    )
-    raise ModuleNotFoundError(module_not_found_error_2)
-
-
 def store_configs() -> None:
     """Store configs for the Deep Learning module."""
     cs = ConfigStore.instance()

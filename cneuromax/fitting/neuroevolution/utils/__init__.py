@@ -10,8 +10,8 @@ from cneuromax.fitting.neuroevolution.utils import (
     load_state,
     run_evaluation_cpu,
     run_evaluation_gpu,
+    run_mutation,
     run_selection,
-    run_variation,
     save_state,
     update_exchange_and_mutate_info,
 )

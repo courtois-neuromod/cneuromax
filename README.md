@@ -24,9 +24,9 @@ Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
 
 <h2>Introduction</h2>
 
-CNeuroMax is a framework for large-scale training of machine learning models,
-with an emphasis on easy deployment in academic high-performance computing
-environments. CNeuroMax aims to:
+CNeuroMax is a framework for large-scale training of machine learning models
+(Deep Learning + Neuroevolution) with an emphasis on easy deployment in
+high-performance computing environments (HPC). CNeuroMax aims to:
 
 1. **Facilitate the configuration of complex models and training runs through
    tools like:** Hydra, Hydra-Zen, Lightning etc.
@@ -42,9 +42,10 @@ environments. CNeuroMax aims to:
    for team-shared logging etc.
 
 4. **Offer optional tools to strengthen code quality and reproducibility:**
-   code linting and formatting, unit testing, static & dynamic type checking
-   that supports tensor shapes and dtypes, documentation auto-generation and
-   auto-deployment, precommit hooks etc.
+   code linting (Ruff) and formatting (Black), unit testing (pytest), static
+   (Mypy) & dynamic (Beartype) type checking that supports tensor shapes and
+   types (jaxtyping), development containers (Dev Containers), documentation
+   auto-generation and auto-deployment, precommit hooks etc.
 
 <h2>Repository structure:</h1>
 
@@ -53,21 +54,27 @@ cneuromax/
 ├─ .github/                  <-- Config files for GitHub automation (tests, containers, etc)
 ├─ cneuromax/                <-- Machine Learning code
 │  ├─ fitting/               <-- ML model fitting code
-│  │  ├─ common/             <-- Code common to all fitting workflows
-│  │  │  ├─ __init__.py      <-- Stores common Hydra configs
-│  │  │  └─ fitter.py        <-- Base Hydra config common to all fitting workflows
 │  │  ├─ deeplearning/       <-- Deep Learning code
 │  │  │  ├─ datamodule/      <-- Lightning DataModules
-│  │  │  │  ├─ base.py       <-- Base Lightning DataModule to build upon
 │  │  │  ├─ litmodule/       <-- Lightning Modules
-│  │  │  │  ├─ base.py       <-- Base Lightning Module to build upon
 │  │  │  ├─ nnmodule/        <-- PyTorch Modules & Hydra configs
 │  │  │  ├─ utils/           <-- Deep Learning utilities
 │  │  │  ├─ __init__.py      <-- Stores Deep Learning Hydra configs
 │  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.deeplearning`
-│  │  │  ├─ config.yaml      <-- Default Hydra configs & settings
-│  │  │  └─ fitter.py        <-- Deep Learning fitting
-│  │  └─ neuroevolution/     <-- Neuroevolution code
+│  │  │  ├─ config.yaml      <-- Default Deep Learning Hydra configs & settings
+│  │  │  └─ fit.py           <-- Deep Learning fitting & Hydra config
+│  │  ├─ neuroevolution/     <-- Neuroevolution code
+│  │  │  ├─ agent/           <-- Neuroevolution agents (encapsulate networks)
+│  │  │  ├─ net/             <-- Neuroevolution networks
+│  │  │  ├─ space/           <-- Neuroevolution spaces (where agents get evaluated)
+│  │  │  ├─ utils/           <-- Neuroevolution utilities
+│  │  │  ├─ __init__.py      <-- Stores Neuroevolution Hydra configs
+│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.neuroevolution`
+│  │  │  ├─ config.yaml      <-- Default Neuroevolution Hydra configs & settings
+│  │  │  └─ fit.py           <-- Neuroevolution fitting & Hydra config
+│  │  ├─ __init__.py         <-- Stores Fitting Hydra configs
+│  │  ├─ __main__.py         <-- Entrypoint when calling `python cneuromax.fitting`
+│  │  └─ config.py           <-- Base Structured Hydra fitting config & utilities
 │  ├─ serving/               <-- Contains the code to create applications (cozmo inference, etc)
 │  ├─ task/                  <-- Contains the Deep Learning tasks
 │  │  │
@@ -80,7 +87,9 @@ cneuromax/
 │  │     └─ config.yaml      <-- ****** Your Hydra configuration file *****
 │  │                             ******************************************
 │  │
-│  └─ utils/                 <-- CNeuroMax utilities
+│  ├─ utils/                 <-- CNeuroMax utilities
+│  ├─ __init__.py            <-- Sets up Beartype, logs in W&B, etc
+│  └─ config.py              <-- Base Structured Hydra config & utilities
 ├─ docs/                     <-- Documentation files
 ├─ .devcontainer.json        <-- VSCode container development config
 ├─ .gitignore                <-- Files to not track with Git/GitHub

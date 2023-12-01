@@ -23,8 +23,8 @@ from cneuromax.fitting.neuroevolution.utils import (
     load_state,
     run_evaluation_cpu,
     run_evaluation_gpu,
+    run_mutation,
     run_selection,
-    run_variation,
     save_state,
     update_exchange_and_mutate_info,
 )
@@ -160,7 +160,7 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                 agents_batch=agents_batch,
                 exchange_and_mutate_info_batch=exchange_and_mutate_info_batch,
             )
-        run_variation(
+        run_mutation(
             agents_batch=agents_batch,
             exchange_and_mutate_info_batch=exchange_and_mutate_info_batch,
             num_pops=space.num_pops,

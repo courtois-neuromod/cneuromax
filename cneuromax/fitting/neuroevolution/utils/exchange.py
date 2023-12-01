@@ -98,6 +98,14 @@ def update_exchange_and_mutate_info(
 ) -> None:
     """Update the exchange and mutate information.
 
+    The selection process of the algorithm is in some sense implicit in\
+    `cneuromax`. We make use of 50% truncation selection, which is\
+    reflected in the information stored inside
+    :paramref:`exchange_and_mutate_info`.
+
+    In some sense, the selection process of the algorithm is performed
+    in this function.
+
     Args:
         num_pops: See\
             :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
@@ -155,5 +163,5 @@ def update_exchange_and_mutate_info(
         fitnesses_rankings,
         pop_size // 2,
     )
-    # 3) Seeds to set randomness for variation & evaluation.
+    # 3) Seeds to set randomness for mutation & evaluation.
     exchange_and_mutate_info[:, :, 3] = seeds
