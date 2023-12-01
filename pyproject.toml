@@ -80,6 +80,12 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
             # disabled, see: https://docs.astral.sh/ruff/rules/print/
+    "S301", # `suspicious-pickle-usage`
+            # `pickle` and modules that wrap it can be unsafe when used to
+            # deserialize untrusted data, possible security issue
+            # https://docs.astral.sh/ruff/rules/suspicious-pickle-usage/
+            # Disabled due to current implementation of checkpointing
+            # in `cneuromax.fitting.neuroevolution`.
     "TCH001", # `typing-only-first-party-import`
               # Move application import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
