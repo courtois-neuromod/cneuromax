@@ -80,11 +80,6 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
             # disabled, see: https://docs.astral.sh/ruff/rules/print/
-    "SLF001", # `private-member-access`
-              # Private member accessed: {access}.
-              # https://docs.astral.sh/ruff/rules/private-member-access/
-              # Disabled to make use of certain private Lightning classes (ex:
-              # Trainer checkpointing)
     "TCH001", # `typing-only-first-party-import`
               # Move application import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/

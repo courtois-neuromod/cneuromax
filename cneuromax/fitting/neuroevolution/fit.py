@@ -220,6 +220,8 @@ def validate_config(
 ) -> None:
     """Makes sure that the configuration is valid.
 
+    TODO: evaluates_on_gpu & gpus_per_node
+
     Args:
         config: The run's Hydra configuration, see\
             :class:`NeuroevolutionFittingHydraConfig`.
