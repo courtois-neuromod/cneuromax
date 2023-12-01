@@ -37,7 +37,8 @@
           "files.trimTrailingWhitespace": true,
           "python.analysis.ignore": [
               "/**"
-          ]
+          ],
+          "git.allowNoVerifyCommit": true
         }
       }
     },
