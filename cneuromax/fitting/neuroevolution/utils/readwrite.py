@@ -82,7 +82,8 @@ def save_state(
     if rank != 0:
         return
     # `agents`, `generation_results`, and `total_num_env_steps` are only
-    # `None` when `rank != 0`. This is a workaround for type checking.
+    # `None` when `rank != 0`. The following `assert` statements are for
+    # static type checking reasons and have no execution purposes.
     assert agents  # noqa: S101
     assert generation_results  # noqa: S101
     assert total_num_env_steps  # noqa: S101

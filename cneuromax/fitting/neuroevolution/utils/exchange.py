@@ -2,6 +2,7 @@
 
 from typing import Annotated as An
 
+import numpy as np
 from mpi4py import MPI
 
 from cneuromax.fitting.neuroevolution.agent.singular.base import (
@@ -9,6 +10,9 @@ from cneuromax.fitting.neuroevolution.agent.singular.base import (
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
     exchange_and_mutate_info_batch_type,
+    exchange_and_mutate_info_type,
+    generation_results_type,
+    seeds_type,
 )
 from cneuromax.utils.annotations import ge, le
 from cneuromax.utils.mpi import retrieve_mpi_variables
@@ -85,5 +89,71 @@ def exchange_agents(
             agents_batch[i // num_pops][i % num_pops] = agent_or_none
 
 
-# def update_exchange_and_mutate_info():
-#     pass
+def update_exchange_and_mutate_info(
+    num_pops: An[int, ge(1), le(2)],
+    pop_size: An[int, ge(1)],
+    exchange_and_mutate_info: exchange_and_mutate_info_type | None,
+    generation_results: generation_results_type | None,
+    seeds: seeds_type | None,
+) -> None:
+    """Update the exchange and mutate information.
+
+    Args:
+        num_pops: See\
+            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+        pop_size: See return value `pop_size` from\
+            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+        exchange_and_mutate_info: See return value\
+            `exchange_and_mutate_info` from\
+            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+        generation_results: See return value `generation_results` from\
+            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+        seeds: See return value `seeds` from\
+            :func:`~cneuromax.fitting.neuroevolution.utils.compute.compute_start_time_and_seeds`.
+    """
+    _, rank, _ = retrieve_mpi_variables()
+    if rank != 0:
+        return
+    # `exchange_and_mutate_info`, `generation_results`, and `seeds`are
+    # only `None` when `rank != 0`. The following `assert` statements
+    # are for static type checking reasons and have no execution
+    # purposes.
+    assert exchange_and_mutate_info  # noqa: S101
+    assert generation_results  # noqa: S101
+    assert seeds  # noqa: S101
+    serialized_agent_sizes = generation_results[:, :, 2]
+    fitnesses = generation_results[:, :, 0]
+    # Running (simplified) example: fitnesses = [3,5,8,1,4,9]
+    # -> fitnesses_sorting_indices = [3,0,4,1,2,5]
+    fitnesses_sorting_indices = fitnesses.argsort(axis=0)
+    # Running example: fitnesses_sorting_indices = [3,0,4,1,2,5]
+    # -> fitnesses_rankings = [1,3,0,4,2,5]
+    fitnesses_rankings = fitnesses_sorting_indices.argsort(axis=0)
+    # 0) MPI buffer size
+    exchange_and_mutate_info[:, :, 0] = np.max(serialized_agent_sizes)
+    for j in range(num_pops):
+        # Each selected/non-selected agent is paired with a
+        # corresponding non-selected/selected agent. Both agents are
+        # placed in the same position in the ranking sub-leaderboard of
+        # selected and non-selected agents.
+        # Running example: fitnesses_rankings = [1,3,0,4,2,5]
+        # -> paired_agent_ranking = [4,0,1,3,5,2]
+        paired_agent_ranking = (
+            fitnesses_rankings[:, j] + pop_size // 2
+        ) % pop_size
+        # Running example: fitnesses_sorting_indices = [3,0,4,1,2,5]
+        # & paired_agent_ranking = [4,0,1,3,5,2]
+        # -> paired_agent_position = [2,3,0,1,5,4]
+        paired_agent_position = fitnesses_sorting_indices[
+            :,
+            j,
+        ][paired_agent_ranking]
+        # 1) Agent pair position
+        exchange_and_mutate_info[:, j, 1] = paired_agent_position
+    # 2) Sending (1 means sending, 0 means receiving)
+    exchange_and_mutate_info[:, :, 2] = np.greater_equal(
+        fitnesses_rankings,
+        pop_size // 2,
+    )
+    # 3) Seeds to set randomness for variation & evaluation.
+    exchange_and_mutate_info[:, :, 3] = seeds
