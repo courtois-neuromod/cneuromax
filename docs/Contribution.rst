@@ -134,6 +134,9 @@ There are so far two small pain points:
 
 GitHub Copilot is installed in the DevContainer. Simply discard the log-in
 notifications if you do not want to make use of it.
+You can run ``git``, ``pytest`` & ``mypy`` commands from the integrated
+terminal. However running experiments requires special docker flags, so you
+should run them from the terminal outside of the DevContainer.
 
 Git/GitHub workflow for contributing
 ------------------------------------
@@ -143,6 +146,13 @@ In a terminal window, change directory to the cneuromax repository.
 .. code-block:: bash
 
     cd ${CNEUROMAX_PATH}
+
+.. note::
+
+    You can avoid typing the following commands by hand by using the VSCode
+    ``Source Control`` tab on the left and the branch tab on the bottom left.
+    To commit with no verification, press the ``...`` button above the
+    ``Commit`` button and select ``Commit All (No Verify)``.
 
 Create a new branch for your contribution.
 
@@ -157,7 +167,7 @@ Make your changes, commit them and push them to the remote repository.
 .. code-block:: bash
 
     git add .
-    git commit -m "<COMMIT_MESSAGE>"
+    git commit -m "<COMMIT_MESSAGE>" # can add the --no-verify flag to skip tests
     git push
 
 If you are done with your contribution, you can create a pull request on
@@ -168,17 +178,14 @@ commands.
 
 .. code-block:: bash
 
-    git stash # Optional, if you have uncommited changes
     git checkout main
     git pull
     git checkout <YOUR_BRANCH_NAME>
-    git rebase main
-    git push --force
-    git stash pop # Optional, if you have uncommited changes
+    git merge main # might need to resolve conflicts (easier to do in VSCode)
+    git push
 
-You can now go back to run the previous code block (you might need to add the
-``--force`` flag to your ``git push``). Then, create a pull request on GitHub,
-once it is approved, delete your branch and make sure to pull the changes to
+Once you have pushed your changes, you can create a pull request on GitHub.
+Once it is approved, delete your branch and make sure to pull the changes to
 your local repository.
 
 .. code-block:: bash
