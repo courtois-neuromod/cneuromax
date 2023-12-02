@@ -12,6 +12,7 @@ requires-python = ">=3.10" # Did not test with lower versions
 authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
 description = "The Courtois Neuromod Project's centralized Machine Learning repository"
 version = "0.0.1"
+# The following assumes that we build on top of the Containerfile.
 dependencies = [
     ### Packages required for cneuromax/fitting/
     "submitit==1.5.1",
@@ -20,16 +21,12 @@ dependencies = [
     "hydra-orion-sweeper==1.6.3",
     "hydra-zen==0.11.0",
     # Required for cneuromax/fitting/deeplearning/
-    "torch==2.0.1",
-    "torchrl==0.2.0",
+    "torchrl==0.2.1",
     "lightning==2.1.2",
     "transformers==4.35.2",
     "datasets==2.15.0",
     # Required for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5",
-    # Computer Vision packages
-    "torchvision==0.15.2",
-    "opencv-python==4.8.1.78",
     # Shapes & Dynamic Type checking
     "jaxtyping==0.2.24",
     "nptyping==2.5.0",
@@ -61,6 +58,7 @@ dependencies = [
     "wandb-osh==1.2.0",
     # Miscellanous
     "h5py==3.10.0",
+    "opencv-python==4.8.1.78",
 ]
 
 [tool.black]
