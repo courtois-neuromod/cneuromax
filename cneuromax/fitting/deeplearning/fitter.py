@@ -28,8 +28,6 @@ from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.hydra import get_path
 
-TORCH_COMPILE_MINIMUM_CUDA_VERSION = 7
-
 
 @dataclass
 class DeepLearningFitterHydraConfig(BaseFitterHydraConfig):
@@ -139,14 +137,6 @@ class DeepLearningFitter:
         self.datamodule: BaseDataModule = instantiate(self.config.datamodule)
 
         self.litmodule: BaseLitModule = instantiate(self.config.litmodule)
-        if (
-            self.config.device == "gpu"
-            and torch.cuda.get_device_capability()[0]
-            >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
-        ):
-            self.litmodule = torch.compile(  # type: ignore [assignment]
-                self.litmodule,  # mypy: torch.compile not typed for Lightning.
-            )
 
     def set_batch_size_and_num_workers(self: "DeepLearningFitter") -> None:
         """.
