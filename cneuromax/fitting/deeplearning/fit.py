@@ -133,6 +133,7 @@ def instantiate_lightning_objects(
 
     callbacks = None
     """
+    TODO: W&B w/ offline nodes
     # noqa: SLF001
     if launcher_config._target_ == get_path(SlurmLauncher):
         callbacks = [TriggerWandbSyncLightningCallback()]
@@ -149,13 +150,16 @@ def instantiate_lightning_objects(
     datamodule: BaseDataModule = instantiate(config.datamodule)
 
     litmodule: BaseLitModule = instantiate(config.litmodule)
+    """
+    TODO: torch.compile w/ CUDA 11.8+
     if (
         config.device == "gpu"
         and torch.cuda.get_device_capability()[0]
         >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
     ):
         # mypy: torch.compile not typed for Lightning.
-        litmodule = torch.compile(litmodule)  # type: ignore [assignment]
+        litmodule = torch.compile(litmodule) # type: ignore [assignment]
+    """
 
     return logger, trainer, datamodule, litmodule
 
