@@ -12,6 +12,7 @@ requires-python = ">=3.10" # Did not test with lower versions
 authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
 description = "The Courtois Neuromod Project's centralized Machine Learning repository"
 version = "0.0.1"
+# The following assumes that we build on top of the Containerfile.
 dependencies = [
     ### Packages required for cneuromax/fitting/
     "submitit==1.5.1",
@@ -20,18 +21,15 @@ dependencies = [
     "hydra-orion-sweeper==1.6.3",
     "hydra-zen==0.11.0",
     # Required for cneuromax/fitting/deeplearning/
-    "torch==2.0.1",
     "torchrl==0.2.0",
     "lightning==2.1.2",
     "transformers==4.35.2",
     "datasets==2.15.0",
     # Required for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5",
-    # Computer Vision packages
-    "torchvision==0.15.2",
-    "opencv-python==4.8.1.78",
-    # Torch shapes
+    # Shapes & Dynamic Type checking
     "jaxtyping==0.2.24",
+    "nptyping==2.5.0",
     "beartype==0.16.4",
     "einops==0.7.0",
     # Required for docs/
@@ -40,6 +38,7 @@ dependencies = [
     "sphinx-autobuild==2021.3.14",
     "sphinx-copybutton==0.5.2",
     "sphinx-autoapi==3.0.0",
+    "sphinx-paramlinks==0.6.0",
     "esbonio==0.16.3",
     # Jupyter
     "jupyterlab==4.0.9",
@@ -59,6 +58,7 @@ dependencies = [
     "wandb-osh==1.2.0",
     # Miscellanous
     "h5py==3.10.0",
+    "opencv-python==4.8.1.78",
 ]
 
 [tool.black]
@@ -78,11 +78,16 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
             # disabled, see: https://docs.astral.sh/ruff/rules/print/
-    "SLF001", # `private-member-access`
-              # Private member accessed: {access}.
-              # https://docs.astral.sh/ruff/rules/private-member-access/
-              # Disabled to make use of certain private Lightning classes (ex:
-              # Trainer checkpointing)
+    "NPY002", # `numpy-legacy-random`
+              # Replace legacy np.random.{method_name} call with np.random.Generator
+              # Disabled as we use `lightning.seed_everything` to set the randomness
+              # which still uses the legacy seeding method.
+    "S301", # `suspicious-pickle-usage`
+            # `pickle` and modules that wrap it can be unsafe when used to
+            # deserialize untrusted data, possible security issue
+            # https://docs.astral.sh/ruff/rules/suspicious-pickle-usage/
+            # Disabled due to current implementation of checkpointing
+            # in `cneuromax.fitting.neuroevolution`.
     "TCH001", # `typing-only-first-party-import`
               # Move application import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
