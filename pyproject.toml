@@ -78,16 +78,11 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/logging-f-string/
             # Disabled to make it less verbose to log since printing is
             # disabled, see: https://docs.astral.sh/ruff/rules/print/
-    "NPY002", # `numpy-legacy-random`
-              # Replace legacy np.random.{method_name} call with np.random.Generator
-              # Disabled as we use `lightning.seed_everything` to set the randomness
-              # which still uses the legacy seeding method.
-    "S301", # `suspicious-pickle-usage`
-            # `pickle` and modules that wrap it can be unsafe when used to
-            # deserialize untrusted data, possible security issue
-            # https://docs.astral.sh/ruff/rules/suspicious-pickle-usage/
-            # Disabled due to current implementation of checkpointing
-            # in `cneuromax.fitting.neuroevolution`.
+    "SLF001", # `private-member-access`
+              # Private member accessed: {access}.
+              # https://docs.astral.sh/ruff/rules/private-member-access/
+              # Disabled to make use of certain private Lightning classes (ex:
+              # Trainer checkpointing)
     "TCH001", # `typing-only-first-party-import`
               # Move application import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
