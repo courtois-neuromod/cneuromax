@@ -1,4 +1,4 @@
-"""Entry point for Deep Learning fitting."""
+"""Entry point for Fitting with Deep Learning."""
 
 import hydra
 from hydra.core.config_store import ConfigStore
@@ -16,7 +16,7 @@ from cneuromax.fitting.deeplearning.fit import (
 
 
 def store_configs() -> None:
-    """Store configs for the Deep Learning module."""
+    """Stores :mod:`hydra-core` configs for this Deep Learning run."""
     cs = ConfigStore.instance()
     store_base_fitting_configs(cs)
     store_deep_learning_configs(cs)
@@ -25,7 +25,7 @@ def store_configs() -> None:
 
 @hydra.main(config_name="config", config_path=".", version_base=None)
 def run(dict_config: DictConfig) -> None:
-    """Processes the config and fits with Deep Learning.
+    """Processes the :mod:`hydra-core` config and fits w/ Deep Learning.
 
     Args:
         dict_config: The raw config object created by the

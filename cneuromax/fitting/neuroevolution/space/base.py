@@ -15,7 +15,13 @@ from cneuromax.utils.annotations import ge, le
 
 @dataclass
 class BaseSpaceConfig:
-    """."""
+    """.
+
+    Args:
+        eval_num_steps: Number of steps to evaluate each agent for.
+        wandb_entity: :mod:`wandb` entity (username or team name)\
+            to use for logging. `None` means no logging.
+    """
 
     eval_num_steps: An[int, ge(0)]
     wandb_entity: str | None

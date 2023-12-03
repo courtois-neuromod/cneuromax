@@ -1,4 +1,4 @@
-""":mod:`~lightning.pytorch.LightningModule` Classes."""
+r"""Common :class:`~lightning.pytorch.LightningModule`\s."""
 
 from cneuromax.fitting.deeplearning.litmodule.base import (
     BaseLitModule,

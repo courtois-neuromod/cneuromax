@@ -40,5 +40,12 @@ html_theme = "furo"
 
 autoapi_type = "python"
 autoapi_dirs = ["../cneuromax"]
-autoapi_python_class_content = "both"
 autoapi_keep_files = True
+autoapi_options = [
+    "members",
+    "undoc-members",
+    "private-members",
+    "show-module-summary",
+    "special-members",
+    "imported-members",
+]

@@ -68,6 +68,13 @@ line-length = 79
 line-length = 79
 select = ["ALL"]
 ignore = [
+    "D107", # `undocumented-public-init`
+            # Missing docstring in public `__init__`
+            # https://docs.astral.sh/ruff/rules/undocumented-public-init/
+            # Disabled as we combine the docstring of the class and the
+            # `__init__` method because 1) `__init__` docstrings are
+            # often redundant and 2) Our auto-documentation tool
+            # renders better when the full docstring is in the class.
     "F722", # `forward-annotation-syntax-error`
             # Syntax error in forward annotation: {body}.
             # https://docs.astral.sh/ruff/rules/forward-annotation-syntax-error/

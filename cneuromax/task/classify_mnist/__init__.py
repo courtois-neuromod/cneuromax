@@ -19,11 +19,10 @@ __all__ = [
 
 
 def store_configs(cs: ConfigStore) -> None:
-    """Stores the MNIST classification :mod:`hydra-core` configs.
+    """Stores :mod:`hydra-core` MNIST classification configs.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(
         group="datamodule",

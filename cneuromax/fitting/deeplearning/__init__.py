@@ -1,7 +1,4 @@
-"""Fitting with Deep Learning.
-
-Stores several Hydra configs, both required and optional.
-"""
+"""Fitting with Deep Learning (+ :mod:`hydra-core` config storing)."""
 
 from hydra.core.config_store import ConfigStore
 from lightning.pytorch.loggers.wandb import WandbLogger
@@ -25,18 +22,14 @@ __all__ = [
     "DeepLearningFitter",
     "DeepLearningFitterHydraConfig",
     "store_configs",
-    "store_logger_configs",
-    "store_optimizer_configs",
-    "store_scheduler_configs",
-    "store_trainer_configs",
 ]
 
 
 def store_configs(cs: ConfigStore) -> None:
-    """Store configs for the Deep Learning module.
+    """Store :mod:`hydra-core` Deep Learning configs.
 
     Args:
-        cs (ConfigStore): The ConfigStore instance.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     store_logger_configs(cs)
     store_nnmodule_configs(cs)
@@ -48,13 +41,12 @@ def store_configs(cs: ConfigStore) -> None:
 
 
 def store_logger_configs(cs: ConfigStore) -> None:
-    """Stores Hydra `logger` group configs.
+    """Stores :mod:`hydra-core` ``logger`` group configs.
 
-    Names: `wandb`, `wandb_simexp`.
+    Config names: ``wandb``, ``wandb_simexp``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     base_args = {
         "name": MISSING,
@@ -75,13 +67,12 @@ def store_logger_configs(cs: ConfigStore) -> None:
 
 
 def store_optimizer_configs(cs: ConfigStore) -> None:
-    """Stores Hydra `litmodule/optimizer` group configs.
+    """Stores :mod:`hydra-core` ``litmodule/optimizer`` group configs.
 
-    Names: `adam`, `adamw`, `sgd`.
+    Config names: ``adam``, ``adamw``, ``sgd``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(group="litmodule/optimizer", name="adam", node=pfs_builds(Adam))
     cs.store(group="litmodule/optimizer", name="adamw", node=pfs_builds(AdamW))
@@ -89,13 +80,12 @@ def store_optimizer_configs(cs: ConfigStore) -> None:
 
 
 def store_scheduler_configs(cs: ConfigStore) -> None:
-    """Stores Hydra `litmodule/scheduler` group configs.
+    """Stores :mod:`hydra-core` ``litmodule/scheduler`` group configs.
 
-    Names: `constant`, `linear_warmup`.
+    Config names: ``constant``, ``linear_warmup``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(
         group="litmodule/scheduler",
@@ -110,13 +100,12 @@ def store_scheduler_configs(cs: ConfigStore) -> None:
 
 
 def store_trainer_configs(cs: ConfigStore) -> None:
-    """Stores Hydra `trainer` group configs.
+    """Stores :mod:`hydra-core` ``trainer`` group configs.
 
-    Names: `base`.
+    Config name: ``base``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(
         group="trainer",

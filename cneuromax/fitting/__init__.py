@@ -15,24 +15,23 @@ __all__ = [
 
 
 def store_configs(cs: ConfigStore) -> None:
-    """Stores :mod:`cneuromax.fitting.common` :mod:`hydra-core` configs.
+    """Stores :mod:`hydra-core` fitting configs.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     store_launcher_configs(cs)
     cs.store(name="base_fitting", node=BaseFittingHydraConfig)
 
 
 def store_launcher_configs(cs: ConfigStore) -> None:
-    """Stores custom :mod:`hydra-core` `hydra/launcher` group configs.
+    """Stores :mod:`hydra-core` ``hydra/launcher`` group configs.
 
-    Names: `submitit_slurm_acan`, `submitit_slurm_acan_simexp`.
+    Config names: ``submitit_slurm_acan``,\
+        ``submitit_slurm_acan_simexp``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(name="setup_apptainer_acan", node=["module load apptainer"])
     setup: Any = "${merge:${setup_apptainer_acan},${copy_data_commands}}"

@@ -14,7 +14,7 @@ from cneuromax.utils.annotations import not_empty, one_of
 class BaseFittingHydraConfig(BaseHydraConfig):
     """Base structured :mod:`hydra-core` fitting config.
 
-    Attributes:
+    Args:
         device: Computing device to use for large matrix operations.
         model_load_path: Path to the checkpointed model to load.
         pbt_load_path: Path to the HPO checkpoint to load for PBT.

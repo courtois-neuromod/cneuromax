@@ -1,4 +1,4 @@
-"""MLP config & class."""
+""":class:`MLP` & its config dataclass."""
 
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -13,9 +13,9 @@ from cneuromax.utils.annotations import ge, lt
 
 @dataclass
 class MLPConfig:
-    """Config for :class:`MLP` instances.
+    """Holds :class:`MLP` config values.
 
-    Attributes:
+    Args:
         dims: List of dimensions for each layer.
         p_dropout: Dropout probability.
     """
@@ -30,10 +30,12 @@ class MLP(nn.Module):
     Allows for a variable number of layers, activation functions, and
     dropout probability.
 
+    Args:
+        config: See :class:`MLPConfig`.
+        activation_fn: Activation function.
+
     Attributes:
-        config (:class:`MLPConfig`): This instance's configuration,\
-            see :class:`MLPConfig`.
-        model (:class:`~torch.nn.Sequential`): The MLP model.
+        model (:class:`~torch.nn.Sequential`)
     """
 
     def __init__(
@@ -41,42 +43,33 @@ class MLP(nn.Module):
         config: MLPConfig,
         activation_fn: nn.Module,
     ) -> None:
-        """Calls parent constructor & initializes model.
-
-        Args:
-            config: This instance's configuration, see\
-                :class:`MLPConfig`.
-            activation_fn: Activation function to use between layers.
-        """
         super().__init__()
-        self.config = config
         self.model = nn.Sequential()
-
         for i in range(len(config.dims) - 1):
             self.model.add_module(
-                f"fc_{i}",
-                nn.Linear(config.dims[i], config.dims[i + 1]),
+                name=f"fc_{i}",
+                module=nn.Linear(config.dims[i], config.dims[i + 1]),
             )
             if i < len(config.dims) - 2:
-                self.model.add_module(f"act_{i}", activation_fn)
+                self.model.add_module(name=f"act_{i}", module=activation_fn)
                 if config.p_dropout:  # > 0.0:
                     self.model.add_module(
-                        f"drop_{i}",
-                        nn.Dropout(config.p_dropout),
+                        name=f"drop_{i}",
+                        module=nn.Dropout(config.p_dropout),
                     )
 
     def forward(
         self: "MLP",
         x: Float[Tensor, " batch_size *d_input"],
     ) -> Float[Tensor, " batch_size output_size"]:
-        """Flattens input dimensions and pass through the model.
+        """Flattens input's dimensions and passes it through the model.
 
         Note:
-            This MLP isn't currently suitable for cases where the output
+            This MLP isn't suitable for cases where the output
             is multidimensional.
 
         Args:
-            x: The data input batch.
+            x: The input data batch.
 
         Returns:
             The output batch.

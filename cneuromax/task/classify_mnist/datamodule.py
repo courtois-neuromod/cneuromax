@@ -18,7 +18,7 @@ from cneuromax.utils.annotations import ge, lt, one_of
 class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
     """Configuration for :class:`MNISTClassificationDataModuleConfig`s.
 
-    Attributes:
+    Args:
         val_percentage: Percentage of the training dataset to use for\
             validation.
     """

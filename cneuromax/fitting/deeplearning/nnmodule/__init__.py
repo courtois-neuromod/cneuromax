@@ -1,4 +1,4 @@
-""":class:`torch.nn.Module` Classes."""
+r"""Common :class:`torch.nn.Module`\s (+:mod:`hydra-core` cfg store)."""
 
 from hydra.core.config_store import ConfigStore
 
@@ -9,14 +9,12 @@ __all__ = ["MLP", "MLPConfig", "store_configs"]
 
 
 def store_configs(cs: ConfigStore) -> None:
-    """Store :mod:`hydra-core` `litmodule/nnmodule` group configs.
+    """Stores :mod:`hydra-core` ``litmodule/nnmodule`` group configs.
 
-    Names: `mlp`.
+    Config names: ``mlp``.
 
     Args:
-        cs: See\
-            :paramref:`cneuromax.config.store_configs.cs`.
-
+        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
     """
     cs.store(
         group="litmodule/nnmodule",

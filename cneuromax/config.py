@@ -44,10 +44,10 @@ def process_config(dict_config: DictConfig, config_class: type[T]) -> T:
 
 
 def store_task_configs(cs: ConfigStore) -> None:
-    """Stores pre-defined task :mod:`hydra-score` configurations.
+    """Stores :mod:`hydra-core` task configurations.
 
     Parses the task config path from the script arguments, import
-    its `store_configs` function if it exists, and calls it.
+    its ``store_configs`` function if it exists, and calls it.
 
     Args:
         cs: A singleton instance that manages the :mod:`hydra-core`\
