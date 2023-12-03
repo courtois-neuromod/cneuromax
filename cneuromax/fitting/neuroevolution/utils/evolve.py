@@ -48,7 +48,7 @@ def run_mutation(
 def run_evaluation_cpu(
     agents_batch: list[list[BaseSingularAgent]],
     space: BaseSpace,
-    curr_gen: An[int, ge(0)],
+    curr_gen: An[int, ge(1)],
 ) -> (
     fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
 ):
@@ -98,7 +98,7 @@ def run_evaluation_gpu(
     ith_gpu_comm: MPI.Comm,
     agents_batch: list[list[BaseSingularAgent]],
     space: BaseSpace,
-    curr_gen: An[int, ge(0)],
+    curr_gen: An[int, ge(1)],
     transfer: bool,
 ) -> (
     fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch

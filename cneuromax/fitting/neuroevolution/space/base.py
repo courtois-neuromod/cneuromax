@@ -75,7 +75,7 @@ class BaseSpace(metaclass=ABCMeta):
     def evaluate(
         self: "BaseSpace",
         agent_s: list[list[BaseSingularAgent]],
-        curr_gen: An[int, ge(0)],
+        curr_gen: An[int, ge(1)],
     ) -> NDArray[np.float32]:
         """.
 

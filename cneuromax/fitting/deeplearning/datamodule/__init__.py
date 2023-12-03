@@ -3,6 +3,7 @@ r"""Common :class:`~lightning.pytorch.LightningDataModule`\s."""
 from cneuromax.fitting.deeplearning.datamodule.base import (
     BaseDataModule,
     BaseDataModuleConfig,
+    StageDataset,
 )
 
-__all__ = ["BaseDataModule", "BaseDataModuleConfig"]
+__all__ = ["BaseDataModule", "BaseDataModuleConfig", "StageDataset"]

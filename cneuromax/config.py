@@ -1,8 +1,9 @@
-"""Root :mode:`cneuromax` :mod:`hydra-core` configuration management."""
+"""Root :mod:`hydra-core` config, its task extensions & validation."""
 
 import logging
 import sys
 from importlib import import_module
+from pathlib import Path
 from typing import Annotated as An
 from typing import TypeVar
 
@@ -20,6 +21,22 @@ class BaseHydraConfig:
     """
 
     data_dir: An[str, not_empty()] = "data/untitled_run/"
+
+
+def verify_config(config: DictConfig) -> None:
+    """Verifies that various config elements are set correctly.
+
+    Args:
+        config: The not yet processed :mod:`hydra-core` config\
+            that is to be turned into a :class:`BaseHydraConfig`.
+    """
+    path = Path(config.data_dir)
+    if not path.exists():
+        logging.info(
+            "The data directory does not exist, creating it at "
+            f"{path.absolute()}.",
+        )
+        path.mkdir(parents=True)
 
 
 T = TypeVar("T", bound=BaseHydraConfig)

@@ -1,1 +1,1 @@
-"""Utility functions for cneuromax."""
+"""Package-wide utility functions."""

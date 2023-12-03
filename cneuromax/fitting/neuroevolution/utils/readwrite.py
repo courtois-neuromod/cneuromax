@@ -32,11 +32,11 @@ def load_state(
             maintained by each process.
 
     Returns:
-        agents_batch: See return value `agents_batch` in\
+        agents_batch: See return value of `agents_batch` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        generation_results: See return value `generation_results` in\
+        generation_results: See return value of `generation_results` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        total_num_env_steps: See return value `total_num_env_steps` in\
+        total_num_env_steps: See return value of `total_num_env_steps` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
     """
     comm, rank, size = retrieve_mpi_variables()
@@ -69,16 +69,16 @@ def save_state(
     agents_batch: list[list[BaseSingularAgent]],
     generation_results: generation_results_batch_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
-    curr_gen: int,
+    curr_gen: An[int, ge(1)],
 ) -> None:
     """Dump the current experiment state to disk.
 
     Args:
-        agents_batch: See return value `agents_batch` in\
+        agents_batch: See return value of `agents_batch` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        generation_results: See return value `generation_results` in\
+        generation_results: See return value of `generation_results` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        total_num_env_steps: See return value `total_num_env_steps` in\
+        total_num_env_steps: See return value of `total_num_env_steps` in\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
         curr_gen: The current generation number.
     """

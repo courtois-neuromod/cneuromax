@@ -5,10 +5,10 @@ from hydra.core.config_store import ConfigStore
 from cneuromax.fitting.deeplearning.nnmodule.mlp import MLP, MLPConfig
 from cneuromax.utils.hydra import fs_builds
 
-__all__ = ["MLP", "MLPConfig", "store_configs"]
+__all__ = ["MLP", "MLPConfig", "store_nnmodule_configs"]
 
 
-def store_configs(cs: ConfigStore) -> None:
+def store_nnmodule_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` ``litmodule/nnmodule`` group configs.
 
     Config names: ``mlp``.

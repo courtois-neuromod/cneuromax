@@ -1,12 +1,13 @@
-""":mod:`cneuromax.fitting` :mod:`hydra-core` config & validation."""
+"""Root :mod:`hydra-core` fitting config & validation."""
 
 import logging
 from dataclasses import dataclass
 from typing import Annotated as An
 
 import torch
+from omegaconf import DictConfig
 
-from cneuromax import BaseHydraConfig
+from cneuromax.config import BaseHydraConfig, verify_config
 from cneuromax.utils.annotations import not_empty, one_of
 
 
@@ -30,14 +31,14 @@ class BaseFittingHydraConfig(BaseHydraConfig):
     copy_data_commands: list[str] | None = None
 
 
-def verify_config(config: BaseFittingHydraConfig) -> None:
+def verify_fitting_config(config: DictConfig) -> None:
     """Verifies that various config elements are set correctly.
 
     Args:
-        config: The run's config, see\
-            :class:`BaseFittingHydraConfig`.
+        config: The not yet processed :mod:`hydra-core` config.
 
     """
+    verify_config(config)
     if not torch.cuda.is_available():
         logging.info("CUDA is not available, setting device to CPU.")
         config.device = "cpu"

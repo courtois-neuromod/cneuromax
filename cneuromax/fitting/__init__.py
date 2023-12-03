@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-def store_configs(cs: ConfigStore) -> None:
+def store_fitting_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` fitting configs.
 
     Args:

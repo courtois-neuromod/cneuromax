@@ -10,22 +10,20 @@ from transformers import (
     get_constant_schedule_with_warmup,
 )
 
-from cneuromax.fitting.deeplearning.fit import (
+from cneuromax.fitting.deeplearning.config import (
     DeepLearningFittingHydraConfig,
 )
-from cneuromax.fitting.deeplearning.nnmodule import (
-    store_configs as store_nnmodule_configs,
-)
+from cneuromax.fitting.deeplearning.nnmodule import store_nnmodule_configs
 from cneuromax.utils.hydra import fs_builds, pfs_builds
 
 __all__ = [
     "DeepLearningFitter",
     "DeepLearningFitterHydraConfig",
-    "store_configs",
+    "store_deep_learning_configs",
 ]
 
 
-def store_configs(cs: ConfigStore) -> None:
+def store_deep_learning_configs(cs: ConfigStore) -> None:
     """Store :mod:`hydra-core` Deep Learning configs.
 
     Args:
@@ -36,7 +34,6 @@ def store_configs(cs: ConfigStore) -> None:
     store_optimizer_configs(cs)
     store_scheduler_configs(cs)
     store_trainer_configs(cs)
-
     cs.store(name="dl_fitting", node=DeepLearningFittingHydraConfig)
 
 
