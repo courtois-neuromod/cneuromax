@@ -44,8 +44,8 @@ high-performance computing environments (HPC). CNeuroMax aims to:
 4. **Offer optional tools to strengthen code quality and reproducibility:**
    code linting (Ruff) and formatting (Black), unit testing (pytest), static
    (Mypy) & dynamic (Beartype) type checking that supports tensor shapes and
-   types (jaxtyping), development containers (Dev Containers), documentation
-   auto-generation and auto-deployment, precommit hooks etc.
+   types (jaxtyping, nptyping), development containers (Dev Containers),
+   documentation auto-generation and auto-deployment, precommit hooks etc.
 
 <h2>Repository structure:</h1>
 
@@ -57,12 +57,19 @@ cneuromax/
 │  │  ├─ deeplearning/       <-- Deep Learning code
 │  │  │  ├─ datamodule/      <-- Lightning DataModules
 │  │  │  ├─ litmodule/       <-- Lightning Modules
-│  │  │  ├─ nnmodule/        <-- PyTorch Modules & Hydra configs
+│  │  │  ├─ nnmodule/        <-- PyTorch Modules
 │  │  │  ├─ utils/           <-- Deep Learning utilities
 │  │  │  ├─ __init__.py      <-- Stores Deep Learning Hydra configs
 │  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.deeplearning`
+│  │  │  ├─ config.py        <-- Deep Learning structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Deep Learning Hydra configs & settings
-│  │  │  └─ fit.py           <-- Deep Learning fitting & Hydra config
+│  │  │  └─ fit.py           <-- Deep Learning fitting function
+│  │  ├─ hybrid/             <-- Hybrid Deep Learning + Neuroevolution code
+│  │  │  ├─ __init__.py      <-- Stores Hybrid DL + NE Hydra configs
+│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.hybrid`
+│  │  │  ├─ config.py        <-- Hybrid DL + NE structured Hydra config & utilities
+│  │  │  ├─ config.yaml      <-- Default Hybrid DL + NE Hydra configs & settings
+│  │  │  └─ fit.py           <-- Hybrid DL + NE fitting function
 │  │  ├─ neuroevolution/     <-- Neuroevolution code
 │  │  │  ├─ agent/           <-- Neuroevolution agents (encapsulate networks)
 │  │  │  ├─ net/             <-- Neuroevolution networks
@@ -70,8 +77,9 @@ cneuromax/
 │  │  │  ├─ utils/           <-- Neuroevolution utilities
 │  │  │  ├─ __init__.py      <-- Stores Neuroevolution Hydra configs
 │  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.neuroevolution`
+│  │  │  ├─ config.py        <-- Neuroevolution structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Neuroevolution Hydra configs & settings
-│  │  │  └─ fit.py           <-- Neuroevolution fitting & Hydra config
+│  │  │  └─ fit.py           <-- Neuroevolution fitting function
 │  │  ├─ __init__.py         <-- Stores Fitting Hydra configs
 │  │  ├─ __main__.py         <-- Entrypoint when calling `python cneuromax.fitting`
 │  │  └─ config.py           <-- Base Structured Hydra fitting config & utilities
@@ -88,7 +96,7 @@ cneuromax/
 │  │                             ******************************************
 │  │
 │  ├─ utils/                 <-- CNeuroMax utilities
-│  ├─ __init__.py            <-- Sets up Beartype, logs in W&B, etc
+│  ├─ __init__.py            <-- Sets up Beartype
 │  └─ config.py              <-- Base Structured Hydra config & utilities
 ├─ docs/                     <-- Documentation files
 ├─ .devcontainer.json        <-- VSCode container development config

@@ -2,9 +2,9 @@
 Welcome to the CNeuroMax documentation!
 #######################################
 
-CNeuroMax is a framework for large-scale training of machine learning models.
-Emphasis is on easy deployment in academic high-performance computing
-environments. CNeuroMax aims to:
+CNeuroMax is a framework for large-scale training of machine learning models
+(Deep Learning + Neuroevolution) with an emphasis on easy deployment in
+high-performance computing environments (HPC). CNeuroMax aims to:
 
 1. **Facilitate the configuration of complex models and training runs through
    tools like:** Hydra, Hydra-Zen, Lightning etc.
@@ -20,9 +20,10 @@ environments. CNeuroMax aims to:
    for team-shared logging etc.
 
 4. **Offer optional tools to strengthen code quality and reproducibility:**
-   code linting and formatting, unit testing, static & dynamic type checking
-   that supports tensor shapes and dtypes, documentation auto-generation and
-   auto-deployment, precommit hooks etc.
+   code linting (Ruff) and formatting (Black), unit testing (pytest), static
+   (Mypy) & dynamic (Beartype) type checking that supports tensor shapes and
+   types (jaxtyping, nptyping), development containers (Dev Containers),
+   documentation auto-generation and auto-deployment, precommit hooks etc.
 
 The cneuromax library is developed in the context of the `Courtois Project on
 Neuronal Modelling <https://cneuromod.ca>`_, also known as CNeuroMod.
