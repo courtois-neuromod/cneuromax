@@ -1,5 +1,6 @@
 """Functions requiring some computation for Neuroevolution fitting."""
 
+import logging
 import pickle
 import time
 from typing import Annotated as An
@@ -8,9 +9,6 @@ import numpy as np
 
 from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.utils.type import (
-    exchange_and_mutate_info_batch_type,
-    exchange_and_mutate_info_type,
-    fitnesses_and_num_env_steps_batch_type,
     generation_results_batch_type,
     generation_results_type,
     seeds_type,
@@ -27,10 +25,10 @@ def compute_pickled_agents_sizes(
     """Compute this process' maintained agents' serialized sizes.
 
     Args:
-        generation_results_batch: See return `generation_results_batch`\
-            from\
+        generation_results_batch: See return value of\
+            ``generation_results_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
-        agents_batch: See return value of `agents_batch` from\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         num_pops: See\
             :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
@@ -77,7 +75,7 @@ def compute_save_points(
 
 
 def compute_start_time_and_seeds(
-    generation_results: generation_results_type,
+    generation_results: generation_results_type | None,
     curr_gen: An[int, ge(1)],
     num_pops: An[int, ge(1)],
     pop_size: An[int, ge(1)],
@@ -87,13 +85,13 @@ def compute_start_time_and_seeds(
     """Compute the start time and seeds for the current generation.
 
     Args:
-        generation_results: See return value of `generation_results`\
+        generation_results: See return value of ``generation_results``\
             from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         curr_gen: Current generation number.
         num_pops: See\
             :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
-        pop_size: See return value of `pop_size` from\
+        pop_size: See return value of ``pop_size`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         pop_merge: See\
             :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.pop_merge`.
@@ -120,6 +118,10 @@ def compute_start_time_and_seeds(
         seeds = np.repeat(a=seeds, repeats=2, axis=1)
         if curr_gen == 1:
             seeds[:, 1] = seeds[:, 1][::-1]
+    # `generation_results` is only `None` when `rank != 0`. The
+    # following `assert` statement is for static type checking reasons
+    # and has no execution purposes.
+    assert generation_results  # noqa: S101
     fitnesses = generation_results[:, :, 0]
     fitness_sorting_indices = np.argsort(a=fitnesses, axis=0)
     fitnesses_rankings = np.argsort(a=fitness_sorting_indices, axis=0)
@@ -130,53 +132,46 @@ def compute_start_time_and_seeds(
 
 
 def compute_total_num_env_steps_and_process_fitnesses(
-    generation_results: generation_results_type,
+    generation_results: generation_results_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
     curr_gen: An[int, ge(1)],
-    start_time: float,
+    start_time: float | None,
+    *,
     pop_merge: bool,
-) -> An[int, ge(0)]:  # total_num_env_steps
-    """Processes the generation results
+) -> An[int, ge(0)] | None:  # total_num_env_steps
+    """Processes the generation results.
 
     Args:
-        generation_results: See return value of\
+        generation_results: See return value of ``generation_results``\
+            from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         total_num_env_steps: See return value of\
+            ``total_num_env_steps`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         curr_gen: Current generation number.
-        start_time: See return value of\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+        start_time: Generation start time.
         pop_merge: See\
             :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
-        total_num_env_steps: The updated number of environment steps.
+        The updated total number of environment steps.
     """
-    comm, rank, size = retrieve_mpi_variables()
+    _, rank, _ = retrieve_mpi_variables()
+    if rank != 0:
+        return None
+    # `generation_results`, `total_num_env_steps` & `start_time` are
+    # only `None` when `rank != 0`. The following `assert` statements
+    # are for static type checking reasons and have no execution
+    # purposes.
+    assert generation_results  # noqa: S101
+    assert total_num_env_steps  # noqa: S101
+    assert start_time  # noqa: S101
+    fitnesses = generation_results[:, :, 0]
     if pop_merge:
-        # Primary process merges populations.
-        if rank == 0:
-            generation_results = generation_results.reshape(
-                (
-                    generation_results.shape[0] * generation_results.shape[1],
-                    generation_results.shape[2],
-                )
-            )
-    # Primary process selects the next generation of agents.
-    if rank == 0:
-        total_num_env_steps = total_num_env_steps + np.sum(
-            generation_results[:, :, 1]
-        )
-        generation_results = generation_results[
-            np.argsort(generation_results[:, :, 0])[::-1]
-        ]
-        generation_results = generation_results[
-            : generation_results.shape[0] // 2
-        ]
-        generation_results = generation_results.reshape(
-            (
-                generation_results.shape[0] // generation_results.shape[1],
-                generation_results.shape[1],
-                generation_results.shape[2],
-            )
-        )
+        fitnesses[:, 0] += fitnesses[:, 1][::-1]
+        fitnesses[:, 1] = fitnesses[:, 0][::-1]
+    num_env_steps = generation_results[:, :, 1]
+    total_num_env_steps += int(num_env_steps.sum())
+    logging.info(f"{curr_gen+1}: {int(time.time() - start_time)}")
+    logging.info(f"{np.mean(fitnesses, 0)}\n{np.max(fitnesses, 0)}")
+    return total_num_env_steps

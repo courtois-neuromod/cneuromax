@@ -32,11 +32,13 @@ def load_state(
             maintained by each process.
 
     Returns:
-        agents_batch: See return value of `agents_batch` in\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        generation_results: See return value of `generation_results` in\
+        generation_results: See return value of ``generation_results``\
+            from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        total_num_env_steps: See return value of `total_num_env_steps` in\
+        total_num_env_steps: See return value of\
+            ``total_num_env_steps`` from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
     """
     comm, rank, size = retrieve_mpi_variables()
@@ -74,11 +76,13 @@ def save_state(
     """Dump the current experiment state to disk.
 
     Args:
-        agents_batch: See return value of `agents_batch` in\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        generation_results: See return value of `generation_results` in\
+        generation_results: See return value of ``generation_results``\
+            from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
-        total_num_env_steps: See return value of `total_num_env_steps` in\
+        total_num_env_steps: See return value of\
+            ``total_num_env_steps`` from\
             :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
         curr_gen: The current generation number.
     """

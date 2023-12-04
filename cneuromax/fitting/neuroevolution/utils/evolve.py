@@ -30,10 +30,10 @@ def run_mutation(
     """Mutate all agents maintained by this process.
 
     Args:
-        agents_batch: See return value of `agents_batch` in\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         exchange_and_mutate_info_batch: See return value of\
-            `exchange_and_mutate_info_batch` in\
+            ``exchange_and_mutate_info_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         num_pops: See\
             :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
@@ -55,7 +55,7 @@ def run_evaluation_cpu(
     """Evaluate all agents maintained by this process.
 
     Args:
-        agents_batch: See return value of `agents_batch` in\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         space: The experiment's pace, see\
             :class:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace`.
@@ -78,27 +78,12 @@ def run_evaluation_cpu(
     return fitnesses_and_num_env_steps_batch
 
 
-"""
-fitnesses_and_num_env_steps_batch = (
-            (
-                run_evaluation_gpu(
-                    ith_gpu_comm=ith_gpu_comm,
-                    agents_batch=agents_batch,
-                    space=space,
-                    curr_gen=curr_gen,
-                    transfer=config.env_transfer
-                    or config.fit_transfer
-                    or config.mem_transfer,
-                )
-            )
-"""
-
-
 def run_evaluation_gpu(
     ith_gpu_comm: MPI.Comm,
     agents_batch: list[list[BaseSingularAgent]],
     space: BaseSpace,
     curr_gen: An[int, ge(1)],
+    *,
     transfer: bool,
 ) -> (
     fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
@@ -106,9 +91,9 @@ def run_evaluation_gpu(
     """Evaluate all agents maintained by this process.
 
     Args:
-        ith_gpu_comm: See return value of `ith_gpu_comm` in\
+        ith_gpu_comm: See return value of ``ith_gpu_comm`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_gpu_comm`.
-        agents_batch: See return value of `agents_batch` in\
+        agents_batch: See return value of ``agents_batch`` from\
             :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
         space: The experiment's pace, see\
             :class:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace`.
@@ -133,27 +118,32 @@ def run_evaluation_gpu(
     if ith_gpu_comm_rank == 0:
         # `ith_gpu_agents_batch` is only `None` when
         # `ith_gpu_comm_rank != 0`. The following `assert` statement
-        # are for static type checking reasons and have no execution
+        # is for static type checking reasons and has no execution
         # purposes.
         assert ith_gpu_batched_agents  # noqa: S101
         ith_gpu_agents_batch: list[list[BaseSingularAgent]] = []
         for agent_batch in ith_gpu_batched_agents:
             ith_gpu_agents_batch = ith_gpu_agents_batch + agent_batch
         ith_gpu_fitnesses_and_num_env_steps_batch = space.evaluate(
-            agent_s=ith_gpu_agents_batch,
-            curr_gen=curr_gen,
+            ith_gpu_agents_batch,
+            curr_gen,
         )
-    fitnesses_and_num_env_steps_batch
+    fitnesses_and_num_env_steps_batch = np.empty(
+        shape=(len(agent_batch), space.num_pops, 2),
+        dtype=np.float32,
+    )
     ith_gpu_comm.Scatter(
-        None
+        sendbuf=None
         if ith_gpu_comm_rank != 0
         else ith_gpu_fitnesses_and_num_env_steps_batch,
-        fitnesses_and_num_env_steps_batch,
-        root=gpu_idx * num_cpu_procs_per_gpu,
+        recvbuf=fitnesses_and_num_env_steps_batch,
     )
-
-    if cfg.agent.gen_transfer != "none":
-        agents_batch = ith_gpu_comm.scatter(
-            ith_gpu_agents_batch,
-            root=gpu_idx * num_cpu_procs_per_gpu,
-        )
+    # Send back the agents to their corresponding processes if
+    # `transfer` is `True` as the agents have been modified by the
+    # evaluation process.
+    if transfer:
+        # Prevents `agents_batch` from being overwritten.
+        temp_agents_batch = ith_gpu_comm.scatter(sendobj=ith_gpu_agents_batch)
+        for i in range(len(agent_batch)):
+            agents_batch[i] = temp_agents_batch[i]
+    return fitnesses_and_num_env_steps_batch_type

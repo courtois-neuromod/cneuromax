@@ -30,8 +30,10 @@ from cneuromax.fitting.neuroevolution.utils.readwrite import (
     load_state,
     save_state,
 )
+from cneuromax.fitting.neuroevolution.utils.validate import (
+    validate_space,
+)
 from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
-from cneuromax.utils.hydra import get_launcher_config
 from cneuromax.utils.mpi import retrieve_mpi_variables
 
 
@@ -63,10 +65,10 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
     (
         pop_size,
         agents_batch,
-        generation_results,
-        generation_results_batch,
         exchange_and_mutate_info,
         exchange_and_mutate_info_batch,
+        generation_results,
+        generation_results_batch,
         total_num_env_steps,
     ) = initialize_common_variables(
         agents_per_task=config.agents_per_task,
@@ -164,29 +166,3 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                 curr_gen=curr_gen,
             )
     wandb.finish()
-
-
-def validate_space(
-    space: BaseSpace,
-    *,
-    pop_merge: bool,
-) -> None:
-    """Makes sure that the run's Space is valid given the run's config.
-
-    Args:
-        space: The run's\
-            :class:`cneuromax.fitting.neuroevolution.space.BaseSpace`\
-            instance.
-        pop_merge: See\
-            :paramref:`cneuromax.fitting.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
-    """
-    launcher_config = get_launcher_config()
-    if pop_merge and space.num_pops != 2:  # noqa: PLR2004
-        error_msg = "`pop_merge = True` requires `num_pops = 2`."
-        raise ValueError(error_msg)
-    if not launcher_config.gpus_per_node and space.evaluates_on_gpu:
-        error_msg = (
-            "GPU evaluation is not supported when `gpus_per_node` is not "
-            "specified in the launcher config or set to 0."
-        )
-        raise ValueError(error_msg)
