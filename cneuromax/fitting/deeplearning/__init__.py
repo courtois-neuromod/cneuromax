@@ -10,6 +10,8 @@ from transformers import (
     get_constant_schedule_with_warmup,
 )
 
+from cneuromax import store_task_configs
+from cneuromax.fitting import store_base_fitting_configs
 from cneuromax.fitting.deeplearning.config import (
     DeepLearningFittingHydraConfig,
 )
@@ -23,18 +25,17 @@ __all__ = [
 ]
 
 
-def store_deep_learning_configs(cs: ConfigStore) -> None:
-    """Store :mod:`hydra-core` Deep Learning configs.
-
-    Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
-    """
+def store_deep_learning_fitting_configs() -> None:
+    """Stores :mod:`hydra-core` Deep Learning fitting configs."""
+    cs = ConfigStore.instance()
+    store_task_configs(cs)
+    store_base_fitting_configs(cs)
     store_logger_configs(cs)
     store_nnmodule_configs(cs)
     store_optimizer_configs(cs)
     store_scheduler_configs(cs)
     store_trainer_configs(cs)
-    cs.store(name="dl_fitting", node=DeepLearningFittingHydraConfig)
+    cs.store(name="deep_learning_fitting", node=DeepLearningFittingHydraConfig)
 
 
 def store_logger_configs(cs: ConfigStore) -> None:
@@ -43,7 +44,7 @@ def store_logger_configs(cs: ConfigStore) -> None:
     Config names: ``wandb``, ``wandb_simexp``.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     base_args = {
         "name": MISSING,
@@ -69,7 +70,7 @@ def store_optimizer_configs(cs: ConfigStore) -> None:
     Config names: ``adam``, ``adamw``, ``sgd``.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     cs.store(group="litmodule/optimizer", name="adam", node=pfs_builds(Adam))
     cs.store(group="litmodule/optimizer", name="adamw", node=pfs_builds(AdamW))
@@ -82,7 +83,7 @@ def store_scheduler_configs(cs: ConfigStore) -> None:
     Config names: ``constant``, ``linear_warmup``.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     cs.store(
         group="litmodule/scheduler",
@@ -102,7 +103,7 @@ def store_trainer_configs(cs: ConfigStore) -> None:
     Config name: ``base``.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     cs.store(
         group="trainer",

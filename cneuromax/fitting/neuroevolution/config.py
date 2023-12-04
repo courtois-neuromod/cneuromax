@@ -1,4 +1,4 @@
-""":mod:`hydra-core` neuroevolution fitting config & validation."""
+""":mod:`hydra-core` Neuroevolution fitting config & validation."""
 
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -6,7 +6,11 @@ from typing import Any
 
 from omegaconf import MISSING, DictConfig
 
-from cneuromax.fitting import BaseFittingHydraConfig
+from cneuromax.fitting.config import (
+    BaseFittingHydraConfig,
+    post_process_base_fitting_config,
+    pre_process_base_fitting_config,
+)
 from cneuromax.utils.annotations import ge
 
 
@@ -45,7 +49,6 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
             for during evaluation. `0` means that the agent will run\
             until the environment terminates (`eval_num_steps = 0` is\
             not supported for `env_transfer = True`).
-
     """
 
     space: Any = MISSING
@@ -63,18 +66,13 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
     eval_num_steps: An[int, ge(0)] = 0
 
 
-def verify_config(
-    config: DictConfig,
-    num_pops: int,
-) -> None:
-    """Makes sure that the configuration is valid.
+def pre_process_neuroevolution_fitting_config(config: DictConfig) -> None:
+    """Pre-processes config from :func:`hydra.main` before resolution.
 
     Args:
-        config: The run's Hydra configuration, see\
-            :class:`NeuroevolutionFittingHydraConfig`.
-        num_pops: See\
-            :meth:`cneuromax.fitting.neuroevolution.space.BaseSpace.num_pops`.
+        config: The not yet processed :mod:`hydra-core` config.
     """
+    pre_process_base_fitting_config(config)
     if config.eval_num_steps == 0 and config.env_transfer:
         error_msg = "`env_transfer = True` requires `eval_num_steps > 0`."
         raise ValueError(error_msg)
@@ -86,6 +84,14 @@ def verify_config(
             "`total_num_gens - prev_num_gens`."
         )
         raise ValueError(error_msg)
-    if config.pop_merge and num_pops != 2:  # noqa: PLR2004
-        error_msg = "`pop_merge = True` requires `num_pops = 2`."
-        raise ValueError(error_msg)
+
+
+def post_process_neuroevolution_fitting_config(
+    config: NeuroevolutionFittingHydraConfig,
+) -> None:
+    """Post-processes the :mod:`hydra-core` config after it is resolved.
+
+    Args:
+        config: The processed :mod:`hydra-core` config.
+    """
+    post_process_base_fitting_config(config)

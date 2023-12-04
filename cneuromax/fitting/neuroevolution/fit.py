@@ -48,12 +48,12 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
     variables are set in the Hydra launcher configuration.
 
     Args:
-        config: The run's Hydra configuration, see\
+        config: The run's :mod:`hydra-core` structured config, see\
             :class:`cneuromax.fitting.neuroevolution.config.NeuroevolutionFittingHydraConfig`.
     """
     comm, _, _ = retrieve_mpi_variables()
     space: BaseSpace = instantiate(config=config.space)
-    validate_space(space, config.pop_merge)
+    validate_space(space, pop_merge=config.pop_merge)
     save_points = compute_save_points(
         prev_num_gens=config.prev_num_gens,
         total_num_gens=config.total_num_gens,

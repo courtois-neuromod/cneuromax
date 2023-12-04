@@ -1,53 +1,67 @@
 """Root :mod:`hydra-core` config, its task extensions & validation."""
 
 import logging
-import sys
-from importlib import import_module
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Annotated as An
 from typing import TypeVar
 
-from hydra.core.config_store import ConfigStore
 from omegaconf import DictConfig, OmegaConf
 
 from cneuromax.utils.annotations import not_empty
 
 
+@dataclass
 class BaseHydraConfig:
     """Base structured :mod:`hydra-core` configuration.
 
-    Attributes:
-        data_dir: Path to the root data directory.
+    Args:
+        run_dir: Path to the run's directory. Every artifact generated\
+            during the run will be stored in this directory.
+        data_dir: Path to the data directory. This directory is\
+            typically shared between runs. It is used to store\
+            datasets, pre-trained models, etc.
     """
 
-    data_dir: An[str, not_empty()] = "data/untitled_run/"
+    run_dir: An[str, not_empty()] = "data/untitled_run/"
+    data_dir: An[str, not_empty()] = "${run_dir}/../"
 
 
-def verify_config(config: DictConfig) -> None:
-    """Verifies that various config elements are set correctly.
+def pre_process_base_config(dict_config: DictConfig) -> None:
+    """Pre-processes config from :func:`hydra.main` before resolution.
+
+    Makes sure that the ``run_dir`` does not already exist. If it does,
+    it loops through ``{run_dir}_1``, ``{run_dir}_2``, etc. until it
+    finds a directory that does not exist.
 
     Args:
-        config: The not yet processed :mod:`hydra-core` config\
-            that is to be turned into a :class:`BaseHydraConfig`.
+        dict_config: The raw config retrieved through the\
+            :func:`hydra.main` decorator.
     """
-    path = Path(config.data_dir)
-    if not path.exists():
+    run_dir = dict_config.run_dir
+    path = Path(run_dir)
+    if path.exists():
+        i = 1
+        while path.exists():
+            path = Path(run_dir + f"_{i}")
+            i += 1
         logging.info(
-            "The data directory does not exist, creating it at "
-            f"{path.absolute()}.",
+            f"{Path(run_dir).absolute()} already exists, "
+            f"changing it to {path.absolute()}.",
         )
-        path.mkdir(parents=True)
+        run_dir = str(path)
 
 
 T = TypeVar("T", bound=BaseHydraConfig)
 
 
-def process_config(dict_config: DictConfig, config_class: type[T]) -> T:
-    """Process the Hydra config.
+def process_config(dict_config: DictConfig, structured_config: type[T]) -> T:
+    """Turns config from :func:`hydra.main` into a structured config.
 
     Args:
-        dict_config: The Hydra config.
-        config_class: The class of the Hydra config.
+        dict_config: See\
+            :paramref:`pre_process_base_config.dict_config`.
+        structured_config: The dataclass to instantiate from the\
 
     Returns:
         The processed Hydra config.
@@ -55,55 +69,27 @@ def process_config(dict_config: DictConfig, config_class: type[T]) -> T:
     OmegaConf.resolve(dict_config)
     OmegaConf.set_struct(dict_config, value=True)
     config = OmegaConf.to_object(dict_config)
-    if not isinstance(config, config_class):
-        raise TypeError
+    if not isinstance(config, structured_config):
+        error_msg = (
+            f"The config must be an instance of {structured_config}, not "
+            f"{type(config)}."
+        )
+        raise TypeError(error_msg)
     return config
 
 
-def store_task_configs(cs: ConfigStore) -> None:
-    """Stores :mod:`hydra-core` task configurations.
+def post_process_base_config(config: BaseHydraConfig) -> None:
+    """Post-processes the :mod:`hydra-core` config after it is resolved.
 
-    Parses the task config path from the script arguments, import
-    its ``store_configs`` function if it exists, and calls it.
+    Creates the run directory if it does not exist.
 
     Args:
-        cs: A singleton instance that manages the :mod:`hydra-core`\
-            configuration store.
-
-    Raises:
-        ModuleNotFoundError: If the task module cannot be found.
-        AttributeError: If the task module does not have a\
-            ``store_configs`` function.
+        config: The processed :mod:`hydra-core` config.
     """
-    for arg in sys.argv:
-        if "task" in arg:
-            try:
-                task_module = import_module(
-                    "cneuromax.task." + arg.split("=")[1].split("/")[0],
-                )
-            except ModuleNotFoundError:
-                logging.exception(
-                    "The task module cannot be found. Make sure it exists in "
-                    "`cneuromax/task` and is spelled correctly. If it does "
-                    "exist, make sure it an `__init__.py` file exists in "
-                    "its directory.",
-                )
-                raise
-            try:
-                task_module.store_configs(cs)
-            except AttributeError:
-                logging.exception(
-                    "The task module `store_configs` function cannot be "
-                    "found. Make sure it exists in your `__init__.py` file. "
-                    "Check-out `cneuromax/tasks/classify_mnist/__init__.py`"
-                    "for an example.",
-                )
-                raise
-
-            return
-
-    module_not_found_error_2 = (
-        "The task must be specified in the script arguments. Example: "
-        "`python -m cneuromax.fitting.deeplearning task=classify_mnist/mlp`."
-    )
-    raise ModuleNotFoundError(module_not_found_error_2)
+    path = Path(config.run_dir)
+    if not path.exists():
+        logging.info(
+            f"Creating the run directory {path.absolute()} as it does not "
+            "exist.",
+        )
+        path.mkdir(parents=True)

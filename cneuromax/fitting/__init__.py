@@ -1,4 +1,4 @@
-"""Fitting module."""
+"""Fitting module (+ :mod:`hydra-core` config storing)."""
 
 from typing import Any
 
@@ -7,18 +7,14 @@ from hydra_plugins.hydra_submitit_launcher.config import SlurmQueueConf
 
 from cneuromax.fitting.config import BaseFittingHydraConfig
 
-__all__ = [
-    "BaseFittingHydraConfig",
-    "store_configs",
-    "store_launcher_configs",
-]
+__all__ = ["store_base_fitting_configs"]
 
 
-def store_fitting_configs(cs: ConfigStore) -> None:
+def store_base_fitting_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` fitting configs.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     store_launcher_configs(cs)
     cs.store(name="base_fitting", node=BaseFittingHydraConfig)
@@ -31,7 +27,7 @@ def store_launcher_configs(cs: ConfigStore) -> None:
         ``submitit_slurm_acan_simexp``.
 
     Args:
-        cs: See :paramref:`cneuromax.config.store_task_configs.cs`.
+        cs: See :paramref:`cneuromax.__init__.store_task_configs.cs`.
     """
     cs.store(name="setup_apptainer_acan", node=["module load apptainer"])
     setup: Any = "${merge:${setup_apptainer_acan},${copy_data_commands}}"

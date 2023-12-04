@@ -141,53 +141,23 @@ def set_batch_size_and_num_workers(
 
 
 def set_checkpoint_path(
-    config: DeepLearningFittingHydraConfig,
-    trainer: Trainer,
+    config: DeepLearningFittingHydraConfig,  # noqa: ARG001
+    trainer: Trainer,  # noqa: ARG001
 ) -> str | None:
     """Sets the path to the checkpoint to resume training from.
 
-    Three cases are considered:
-    - if the :paramref:`DeepLearningFittingHydraConfig.load_path_pbt`
-    parameter is set, we are resuming from a checkpoint created while
-    running HPO. In this case, we set the checkpoint path to the value
-    of :paramref:`DeepLearningFittingHydraConfig.load_path_hpo` and
-    use a custom checkpoint connector to not override the new HPO
-    config values.
-    - if the :paramref:`DeepLearningFittingHydraConfig.load_path`
-    parameter is set (but not
-    :paramref:`DeepLearningFittingHydraConfig.load_path_hpo`), we are
-    resuming from a regular checkpoint. In this case, we set the
-    checkpoint path to the value of
-    :paramref:`DeepLearningFittingHydraConfig.load_path`.
-    - if neither
-    :paramref:`DeepLearningFittingHydraConfig.load_path_hpo` nor
-    :paramref:`DeepLearningFittingHydraConfig.load_path` are set, we
-    are starting a new training run. In this case, we set the
-    checkpoint path to `None`.
+    TODO: Implement when enabling the Orion sweeper.
 
     Args:
-        config: The config instance used for this fitting run.
+        config: See\
+            :class:`cneuromax.fitting.deeplearning.config.DeepLearningFittingHydraConfig`.
         trainer: The :class:`lightning.pytorch.Trainer` instance used\
             for this fitting run.
 
     Returns:
         The path to the checkpoint to resume training from.
     """
-    ckpt_path: str | None
-    if config.pbt_load_path:
-        ckpt_path = config.pbt_load_path
-        # No choice but to access a private attribute.
-        trainer._checkpoint_connector = (  # noqa: SLF001
-            InitOptimParamsCheckpointConnector(
-                trainer,
-            )
-        )
-    elif config.model_load_path:
-        ckpt_path = config.model_load_path
-    else:
-        ckpt_path = None
-
-    return ckpt_path
+    return None
 
 
 def find_good_per_device_batch_size(

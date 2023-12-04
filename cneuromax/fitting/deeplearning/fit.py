@@ -27,7 +27,7 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
     returns the final validation loss.
 
     Args:
-        config: See\
+        config: The run's :mod:`hydra-core` structured config, see\
             :class:`cneuromax.fitting.deeplearning.config.DeepLearningFittingHydraConfig`.
 
     Returns:

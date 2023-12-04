@@ -1,14 +1,15 @@
 hydra:
+  job:
+    chdir: True
   searchpath:
     - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
   run:
-    dir: ${data_dir}/hydra/
+    dir: ${run_dir}/
   sweep:
-    dir: ${data_dir}/
-    subdir: hydra/
+    dir: ${run_dir}/
 
 defaults:
-  - dl_fitter
+  - deep_learning_fitting
   - trainer: base
   - litmodule/scheduler: constant
   - litmodule/optimizer: adamw

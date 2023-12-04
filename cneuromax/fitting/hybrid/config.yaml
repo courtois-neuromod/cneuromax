@@ -9,6 +9,10 @@ hydra:
     dir: ${run_dir}/
 
 defaults:
-  - neuroevolution_fitting
+  - hybrid_fitting
+  - trainer: base
+  - litmodule/scheduler: constant
+  - litmodule/optimizer: adamw
+  - logger: wandb
   - _self_
   - task: null

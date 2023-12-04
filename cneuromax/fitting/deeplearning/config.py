@@ -1,12 +1,15 @@
-""":mod:`hydra-core` deep learning fitting config & validation."""
+""":mod:`hydra-core` Deep Learning fitting config & validation."""
 
 from dataclasses import dataclass
 from typing import Any
 
 from omegaconf import MISSING, DictConfig
 
-from cneuromax.fitting import BaseFittingHydraConfig
-from cneuromax.fitting.config import verify_fitting_config
+from cneuromax.fitting.config import (
+    BaseFittingHydraConfig,
+    post_process_base_fitting_config,
+    pre_process_base_fitting_config,
+)
 
 
 @dataclass
@@ -34,11 +37,22 @@ class DeepLearningFittingHydraConfig(BaseFittingHydraConfig):
     logger: Any = MISSING
 
 
-def verify_deep_learning_fitting_config(config: DictConfig) -> None:
-    """Verifies that various config elements are set correctly.
+def pre_process_deep_learning_fitting_config(config: DictConfig) -> None:
+    """Pre-processes config from :func:`hydra.main` before resolution.
 
     Args:
-        config: See\
-            :paramref:`cneromax.fitting.config.verify_fitting_config.config`.
+        config: The not yet processed :mod:`hydra-core` config.
+
     """
-    verify_fitting_config(config)
+    pre_process_base_fitting_config(config)
+
+
+def post_process_deep_learning_fitting_config(
+    config: BaseFittingHydraConfig,
+) -> None:
+    """Post-processes the :mod:`hydra-core` config after it is resolved.
+
+    Args:
+        config: The processed :mod:`hydra-core` config.
+    """
+    post_process_base_fitting_config(config)
