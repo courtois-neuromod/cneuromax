@@ -7,7 +7,7 @@ from typing import Annotated as An
 import numpy as np
 from numpy.typing import NDArray
 
-from cneuromax.fitting.neuroevolution.agent.singular.base import (
+from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.utils.annotations import ge, le

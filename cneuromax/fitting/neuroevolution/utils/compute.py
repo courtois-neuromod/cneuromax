@@ -9,6 +9,7 @@ import numpy as np
 
 from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.utils.type import (
+    fitnesses_and_num_env_steps_batch_type,
     generation_results_batch_type,
     generation_results_type,
     seeds_type,
@@ -17,27 +18,44 @@ from cneuromax.utils.annotations import ge
 from cneuromax.utils.mpi import retrieve_mpi_variables
 
 
-def compute_pickled_agents_sizes(
+def compute_generation_results(
+    generation_results: generation_results_type | None,
     generation_results_batch: generation_results_batch_type,
+    fitnesses_and_num_env_steps_batch: fitnesses_and_num_env_steps_batch_type,
     agents_batch: list[list[BaseSingularAgent]],
     num_pops: An[int, ge(1)],
 ) -> None:
-    """Compute this process' maintained agents' serialized sizes.
+    """Computes generation results across processes and gathers them.
 
     Args:
+        generation_results: See return value of ``generation_results``\
+            from\
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         generation_results_batch: See return value of\
             ``generation_results_batch`` from\
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        fitnesses_and_num_env_steps_batch: See return value of\
+            ``fitnesses_and_num_env_steps_batch`` from\
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         agents_batch: See return value of ``agents_batch`` from\
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         num_pops: See\
             :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
     """
+    comm, _, _ = retrieve_mpi_variables()
+    # Store the fitnesses and number of environment steps
+    generation_results_batch[:, :, 0:2] = fitnesses_and_num_env_steps_batch
+    # Store the size of the agents
     for i in range(len(agents_batch)):
         for j in range(num_pops):
             generation_results_batch[i, j, 2] = len(
-                pickle.dumps(agents_batch[i][j]),
+                pickle.dumps(obj=agents_batch[i][j]),
             )
+    # Gather the results on the primary process
+    comm.Gather(
+        sendbuf=generation_results_batch,
+        recvbuf=generation_results,
+    )
 
 
 def compute_save_points(
@@ -173,5 +191,7 @@ def compute_total_num_env_steps_and_process_fitnesses(
     num_env_steps = generation_results[:, :, 1]
     total_num_env_steps += int(num_env_steps.sum())
     logging.info(f"{curr_gen+1}: {int(time.time() - start_time)}")
-    logging.info(f"{np.mean(fitnesses, 0)}\n{np.max(fitnesses, 0)}")
+    logging.info(
+        f"{np.mean(a=fitnesses, axis=0)}\n{np.max(a=fitnesses, axis=0)}",
+    )
     return total_num_env_steps

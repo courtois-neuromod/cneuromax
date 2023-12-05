@@ -4,7 +4,7 @@ import pickle
 from pathlib import Path
 from typing import Annotated as An
 
-from cneuromax.fitting.neuroevolution.agent.singular.base import (
+from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
@@ -28,8 +28,8 @@ def load_state(
     Args:
         prev_num_gens: See\
             :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.prev_num_gens`.
-        len_agents_batch: Number of agents per population in the batch\
-            maintained by each process.
+        len_agents_batch: See return value of ``len_agents_batch`` from\
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
 
     Returns:
         agents_batch: See return value of ``agents_batch`` from\

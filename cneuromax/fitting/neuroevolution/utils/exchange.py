@@ -5,7 +5,7 @@ from typing import Annotated as An
 import numpy as np
 from mpi4py import MPI
 
-from cneuromax.fitting.neuroevolution.agent.singular.base import (
+from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (

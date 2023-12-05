@@ -1,157 +1,157 @@
 """."""
 
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
+from typing import Annotated as An
 from typing import final
 
 import numpy as np
 import wandb
+from tensordict import TensorDict
+from torchrl.envs import EnvBase
 
+from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
+from cneuromax.utils.annotations import ge
 
 
-class ReinforcementSpace(BaseSpace, metaclass=ABCMeta):
+class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
+    """Base Reinforcement Space class.
+
+    Inside Reinforcement Spaces, agents evolve to maximize a reward
+    function.
     """
-    Base Reinforcement Space class. Inside Reinforcement Spaces, agents evolve
-    to maximize a reward function.
-    Concrete subclasses need to be named *Space*.
-    """
-
-    def __init__(self: "ReinforcementSpace") -> None:
-        assert hasattr(self, "env")
-
-        # cfg.agent.gen_transfer can be either bool or string
-        assert not (
-            cfg.agent.run_num_steps == "infinite"
-            and "env" in cfg.agent.gen_transfer
-        )
-
-        super().__init__(io_path="gran.nevo.IO.base", num_pops=1)
 
     @property
-    def num_pops(self: "BaseSpace") -> int:
+    def env(self: "BaseReinforcementSpace") -> EnvBase:
+        """Environment to run the agent."""
+        raise NotImplementedError
+
+    @property
+    def num_pops(self: "BaseReinforcementSpace") -> int:
         """See :class:`~.BaseSpace.num_pops`."""
         return 1
 
     @property
-    def evaluates_on_gpu(self: "BaseSpace") -> bool:
+    def evaluates_on_gpu(self: "BaseReinforcementSpace") -> bool:
         """See :class:`~.BaseSpace.evaluates_on_gpu`."""
         raise NotImplementedError
 
     @final
-    def init_reset(self: "ReinforcementSpace", curr_gen: int) -> np.ndarray:
-        """
-        First reset function called during the run. Used to reset the
+    def init_reset(
+        self: "BaseReinforcementSpace", curr_gen: int
+    ) -> TensorDict:
+        """First reset function called during the run.
+
+        Used to reset the
         environment & potentially resume from a previous state.
 
         Args:
             curr_gen: Current generation.
+
         Returns:
             np.ndarray: The initial environment observation.
         """
-        if "env" in cfg.agent.gen_transfer:
-            if curr_gen == 0:
+        if self.agent.config.env_transfer:
+            if curr_gen == 1:
                 self.agent.saved_env_seed = curr_gen
-
-            obs = self.env.reset(self.agent.saved_env_seed)
-
-            if curr_gen > 0:
+            self.env.set_seed(seeds=self.agent.saved_env_seed)
+            out = self.env.reset()
+            if curr_gen > 1:
                 self.env.set_state(self.agent.saved_env_state)
-
-                obs = self.agent.saved_env_obs.copy()
-
-        else:  # cfg.agent.gen_transfer in ["none", "fit"]:
-            obs = self.env.reset(curr_gen)
-
-        return obs
+                out = self.agent.saved_env_out.copy()
+        else:
+            self.env.set_seed(seeds=curr_gen)
+            out = self.env.reset(curr_gen)
+        return out
 
     @final
-    def done_reset(self: "ReinforcementSpace", curr_gen: int) -> np.ndarray:
-        """
-        Reset function called whenever the environment returns done.
+    def done_reset(
+        self: "BaseReinforcementSpace",
+        curr_gen: int,
+    ) -> TensorDict:
+        """Reset function called whenever the environment returns done.
 
         Args:
             curr_gen: Current generation.
+
         Returns:
             np.ndarray: A new environment observation (np.ndarray).
         """
-
-        if "env" in cfg.agent.gen_transfer:
-            if cfg.wandb != "disabled":
+        if self.agent.config.env_transfer:
+            if self.config.wandb_entity:
                 wandb.log(
-                    {"score": self.agent.curr_episode_score, "gen": curr_gen}
+                    {"score": self.agent.curr_episode_score, "gen": curr_gen},
                 )
-
             self.agent.curr_episode_score = 0
             self.agent.curr_episode_num_steps = 0
-
             self.agent.saved_env_seed = curr_gen
-
-            obs = self.env.reset(self.agent.saved_env_seed)
-
-            return obs
-
-        else:  # cfg.agent.gen_transfer in ["none", "fit"]:
-            return np.empty(0)
+            self.env.set_seed(seeds=self.agent.saved_env_seed)
+            out = self.env.reset(self.agent.saved_env_seed)
+        else:
+            out = TensorDict()
+        return out
 
     @final
-    def final_reset(self: "ReinforcementSpace", obs: np.ndarray) -> None:
-        """
-        Reset function called at the end of every run.
+    def final_reset(
+        self: "BaseReinforcementSpace",
+        out: TensorDict,
+        curr_gen: int,
+    ) -> None:
+        """Reset function called at the end of every run.
 
         Args:
             obs: The final environment observation.
         """
-        if "mem" not in cfg.agent.gen_transfer:
+        if self.agent.config.mem_transfer:
             self.agent.reset()
-
-        if "env" in cfg.agent.gen_transfer:
+        if self.agent.config.env_transfer:
             self.agent.saved_env_state = self.env.get_state()
-            self.agent.saved_env_obs = obs.copy()
-
-        if cfg.agent.gen_transfer in ["none", "fit"]:
-            if cfg.wandb != "disabled":
-                wandb.log(
-                    {
-                        "score": self.agent.curr_run_score,
-                        "gen": curr_gen,
-                    }
-                )
+            self.agent.saved_env_out = out.copy()
+        if (
+            not (
+                self.agent.config.env_transfer
+                or self.agent.config.mem_transfer
+            )
+            and self.config.wandb_entity
+        ):
+            wandb.log(
+                {
+                    "score": self.agent.curr_run_score,
+                    "gen": curr_gen,
+                },
+            )
 
     @final
-    def run_agents(self: "ReinforcementSpace", curr_gen: int) -> float:
-        [self.agent] = self.agents
+    def evaluate(
+        self: "BaseReinforcementSpace",
+        agent_s: list[list[BaseSingularAgent]],
+        curr_gen: An[int, ge(1)],
+    ) -> float:
+        """."""
+        self.agent = agent_s[0][0]
         self.agent.curr_run_score = 0
         self.agent.curr_run_num_steps = 0
-
-        obs, done = self.init_reset(curr_gen), False
-
-        while not done:
-            obs, rew, done = self.env.step(self.agent(obs))
-
-            self.agent.curr_run_score += rew
+        out = self.init_reset(curr_gen), False
+        while not out["done"]:
+            out = out.set("action", self.agent(out["obs"]))
+            out = self.env.step(out)["next"]
+            self.agent.curr_run_score += out["rew"]
             self.agent.curr_run_num_steps += 1
-
-            if "env" in cfg.agent.gen_transfer:
-                self.agent.curr_episode_score += rew
+            if self.agent.config.env_transfer:
+                self.agent.curr_episode_score += out["rew"]
                 self.agent.curr_episode_num_steps += 1
-
-            if "fit" in cfg.agent.gen_transfer:
-                self.agent.continual_fitness += rew
-
-            if done:
+            if self.agent.config.fit_transfer:
+                self.agent.continual_fitness += out["rew"]
+            if out["done"]:
                 obs = self.done_reset(curr_gen)
-
-            if self.agent.curr_run_num_steps == cfg.agent.run_num_steps:
-                done = True
-
+            if self.agent.curr_run_num_steps == self.config.eval_num_steps:
+                out["done"] = True
         self.final_reset(obs)
-
-        if "fit" in cfg.agent.gen_transfer:
-            return np.array(
-                (self.agent.continual_fitness, self.agent.curr_run_num_steps)
-            )
-
-        else:
-            return np.array(
-                (self.agent.curr_run_score, self.agent.curr_run_num_steps)
-            )
+        return np.array(
+            object=(
+                self.agent.continual_fitness
+                if self.agent.config.fit_transfer
+                else self.agent.curr_run_score,
+                self.agent.curr_run_num_steps,
+            ),
+        )

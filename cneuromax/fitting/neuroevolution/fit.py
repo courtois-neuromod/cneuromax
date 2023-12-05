@@ -8,7 +8,7 @@ from cneuromax.fitting.neuroevolution.config import (
 )
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.fitting.neuroevolution.utils.compute import (
-    compute_pickled_agents_sizes,
+    compute_generation_results,
     compute_save_points,
     compute_start_time_and_seeds,
     compute_total_num_env_steps_and_process_fitnesses,
@@ -23,6 +23,7 @@ from cneuromax.fitting.neuroevolution.utils.exchange import (
     update_exchange_and_mutate_info,
 )
 from cneuromax.fitting.neuroevolution.utils.initialize import (
+    initialize_agents,
     initialize_common_variables,
     initialize_gpu_comm,
 )
@@ -64,7 +65,7 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
     )
     (
         pop_size,
-        agents_batch,
+        len_agents_batch,
         exchange_and_mutate_info,
         exchange_and_mutate_info_batch,
         generation_results,
@@ -81,10 +82,9 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
             agents_batch,
             generation_results,
             total_num_env_steps,
-        ) = load_state(
-            prev_num_gens=config.prev_num_gens,
-            len_agents_batch=len(agents_batch),
-        )
+        ) = load_state(config.prev_num_gens, len_agents_batch)
+    else:
+        agents_batch = initialize_agents(agents_batch)
     setup_wandb(entity=config.wandb_entity)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
@@ -136,9 +136,10 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                 curr_gen=curr_gen,
             )
         )
-        generation_results_batch[:, :, 0:2] = fitnesses_and_num_env_steps_batch
-        compute_pickled_agents_sizes(
+        compute_generation_results(
+            generation_results=generation_results,
             generation_results_batch=generation_results_batch,
+            fitnesses_and_num_env_steps_batch=fitnesses_and_num_env_steps_batch,
             agents_batch=agents_batch,
             num_pops=space.num_pops,
         )

@@ -228,7 +228,6 @@ def find_good_per_device_batch_size(
 
 
 def find_good_num_workers(
-    # Type is implicit through :mod:`hydra-zen`.
     datamodule_config: Any,  # noqa: ANN401
     per_device_batch_size: int,
     max_num_data_passes: int = 100,
