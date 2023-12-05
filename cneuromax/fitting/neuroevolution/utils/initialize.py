@@ -35,9 +35,9 @@ def initialize_common_variables(
 
     Args:
         agents_per_task: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.agents_per_task`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.agents_per_task`.
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
 
     Returns:
         pop_size: Number of agents per population, computed from\

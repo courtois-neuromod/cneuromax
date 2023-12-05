@@ -33,12 +33,9 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     Args:
         config: See :class:`BaseClassificationLitModuleConfig`.
-        nnmodule: See\
-            :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule`.
-        optimizer: See\
-            :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer`.
-        scheduler: See\
-            :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler`.
+        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
+        optimizer: See :paramref:`~.BaseLitModule.optimizer`.
+        scheduler: See :paramref:`~.BaseLitModule.scheduler`.
 
     Attributes:
         accuracy\
@@ -69,9 +66,9 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
 
         Args:
             batch: See\
-                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.batch`.
+                :paramref:`~.BaseLitModule.stage_step.batch`.
             stage: See\
-                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.stage`.
+                :paramref:`~.BaseLitModule.stage_step.stage`.
 
         Returns:
             The cross entropy loss.

@@ -51,7 +51,7 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
 
     Args:
         config: The run's :mod:`hydra-core` structured config, see\
-            :class:`cneuromax.fitting.neuroevolution.config.NeuroevolutionFittingHydraConfig`.
+            :class:`~.NeuroevolutionFittingHydraConfig`.
     """
     comm, _, _ = retrieve_mpi_variables()
     space: BaseSpace = instantiate(config=config.space)

@@ -105,8 +105,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
-            batch: See\
-                :paramref:`~BaseLitModule.stage_step.batch`.
+            batch: See :paramrefBaseLitModule.stage_step.batch`.
 
         Returns:
             The loss value(s).
@@ -128,8 +127,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
-            batch: See\
-                :paramref:`~BaseLitModule.stage_step.batch`.
+            batch: See :paramref:`~BaseLitModule.stage_step.batch`.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
 
@@ -148,8 +146,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
-            batch: See\
-                :paramref:`~BaseLitModule.stage_step.batch`.
+            batch: See :paramref:`~BaseLitModule.stage_step.batch`.
 
         Returns:
             The loss value(s).

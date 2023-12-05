@@ -22,8 +22,7 @@ class BaseFittingHydraConfig(BaseHydraConfig):
     Args:
         device: Computing device to use for large matrix operations.
         copy_data_commands: List of commands to execute to transfer the\
-            training data to the\
-            :paramref:`cneuromax.config.BaseHydraConfig.data_dir`\
+            training data to the :paramref:`~.BaseHydraConfig.data_dir`\
             directory. This is useful when the training data is stored\
             on a disk that is different from the one used by the\
             training machine.

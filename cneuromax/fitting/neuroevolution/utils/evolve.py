@@ -1,7 +1,7 @@
 """Evolutionary operations for Neuroevolution fitting.
 
-The selection operation is implicit in `cneuromax`, see\
-:func:`~cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info`
+The selection operation is implicit in `cneuromax`, see
+:func:`~.neuroevolution.utils.exchange.update_exchange_and_mutate_info`
 for more details.
 """
 
@@ -31,12 +31,12 @@ def run_mutation(
 
     Args:
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         exchange_and_mutate_info_batch: See return value of\
             ``exchange_and_mutate_info_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
     """
     seeds = exchange_and_mutate_info_batch[:, :, 3]
     for i in range(num_pops):
@@ -56,15 +56,14 @@ def run_evaluation_cpu(
 
     Args:
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
-        space: The experiment's pace, see\
-            :class:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        space: The experiment's pace, see :class:`~.BaseSpace`.
         curr_gen: Current generation number.
 
     Returns:
         fitnesses_and_num_env_steps_batch: The output of\
             agent evaluation by this process. See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.evaluate`.
+            :meth:`~.BaseSpace.evaluate`.
     """
     fitnesses_and_num_env_steps_batch = np.zeros(
         shape=(len(agents_batch), space.num_pops, 2),
@@ -92,23 +91,22 @@ def run_evaluation_gpu(
 
     Args:
         ith_gpu_comm: See return value of ``ith_gpu_comm`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_gpu_comm`.
+            :func:`~.neuroevolution.utils.initialize.initialize_gpu_comm`.
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
-        space: The experiment's pace, see\
-            :class:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        space: The experiment's pace, see :class:`~.BaseSpace`.
         curr_gen: Current generation number.
         transfer: Whether any of\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.env_transfer`,\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.fit_transfer`\
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.env_transfer`,\
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.fit_transfer`\
             or\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.mem_transfer`\
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.mem_transfer`\
             is `True`.
 
     Returns:
         fitnesses_and_num_env_steps_batch: The output of\
             agent evaluation by this process. See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.evaluate`.
+            :meth:`~.BaseSpace.evaluate`.
     """
     comm, rank, size = retrieve_mpi_variables()
     ith_gpu_comm_rank = ith_gpu_comm.Get_rank()
@@ -146,4 +144,4 @@ def run_evaluation_gpu(
         temp_agents_batch = ith_gpu_comm.scatter(sendobj=ith_gpu_agents_batch)
         for i in range(len(agent_batch)):
             agents_batch[i] = temp_agents_batch[i]
-    return fitnesses_and_num_env_steps_batch_type
+    return fitnesses_and_num_env_steps_batch

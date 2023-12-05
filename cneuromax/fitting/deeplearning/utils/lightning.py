@@ -42,8 +42,7 @@ def instantiate_lightning_objects(
     """Creates several :mod:`lightning` objects based on the config.
 
     Args:
-        config: See\
-            :class:`cneuromax.fitting.deeplearning.config.DeepLearningFittingHydraConfig`.
+        config: See :class:`~.DeepLearningFittingHydraConfig`.
         launcher_config: The :mod:`hydra-core` launcher configuration.
 
     Returns:
@@ -92,10 +91,7 @@ def set_batch_size_and_num_workers(
     If starting a new HPO run, finds and sets "good" ``batch_size`` and
     ``num_workers`` parameters.
 
-    See the
-    :func:`cneuromax.fitting.deeplearning.utils.lightning.find_good_batch_size`
-    and
-    :func:`cneuromax.fitting.deeplearning.utils.lightning.find_good_num_workers`
+    See :func:`find_good_batch_size` and :func:`find_good_num_workers`
     functions documentation for more details.
 
     We make the assumption that if we are resuming from a checkpoint
@@ -105,25 +101,24 @@ def set_batch_size_and_num_workers(
     ``batch_size`` and ``num_workers`` parameters.
 
     Args:
-        config: See\
-            :class:`cneuromax.fitting.deeplearning.config.DeepLearningFittingHydraConfig`.
+        config: See :class:`~.DeepLearningFittingHydraConfig`.
         trainer: The :class:`lightning.pytorch.Trainer` instance used\
             for this fitting run.
-        datamodule: The\
-            :class:`cneuromax.fitting.deeplearning.datamodule.BaseDataModule`\
-            instance used for this fitting run.
+        datamodule: The :class:`~.BaseDataModule` instance used for\
+            this fitting run.
     """
-    if not config.pbt_load_path:
-        proposed_per_device_batch_size: int = find_good_per_device_batch_size(
-            litmodule=instantiate(config.litmodule),
-            datamodule=instantiate(config.datamodule),
-            device=config.device,
-            data_dir=config.data_dir,
-        )
-        proposed_per_device_num_workers: int = find_good_num_workers(
-            datamodule_config=config.datamodule,
-            per_device_batch_size=proposed_per_device_batch_size,
-        )
+    """TODO: PBT resume no need to find good batch size num workers."""
+    """if not config.pbt_load_path:"""
+    proposed_per_device_batch_size: int = find_good_per_device_batch_size(
+        litmodule=instantiate(config.litmodule),
+        datamodule=instantiate(config.datamodule),
+        device=config.device,
+        data_dir=config.data_dir,
+    )
+    proposed_per_device_num_workers: int = find_good_num_workers(
+        datamodule_config=config.datamodule,
+        per_device_batch_size=proposed_per_device_batch_size,
+    )
     per_device_batch_size: int = int(
         trainer.strategy.reduce(
             torch.tensor(proposed_per_device_batch_size),
@@ -149,8 +144,7 @@ def set_checkpoint_path(
     TODO: Implement when enabling the Orion sweeper.
 
     Args:
-        config: See\
-            :class:`cneuromax.fitting.deeplearning.config.DeepLearningFittingHydraConfig`.
+        config: See :class:`~.DeepLearningFittingHydraConfig`.
         trainer: The :class:`lightning.pytorch.Trainer` instance used\
             for this fitting run.
 
@@ -182,20 +176,16 @@ def find_good_per_device_batch_size(
     same amount of VRAM.
 
     Args:
-        litmodule: A temporary\
-            :class:`cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule`\
-            instance with the same configuration as the\
-            :class:`cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule`\
+        litmodule: A temporary :class:`~.BaseLitModule` instance with\
+            the same configuration as the :class:`~.BaseLitModule`\
             instance that will be trained.
-        datamodule: A temporary\
-            :class:`cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule`\
-            instance with the same configuration as the\
-            :class:`cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule`\
+        datamodule: A temporary :class:`~.BaseDataModule` instance with\
+            the same configuration as the :class:`~.BaseDataModule`\
             instance that will be used for training.
         device: See\
-            :paramref:`cneuromax.fitting.config.BaseFittingHydraConfig.device`.
+            :paramref:`~cneuromax.fitting.config.BaseFittingHydraConfig.device`.
         data_dir: See\
-            :paramref:`cneuromax.fitting.config.BaseFittingHydraConfig.data_dir`.
+            :paramref:`~cneuromax.fitting.config.BaseFittingHydraConfig.data_dir`.
 
     Returns:
         The estimated proper batch size per device.

@@ -1,4 +1,4 @@
-"""BaseSpace & BaseSpaceConfig classes."""
+""":class:`BaseSpace` and its config class."""
 
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
@@ -15,16 +15,16 @@ from cneuromax.utils.annotations import ge, le
 
 @dataclass
 class BaseSpaceConfig:
-    """.
+    """Holds :class:`BaseSpace` config values.
 
     Args:
         eval_num_steps: Number of steps to evaluate each agent for.
-        wandb_entity: :mod:`wandb` entity (username or team name)\
-            to use for logging. `None` means no logging.
+        wandb_entity: See\
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.wandb_entity`.
     """
 
     eval_num_steps: An[int, ge(0)]
-    wandb_entity: str | None
+    wandb_entity: str | None = "${wandb_entity}"
 
 
 class BaseSpace(metaclass=ABCMeta):
@@ -34,10 +34,7 @@ class BaseSpace(metaclass=ABCMeta):
     and receive fitness scores.
     """
 
-    def __init__(
-        self: "BaseSpace",
-        config: BaseSpaceConfig,
-    ) -> None:
+    def __init__(self: "BaseSpace", config: BaseSpaceConfig) -> None:
         """.
 
         Args:
@@ -58,7 +55,7 @@ class BaseSpace(metaclass=ABCMeta):
         For a given evaluation, a "regular" space makes interact one
         agent from each population, whereas a batch space makes
         interact N agents from each population in parallel. See
-        :class:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.evaluates_on_gpu`.
+        :class:`~BaseSpace.evaluates_on_gpu`.
         """
         raise NotImplementedError
 

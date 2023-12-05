@@ -25,11 +25,11 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
 
         Args:
             nnmodule: See\
-                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule`.
+                :paramref:`~.BaseClassificationLitModule.nnmodule`.
             optimizer: See\
-                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer`.
+                :paramref:`~.BaseClassificationLitModule.optimizer`.
             scheduler: See\
-                :paramref:`~cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler`.
+                :paramref:`~.BaseClassificationLitModule.scheduler`.
         """
         super().__init__(
             BaseClassificationLitModuleConfig(num_classes=10),

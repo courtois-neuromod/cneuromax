@@ -8,11 +8,9 @@ def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:
     """Makes sure that the run's Space is valid given the run's config.
 
     Args:
-        space: The run's\
-            :class:`cneuromax.fitting.neuroevolution.space.BaseSpace`\
-            instance.
+        space: The run's :class:`~.BaseSpace` instance.
         pop_merge: See\
-            :paramref:`cneuromax.fitting.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
     """
     launcher_config = get_launcher_config()
     if pop_merge and space.num_pops != 2:  # noqa: PLR2004

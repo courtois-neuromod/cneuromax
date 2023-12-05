@@ -35,7 +35,7 @@ class MLP(nn.Module):
         activation_fn: Activation function.
 
     Attributes:
-        model (:class:`~torch.nn.Sequential`)
+        model (:class:`torch.nn.Sequential`)
     """
 
     def __init__(

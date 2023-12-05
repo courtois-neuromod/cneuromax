@@ -27,19 +27,19 @@ def load_state(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.prev_num_gens`.
         len_agents_batch: Number of agents per population in the batch\
             maintained by each process.
 
     Returns:
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         generation_results: See return value of ``generation_results``\
             from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         total_num_env_steps: See return value of\
             ``total_num_env_steps`` from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
     """
     comm, rank, size = retrieve_mpi_variables()
     if rank == 0:
@@ -77,13 +77,13 @@ def save_state(
 
     Args:
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         generation_results: See return value of ``generation_results``\
             from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         total_num_env_steps: See return value of\
             ``total_num_env_steps`` from\
-            :func:`cneuromax.fitting.neuroevolution.utils.initialize`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         curr_gen: The current generation number.
     """
     comm, rank, _ = retrieve_mpi_variables()

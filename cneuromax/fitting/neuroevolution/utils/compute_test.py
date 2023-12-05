@@ -1,4 +1,4 @@
-"""Tests for :mod:`cneuromax.fitting.neuroevolution.utils.compute`."""
+"""Tests for :mod:`~.neuroevolution.utils.compute`."""
 
 from cneuromax.fitting.neuroevolution.utils.compute import compute_save_points
 

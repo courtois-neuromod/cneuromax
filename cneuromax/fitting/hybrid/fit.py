@@ -10,6 +10,6 @@ def fit(config: HybridFittingHydraConfig) -> float:  # noqa: ARG001
 
     Args:
         config: The run's :mod:`hydra-core` structured config, see\
-            :class:`cneuromax.fitting.hybrid.config.HybridFittingHydraConfig`.
+            :class:`~.hybrid.config.HybridFittingHydraConfig`.
     """
     return 0

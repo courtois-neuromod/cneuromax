@@ -27,11 +27,11 @@ def compute_pickled_agents_sizes(
     Args:
         generation_results_batch: See return value of\
             ``generation_results_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
     """
     for i in range(len(agents_batch)):
         for j in range(num_pops):
@@ -51,13 +51,13 @@ def compute_save_points(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.prev_num_gens`.
         total_num_gens: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.total_num_gens`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.total_num_gens`.
         save_interval: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.save_interval`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.save_interval`.
         save_first_gen: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.save_first_gen`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.save_first_gen`.
 
     Returns:
         A list of generations at which to save the state.
@@ -87,14 +87,14 @@ def compute_start_time_and_seeds(
     Args:
         generation_results: See return value of ``generation_results``\
             from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         curr_gen: Current generation number.
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
         pop_size: See return value of ``pop_size`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         pop_merge: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
         * **start_time** - The start time for the current generation.
@@ -144,14 +144,14 @@ def compute_total_num_env_steps_and_process_fitnesses(
     Args:
         generation_results: See return value of ``generation_results``\
             from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         total_num_env_steps: See return value of\
             ``total_num_env_steps`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         curr_gen: Current generation number.
         start_time: Generation start time.
         pop_merge: See\
-            :paramref:`~cneuromax.fitting.neuroevolution.fit.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
         The updated total number of environment steps.

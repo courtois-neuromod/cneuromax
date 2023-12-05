@@ -28,14 +28,14 @@ def exchange_agents(
 
     Args:
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
         pop_size: See return value of ``pop_size`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         agents_batch: See return value of ``agents_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         exchange_and_mutate_info_batch: See return value of\
             ``exchange_and_mutate_info_batch`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
     """
     comm, rank, _ = retrieve_mpi_variables()
     mpi_buffer_size = exchange_and_mutate_info_batch[:, :, 0]
@@ -108,17 +108,17 @@ def update_exchange_and_mutate_info(
 
     Args:
         num_pops: See\
-            :meth:`~cneuromax.fitting.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
         pop_size: See return value of ``pop_size`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         exchange_and_mutate_info: See return value of\
             ``exchange_and_mutate_info`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         generation_results: See return value of ``generation_results``\
             from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables`.
+            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
         seeds: See return value of ``seeds`` from\
-            :func:`~cneuromax.fitting.neuroevolution.utils.compute.compute_start_time_and_seeds`.
+            :func:`~.neuroevolution.utils.compute.compute_start_time_and_seeds`.
     """
     _, rank, _ = retrieve_mpi_variables()
     if rank != 0:

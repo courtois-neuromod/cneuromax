@@ -1,4 +1,4 @@
-"""Tests for :mod:`cneuromax.task.classify_mnist.datamodule`."""
+"""Tests for :mod:`~cneuromax.task.classify_mnist.datamodule`."""
 
 from pathlib import Path
 
@@ -18,7 +18,7 @@ def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
 
     Args:
         tmp_path: The temporary path for the\
-            :class:`cneuromax.task.classify_mnist.datamodule.MNISTClassificationDataModule`.
+            :class:`~.MNISTClassificationDataModule`.
 
     Returns:
         A generic `MNISTDataModule` instance.

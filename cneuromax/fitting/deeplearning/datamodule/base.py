@@ -59,19 +59,18 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         dataset (:class:`StageDataset`)
         pin_memory (``bool``): Whether to copy tensors into device\
             pinned memory before returning them (is set to ``True`` by\
-            default if\
-            :paramref:`~cneuromax.fitting.config.BaseFittingHydraConfig.device`\
-            is ``"gpu"``).
+            default if :paramref:`~BaseDataModuleConfig.device` is\
+            ``"gpu"``).
         per_device_batch_size (``int``): Per-device number of samples\
             to load per iteration. Default value (``1``) is later\
             overwritten through function\
-            :func:`~cneuromax.fitting.deeplearning.fit.set_batch_size_and_num_workers`.
+            :func:`~.deeplearning.fit.set_batch_size_and_num_workers`.
         per_device_num_workers (``int``): Per-device number of CPU\
             processes to use for data loading (``0`` means that the\
             data will be loaded by each device's assigned CPU\
             process). Default value (``0``) is later overwritten\
             through function\
-            :func:`~cneuromax.fitting.deeplearning.fit.set_batch_size_and_num_workers`.
+            :func:`~.deeplearning.fit.set_batch_size_and_num_workers`.
     """
 
     def __init__(self: "BaseDataModule", config: BaseDataModuleConfig) -> None:
@@ -101,7 +100,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         """Returns ``per_device_batch_size`` & ``num_workers`` attribs.
 
         Returns:
-            See :paramref:`~load_state_dict.state_dict`.
+            See :paramref:`~BaseDataModule.load_state_dict.state_dict`.
         """
         return {
             "per_device_batch_size": self.per_device_batch_size,
