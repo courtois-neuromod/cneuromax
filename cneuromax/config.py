@@ -11,7 +11,7 @@ from omegaconf import DictConfig, OmegaConf
 from cneuromax.utils.annotations import not_empty
 
 
-@dataclass
+@dataclass(frozen=True)
 class BaseHydraConfig:
     """Base structured :mod:`hydra-core` configuration.
 

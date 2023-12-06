@@ -17,7 +17,7 @@ from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.annotations import ge, one_of
 
 
-@dataclass
+@dataclass(frozen=True)
 class BaseClassificationLitModuleConfig:
     """Holds :class:`BaseClassificationLitModule` config values.
 

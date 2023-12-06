@@ -15,7 +15,7 @@ from cneuromax.config import (
 from cneuromax.utils.annotations import one_of
 
 
-@dataclass
+@dataclass(frozen=True)
 class BaseFittingHydraConfig(BaseHydraConfig):
     """Base structured :mod:`hydra-core` fitting config.
 

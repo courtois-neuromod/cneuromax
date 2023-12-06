@@ -4,12 +4,39 @@ from typing import final
 
 import numpy as np
 import wandb
+from tensordict import TensorDict
 from torch import Tensor
-from torchrl.envs import EnvBase
+from torchrl.envs import EnvBase, GymEnv
 
 from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
 from cneuromax.utils.annotations import ge
+
+
+class BaseImitationTarget(metaclass=ABCMeta):
+    """Base Target class."""
+
+    @abstractmethod
+    def reset(self: "BaseImitationTarget", seed: int, step_num: int) -> None:
+        """Reset the target's state given a seed and step number.
+
+        Args:
+            seed: Seed.
+            step_num: Current step number.
+        """
+        raise NotImplementedError
+
+    @abstractmethod
+    def __call__(self: "BaseImitationTarget", x: Tensor) -> Tensor:
+        """Inputs a value and returns an output.
+        Reset the target's state
+
+        Args:
+            x: Input value.
+        Returns:
+            Any: Output value.
+        """
+        raise NotImplementedError
 
 
 class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
@@ -21,8 +48,12 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
     """
 
     @property
+    def imitation_target(self: "BaseImitationSpace") -> BaseImitationTarget:
+        """The target to imitate."""
+        raise NotImplementedError
+
+    @property
     def hide_score(self: "BaseImitationSpace", obs: Tensor) -> Tensor:
-        """"""
         """Function that hides the environment's score portion of the screen
         to prevent the discriminator agent from utilizing it."""
         return obs
@@ -32,6 +63,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         """One or two environments to run the generator and target."""
         raise NotImplementedError
 
+    @property
     @final
     def init_reset(self: "BaseImitationSpace", curr_gen: int) -> np.ndarray:
         """
@@ -84,21 +116,17 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         """
         if self.generator == self.curr_actor:
             self.generator.reset()
-
         self.discriminator.reset()
-
-        if "env" in cfg.agent.gen_transfer:
-            if self.generator == self.curr_actor:  # check target
-                if cfg.wandb != "disabled":
+        if self.generator.config.env_transfer:
+            if self.generator == self.curr_actor:
+                if self.config.wandb_entity:
                     wandb.log(
                         {
                             "score": self.generator.curr_episode_score,
                             "gen": curr_gen,
-                        }
+                        },
                     )
-
-                self.curr_actor_data_holder.curr_episode_score = 0
-
+                self.generator.curr_episode_score = 0
             self.curr_actor_data_holder.curr_episode_num_steps = 0
 
             self.curr_actor_data_holder.saved_env_seed = curr_gen
@@ -113,19 +141,22 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
             return np.empty(0)
 
     @final
-    def final_reset(self: "BaseImitationSpace", obs: np.ndarray) -> None:
+    def final_reset(
+        self: "BaseImitationSpace",
+        obs: np.ndarray,
+        curr_gen: An[int, ge(1)],
+    ) -> None:
         """
         Reset function called at the end of every match.
 
         Args:
             obs: The final environment observation.
         """
-        if "mem" not in cfg.agent.gen_transfer:
+        if not self.generator.config.mem_transfer:
             if self.generator == self.curr_actor:
                 self.generator.reset()
-
             self.discriminator.reset()
-
+        if self.curr_actor_data_holder
         if "env" in cfg.agent.gen_transfer:
             self.curr_actor_data_holder.saved_env_state = self.get_env_state(
                 self.curr_env
@@ -148,18 +179,22 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         self: "BaseImitationSpace",
         agent_s: list[list[BaseSingularAgent]],
         curr_gen: An[int, ge(1)],
-    ) -> float:
-        self.generator = self.agents[0][0]
-        self.discriminator = self.agents[0][1]
+    ) -> np.ndarray:
+        self.generator = agent_s[0][0]
+        self.discriminator = agent_s[0][1]
         generator_fitness, discriminator_fitness = 0, 0
-        # 0) Generator & Discriminator 1) Imitation Target & Discriminator
         for match in [0, 1]:
+            # Match 0: Generator & Discriminator
+            # Match 1: Imitation Target & Discriminator
             self.curr_env = self.envs[-match]  # 1 or 2 envs
-
             if match == 0:
+                # Match 0, actor is generator
+                # Generator holds its own evaluation data
                 self.curr_actor = self.generator
                 self.curr_actor_data_holder = self.generator
             else:  # match == 1:
+                # Match 1, actor is imitation target
+                # Discriminator holds the target's evaluation data
                 self.curr_actor = self.imitation_target
                 self.curr_actor_data_holder = self.discriminator
 

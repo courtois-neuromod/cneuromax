@@ -11,7 +11,7 @@ from cneuromax.fitting.config import (
 )
 
 
-@dataclass
+@dataclass(frozen=True)
 class HybridFittingHydraConfig(BaseFittingHydraConfig):
     """Structured :mod:`hydra-core` config for DL + NE fitting."""
 

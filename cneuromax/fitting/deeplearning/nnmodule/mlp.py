@@ -11,7 +11,7 @@ from torch import Tensor, nn
 from cneuromax.utils.annotations import ge, lt
 
 
-@dataclass
+@dataclass(frozen=True)
 class MLPConfig:
     """Holds :class:`MLP` config values.
 

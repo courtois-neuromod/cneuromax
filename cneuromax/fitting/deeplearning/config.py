@@ -12,7 +12,7 @@ from cneuromax.fitting.config import (
 )
 
 
-@dataclass
+@dataclass(frozen=)
 class DeepLearningFittingHydraConfig(BaseFittingHydraConfig):
     """Structured :mod:`hydra-core` config for Deep Learning fitting.
 

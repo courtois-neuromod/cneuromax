@@ -14,7 +14,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
 from cneuromax.utils.annotations import ge, lt, one_of
 
 
-@dataclass
+@dataclass(frozen=True)
 class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
     """Configuration for :class:`MNISTClassificationDataModuleConfig`s.
 

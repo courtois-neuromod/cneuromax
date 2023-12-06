@@ -14,7 +14,7 @@ from cneuromax.fitting.config import (
 from cneuromax.utils.annotations import ge
 
 
-@dataclass
+@dataclass(frozen=True)
 class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
     """.
 
@@ -39,12 +39,7 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
             populations into a single population. This means that each\
             agent will be evaluated on both its generative and\
             discriminative abilities.
-        env_transfer: Whether a parent agent's environment state\
-            (position, velocity, ...) is transferred to its children.
-        fit_transfer: Whether a parent agent's fitness is transferred\
-            to its children.
-        mem_transfer: Whether a parent agent's hidden state is\
-            transferred to its children.
+
         eval_num_steps: Number of environment steps to run each agent\
             for during evaluation. `0` means that the agent will run\
             until the environment terminates (`eval_num_steps = 0` is\

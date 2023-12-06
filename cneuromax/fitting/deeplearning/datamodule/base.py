@@ -29,7 +29,7 @@ class StageDataset:
     predict: Dataset[Tensor] | None = None
 
 
-@dataclass
+@dataclass(frozen=True)
 class BaseDataModuleConfig:
     """Holds :class:`BaseDataModule` config values.
 

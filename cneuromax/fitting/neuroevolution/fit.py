@@ -56,7 +56,7 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
     """
     comm, _, _ = retrieve_mpi_variables()
     space: BaseSpace = instantiate(config=config.space)
-    validate_space(space, pop_merge=config.pop_merge)
+    validate_space(space=space, pop_merge=config.pop_merge)
     save_points = compute_save_points(
         prev_num_gens=config.prev_num_gens,
         total_num_gens=config.total_num_gens,
@@ -82,9 +82,16 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
             agents_batch,
             generation_results,
             total_num_env_steps,
-        ) = load_state(config.prev_num_gens, len_agents_batch)
+        ) = load_state(
+            prev_num_gens=config.prev_num_gens,
+            len_agents_batch=len_agents_batch,
+        )
     else:
-        agents_batch = initialize_agents(agents_batch)
+        agents_batch = initialize_agents(
+            config=config,
+            len_agents_batch=len_agents_batch,
+            num_pops=space.num_pops,
+        )
     setup_wandb(entity=config.wandb_entity)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(

@@ -4,17 +4,20 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 
 
-@dataclass
+
+@dataclass(frozen=True)
 class BaseAgentConfig:
     """Holds :class:`BaseAgent` config values.
 
     Args:
         env_transfer: Whether the agent's environment state\
-            (position, velocity, ...) is transferred to its children.
+            (position, velocity, ...) is transferred to its children\
+            if it passes through the selection process.
         fit_transfer: Whether the agent's fitness is transferred to\
-            its children.
-        mem_transfer: Whether the agent's hidden state/memory is\
-            transferred to its children.
+            its children if it passes through the selection process.
+        mem_transfer: Whether the agent's memory (hidden state) is\
+            transferred to its children if it passes through the\
+            selection process.
     """
 
     env_transfer: bool = False
@@ -65,3 +68,5 @@ class BaseAgent(metaclass=ABCMeta):
             seeds: An array of one or more random integers to seed the
                 agent(s) mutation randomness.
         """
+
+def initialize_run_variables()
