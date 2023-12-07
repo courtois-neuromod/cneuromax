@@ -18,7 +18,7 @@ dependencies = [
     "submitit==1.5.1",
     "hydra-core==1.3.2",
     "hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@f89f83fc4095b3fa4fefd858b5fef00a296c3aec#subdirectory=plugins/hydra_submitit_launcher/",
-    "hydra-orion-sweeper==1.6.3",
+    "hydra-orion-sweeper==1.6.4",
     "hydra-zen==0.12.0",
     # Required for cneuromax/fitting/deeplearning/
     "torchrl==0.2.1",
