@@ -24,7 +24,7 @@ dependencies = [
     "torchrl==0.2.1",
     "lightning==2.1.2",
     "transformers==4.36.1",
-    "datasets==2.15.0",
+    "datasets==2.16.0",
     # Required for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5",
     # Shapes & Dynamic Type checking
