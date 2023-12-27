@@ -44,7 +44,6 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
 
     Inside Imitation Spaces, agents evolve
     to imitate a target.
-    Concrete subclasses need to be named *Env*.
     """
 
     @property
@@ -65,7 +64,9 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
 
     @property
     @final
-    def init_reset(self: "BaseImitationSpace", curr_gen: int) -> np.ndarray:
+    def init_reset(
+        self: "BaseImitationSpace", curr_gen: An[int, ge(0)]
+    ) -> TensorDict:
         """
         First reset function called during the match.
         Used to either set the env seed or resume from a previous state.
@@ -75,7 +76,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         Returns:
             np.ndarray: The initial environment observation.
         """
-        if "env" in cfg.agent.gen_transfer:
+        if self.discriminator.config.env_transfer:
             if curr_gen == 0:
                 self.curr_actor_data_holder.saved_env_seed = curr_gen
 
@@ -156,8 +157,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
             if self.generator == self.curr_actor:
                 self.generator.reset()
             self.discriminator.reset()
-        if self.curr_actor_data_holder
-        if "env" in cfg.agent.gen_transfer:
+        if self.generator.config.env_transfer:
             self.curr_actor_data_holder.saved_env_state = self.get_env_state(
                 self.curr_env
             )
@@ -197,10 +197,8 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
                 # Discriminator holds the target's evaluation data
                 self.curr_actor = self.imitation_target
                 self.curr_actor_data_holder = self.discriminator
-
-            self.curr_actor_data_holder.curr_run_score = 0
-            self.curr_actor_data_holder.curr_run_num_steps = 0
-
+            curr_run_score = 0
+            curr_run_num_steps = 0
             obs, done, p_imitation_target = self.init_reset(curr_gen), False, 0
             hidden_score_obs = self.hide_score(obs, cfg.env)
 
@@ -213,10 +211,10 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
                 obs, rew, done = self.curr_env.step(output)
                 hidden_score_obs = self.hide_score(obs, cfg.env)
 
-                self.curr_actor_data_holder.curr_run_score += rew
-                self.curr_actor_data_holder.curr_run_num_steps += 1
+                curr_run_score += rew
+                curr_run_num_steps += 1
 
-                if cfg.agent.gen_transfer and "env" in cfg.agent.gen_transfer:
+                if self.discriminator.config.env_transfer:
                     self.curr_actor_data_holder.curr_episode_score += rew
                     self.curr_actor_data_holder.curr_episode_num_steps += 1
 

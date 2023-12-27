@@ -39,11 +39,6 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
             populations into a single population. This means that each\
             agent will be evaluated on both its generative and\
             discriminative abilities.
-
-        eval_num_steps: Number of environment steps to run each agent\
-            for during evaluation. `0` means that the agent will run\
-            until the environment terminates (`eval_num_steps = 0` is\
-            not supported for `env_transfer = True`).
     """
 
     space: Any = MISSING
@@ -55,10 +50,6 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
     save_interval: An[int, ge(0)] = 0
     save_first_gen: bool = False
     pop_merge: bool = False
-    env_transfer: bool = II("agent.env_transfer")  # noqa: RUF009
-    fit_transfer: bool = II("agent.fit_transfer")  # noqa: RUF009
-    mem_transfer: bool = II("agent.mem_transfer")  # noqa: RUF009
-    eval_num_steps: An[int, ge(0)] = II("space.eval_num_steps")  # noqa: RUF009
 
 
 def pre_process_neuroevolution_fitting_config(config: DictConfig) -> None:
@@ -91,4 +82,4 @@ def post_process_neuroevolution_fitting_config(
     """
     post_process_base_fitting_config(config)
     if config.env_transfer != config.agent.env_transfer:
-
+        pass

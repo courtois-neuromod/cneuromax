@@ -18,17 +18,24 @@ class BaseSpaceConfig:
     """Holds :class:`BaseSpace` config values.
 
     Args:
-        eval_num_steps: Number of steps to evaluate each agent for.
+        eval_num_steps: Number of environment steps to run each agent\
+            for during evaluation. `0` means that the agent will run\
+            until the environment terminates (`eval_num_steps = 0` is\
+            not supported for `env_transfer = True`).
         wandb_entity: See\
             :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.wandb_entity`.
     """
 
     eval_num_steps: An[int, ge(0)]
-    wandb_entity: str | None = "${wandb_entity}"
+
+
+@dataclass
+class BaseSpaceAttrs:
+    """Holds :class:`BaseSpace`"""
 
 
 class BaseSpace(metaclass=ABCMeta):
-    """.
+    """
 
     Spaces are virtual environments in which agents produce behaviour
     and receive fitness scores.

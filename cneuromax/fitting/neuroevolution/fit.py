@@ -88,10 +88,12 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
         )
     else:
         agents_batch = initialize_agents(
-            config=config,
+            config=config.agent,
             len_agents_batch=len_agents_batch,
             num_pops=space.num_pops,
+            pop_merge=config.pop_merge,
         )
+    agent_0 = agents_batch[0][0]
     setup_wandb(entity=config.wandb_entity)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
@@ -131,9 +133,9 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                     agents_batch=agents_batch,
                     space=space,
                     curr_gen=curr_gen,
-                    transfer=config.env_transfer
-                    or config.fit_transfer
-                    or config.mem_transfer,
+                    transfer=agent_0.config.env_transfer
+                    or agent_0.config.fit_transfer
+                    or agent_0.config.mem_transfer,
                 )
             )
             if space.evaluates_on_gpu
