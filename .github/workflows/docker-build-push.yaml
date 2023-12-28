@@ -1,21 +1,21 @@
-# Builds the container image with run dependencies & push it to the registry
-name: Container Build & Push
+# Builds the Docker image & pushes it to Docker Hub.
+name: Docker Build & Push
 
 on:
   push:
     branches: [main]
     paths:
-      - Containerfile
+      - Dockerfile
       - pyproject.toml
-      - .github/workflows/container-build-push.yaml
+      - .github/workflows/docker-build-push.yaml
 
 jobs:
-  container-build-push:
+  docker-build-push:
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
       - name: Build the CNeuroMax image
-        run: podman build -t cneuromod/cneuromax:latest -f Containerfile .
+        run: podman build -t cneuromod/cneuromax:latest -f Dockerfile .
       - name: Push the CNeuroMax image to Docker Hub
         run: podman push docker.io/cneuromod/cneuromax:latest

@@ -33,13 +33,12 @@ class BaseFittingHydraConfig(BaseHydraConfig):
 
 
 def pre_process_base_fitting_config(config: DictConfig) -> None:
-    """Pre-processes config from :func:`hydra.main` before resolution.
+    """Validates raw task config before it is made structured.
 
     Used for changing the computing device if CUDA is not available.
 
     Args:
-        config: The not yet processed :mod:`hydra-core` config.
-
+        config: The raw task config.
     """
     pre_process_base_config(config)
     if not torch.cuda.is_available():
@@ -47,9 +46,7 @@ def pre_process_base_fitting_config(config: DictConfig) -> None:
         config.device = "cpu"
 
 
-def post_process_base_fitting_config(
-    config: BaseFittingHydraConfig,
-) -> None:
+def post_process_base_fitting_config(config: BaseFittingHydraConfig) -> None:
     """Post-processes the :mod:`hydra-core` config after it is resolved.
 
     Args:

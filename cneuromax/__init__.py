@@ -1,4 +1,4 @@
-""":mod:`cneuromax` package (+ :mod:`hydra-core` config storing)."""
+""":mod:`cneuromax` codebase (+ store :mod:`hydra-core` task config)."""
 
 import logging
 import sys

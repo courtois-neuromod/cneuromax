@@ -53,10 +53,10 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
 
 
 def pre_process_neuroevolution_fitting_config(config: DictConfig) -> None:
-    """Pre-processes config from :func:`hydra.main` before resolution.
+    """Validates raw task config before it is made structured.
 
     Args:
-        config: The not yet processed :mod:`hydra-core` config.
+        config: The raw task config.
     """
     pre_process_base_fitting_config(config)
     if config.eval_num_steps == 0 and config.env_transfer:
@@ -81,5 +81,3 @@ def post_process_neuroevolution_fitting_config(
         config: The processed :mod:`hydra-core` config.
     """
     post_process_base_fitting_config(config)
-    if config.env_transfer != config.agent.env_transfer:
-        pass

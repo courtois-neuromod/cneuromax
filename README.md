@@ -19,35 +19,76 @@
     https://img.shields.io/badge/code%20style-black-000000.svg)](
         https://github.com/psf/black)
 
-Full documentation available at [https://courtois-neuromod.github.io/cneuromax](
-    https://courtois-neuromod.github.io/cneuromax/).
+<h2>Overview</h2>
 
-<h2>Introduction</h2>
+CNeuroMax is a machine learning
+([Deep Learning](https://en.wikipedia.org/wiki/Deep_learning) +
+[Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution))
+and serving ([Lightning Apps](https://lightning.ai/docs/app/stable/))
+workspace. CNeuroMax aims to:
 
-CNeuroMax is a framework for large-scale training of machine learning models
-(Deep Learning + Neuroevolution) with an emphasis on easy deployment in
-high-performance computing environments (HPC). CNeuroMax aims to:
+**1. Accelerate machine learning processes:**
+* Hyperparameter optimization with [Orion](https://github.com/Epistimio/orion)'s
+[Hydra Sweeper plugin](https://github.com/Epistimio/hydra_orion_sweeper).
+* SLURM job definition, queuing and monitoring with
+[Submitit](https://github.com/facebookincubator/submitit)'s
+[Hydra Launcher plugin](https://hydra.cc/docs/plugins/submitit_launcher/).
+* [Docker](https://www.docker.com/) / [Podman](https://podman.io/) /
+[Apptainer](https://apptainer.org/) environment containerization for both
+regular & SLURM-based execution.
+* SLURM login-node [Apptainer](https://apptainer.org/)-backed Python commands
+to launch training jobs.
 
-1. **Facilitate the configuration of complex models and training runs through
-   tools like:** Hydra, Hydra-Zen, Lightning etc.
+**2. Automate workspace & coding processes:**
+* Package upgrades through
+[Renovate](https://github.com/renovatebot/renovate).
+* Docstring documentation auto-generation with [Sphinx AutoAPI](https://github.com/readthedocs/sphinx-autoapi).
+* Pre-commit formatting & linting hooks with
+[pre-commit](https://pre-commit.com/).
+* Documentation/Docker image validation/deployment, formatting, linting,
+type-checking & unit tests upon contribution to the ``main`` branch with
+[GitHub Actions](https://github.com/features/actions).
 
-2. **Automate much of the process of deployment in a high-performance computing
-   environment:** creating SLURM scripts, monitoring SLURM jobs, setting up
-   virtual environments, upgrading packages, tuning hyperparameters, etc.
+**3. Reduce code boilerplate with:**
+* [Hydra](https://github.com/facebookresearch/hydra) for task/experiment
+configuration.
+* [Hydra-zen](https://github.com/mit-ll-responsible-ai/hydra-zen) for
+[Hydra](https://github.com/facebookresearch/hydra) structured configuration
+management.
+* [Lightning](https://github.com/Lightning-AI/pytorch-lightning) for
+[PyTorch](https://github.com/pytorch/pytorch) code.
 
-3. **Provide a space for researchers to share their code and experiment
-   results:** a central repository with a common solid and well-tested
-   object-oriented structure for Lightning Modules, subdirectories for each
-   experiment, Weights & Biases working both locally and on SLURM with support
-   for team-shared logging etc.
+**4. Smoothen researcher collaboration through:**
+* An object-oriented code structure for code sharing & reusability.
+* A mono-repository workspace task/experiment-specific subdirectories.
+* A [Weights & Biases](https://wandb.ai/site) team for shared logging.
 
-4. **Offer optional tools to strengthen code quality and reproducibility:**
-   code linting (Ruff) and formatting (Black), unit testing (pytest), static
-   (Mypy) & dynamic (Beartype) type checking that supports tensor shapes and
-   types (jaxtyping, nptyping), development containers (Dev Containers),
-   documentation auto-generation and auto-deployment, precommit hooks etc.
+**5. Facilitate high-quality and reproducible code by:**
+* Linting with [Ruff](https://github.com/astral-sh/ruff).
+* Formatting with [Black](https://github.com/psf/black).
+* Unit-testing with [pytest](https://github.com/pytest-dev/pytest).
+* Type-checking statically with [Mypy](https://github.com/python/mypy)
+& dynamically with [Beartype](https://github.com/beartype/beartype).
+* [PyTorch](https://github.com/pytorch/pytorch) tensor &
+[NumPy](https://github.com/numpy/numpy) array dtype & shape type hints
+through [jaxtyping](https://github.com/google/jaxtyping) and
+[nptyping](https://github.com/ramonhagenaars/nptyping) that are validatable
+with [Beartype](https://github.com/beartype/beartype).
+* Providing a common [Development Container](https://containers.dev/)
+recipe with the above features enabled + automatic documentation preview
+with [esbonio](https://github.com/swyddfa/esbonio) +
+[GitHub Copilot](https://github.com/features/copilot).
 
-<h2>Repository structure:</h1>
+**6. Smoothen up rough edges by providing:**
+* Extensive documentation on how to install/execute the code on local/remote
+& SLURM-based systems.
+* Unassuming guides on how to contribute to the codebase.
+* Tutorials on how to facilitate code transport across machines & prune
+unnecessary components for paper publication.
+* Offline [Weights & Biases](https://wandb.ai/site) support with
+[wandb-osh](https://github.com/klieret/wandb-offline-sync-hook).
+
+<h2>High-level repository tree:</h2>
 
 ```
 cneuromax/
@@ -103,12 +144,14 @@ cneuromax/
 ├─ .gitignore                <-- Files to not track with Git/GitHub
 ├─ .pre-commit-config.yaml   <-- Pre-"git commit" actions config (format, lint, etc)
 ├─ .yamllint.yaml            <-- YAML files config
-├─ Containerfile             <-- To build the Docker image
+├─ Dockerfile             <-- To build the Docker image
 ├─ LICENSE                   <-- MIT License file
 ├─ README.md                 <-- Repository description file
 ├─ pyproject.toml            <-- Python code & dependencies config
 └─ renovate.json             <-- Renovate Bot config (keeps dependencies up-to-date)
 ```
+
+<h2>Additional information:</h1>
 
 CNeuroMax is developed in the context of the
 [Courtois Project on Neuronal Modelling](https://cneuromod.ca), also known as

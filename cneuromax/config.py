@@ -1,4 +1,4 @@
-"""Root :mod:`hydra-core` config, its task extensions & validation."""
+"""Root :mod:`hydra-core` config & utilities."""
 
 import logging
 from dataclasses import dataclass
@@ -27,18 +27,17 @@ class BaseHydraConfig:
     data_dir: An[str, not_empty()] = "${run_dir}/../"
 
 
-def pre_process_base_config(dict_config: DictConfig) -> None:
-    """Pre-processes config from :func:`hydra.main` before resolution.
+def pre_process_base_config(config: DictConfig) -> None:
+    """Validates raw task config before it is made structured.
 
     Makes sure that the ``run_dir`` does not already exist. If it does,
     it loops through ``{run_dir}_1``, ``{run_dir}_2``, etc. until it
     finds a directory that does not exist.
 
     Args:
-        dict_config: The raw config retrieved through the\
-            :func:`hydra.main` decorator.
+        config: The raw task config.
     """
-    run_dir = dict_config.run_dir
+    run_dir = config.run_dir
     path = Path(run_dir)
     if path.exists():
         i = 1
@@ -55,31 +54,31 @@ def pre_process_base_config(dict_config: DictConfig) -> None:
 T = TypeVar("T", bound=BaseHydraConfig)
 
 
-def process_config(dict_config: DictConfig, structured_config: type[T]) -> T:
-    """Turns config from :func:`hydra.main` into a structured config.
+def process_config(config: DictConfig, structured_config_class: type[T]) -> T:
+    """Turns the raw task config into a structured config.
 
     Args:
-        dict_config: See\
-            :paramref:`pre_process_base_config.dict_config`.
-        structured_config: The dataclass to instantiate from the\
+        config: See :paramref:`pre_process_base_config.config`.
+        structured_config_class: The structured config class to turn\
+            the raw config into.
 
     Returns:
-        The processed Hydra config.
+        The processed structured Hydra config.
     """
-    OmegaConf.resolve(dict_config)
-    OmegaConf.set_struct(dict_config, value=True)
-    config = OmegaConf.to_object(dict_config)
-    if not isinstance(config, structured_config):
+    OmegaConf.resolve(config)
+    OmegaConf.set_struct(config, value=True)
+    config = OmegaConf.to_object(config)
+    if not isinstance(config, structured_config_class):
         error_msg = (
-            f"The config must be an instance of {structured_config}, not "
-            f"{type(config)}."
+            f"The config must be an instance of {structured_config_class}"
+            f", not{type(config)}."
         )
         raise TypeError(error_msg)
     return config
 
 
 def post_process_base_config(config: BaseHydraConfig) -> None:
-    """Post-processes the :mod:`hydra-core` config after it is resolved.
+    """Validates the structured task config.
 
     Creates the run directory if it does not exist.
 

@@ -17,10 +17,10 @@ class HybridFittingHydraConfig(BaseFittingHydraConfig):
 
 
 def pre_process_hybrid_fitting_config(config: DictConfig) -> None:
-    """Pre-processes config from :func:`hydra.main` before resolution.
+    """Validates raw task config before it is made structured.
 
     Args:
-        config: The not yet processed :mod:`hydra-core` config.
+        config: The raw task config.
 
     """
     pre_process_base_fitting_config(config)

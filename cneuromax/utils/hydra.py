@@ -48,11 +48,11 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
     )
 
 
-fs_builds = make_custom_builds_fn(
+fs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=True,
     hydra_convert="partial",
 )
-pfs_builds = make_custom_builds_fn(
+pfs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     zen_partial=True,
     populate_full_signature=True,
     hydra_convert="partial",

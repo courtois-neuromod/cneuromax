@@ -27,5 +27,5 @@ On a Slurm cluster
     module load apptainer && apptainer build ${SCRATCH}/cneuromax.sif \
         docker://cneuromod/cneuromax:latest
 
-Make sure to re-run this command whenever you modify the Containerfile
+Make sure to re-run this command whenever you modify the Dockerfile
 and want to make use of the latest changes.

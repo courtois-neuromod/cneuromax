@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------------#
-# This Containerfile (a.k.a. Dockerfile) is used to build the Docker image
+# This Dockerfile (a.k.a. Dockerfile) is used to build the Docker image
 # (which can turn into an Apptainer image) shared by all CNeuroMax projects.
 # It installs all of the dependencies but does not install CNeuroMax itself,
 # for development purposes.

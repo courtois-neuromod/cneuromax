@@ -283,6 +283,6 @@ possible, you can delete the following:
 - Any non-relevant folder inside ``cneuromax/task/``
 - The ``docs/`` folder
 - The ``LICENSE`` file
-- The ``Containerfile`` file
+- The ``Dockerfile`` file
 - Most of the contents of the ``README.md`` file
 - The ``renovate.json`` file
