@@ -35,7 +35,7 @@ autoapi_options = [
     "special-members",
     "imported-members",
 ]
-autoapi_root = "technical/api"
+autoapi_template_dir = "_autoapi_templates"
 autoapi_type = "python"
 html_theme = "furo"
 html_title = "CNeuroMax"

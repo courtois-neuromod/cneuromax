@@ -21,35 +21,13 @@
 
 <h2>Overview</h2>
 
-CNeuroMax is a machine learning
-([Deep Learning](https://en.wikipedia.org/wiki/Deep_learning) +
+CNeuroMax is a workspace for machine learning
+(Deep Learning +
 [Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution))
-and serving ([Lightning Apps](https://lightning.ai/docs/app/stable/))
-workspace. CNeuroMax aims to:
+and serving (with [Lightning Apps](https://lightning.ai/docs/app/stable/)).
+CNeuroMax aims to:
 
-**1. Accelerate machine learning processes:**
-* Hyperparameter optimization with [Orion](https://github.com/Epistimio/orion)'s
-[Hydra Sweeper plugin](https://github.com/Epistimio/hydra_orion_sweeper).
-* SLURM job definition, queuing and monitoring with
-[Submitit](https://github.com/facebookincubator/submitit)'s
-[Hydra Launcher plugin](https://hydra.cc/docs/plugins/submitit_launcher/).
-* [Docker](https://www.docker.com/) / [Podman](https://podman.io/) /
-[Apptainer](https://apptainer.org/) environment containerization for both
-regular & SLURM-based execution.
-* SLURM login-node [Apptainer](https://apptainer.org/)-backed Python commands
-to launch training jobs.
-
-**2. Automate workspace & coding processes:**
-* Package upgrades through
-[Renovate](https://github.com/renovatebot/renovate).
-* Docstring documentation auto-generation with [Sphinx AutoAPI](https://github.com/readthedocs/sphinx-autoapi).
-* Pre-commit formatting & linting hooks with
-[pre-commit](https://pre-commit.com/).
-* Documentation/Docker image validation/deployment, formatting, linting,
-type-checking & unit tests upon contribution to the ``main`` branch with
-[GitHub Actions](https://github.com/features/actions).
-
-**3. Reduce code boilerplate with:**
+**1. Reduce code & configuration boilerplate with:**
 * [Hydra](https://github.com/facebookresearch/hydra) for task/experiment
 configuration.
 * [Hydra-zen](https://github.com/mit-ll-responsible-ai/hydra-zen) for
@@ -58,33 +36,58 @@ management.
 * [Lightning](https://github.com/Lightning-AI/pytorch-lightning) for
 [PyTorch](https://github.com/pytorch/pytorch) code.
 
-**4. Smoothen researcher collaboration through:**
-* An object-oriented code structure for code sharing & reusability.
-* A mono-repository workspace task/experiment-specific subdirectories.
-* A [Weights & Biases](https://wandb.ai/site) team for shared logging.
+**2. Simplify machine learning workflows:**
+* Hyperparameter optimization with [Orion](https://github.com/Epistimio/orion)
+through its
+[Hydra Sweeper plugin](https://github.com/Epistimio/hydra_orion_sweeper).
+* SLURM job definition, queuing and monitoring with
+[Submitit](https://github.com/facebookincubator/submitit) through its
+[Hydra Launcher plugin](https://hydra.cc/docs/plugins/submitit_launcher/).
+* [Docker](https://www.docker.com/) / [Apptainer](https://apptainer.org/)
+environment containerization for both regular & SLURM-based execution.
+* Transition from regular execution to SLURM-based execution by only swapping
+container technology and as little as a single
+[Hydra](https://github.com/facebookresearch/hydra)
+configuration field.
 
-**5. Facilitate high-quality and reproducible code by:**
-* Linting with [Ruff](https://github.com/astral-sh/ruff).
-* Formatting with [Black](https://github.com/psf/black).
-* Unit-testing with [pytest](https://github.com/pytest-dev/pytest).
-* Type-checking statically with [Mypy](https://github.com/python/mypy)
-& dynamically with [Beartype](https://github.com/beartype/beartype).
-* [PyTorch](https://github.com/pytorch/pytorch) tensor &
-[NumPy](https://github.com/numpy/numpy) array dtype & shape type hints
-through [jaxtyping](https://github.com/google/jaxtyping) and
-[nptyping](https://github.com/ramonhagenaars/nptyping) that are validatable
+**3. Automate workspace & coding processes:**
+* Package upgrades through
+[Renovate](https://github.com/renovatebot/renovate).
+* Docstring documentation generation with
+[Sphinx AutoAPI](https://github.com/readthedocs/sphinx-autoapi).
+* Pre-commit formatting & linting hooks with
+[pre-commit](https://pre-commit.com/).
+* Documentation/Docker image validation/deployment, formatting, linting,
+type-checking & unit tests upon contribution to the ``main`` branch using
+[GitHub Actions](https://github.com/features/actions).
+
+**4. Facilitate researcher collaboration through:**
+* An object-oriented structure for code sharing & reusability.
+* A mono-repository workspace with task/experiment-specific subdirectories.
+* Shared logging with a [Weights & Biases](https://wandb.ai/site) team space.
+
+**5. Promote high-quality and reproducible code by:**
+* Linting with [Ruff](https://github.com/astral-sh/ruff),
+formatting with [Black](https://github.com/psf/black),
+unit-testing with [pytest](https://github.com/pytest-dev/pytest).
+* Type-checking with [Mypy](https://github.com/python/mypy) (static)
+& [Beartype](https://github.com/beartype/beartype) (dynamic).
+* DType & Shape type hinting for [PyTorch](https://github.com/pytorch/pytorch)
+tensors using [jaxtyping](https://github.com/google/jaxtyping) &
+[NumPy](https://github.com/numpy/numpy) arrays using
+[nptyping](https://github.com/ramonhagenaars/nptyping). Fully type checkable
 with [Beartype](https://github.com/beartype/beartype).
 * Providing a common [Development Container](https://containers.dev/)
-recipe with the above features enabled + automatic documentation preview
-with [esbonio](https://github.com/swyddfa/esbonio) +
+recipe with the above features enabled + documentation preview
+with [esbonio](https://github.com/swyddfa/esbonio) &
 [GitHub Copilot](https://github.com/features/copilot).
 
-**6. Smoothen up rough edges by providing:**
-* Extensive documentation on how to install/execute the code on local/remote
-& SLURM-based systems.
+**6. Smoothen rough edges by providing:**
+* Extensive documentation on how to install/execute on regular & SLURM-based
+systems.
 * Unassuming guides on how to contribute to the codebase.
-* Tutorials on how to facilitate code transport across machines & prune
-unnecessary components for paper publication.
+* Tutorials on i) how to facilitate code transport across machines &  ii) how
+to prune unrelated components of the library for paper publication.
 * Offline [Weights & Biases](https://wandb.ai/site) support with
 [wandb-osh](https://github.com/klieret/wandb-offline-sync-hook).
 

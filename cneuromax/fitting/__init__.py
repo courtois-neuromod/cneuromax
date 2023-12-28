@@ -7,7 +7,10 @@ from hydra_plugins.hydra_submitit_launcher.config import SlurmQueueConf
 
 from cneuromax.fitting.config import BaseFittingHydraConfig
 
-__all__ = ["store_base_fitting_configs"]
+__all__ = [
+    "store_base_fitting_configs",
+    "store_launcher_configs",
+]
 
 
 def store_base_fitting_configs(cs: ConfigStore) -> None:

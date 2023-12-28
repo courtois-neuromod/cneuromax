@@ -9,19 +9,19 @@ import numpy as np
 
 from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.utils.type import (
-    fitnesses_and_num_env_steps_batch_type,
-    generation_results_batch_type,
-    generation_results_type,
-    seeds_type,
+    Fitnesses_and_num_env_steps_batch_type,
+    Generation_results_batch_type,
+    Generation_results_type,
+    Seeds_type,
 )
 from cneuromax.utils.annotations import ge
 from cneuromax.utils.mpi import retrieve_mpi_variables
 
 
 def compute_generation_results(
-    generation_results: generation_results_type | None,
-    generation_results_batch: generation_results_batch_type,
-    fitnesses_and_num_env_steps_batch: fitnesses_and_num_env_steps_batch_type,
+    generation_results: Generation_results_type | None,
+    generation_results_batch: Generation_results_batch_type,
+    fitnesses_and_num_env_steps_batch: Fitnesses_and_num_env_steps_batch_type,
     agents_batch: list[list[BaseSingularAgent]],
     num_pops: An[int, ge(1)],
 ) -> None:
@@ -93,13 +93,13 @@ def compute_save_points(
 
 
 def compute_start_time_and_seeds(
-    generation_results: generation_results_type | None,
+    generation_results: Generation_results_type | None,
     curr_gen: An[int, ge(1)],
     num_pops: An[int, ge(1)],
     pop_size: An[int, ge(1)],
     *,
     pop_merge: bool,
-) -> tuple[float | None, seeds_type | None]:  # start_time, seeds
+) -> tuple[float | None, Seeds_type | None]:  # start_time, seeds
     """Compute the start time and seeds for the current generation.
 
     Args:
@@ -115,8 +115,8 @@ def compute_start_time_and_seeds(
             :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
-        * **start_time** - The start time for the current generation.
-        * **seeds** - The seeds for the current generation.
+        * The start time for the current generation.
+        * The seeds for the current generation.
     """
     comm, rank, size = retrieve_mpi_variables()
     np.random.seed(seed=curr_gen)
@@ -150,7 +150,7 @@ def compute_start_time_and_seeds(
 
 
 def compute_total_num_env_steps_and_process_fitnesses(
-    generation_results: generation_results_type | None,
+    generation_results: Generation_results_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
     curr_gen: An[int, ge(1)],
     start_time: float | None,

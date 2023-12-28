@@ -21,22 +21,31 @@ class BaseHydraConfig:
         data_dir: Path to the data directory. This directory is\
             typically shared between runs. It is used to store\
             datasets, pre-trained models, etc.
+        run_dir_exist_ok: Whether the run directory is allowed to\
+            already exist. If ``False`` and the run directory already\
+            exists, it will be renamed to ``{run_dir}_i``,\
+            where ``i`` is the smallest non-zero integer such that\
+            ``{run_dir}_i`` does not exist. Generally, do not modify\
+            this parameter unless you want to resume a run.
     """
 
     run_dir: An[str, not_empty()] = "data/untitled_run/"
     data_dir: An[str, not_empty()] = "${run_dir}/../"
+    run_dir_exist_ok: bool = False
 
 
 def pre_process_base_config(config: DictConfig) -> None:
     """Validates raw task config before it is made structured.
 
-    Makes sure that the ``run_dir`` does not already exist. If it does,
-    it loops through ``{run_dir}_1``, ``{run_dir}_2``, etc. until it
-    finds a directory that does not exist.
+    Makes sure that the ``run_dir`` does not already exist if
+    ``run_dir_exist_ok`` is ``False``. It loops through ``{run_dir}_1``,
+    ``{run_dir}_2``, etc until it finds a directory that does not exist.
 
     Args:
         config: The raw task config.
     """
+    if config.run_dir_exist_ok:
+        return
     run_dir = config.run_dir
     path = Path(run_dir)
     if path.exists():

@@ -15,6 +15,7 @@ __all__ = [
     "MNISTClassificationDataModule",
     "MNISTClassificationDataModuleConfig",
     "MNISTClassificationLitModule",
+    "store_configs",
 ]
 
 

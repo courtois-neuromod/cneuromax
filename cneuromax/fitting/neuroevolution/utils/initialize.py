@@ -17,10 +17,10 @@ from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionFittingHydraConfig,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
-    exchange_and_mutate_info_batch_type,
-    exchange_and_mutate_info_type,
-    generation_results_batch_type,
-    generation_results_type,
+    Exchange_and_mutate_info_batch_type,
+    Exchange_and_mutate_info_type,
+    Generation_results_batch_type,
+    Generation_results_type,
 )
 from cneuromax.utils.annotations import ge, le
 from cneuromax.utils.hydra import get_launcher_config
@@ -34,10 +34,10 @@ def initialize_common_variables(
     An[int, ge(1)],  # pop_size
     list[list[BaseSingularAgent]],  # agents_batch
     An[int, ge(1)],  # len_agents_batch
-    exchange_and_mutate_info_type | None,  # exchange_and_mutate_info
-    exchange_and_mutate_info_batch_type,  # exchange_and_mutate_info_batch
-    generation_results_type | None,  # generation_results
-    generation_results_batch_type,  # generation_results_batch
+    Exchange_and_mutate_info_type | None,  # exchange_and_mutate_info
+    Exchange_and_mutate_info_batch_type,  # exchange_and_mutate_info_batch
+    Generation_results_type | None,  # generation_results
+    Generation_results_batch_type,  # generation_results_batch
     An[int, ge(0)] | None,  # total_num_env_steps
 ]:
     """Initializes variables common to all execution modes.
@@ -49,13 +49,13 @@ def initialize_common_variables(
             :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
 
     Returns:
-        pop_size: Number of agents per population, computed from\
+        * (pop_size) Number of agents per population, computed from\
             :paramref:`agents_per_task` and Hydra launcher values\
             `nodes` and `tasks_per_node`.
-        len_agents_batch: The number of agents per population\
+        * (len_agents_batch) The number of agents per population\
             maintained by this process during a given generation.
-        exchange_and_mutate_info: An array maintained only by the\
-            primary process (secondary processes set this to\
+        * (exchange_and_mutate_info) An array maintained only by\
+            the primary process (secondary processes set this to\
             `None`) containing information for all processes on\
             how to exchange and mutate agents. Precisions on the 3rd\
             dimension: 0) The size of the agent when serialized, 1)\
@@ -63,22 +63,22 @@ def initialize_common_variables(
             agent, 2) Whether to send or receive the agent, 3) The\
             seed to randomize the mutation and evaluation of the\
             agent.
-        exchange_and_mutate_info_batch: A sub-array of\
+        * (exchange_and_mutate_info_batch) A sub-array of\
             :paramref:`exchange_and_mutate_info` maintained by this\
             process.
-        generation_results: An array maintained only by the primary\
-            process (secondary processes set this to `None`)\
+        * (generation_results) An array maintained only by the\
+            primary process (secondary processes set this to `None`)\
             containing several pieces of information about the\
             results of a given generation. Precisions on the 3rd\
             dimension: 0) Agent fitness, 1) Number of environment\
             steps taken by the agent during the evaluation, 2) Size\
             of the agent when serialized.
-        generation_results_batch: A sub-array of\
+        * (generation_results_batch) A sub-array of\
             :paramref:`generation_results` maintained by this\
             process.
-        total_num_env_steps: The total number of environment steps\
-            taken by all agents during the entire experiment. This\
-            variable is maintained only by the primary process\
+        * (total_num_env_steps) The total number of environment\
+            steps taken by all agents during the entire experiment.\
+            This variable is maintained only by the primary process\
             (secondary processes set this to `None`).
     """
     comm, rank, size = retrieve_mpi_variables()
@@ -137,7 +137,7 @@ def initialize_gpu_comm() -> MPI.Comm:
     evaluate them on the GPU.
 
     Returns:
-        ith_gpu_comm: A communicator for GPU work queueing.
+        A communicator for GPU work queueing.
     """
     comm, rank, size = retrieve_mpi_variables()
     launcher_config = get_launcher_config()
@@ -177,7 +177,7 @@ def initialize_agents(
             :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
-        agents_batch: A 2D list of agents maintained by this process.
+        A 2D list of agents maintained by this process.
     """
     agents_batch: list[list[BaseSingularAgent]] = []
     for _ in range(len_agents_batch):

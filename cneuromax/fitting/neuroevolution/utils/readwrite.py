@@ -8,8 +8,8 @@ from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
-    generation_results_batch_type,
-    generation_results_type,
+    Generation_results_batch_type,
+    Generation_results_type,
 )
 from cneuromax.utils.annotations import ge
 from cneuromax.utils.mpi import retrieve_mpi_variables
@@ -20,7 +20,7 @@ def load_state(
     len_agents_batch: An[int, ge(1)],
 ) -> tuple[
     list[list[BaseSingularAgent]],  # agents_batch
-    generation_results_type | None,  # generation_results
+    Generation_results_type | None,  # generation_results
     An[int, ge(0)] | None,  # total_num_env_steps
 ]:
     """Load a previous experiment state from disk.
@@ -32,12 +32,12 @@ def load_state(
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
 
     Returns:
-        agents_batch: See return value of ``agents_batch`` from\
+        * (agents_batch) See return value of ``agents_batch`` from\
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        generation_results: See return value of ``generation_results``\
-            from\
+        * (generation_results) See return value of\
+            ``generation_results`` from\
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        total_num_env_steps: See return value of\
+        * (total_num_env_steps) See return value of\
             ``total_num_env_steps`` from\
             :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
     """
@@ -50,7 +50,7 @@ def load_state(
         with path.open(mode="rb") as f:
             state = pickle.load(file=f)
         agents: list[list[BaseSingularAgent]] = state[0]
-        generation_results: generation_results_type = state[1]
+        generation_results: Generation_results_type = state[1]
         total_num_env_steps: int = state[2]
         batched_agents: list[list[list[BaseSingularAgent]]] = [
             agents[i * len_agents_batch : (i + 1) * len_agents_batch]
@@ -69,7 +69,7 @@ def load_state(
 
 def save_state(
     agents_batch: list[list[BaseSingularAgent]],
-    generation_results: generation_results_batch_type | None,
+    generation_results: Generation_results_batch_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
     curr_gen: An[int, ge(1)],
 ) -> None:

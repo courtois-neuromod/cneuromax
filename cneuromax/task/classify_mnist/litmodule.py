@@ -13,7 +13,16 @@ from cneuromax.fitting.deeplearning.litmodule.classification import (
 
 
 class MNISTClassificationLitModule(BaseClassificationLitModule):
-    """MNIST classification Lightning Module."""
+    """MNIST Classification :mod:`lightning` Module.
+
+    Args:
+        nnmodule: See\
+            :paramref:`~.BaseClassificationLitModule.nnmodule`.
+        optimizer: See\
+            :paramref:`~.BaseClassificationLitModule.optimizer`.
+        scheduler: See\
+            :paramref:`~.BaseClassificationLitModule.scheduler`.
+    """
 
     def __init__(
         self: "MNISTClassificationLitModule",
@@ -21,16 +30,6 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
-        """Calls parent constructor.
-
-        Args:
-            nnmodule: See\
-                :paramref:`~.BaseClassificationLitModule.nnmodule`.
-            optimizer: See\
-                :paramref:`~.BaseClassificationLitModule.optimizer`.
-            scheduler: See\
-                :paramref:`~.BaseClassificationLitModule.scheduler`.
-        """
         super().__init__(
             BaseClassificationLitModuleConfig(num_classes=10),
             nnmodule,

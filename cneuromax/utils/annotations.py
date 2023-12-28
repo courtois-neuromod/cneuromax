@@ -41,7 +41,7 @@ def one_of(*elements: object) -> BeartypeValidator:
     """Makes sure the value is one of the input arguments.
 
     Used to replace :class:`typing.Literal` which is not supported by
-    :mod:`omegaconf`.
+    :mod:`omegaconf`-based configs.
 
     Args:
         elements: The objects to compare against.
@@ -59,7 +59,7 @@ def one_of(*elements: object) -> BeartypeValidator:
 
 
 def ge(val: float) -> BeartypeValidator:
-    """Makes sure the input is greater of equal than `val`.
+    """Makes sure the input is greater of equal than ``val``.
 
     Args:
         val: The value to compare against.
@@ -77,7 +77,7 @@ def ge(val: float) -> BeartypeValidator:
 
 
 def gt(val: float) -> BeartypeValidator:
-    """Makes sure the input is greater than `val`.
+    """Makes sure the input is greater than ``val``.
 
     Args:
         val: The value to compare against.
@@ -95,7 +95,7 @@ def gt(val: float) -> BeartypeValidator:
 
 
 def le(val: float) -> BeartypeValidator:
-    """Makes sure the input is less or equal than `val`.
+    """Makes sure the input is less or equal than ``val``.
 
     Args:
         val: The value to compare against.
@@ -113,7 +113,7 @@ def le(val: float) -> BeartypeValidator:
 
 
 def lt(val: float) -> BeartypeValidator:
-    """Makes sure the input is less than `val`.
+    """Makes sure the input is less than ``val``.
 
     Args:
         val: The value to compare against.

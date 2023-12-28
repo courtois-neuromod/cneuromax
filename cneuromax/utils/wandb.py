@@ -8,7 +8,7 @@ import wandb
 
 
 def login_wandb() -> None:
-    """Logs in to W&B using the key stored in `WANDB_KEY.txt`."""
+    """Logs in to W&B using the key stored in ``WANDB_KEY.txt``."""
     wandb_key_path = Path(
         str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
     )

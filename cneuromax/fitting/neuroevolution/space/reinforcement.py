@@ -49,7 +49,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             curr_gen: Current generation.
 
         Returns:
-            np.ndarray: The initial environment observation.
+            The initial environment observation.
         """
         if self.agent.config.env_transfer:
             if curr_gen == 1:
@@ -75,7 +75,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             curr_gen: Current generation.
 
         Returns:
-            np.ndarray: A new environment observation (np.ndarray).
+            A new environment observation (np.ndarray).
         """
         if self.agent.config.env_transfer:
             if self.config.wandb_entity:

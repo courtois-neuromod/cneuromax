@@ -13,9 +13,9 @@ def retrieve_mpi_variables() -> (
     """Retrieves MPI variables from the MPI runtime.
 
     Returns:
-        comm: The MPI communicator.
-        rank: The rank of the current process.
-        size: The total number of processes.
+        * (comm) The MPI communicator.
+        * (rank) The rank of the current process.
+        * (size) The total number of processes.
     """
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()

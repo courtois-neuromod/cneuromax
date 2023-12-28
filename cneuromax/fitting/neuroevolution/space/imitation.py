@@ -34,7 +34,7 @@ class BaseImitationTarget(metaclass=ABCMeta):
         Args:
             x: Input value.
         Returns:
-            Any: Output value.
+            The output value.
         """
         raise NotImplementedError
 
@@ -74,7 +74,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         Args:
             curr_gen: Current generation.
         Returns:
-            np.ndarray: The initial environment observation.
+            The initial environment observation.
         """
         if self.discriminator.config.env_transfer:
             if curr_gen == 0:
@@ -113,7 +113,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         Args:
             curr_gen: Current generation.
         Returns:
-            np.ndarray: A new environment observation (np.ndarray).
+            A new environment observation (np.ndarray).
         """
         if self.generator == self.curr_actor:
             self.generator.reset()

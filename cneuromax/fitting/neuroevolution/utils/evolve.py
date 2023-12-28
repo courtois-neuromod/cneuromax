@@ -15,8 +15,8 @@ from cneuromax.fitting.neuroevolution.agent.singular import (
 )
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
 from cneuromax.fitting.neuroevolution.utils.type import (
-    exchange_and_mutate_info_batch_type,
-    fitnesses_and_num_env_steps_batch_type,
+    Exchange_and_mutate_info_batch_type,
+    Fitnesses_and_num_env_steps_batch_type,
 )
 from cneuromax.utils.annotations import ge
 from cneuromax.utils.mpi import retrieve_mpi_variables
@@ -24,7 +24,7 @@ from cneuromax.utils.mpi import retrieve_mpi_variables
 
 def run_mutation(
     agents_batch: list[list[BaseSingularAgent]],
-    exchange_and_mutate_info_batch: exchange_and_mutate_info_batch_type,
+    exchange_and_mutate_info_batch: Exchange_and_mutate_info_batch_type,
     num_pops: int,
 ) -> None:
     """Mutate all agents maintained by this process.
@@ -50,7 +50,7 @@ def run_evaluation_cpu(
     space: BaseSpace,
     curr_gen: An[int, ge(1)],
 ) -> (
-    fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
+    Fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
 ):
     """Evaluate all agents maintained by this process.
 
@@ -61,8 +61,7 @@ def run_evaluation_cpu(
         curr_gen: Current generation number.
 
     Returns:
-        fitnesses_and_num_env_steps_batch: The output of\
-            agent evaluation by this process. See\
+        The output of agent evaluation by this process. See\
             :meth:`~.BaseSpace.evaluate`.
     """
     fitnesses_and_num_env_steps_batch = np.zeros(
@@ -85,7 +84,7 @@ def run_evaluation_gpu(
     *,
     transfer: bool,
 ) -> (
-    fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
+    Fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
 ):
     """Evaluate all agents maintained by this process.
 
@@ -104,8 +103,7 @@ def run_evaluation_gpu(
             is `True`.
 
     Returns:
-        fitnesses_and_num_env_steps_batch: The output of\
-            agent evaluation by this process. See\
+        The output of agent evaluation by this process. See\
             :meth:`~.BaseSpace.evaluate`.
     """
     comm, rank, size = retrieve_mpi_variables()

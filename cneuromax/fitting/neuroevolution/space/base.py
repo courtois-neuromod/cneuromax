@@ -42,11 +42,6 @@ class BaseSpace(metaclass=ABCMeta):
     """
 
     def __init__(self: "BaseSpace", config: BaseSpaceConfig) -> None:
-        """.
-
-        Args:
-            config: .
-        """
         self.config = config
 
     @property
@@ -91,6 +86,5 @@ class BaseSpace(metaclass=ABCMeta):
             curr_gen: Current generation.
 
         Returns:
-            The evaluation information: fitnesses and number of steps
-                ran.
+            The fitnesses and number of steps ran.
         """

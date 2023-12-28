@@ -21,7 +21,11 @@ from cneuromax.utils.hydra import fs_builds, pfs_builds
 __all__ = [
     "DeepLearningFitter",
     "DeepLearningFitterHydraConfig",
-    "store_deep_learning_configs",
+    "store_deep_learning_fitting_configs",
+    "store_logger_configs",
+    "store_optimizer_configs",
+    "store_scheduler_configs",
+    "store_trainer_configs",
 ]
 
 

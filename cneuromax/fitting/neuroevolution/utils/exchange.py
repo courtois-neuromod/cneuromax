@@ -9,10 +9,10 @@ from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
-    exchange_and_mutate_info_batch_type,
-    exchange_and_mutate_info_type,
-    generation_results_type,
-    seeds_type,
+    Exchange_and_mutate_info_batch_type,
+    Exchange_and_mutate_info_type,
+    Generation_results_type,
+    Seeds_type,
 )
 from cneuromax.utils.annotations import ge, le
 from cneuromax.utils.mpi import retrieve_mpi_variables
@@ -22,7 +22,7 @@ def exchange_agents(
     num_pops: An[int, ge(1), le(2)],
     pop_size: An[int, ge(1)],
     agents_batch: list[list[BaseSingularAgent]],
-    exchange_and_mutate_info_batch: exchange_and_mutate_info_batch_type,
+    exchange_and_mutate_info_batch: Exchange_and_mutate_info_batch_type,
 ) -> None:
     """Exchange agents between processes.
 
@@ -92,9 +92,9 @@ def exchange_agents(
 def update_exchange_and_mutate_info(
     num_pops: An[int, ge(1), le(2)],
     pop_size: An[int, ge(1)],
-    exchange_and_mutate_info: exchange_and_mutate_info_type | None,
-    generation_results: generation_results_type | None,
-    seeds: seeds_type | None,
+    exchange_and_mutate_info: Exchange_and_mutate_info_type | None,
+    generation_results: Generation_results_type | None,
+    seeds: Seeds_type | None,
 ) -> None:
     """Update the exchange and mutate information.
 
