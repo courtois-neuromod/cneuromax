@@ -1,1 +1,3 @@
-"""Documentation for the docs package."""
+"""Documentation."""
+
+pass

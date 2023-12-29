@@ -11,3 +11,10 @@ Contents
    Installation
    Execution
    Contribution
+
+.. autosummary::
+   :toctree: _autosummary
+   :template: module.rst
+   :recursive:
+
+   cneuromax

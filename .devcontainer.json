@@ -14,10 +14,23 @@
           "matangover.mypy"
         ],
         "settings": {
-          "ruff.lint.arg": [
+          "black-formatter.args": [
               "--config=pyproject.toml"
           ],
-          "black-formatter.args": [
+          "esbonio.server.hideSphinxOutput": true,
+          "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build/html",
+          "esbonio.sphinx.confDir": "${workspaceFolder}/docs/",
+          "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/",
+          "files.insertFinalNewline": true,
+          "files.trimTrailingWhitespace": true,
+          "git.allowNoVerifyCommit": true,
+          "mypy.configFile": "pyproject.toml",
+          "python.analysis.ignore": [
+              "/**"
+          ],
+          "restructuredtext.linter.doc8.executablePath": "/usr/local/bin/doc8",
+          "restructuredtext.syntaxHighlighting.disabled": true,
+          "ruff.lint.arg": [
               "--config=pyproject.toml"
           ],
           "[python]": {
@@ -26,19 +39,7 @@
               "editor.codeActionsOnSave": {
                   "source.organizeImports": true
               }
-          },
-          "mypy.configFile": "pyproject.toml",
-          "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build/html",
-          "esbonio.sphinx.confDir": "${workspaceFolder}/docs/",
-          "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/",
-          "restructuredtext.linter.doc8.executablePath": "/usr/local/bin/doc8",
-          "restructuredtext.syntaxHighlighting.disabled": true,
-          "files.insertFinalNewline": true,
-          "files.trimTrailingWhitespace": true,
-          "python.analysis.ignore": [
-              "/**"
-          ],
-          "git.allowNoVerifyCommit": true
+          }
         }
       }
     },

@@ -48,7 +48,7 @@ def store_logger_configs(cs: ConfigStore) -> None:
     Config names: ``wandb``, ``wandb_simexp``.
 
     Args:
-        cs: See :paramref:`~cneuromax.__init__.store_task_configs.cs`.
+        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
     """
     base_args = {
         "name": MISSING,
@@ -74,7 +74,7 @@ def store_optimizer_configs(cs: ConfigStore) -> None:
     Config names: ``adam``, ``adamw``, ``sgd``.
 
     Args:
-        cs: See :paramref:`~cneuromax.__init__.store_task_configs.cs`.
+        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
     """
     cs.store(group="litmodule/optimizer", name="adam", node=pfs_builds(Adam))
     cs.store(group="litmodule/optimizer", name="adamw", node=pfs_builds(AdamW))
@@ -87,7 +87,7 @@ def store_scheduler_configs(cs: ConfigStore) -> None:
     Config names: ``constant``, ``linear_warmup``.
 
     Args:
-        cs: See :paramref:`~cneuromax.__init__.store_task_configs.cs`.
+        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
     """
     cs.store(
         group="litmodule/scheduler",
@@ -107,7 +107,7 @@ def store_trainer_configs(cs: ConfigStore) -> None:
     Config name: ``base``.
 
     Args:
-        cs: See :paramref:`~cneuromax.__init__.store_task_configs.cs`.
+        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
     """
     cs.store(
         group="trainer",

@@ -1,5 +1,5 @@
 **/_build/
-**/autoapi/
+**/_autosummary/
 **/cneuromax.egg-info/
 **/.coverage
 **/data/
