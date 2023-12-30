@@ -17,17 +17,16 @@ from cneuromax.utils.wandb import login_wandb
 
 
 @hydra.main(config_name="config", config_path=".", version_base=None)
-def run(dict_config: DictConfig) -> None:
+def run(config: DictConfig) -> None:
     """Processes the :mod:`hydra-core` config & fits w/ Neuroevolution.
 
     Args:
-        dict_config: The raw config object created by the
-            :func:`hydra.main` decorator.
+        config: See :paramref:`~.pre_process_base_config.config`.
     """
-    pre_process_neuroevolution_fitting_config(dict_config)
+    pre_process_neuroevolution_fitting_config(config)
     config = process_config(
-        dict_config=dict_config,
-        structured_config=NeuroevolutionFittingHydraConfig,
+        config=config,
+        structured_config_class=NeuroevolutionFittingHydraConfig,
     )
     post_process_neuroevolution_fitting_config(config)
     fit(config)

@@ -16,12 +16,15 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
     "sphinx_copybutton",
     "sphinx_paramlinks",
 ]
-add_module_names = False
+autodoc_default_options = {"show-inheritance": True}
+autodoc_member_order = "bysource"
 autosummary_generate = True
-paramlinks_hyperlink_param = "name"
 html_theme = "furo"
 html_title = "CNeuroMax"
+paramlinks_hyperlink_param = "name"
 templates_path = ["_templates"]
+typehints_defaults = "comma"

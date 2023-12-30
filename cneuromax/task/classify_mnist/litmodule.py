@@ -1,4 +1,4 @@
-"""Lightning Module for MNIST classification."""
+""":mod:`lightning` Module for MNIST classification."""
 
 from functools import partial
 
@@ -16,12 +16,9 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
     """MNIST Classification :mod:`lightning` Module.
 
     Args:
-        nnmodule: See\
-            :paramref:`~.BaseClassificationLitModule.nnmodule`.
-        optimizer: See\
-            :paramref:`~.BaseClassificationLitModule.optimizer`.
-        scheduler: See\
-            :paramref:`~.BaseClassificationLitModule.scheduler`.
+        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
+        optimizer: See :paramref:`~.BaseLitModule.optimizer`.
+        scheduler: See :paramref:`~.BaseLitModule.scheduler`.
     """
 
     def __init__(

@@ -23,9 +23,9 @@ class BaseFittingHydraConfig(BaseHydraConfig):
         device: Computing device to use for large matrix operations.
         copy_data_commands: List of commands to execute to transfer the\
             training data to the :paramref:`~.BaseHydraConfig.data_dir`\
-            directory. This is useful when the training data is stored\
-            on a disk that is different from the one used by the\
-            training machine.
+            directory. This is useful when the training data is\
+            originally stored in a different location than\
+            :paramref:`~.BaseHydraConfig.data_dir`.
     """
 
     device: An[str, one_of("cpu", "gpu")] = "cpu"
@@ -38,7 +38,7 @@ def pre_process_base_fitting_config(config: DictConfig) -> None:
     Used for changing the computing device if CUDA is not available.
 
     Args:
-        config: The raw task config.
+        config: See :paramref:`.pre_process_base_config.config`.
     """
     pre_process_base_config(config)
     if not torch.cuda.is_available():
@@ -47,9 +47,9 @@ def pre_process_base_fitting_config(config: DictConfig) -> None:
 
 
 def post_process_base_fitting_config(config: BaseFittingHydraConfig) -> None:
-    """Post-processes the :mod:`hydra-core` config after it is resolved.
+    """Validates the structured task config.
 
     Args:
-        config: The processed :mod:`hydra-core` config.
+        config: See :paramref:`.post_process_base_config.config`.
     """
     post_process_base_config(config)

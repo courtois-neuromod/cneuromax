@@ -1,4 +1,42 @@
-"""Fitting with Deep Learning (+ :mod:`hydra-core` config storing)."""
+"""Fitting with Deep Learning.
+
+``__main__.py`` abridged code:
+
+.. highlight:: python
+.. code-block:: python
+
+    @hydra.main(config_name="config", config_path=".")
+    def run(config: DictConfig) -> None:
+        config = process(config)
+        fit(config)
+
+    if __name__ == "__main__":
+        run()
+
+``config.yaml``:
+
+.. highlight:: yaml
+.. code-block:: yaml
+
+    hydra:
+        job:
+            chdir: True
+        searchpath:
+            - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
+        run:
+            dir: ${run_dir}/
+        sweep:
+            dir: ${run_dir}/
+
+        defaults:
+            - deep_learning_fitting
+            - trainer: base
+            - litmodule/scheduler: constant
+            - litmodule/optimizer: adamw
+            - logger: wandb
+            - _self_
+            - task: null
+"""
 
 from hydra.core.config_store import ConfigStore
 from lightning.pytorch.loggers.wandb import WandbLogger

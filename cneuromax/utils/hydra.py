@@ -19,10 +19,10 @@ def get_path(clb: Callable[..., Any]) -> str:
     """Returns the path to the input callable.
 
     Args:
-        clb: The callable to get the path to.
+        clb: The callable to retrieve the path for.
 
     Returns:
-        The path to the input callable.
+        The full module path to :paramref:`clb`.
     """
     return f"{clb.__module__}.{clb.__name__}"
 
@@ -31,7 +31,7 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
     """Retrieves/validates this job's :mod:`hydra-core` launcher config.
 
     Returns:
-        The launcher config.
+        The :mod:`hydra-core` launcher config.
     """
     launcher_dict_config: DictConfig = HydraConfig.get().launcher
     launcher_container_config = OmegaConf.to_container(

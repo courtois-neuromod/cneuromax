@@ -75,7 +75,7 @@ def pre_process_neuroevolution_fitting_config(config: DictConfig) -> None:
 def post_process_neuroevolution_fitting_config(
     config: NeuroevolutionFittingHydraConfig,
 ) -> None:
-    """Post-processes the :mod:`hydra-core` config after it is resolved.
+    """Validates the structured task config.
 
     Args:
         config: The processed :mod:`hydra-core` config.

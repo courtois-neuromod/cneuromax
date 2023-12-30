@@ -1,4 +1,4 @@
-"""Fitting module (+ :mod:`hydra-core` config storing)."""
+"""Fitting module."""
 
 from typing import Any
 
@@ -14,7 +14,7 @@ __all__ = [
 
 
 def store_base_fitting_configs(cs: ConfigStore) -> None:
-    """Stores :mod:`hydra-core` fitting configs.
+    """Stores :mod:`hydra-core` root fitting configs.
 
     Args:
         cs: See :paramref:`~cneuromax.store_task_configs.cs`.

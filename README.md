@@ -21,11 +21,13 @@
 
 <h2>Overview</h2>
 
-CNeuroMax is a workspace for machine learning
-(Deep Learning +
-[Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution))
-and serving (with [Lightning Apps](https://lightning.ai/docs/app/stable/)).
-CNeuroMax aims to:
+CNeuroMax is a workspace for fitting
+([Deep Learning](https://en.wikipedia.org/wiki/Deep_learning) +
+[Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution) +
+[HPO](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
+w/ [Oríon](https://github.com/Epistimio/orion))
+and serving (with [Lightning Apps](https://lightning.ai/docs/app/stable/))
+AI/ML models. CNeuroMax aims to:
 
 **1. Reduce code & configuration boilerplate with:**
 * [Hydra](https://github.com/facebookresearch/hydra) for task/experiment
@@ -54,7 +56,7 @@ configuration field.
 * Package upgrades through
 [Renovate](https://github.com/renovatebot/renovate).
 * Docstring documentation generation with
-[Sphinx AutoAPI](https://github.com/readthedocs/sphinx-autoapi).
+[Sphinx](https://github.com/sphinx-doc/sphinx).
 * Pre-commit formatting & linting hooks with
 [pre-commit](https://pre-commit.com/).
 * Documentation/Docker image validation/deployment, formatting, linting,
@@ -82,7 +84,7 @@ recipe with the above features enabled + documentation preview
 with [esbonio](https://github.com/swyddfa/esbonio) &
 [GitHub Copilot](https://github.com/features/copilot).
 
-**6. Smoothen rough edges by providing:**
+**6. Smoothen up rough edges by providing:**
 * Extensive documentation on how to install/execute on regular & SLURM-based
 systems.
 * Unassuming guides on how to contribute to the codebase.

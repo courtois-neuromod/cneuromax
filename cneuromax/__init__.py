@@ -1,4 +1,4 @@
-""":mod:`cneuromax` codebase (+ store :mod:`hydra-core` task config)."""
+""":mod:`cneuromax` codebase."""
 
 import logging
 import sys
@@ -18,7 +18,7 @@ def store_task_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` task configurations.
 
     Parses the task config path from the script arguments, import
-    its ``store_configs`` function if it exists, and calls it.
+    its ``store_configs`` function and calls it.
 
     Args:
         cs: A singleton instance that manages the :mod:`hydra-core`\

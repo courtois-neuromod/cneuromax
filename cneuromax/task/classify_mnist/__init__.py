@@ -12,10 +12,10 @@ from cneuromax.task.classify_mnist.litmodule import (
 from cneuromax.utils.hydra import fs_builds
 
 __all__ = [
-    "MNISTClassificationDataModule",
-    "MNISTClassificationDataModuleConfig",
-    "MNISTClassificationLitModule",
     "store_configs",
+    "MNISTClassificationDataModuleConfig",
+    "MNISTClassificationDataModule",
+    "MNISTClassificationLitModule",
 ]
 
 

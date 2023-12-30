@@ -1,4 +1,4 @@
-"""Type annotations validator through :mod:`beartype`."""
+"""Type annotations validator using :mod:`beartype`."""
 
 from beartype.vale import Is
 from beartype.vale._core._valecore import BeartypeValidator
@@ -8,7 +8,8 @@ def not_empty() -> BeartypeValidator:
     """Makes sure the string is not empty.
 
     Returns:
-        The corresponding validator.
+        A :mod:`beartype` object that raises an exception if the\
+            annotated value does not satisfy the condition.
     """
 
     def _not_empty(x: object) -> bool:
@@ -20,13 +21,13 @@ def not_empty() -> BeartypeValidator:
 
 
 def equal(element: object) -> BeartypeValidator:
-    """Makes sure the value is equal to the input argument.
+    """Verifies that the annotated value is equal to the input argument.
 
     Args:
-        element: The object to compare against.
+        element: The object to compare the annotated value against.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _equal(x: object, element: object) -> bool:
@@ -38,16 +39,16 @@ def equal(element: object) -> BeartypeValidator:
 
 
 def one_of(*elements: object) -> BeartypeValidator:
-    """Makes sure the value is one of the input arguments.
+    """Verifies that the annotated value is one of the input arguments.
 
     Used to replace :class:`typing.Literal` which is not supported by
     :mod:`omegaconf`-based configs.
 
     Args:
-        elements: The objects to compare against.
+        elements: The objects to compare the annotated value against.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _one_of(x: object, elements: tuple[object, ...]) -> bool:
@@ -59,13 +60,13 @@ def one_of(*elements: object) -> BeartypeValidator:
 
 
 def ge(val: float) -> BeartypeValidator:
-    """Makes sure the input is greater of equal than ``val``.
+    """Verifies that the annotated value is ``> or =`` :paramref:`val`.
 
     Args:
-        val: The value to compare against.
+        val: The value to compare the annotated value against.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _ge(x: object, val: float) -> bool:
@@ -77,13 +78,13 @@ def ge(val: float) -> BeartypeValidator:
 
 
 def gt(val: float) -> BeartypeValidator:
-    """Makes sure the input is greater than ``val``.
+    """Verifies that the annotated value is ``>`` :paramref:`val`.
 
     Args:
-        val: The value to compare against.
+        val: See :paramref:`ge.val`.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _gt(x: object, val: float) -> bool:
@@ -95,13 +96,13 @@ def gt(val: float) -> BeartypeValidator:
 
 
 def le(val: float) -> BeartypeValidator:
-    """Makes sure the input is less or equal than ``val``.
+    """Verifies that the annotated value is ``< or =`` :paramref:`val`.
 
     Args:
-        val: The value to compare against.
+        val: See :paramref:`ge.val`.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _le(x: object, val: float) -> bool:
@@ -113,13 +114,13 @@ def le(val: float) -> BeartypeValidator:
 
 
 def lt(val: float) -> BeartypeValidator:
-    """Makes sure the input is less than ``val``.
+    """Verifies that the annotated value is ``<`` :paramref:`val`.
 
     Args:
-        val: The value to compare against.
+        val: See :paramref:`ge.val`.
 
     Returns:
-        The corresponding validator.
+        See return description of :func:`not_empty`.
     """
 
     def _lt(x: object, val: float) -> bool:

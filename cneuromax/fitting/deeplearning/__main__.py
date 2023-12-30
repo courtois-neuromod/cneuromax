@@ -15,17 +15,16 @@ from cneuromax.utils.wandb import login_wandb
 
 
 @hydra.main(config_name="config", config_path=".", version_base=None)
-def run(dict_config: DictConfig) -> None:
+def run(config: DictConfig) -> None:
     """Processes the :mod:`hydra-core` config and fits w/ Deep Learning.
 
     Args:
-        dict_config: The raw config object created by the
-            :func:`hydra.main` decorator.
+        config: See :paramref:`~.pre_process_base_config.config`.
     """
-    pre_process_deep_learning_fitting_config(dict_config)
+    pre_process_deep_learning_fitting_config(config)
     config = process_config(
-        dict_config=dict_config,
-        structured_config=DeepLearningFittingHydraConfig,
+        config=config,
+        structured_config_class=DeepLearningFittingHydraConfig,
     )
     post_process_deep_learning_fitting_config(config)
     fit(config)

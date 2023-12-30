@@ -1,4 +1,4 @@
-"""Datamodule & config for MNIST classification task."""
+""":mod:`lightning` DataModule + conf for MNIST classification task."""
 
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -16,7 +16,7 @@ from cneuromax.utils.annotations import ge, lt, one_of
 
 @dataclass(frozen=True)
 class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
-    """Configuration for :class:`MNISTClassificationDataModuleConfig`.
+    """Configuration for :class:`MNISTClassificationDataModule`.
 
     Args:
         val_percentage: Percentage of the training dataset to use for\
@@ -27,11 +27,10 @@ class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
 
 
 class MNISTClassificationDataModule(BaseDataModule):
-    """MNIST Classification :mod:`lightning` datamodule.
+    """MNIST Classification :mod:`lightning` DataModule.
 
     Args:
-        config: A :class:`MNISTClassificationDataModuleConfig`\
-            instance.
+        config: Instance configuration.
 
     Attributes:
         train_val_split (`tuple[float, float]`): The train/validation\

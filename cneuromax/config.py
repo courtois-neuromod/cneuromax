@@ -42,7 +42,8 @@ def pre_process_base_config(config: DictConfig) -> None:
     ``{run_dir}_2``, etc until it finds a directory that does not exist.
 
     Args:
-        config: The raw task config.
+        config: The "raw" config returned by the :mod:`hydra-core`\
+            :func:`main` decorator.
     """
     if config.run_dir_exist_ok:
         return
@@ -67,12 +68,12 @@ def process_config(config: DictConfig, structured_config_class: type[T]) -> T:
     """Turns the raw task config into a structured config.
 
     Args:
-        config: See :paramref:`pre_process_base_config.config`.
+        config: See :paramref:`~pre_process_base_config.config`.
         structured_config_class: The structured config class to turn\
             the raw config into.
 
     Returns:
-        The processed structured Hydra config.
+        See :paramref:`post_process_base_config.config`.
     """
     OmegaConf.resolve(config)
     OmegaConf.set_struct(config, value=True)
@@ -92,7 +93,7 @@ def post_process_base_config(config: BaseHydraConfig) -> None:
     Creates the run directory if it does not exist.
 
     Args:
-        config: The processed :mod:`hydra-core` config.
+        config: The structured :mod:`hydra-core` config.
     """
     path = Path(config.run_dir)
     if not path.exists():
