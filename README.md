@@ -106,7 +106,7 @@ cneuromax/
 │  │  │  ├─ nnmodule/        <-- PyTorch Modules
 │  │  │  ├─ utils/           <-- Deep Learning utilities
 │  │  │  ├─ __init__.py      <-- Stores Deep Learning Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.deeplearning`
+│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.deeplearning`
 │  │  │  ├─ config.py        <-- Deep Learning structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Deep Learning Hydra configs & settings
 │  │  │  └─ fit.py           <-- Deep Learning fitting function
@@ -122,14 +122,14 @@ cneuromax/
 │  │  │  ├─ space/           <-- Neuroevolution spaces (where agents get evaluated)
 │  │  │  ├─ utils/           <-- Neuroevolution utilities
 │  │  │  ├─ __init__.py      <-- Stores Neuroevolution Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.neuroevolution`
+│  │  │  ├─ __main__.py      <-- Entrypoint for calling `python cneuromax.fitting.neuroevolution`
 │  │  │  ├─ config.py        <-- Neuroevolution structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Neuroevolution Hydra configs & settings
 │  │  │  └─ fit.py           <-- Neuroevolution fitting function
 │  │  ├─ __init__.py         <-- Stores Fitting Hydra configs
 │  │  ├─ __main__.py         <-- Entrypoint when calling `python cneuromax.fitting`
 │  │  └─ config.py           <-- Base Structured Hydra fitting config & utilities
-│  ├─ serving/               <-- Contains the code to create applications (cozmo inference, etc)
+│  ├─ serving/               <-- Contains the code to create apps (cozmo inference, etc)
 │  ├─ task/                  <-- Contains the Deep Learning tasks
 │  │  │
 │  │  │                          ******************************************

@@ -73,7 +73,7 @@ def process_config(config: DictConfig, structured_config_class: type[T]) -> T:
             the raw config into.
 
     Returns:
-        See :paramref:`post_process_base_config.config`.
+        See :paramref:`~post_process_base_config.config`.
     """
     OmegaConf.resolve(config)
     OmegaConf.set_struct(config, value=True)

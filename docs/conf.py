@@ -3,6 +3,8 @@
 import sys
 from pathlib import Path
 
+from sphinx.application import Sphinx
+
 sys.path.insert(0, str(Path("..").resolve()))
 suppress_warnings = ["*"]
 project = "CNeuroMax"
@@ -23,8 +25,13 @@ extensions = [
 autodoc_default_options = {"show-inheritance": True}
 autodoc_member_order = "bysource"
 autosummary_generate = True
+html_static_path = ["_static"]
 html_theme = "furo"
 html_title = "CNeuroMax"
 paramlinks_hyperlink_param = "name"
 templates_path = ["_templates"]
 typehints_defaults = "comma"
+
+
+def setup(app: Sphinx) -> None:  # noqa: D103
+    app.add_css_file("paramlink_target_color.css")
