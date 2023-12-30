@@ -1,4 +1,4 @@
-""":class:`BaseDataModule` & its helper dataclasses."""
+""":class:`BaseDataModule` + its config & custom dataset class."""
 
 from abc import ABCMeta
 from dataclasses import dataclass
@@ -34,10 +34,8 @@ class BaseDataModuleConfig:
     """Holds :class:`BaseDataModule` config values.
 
     Args:
-        data_dir: See\
-            :paramref:`~cneuromax.config.BaseHydraConfig.data_dir`.
-        device: See\
-            :paramref:`~cneuromax.fitting.config.BaseFittingHydraConfig.device`.
+        data_dir: See :paramref:`~.BaseHydraConfig.data_dir`.
+        device: See :paramref:`~.BaseFittingHydraConfig.device`.
     """
 
     data_dir: An[str, not_empty()] = "${data_dir}"
@@ -47,12 +45,12 @@ class BaseDataModuleConfig:
 class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     """Root :mod:`~lightning.pytorch.LightningDataModule` subclass.
 
-    With ``stage`` being any of ``train``, ``val``, ``test`` or
+    With ``<stage>`` being any of ``train``, ``val``, ``test`` or
     ``predict``, subclasses need to properly define the
-    ``dataset.stage`` instance attribute(s) for each desired ``stage``.
+    ``dataset.<stage>`` instance attribute(s) for each desired stage.
 
     Args:
-        config: See :class:`BaseDataModuleConfig`.
+        config
 
     Attributes:
         config (:class:`BaseDataModuleConfig`)
@@ -62,15 +60,13 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             default if :paramref:`~BaseDataModuleConfig.device` is\
             ``"gpu"``).
         per_device_batch_size (``int``): Per-device number of samples\
-            to load per iteration. Default value (``1``) is later\
-            overwritten through function\
-            :func:`~.deeplearning.fit.set_batch_size_and_num_workers`.
+            to load per iteration. Temporary value (``1``) is\
+            overwritten in :func:`.set_batch_size_and_num_workers`.
         per_device_num_workers (``int``): Per-device number of CPU\
             processes to use for data loading (``0`` means that the\
             data will be loaded by each device's assigned CPU\
-            process). Default value (``0``) is later overwritten\
-            through function\
-            :func:`~.deeplearning.fit.set_batch_size_and_num_workers`.
+            process). Temporary value (``0``) is later overwritten\
+            in :func:`.set_batch_size_and_num_workers`.
     """
 
     def __init__(self: "BaseDataModule", config: BaseDataModuleConfig) -> None:
@@ -86,21 +82,24 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         self: "BaseDataModule",
         state_dict: dict[str, int],
     ) -> None:
-        """Loads saved ``per_device_batch_size`` & ``num_workers`` vals.
+        """Replace attribute values with :paramref:`state_dict` values.
 
         Args:
-            state_dict: Dictionary containing values for\
-                ``per_device_batch_size`` & ``num_workers``.
+            state_dict: Dictionary containing values to override\
+                :attr:`per_device_batch_size` &\
+                :attr:`per_device_num_workers`.
         """
         self.per_device_batch_size = state_dict["per_device_batch_size"]
         self.per_device_num_workers = state_dict["per_device_num_workers"]
 
     @final
     def state_dict(self: "BaseDataModule") -> dict[str, int]:
-        """Returns ``per_device_batch_size`` & ``num_workers`` attribs.
+        """Returns attribute values.
 
         Returns:
-            See :paramref:`~BaseDataModule.load_state_dict.state_dict`.
+            A new dictionary containing attribute values\
+                :attr:`per_device_batch_size` &\
+                :attr:`per_device_num_workers`.
         """
         return {
             "per_device_batch_size": self.per_device_batch_size,
@@ -117,7 +116,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         """Generic :class:`~torch.utils.data.DataLoader` factory method.
 
         Args:
-            dataset: The dataset to wrap with a\
+            dataset: The :mod:`torch` dataset to wrap with a\
                 :class:`~torch.utils.data.DataLoader`
             shuffle: Whether to shuffle the dataset when iterating\
                 over it.
@@ -141,7 +140,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
 
     @final
     def train_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls :meth:`x_dataloader` with ``dataset.train`` attribute.
+        """Calls :meth:`x_dataloader` with :attr:`dataset` ``.train``.
 
         Returns:
             A new training :class:`torch.utils.data.DataLoader`\
@@ -151,7 +150,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
 
     @final
     def val_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls :meth:`x_dataloader` with ``dataset.val`` attribute.
+        """Calls :meth:`x_dataloader` with :attr:`dataset` ``.val``.
 
         Returns:
             A new validation :class:`~torch.utils.data.DataLoader`\
@@ -161,7 +160,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls :meth:`x_dataloader` with ``dataset.test`` attribute.
+        """Calls :meth:`x_dataloader` with :attr:`dataset` ``.test``.
 
         Returns:
             A new testing :class:`~torch.utils.data.DataLoader`\
@@ -171,7 +170,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
 
     @final
     def predict_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls :meth:`x_dataloader` w/ ``dataset.predict`` attribute.
+        """Calls :meth:`x_dataloader` with :attr:`dataset` ``.predict``.
 
         Returns:
             A new prediction :class:`~torch.utils.data.DataLoader`\

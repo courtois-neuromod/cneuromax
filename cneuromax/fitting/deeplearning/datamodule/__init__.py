@@ -6,4 +6,4 @@ from cneuromax.fitting.deeplearning.datamodule.base import (
     StageDataset,
 )
 
-__all__ = ["BaseDataModule", "BaseDataModuleConfig", "StageDataset"]
+__all__ = ["StageDataset", "BaseDataModuleConfig", "BaseDataModule"]

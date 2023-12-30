@@ -16,14 +16,19 @@ collaborativity. The following instructions are meant for people who wish to
 contribute to the code base, either by fixing bugs, adding new features or
 improving the documentation.
 
+Regardless of whether you wish to contribute to the ``main`` branch or solely
+to your own branch, check out the ``classify_mnist`` `code folder
+<https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/task/classify_mnist>`_
+for a template of how to structure your code.
+
 Making sure the code doesn't break
 ----------------------------------
 
-The main branch is protected meaning that contributions happen through
+The ``main`` branch is protected meaning that contributions happen through
 pull requests rather than direct pushes.
 
 In order for any pull request to go through, it will need to pass a number of
-common and standard checks (using GitHub actions) that ensure that the code is
+common and standard checks (using GitHub Actions) that ensure that the code is
 of high quality and does not break any portion of the existing code base.
 
 .. note::
@@ -128,15 +133,16 @@ There are so far two small pain points:
 
 - The esbonio server will sometimes announce a build error (bottom right),
   which will prevent further documentation visualization. To fix this, you
-  should delete the contents of the ``docs/_build`` and ``docs/autoapi``
+  should delete the contents of the ``docs/_build`` and ``docs/_autosummary``
   folders (do not delete the folders themselves if you use Dropbox/Maestral)
   and restart the esbonio server (by its icon).
 
 GitHub Copilot is installed in the DevContainer. Simply discard the log-in
 notifications if you do not want to make use of it.
 You can run ``git``, ``pytest`` & ``mypy`` commands from the integrated
-terminal. However running experiments requires special docker flags, so you
-should run them from the terminal outside of the DevContainer.
+terminal. However running the library itself requires special Docker flags and
+should thus be ran from the terminal outside of VSCode (refere to the
+``Execution`` section).
 
 Git/GitHub workflow for contributing
 ------------------------------------
@@ -194,6 +200,39 @@ your local repository.
     git pull
     git branch -d <YOUR_BRANCH_NAME>
 
+Documenting your contribution
+-----------------------------
+
+.. note::
+
+    Make sure to not leave any of your ``__init__.py`` files empty else the
+    specific subpackage will not be documented.
+
+We use `sphinx.ext.autosummary
+<https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html>`_ to
+automatically generate documentation from `Google-style Python docstrings
+<https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`_.
+This webpage holds the API reference documentation for the ``main`` branch of
+the repository and is automatically updated upon each push.
+Take a look at `this Python file
+<https://github.com/courtois-neuromod/cneuromax/blob/main/cneuromax/fitting/deeplearning/datamodule/base.py>`_
+and its `corresponding documentation webpage
+<https://courtois-neuromod.github.io/cneuromax/cneuromax.fitting.deeplearning.datamodule.base.html>`_
+that showcase most of the available docstring commands available and their
+effects on the documentation page.
+
+.. note::
+
+    Document your ``__init__`` method arguments in the class docstring rather
+    than in the ``__init__`` docstring.
+
+Assuming that you are using the library's development Docker image in your
+editor, you can preview your changes to ``.rst`` by clicking the preview button
+on the top right of the editor. In general, you can preview your changes to all
+``.rst``, ``.py`` and ``README.md`` files after re-building the documentation
+by pressing the ``esbonio`` button on the bottom right of the editor and then
+opening the locally created ``.html`` files.
+
 Setting up Maestral/Dropbox to move code across machines
 -----------------------------------------------------------
 
@@ -249,7 +288,7 @@ all machines. On a machine with Dropbox, run:
     mkdir -p .mypy_cache/ .pytest_cache/ .ruff_cache/
     sudo attr -s com.dropbox.ignored -V 1 data/
     sudo attr -s com.dropbox.ignored -V 1 docs/_build/
-    sudo attr -s com.dropbox.ignored -V 1 docs/autoapi/
+    sudo attr -s com.dropbox.ignored -V 1 docs/_autosummary/
     sudo attr -s com.dropbox.ignored -V 1 .vscode/
     sudo attr -s com.dropbox.ignored -V 1 .coverage
     sudo attr -s com.dropbox.ignored -V 1 .mypy_cache/
@@ -282,7 +321,7 @@ possible, you can delete the following:
 - The ``cneuromax/serving/`` folder
 - Any non-relevant folder inside ``cneuromax/task/``
 - The ``docs/`` folder
-- The ``LICENSE`` file
 - The ``Dockerfile`` file
 - Most of the contents of the ``README.md`` file
 - The ``renovate.json`` file
+- The irrelevant dependencies in the ``pyproject.toml`` file

@@ -66,6 +66,7 @@ type-checking & unit tests upon contribution to the ``main`` branch using
 **4. Facilitate researcher collaboration through:**
 * An object-oriented structure for code sharing & reusability.
 * A mono-repository workspace with task/experiment-specific subdirectories.
+* A very informative & clear to navigate Python API reference.
 * Shared logging with a [Weights & Biases](https://wandb.ai/site) team space.
 
 **5. Promote high-quality and reproducible code by:**
@@ -97,7 +98,7 @@ to prune unrelated components of the library for paper publication.
 
 ```
 cneuromax/
-├─ .github/                  <-- Config files for GitHub automation (tests, containers, etc)
+├─ .github/                  <-- Config files for GitHub Actions (tests, containers, etc)
 ├─ cneuromax/                <-- Machine Learning code
 │  ├─ fitting/               <-- ML model fitting code
 │  │  ├─ deeplearning/       <-- Deep Learning code
@@ -112,7 +113,7 @@ cneuromax/
 │  │  │  └─ fit.py           <-- Deep Learning fitting function
 │  │  ├─ hybrid/             <-- Hybrid Deep Learning + Neuroevolution code
 │  │  │  ├─ __init__.py      <-- Stores Hybrid DL + NE Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint when calling `python cneuromax.fitting.hybrid`
+│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.hybrid`
 │  │  │  ├─ config.py        <-- Hybrid DL + NE structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Hybrid DL + NE Hydra configs & settings
 │  │  │  └─ fit.py           <-- Hybrid DL + NE fitting function
@@ -122,12 +123,12 @@ cneuromax/
 │  │  │  ├─ space/           <-- Neuroevolution spaces (where agents get evaluated)
 │  │  │  ├─ utils/           <-- Neuroevolution utilities
 │  │  │  ├─ __init__.py      <-- Stores Neuroevolution Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint for calling `python cneuromax.fitting.neuroevolution`
+│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.neuroevolution`
 │  │  │  ├─ config.py        <-- Neuroevolution structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Neuroevolution Hydra configs & settings
 │  │  │  └─ fit.py           <-- Neuroevolution fitting function
 │  │  ├─ __init__.py         <-- Stores Fitting Hydra configs
-│  │  ├─ __main__.py         <-- Entrypoint when calling `python cneuromax.fitting`
+│  │  ├─ __main__.py         <-- Entrypoint for `python cneuromax.fitting`
 │  │  └─ config.py           <-- Base Structured Hydra fitting config & utilities
 │  ├─ serving/               <-- Contains the code to create apps (cozmo inference, etc)
 │  ├─ task/                  <-- Contains the Deep Learning tasks
@@ -149,7 +150,7 @@ cneuromax/
 ├─ .gitignore                <-- Files to not track with Git/GitHub
 ├─ .pre-commit-config.yaml   <-- Pre-"git commit" actions config (format, lint, etc)
 ├─ .yamllint.yaml            <-- YAML files config
-├─ Dockerfile             <-- To build the Docker image
+├─ Dockerfile                <-- To build the Docker image
 ├─ LICENSE                   <-- MIT License file
 ├─ README.md                 <-- Repository description file
 ├─ pyproject.toml            <-- Python code & dependencies config

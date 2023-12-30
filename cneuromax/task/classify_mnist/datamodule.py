@@ -30,7 +30,7 @@ class MNISTClassificationDataModule(BaseDataModule):
     """MNIST Classification :mod:`lightning` DataModule.
 
     Args:
-        config: Instance configuration.
+        config
 
     Attributes:
         train_val_split (`tuple[float, float]`): The train/validation\
