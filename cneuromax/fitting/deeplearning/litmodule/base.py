@@ -15,10 +15,12 @@ from cneuromax.utils.annotations import one_of
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
-    """Root :class:`~lightning.pytorch.LightningModule` subclass.
+    """Root :mod:`lightning` ``LitModule``.
 
-    Subclasses need to implement the :meth:`step` method that inputs a
-    (tupled) batch and returns the loss value(s).
+    Subclasses need to implement the :meth:`step` method that inputs
+    both a tuple (``batch``) of :class:`~torch.Tensor` and string
+    (``stage``) while returning the loss value(s) also in the form of
+    a :class:`~torch.Tensor`.
 
     Example definition:
 
@@ -35,10 +37,23 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         ) -> Float[Tensor, " "]:
             ...
 
+    Warning:
+        ``batch`` and loss value(s) type hints in this class are not
+        rendered properly in the documentation due to an\
+        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\
+        Refer to the source code available next to the method\
+        signatures to find the correct types.
+
     Args:
-        nnmodule: The :mod:`torch` Module to wrap.
-        optimizer: The :mod:`torch` Optimizer to train with.
-        scheduler: The :mod:`torch` Scheduler to train with.
+        nnmodule: The :mod:`torch` ``nn.Module`` to be used by this\
+            instance.
+        optimizer: The :mod:`torch` ``Optimizer`` to be used by this\
+            instance. It is partial as an argument as the\
+            :paramref:`nnmodule` parameters are required for its\
+            initialization.
+        scheduler: The :mod:`torch` ``Scheduler`` to be used by this\
+            instance. It is partial as an argument as the\
+            :paramref:`optimizer` is required for its initialization.
 
     Attributes:
         nnmodule (:class:`torch.nn.Module`): See\
@@ -49,8 +64,8 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             :paramref:`~BaseLitModule.scheduler`.
 
     Raises:
-        :class:`NotImplementedError`: If :meth:`step` is not defined\
-            or not callable.
+        :class:`NotImplementedError`: If the :meth:`step` method is not\
+            defined or not callable.
     """
 
     def __init__(
@@ -83,8 +98,9 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         calls it and logs the loss value(s).
 
         Args:
-            batch: The input data batch.
-            stage: The current stage.
+            batch: The batched input data.
+            stage: The current stage (``train``, ``val``, ``test`` or\
+                ``predict``).
 
         Returns:
             The loss value(s).
@@ -105,7 +121,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
-            batch: See :paramrefBaseLitModule.stage_step.batch`.
+            batch: See :paramref:`~stage_step.batch`.
 
         Returns:
             The loss value(s).
@@ -127,7 +143,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
-            batch: See :paramref:`~BaseLitModule.stage_step.batch`.
+            batch: See :paramref:`~stage_step.batch`.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
 
@@ -146,7 +162,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
-            batch: See :paramref:`~BaseLitModule.stage_step.batch`.
+            batch: See :paramref:`~stage_step.batch`.
 
         Returns:
             The loss value(s).
@@ -157,7 +173,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
-        """Returns a dict w/ ``optimizer`` & ``scheduler`` attributes.
+        """Returns a dict with :attr:`optimizer` and :attr:`scheduler`.
 
         Returns:
             A tuple containing this instance's\

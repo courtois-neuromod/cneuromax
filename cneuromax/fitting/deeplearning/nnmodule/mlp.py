@@ -31,11 +31,13 @@ class MLP(nn.Module):
     dropout probability.
 
     Args:
-        config: See :class:`MLPConfig`.
-        activation_fn: Activation function.
+        config
+        activation_fn: The singular activation function to use in\
+            between each layer.
 
     Attributes:
-        model (:class:`torch.nn.Sequential`)
+        model (:class:`torch.nn.Sequential`): The internal\
+            :class:`~torch.nn.Module` that holds the MLP's layers.
     """
 
     def __init__(
@@ -65,8 +67,8 @@ class MLP(nn.Module):
         """Flattens input's dimensions and passes it through the model.
 
         Note:
-            This MLP isn't suitable for cases where the output
-            is multidimensional.
+            This MLP is only capable of returning 1D\
+                :class:`torch.Tensor` batches.
 
         Args:
             x: The input data batch.

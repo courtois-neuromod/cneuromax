@@ -49,9 +49,7 @@ def initialize_common_variables(
             :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
 
     Returns:
-        * (pop_size) Number of agents per population, computed from\
-            :paramref:`agents_per_task` and Hydra launcher values\
-            `nodes` and `tasks_per_node`.
+        * The population size
         * (len_agents_batch) The number of agents per population\
             maintained by this process during a given generation.
         * (exchange_and_mutate_info) An array maintained only by\
@@ -66,20 +64,12 @@ def initialize_common_variables(
         * (exchange_and_mutate_info_batch) A sub-array of\
             :paramref:`exchange_and_mutate_info` maintained by this\
             process.
-        * (generation_results) An array maintained only by the\
-            primary process (secondary processes set this to `None`)\
-            containing several pieces of information about the\
-            results of a given generation. Precisions on the 3rd\
-            dimension: 0) Agent fitness, 1) Number of environment\
-            steps taken by the agent during the evaluation, 2) Size\
-            of the agent when serialized.
-        * (generation_results_batch) A sub-array of\
-            :paramref:`generation_results` maintained by this\
-            process.
-        * (total_num_env_steps) The total number of environment\
-            steps taken by all agents during the entire experiment.\
-            This variable is maintained only by the primary process\
-            (secondary processes set this to `None`).
+        * See\
+            :paramref:`~.compute_generation_results.generation_results`.
+        * See\
+            :paramref:`~.compute_generation_results.generation_results_batch`.
+        * See\
+            :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
     comm, rank, size = retrieve_mpi_variables()
     launcher_config = get_launcher_config()

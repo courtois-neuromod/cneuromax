@@ -29,10 +29,10 @@ class BaseClassificationLitModuleConfig:
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
-    """Root classification :class:`~lightning.pytorch.LightningModule`.
+    """Root classification :mod:`lightning` ``LitModule``.
 
     Args:
-        config: See :class:`BaseClassificationLitModuleConfig`.
+        config
         nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
         optimizer: See :paramref:`~.BaseLitModule.optimizer`.
         scheduler: See :paramref:`~.BaseLitModule.scheduler`.
@@ -65,8 +65,8 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         """Computes the model accuracy and cross entropy loss.
 
         Args:
-            batch: See\
-                :paramref:`~.BaseLitModule.stage_step.batch`.
+            batch: A tuple ``(X, y)`` where ``X`` is the input data and\
+                ``y`` is the target data.
             stage: See\
                 :paramref:`~.BaseLitModule.stage_step.stage`.
 

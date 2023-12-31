@@ -27,8 +27,7 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
     returns the final validation loss.
 
     Args:
-        config: The run's :mod:`hydra-core` structured config, see\
-            :class:`~.DeepLearningFittingHydraConfig`.
+        config: The run's :mod:`hydra-core` structured config.
 
     Returns:
         The final validation loss.
@@ -38,6 +37,7 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
         config,
         launcher_config,
     )
+    """TODO: Add logic for HPO"""
     set_batch_size_and_num_workers(
         config,
         trainer,
@@ -45,8 +45,9 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
     )
     ckpt_path = set_checkpoint_path(config, trainer)
     trainer.fit(model=litmodule, datamodule=datamodule, ckpt_path=ckpt_path)
-    if config.model_load_path:
-        trainer.save_checkpoint(filepath=config.model_load_path)
+    """TODO: Add logic for HPO
+    trainer.save_checkpoint(filepath=config.model_load_path)
+    """
     return trainer.validate(model=litmodule, datamodule=datamodule)[0][
         "val/loss"
     ]

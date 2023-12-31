@@ -4,7 +4,7 @@ from cneuromax.fitting.neuroevolution.utils.compute import compute_save_points
 
 
 def compute_save_points_test() -> None:
-    """Tests for ``compute_save_points`` function."""
+    """:func:`~.compute_save_points` tests."""
     assert compute_save_points(
         prev_num_gens=0,
         total_num_gens=10,

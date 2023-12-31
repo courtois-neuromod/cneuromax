@@ -42,6 +42,8 @@ from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionFittingHydraConfig,
 )
 
+__all__ = ["store_neuroevolution_fitting_configs"]
+
 
 def store_neuroevolution_fitting_configs() -> None:
     """Stores :mod:`hydra-core` Neuroevolution fitting configs."""

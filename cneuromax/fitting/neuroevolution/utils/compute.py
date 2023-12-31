@@ -1,4 +1,4 @@
-"""Functions requiring some computation for Neuroevolution fitting."""
+"""Not agent-based computation functions for Neuroevolution fitting."""
 
 import logging
 import pickle
@@ -25,22 +25,28 @@ def compute_generation_results(
     agents_batch: list[list[BaseSingularAgent]],
     num_pops: An[int, ge(1)],
 ) -> None:
-    """Computes generation results across processes and gathers them.
+    """Fills the :paramref:`generation_results` array with results.
 
     Args:
-        generation_results: See return value of ``generation_results``\
-            from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        generation_results_batch: See return value of\
-            ``generation_results_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        fitnesses_and_num_env_steps_batch: See return value of\
-            ``fitnesses_and_num_env_steps_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        agents_batch: See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        generation_results: An array maintained solely by the\
+            primary process (secondary processes have this variable\
+            set to ``None``) containing several pieces of information\
+            about the results of a given generation. The 3rd\
+            dimension contains the following information at the\
+            following indices: 0) Agent fitness, 1) Number of\
+            environment steps taken by the agent during the\
+            evaluation, 2) Size of the agent when serialized.
+        generation_results_batch: A sub-array of\
+            :paramref:`generation_results` maintained by the process\
+            calling this function.
+        fitnesses_and_num_env_steps_batch: The output values of\
+            the evaluation performed in :func:`.run_evaluation_cpu`\
+            or :func:`.run_evaluation_gpu` on the agents maintained\
+            by the process calling this function.
+        agents_batch: A 2D list of agents maintained by the process\
+            calling this function.
         num_pops: See\
-            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
+            :meth:`~.BaseSpace.num_pops`.
     """
     comm, _, _ = retrieve_mpi_variables()
     # Store the fitnesses and number of environment steps
@@ -69,13 +75,13 @@ def compute_save_points(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.prev_num_gens`.
         total_num_gens: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.total_num_gens`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.total_num_gens`.
         save_interval: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.save_interval`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.save_interval`.
         save_first_gen: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.save_first_gen`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.save_first_gen`.
 
     Returns:
         A list of generations at which to save the state.
@@ -103,20 +109,17 @@ def compute_start_time_and_seeds(
     """Compute the start time and seeds for the current generation.
 
     Args:
-        generation_results: See return value of ``generation_results``\
-            from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        generation_results: See\
+            :paramref:`~compute_generation_results.generation_results`.
         curr_gen: Current generation number.
-        num_pops: See\
-            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
-        pop_size: See return value of ``pop_size`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
+        pop_size: Total population size.
         pop_merge: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
         * The start time for the current generation.
-        * The seeds for the current generation.
+        * The seeds to set randomness for the current generation.
     """
     comm, rank, size = retrieve_mpi_variables()
     np.random.seed(seed=curr_gen)
@@ -141,8 +144,8 @@ def compute_start_time_and_seeds(
     # and has no execution purposes.
     assert generation_results  # noqa: S101
     fitnesses = generation_results[:, :, 0]
-    fitness_sorting_indices = np.argsort(a=fitnesses, axis=0)
-    fitnesses_rankings = np.argsort(a=fitness_sorting_indices, axis=0)
+    fitness_sorting_indices = fitnesses.argsort(axis=0)
+    fitnesses_rankings = fitness_sorting_indices.argsort(axis=0)
     if curr_gen != 0:
         for j in range(num_pops):
             seeds[:, j] = seeds[:, j][fitnesses_rankings[:, j]]
@@ -160,12 +163,12 @@ def compute_total_num_env_steps_and_process_fitnesses(
     """Processes the generation results.
 
     Args:
-        generation_results: See return value of ``generation_results``\
-            from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        total_num_env_steps: See return value of\
-            ``total_num_env_steps`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        generation_results: See\
+            :paramref:`~compute_generation_results.generation_results`.
+        total_num_env_steps: The total number of environment\
+            steps taken by all agents during the entire experiment.\
+            This variable is maintained solely by the primary process\
+            (secondary processes set this to ``None``).
         curr_gen: Current generation number.
         start_time: Generation start time.
         pop_merge: See\
@@ -191,7 +194,5 @@ def compute_total_num_env_steps_and_process_fitnesses(
     num_env_steps = generation_results[:, :, 1]
     total_num_env_steps += int(num_env_steps.sum())
     logging.info(f"{curr_gen+1}: {int(time.time() - start_time)}")
-    logging.info(
-        f"{np.mean(a=fitnesses, axis=0)}\n{np.max(a=fitnesses, axis=0)}",
-    )
+    logging.info(f"{fitnesses.mean(axis=0)}\n{fitnesses.max(axis=0)}\n")
     return total_num_env_steps

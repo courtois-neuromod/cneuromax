@@ -1,8 +1,7 @@
 """Evolutionary operations for Neuroevolution fitting.
 
-The selection operation is implicit in `cneuromax`, see
-:func:`~.neuroevolution.utils.exchange.update_exchange_and_mutate_info`
-for more details.
+The selection operation is implicit in :mod:`cneuromax`, see
+:func:`~.update_exchange_and_mutate_info` for more details.
 """
 
 from typing import Annotated as An

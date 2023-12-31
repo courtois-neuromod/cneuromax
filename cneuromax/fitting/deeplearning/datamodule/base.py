@@ -43,7 +43,7 @@ class BaseDataModuleConfig:
 
 
 class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
-    """Root :mod:`~lightning.pytorch.LightningDataModule` subclass.
+    """Root :mod:`lightning` ``DataModule``.
 
     With ``<stage>`` being any of ``train``, ``val``, ``test`` or
     ``predict``, subclasses need to properly define the
