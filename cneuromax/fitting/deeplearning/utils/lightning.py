@@ -42,7 +42,7 @@ def instantiate_lightning_objects(
     """Creates :mod:`lightning` objects used throughout a run.
 
     Args:
-        config: See :paramref:`~.deeplearning.fit.config`.
+        config: See :paramref:`~.post_process_base_config.config`.
         launcher_config: The run's :mod:`hydra-core` launcher\
             configuration.
 
@@ -94,7 +94,7 @@ def set_batch_size_and_num_workers(
     these variables' values are determined.
 
     Args:
-        config: See :paramref:`~.deeplearning.fit.config`.
+        config: See :paramref:`~.post_process_base_config.config`.
         trainer: The :class:`~lightning.pytorch.Trainer` instance used\
             throughout the fitting run.
         datamodule: The :class:`~.BaseDataModule` instance used for\
@@ -259,7 +259,7 @@ def set_checkpoint_path(
     TODO: Implement for PBT & run resuming.
 
     Args:
-        config: See :paramref:`~.deeplearning.fit.fit.config`.
+        config: See :paramref:`~.post_process_base_config.config`.
         trainer: See\
             :paramref:`~.set_batch_size_and_num_workers.trainer`.
 

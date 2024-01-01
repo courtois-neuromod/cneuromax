@@ -81,7 +81,7 @@ def gt(val: float) -> BeartypeValidator:
     """Verifies that the annotated value is ``>`` :paramref:`val`.
 
     Args:
-        val: See :paramref:`ge.val`.
+        val: See :paramref:`~ge.val`.
 
     Returns:
         See return description of :func:`not_empty`.
@@ -99,7 +99,7 @@ def le(val: float) -> BeartypeValidator:
     """Verifies that the annotated value is ``< or =`` :paramref:`val`.
 
     Args:
-        val: See :paramref:`ge.val`.
+        val: See :paramref:`~ge.val`.
 
     Returns:
         See return description of :func:`not_empty`.
@@ -117,7 +117,7 @@ def lt(val: float) -> BeartypeValidator:
     """Verifies that the annotated value is ``<`` :paramref:`val`.
 
     Args:
-        val: See :paramref:`ge.val`.
+        val: See :paramref:`~ge.val`.
 
     Returns:
         See return description of :func:`not_empty`.

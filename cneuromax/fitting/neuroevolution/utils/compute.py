@@ -1,4 +1,4 @@
-"""Not agent-based computation functions for Neuroevolution fitting."""
+"""Not Agent-based computation functions for Neuroevolution fitting."""
 
 import logging
 import pickle
@@ -27,6 +27,11 @@ def compute_generation_results(
 ) -> None:
     """Fills the :paramref:`generation_results` array with results.
 
+    Extracts the fitnesses & number of environment steps from
+    :paramref:`fitnesses_and_num_env_steps_batch`, computes the
+    pickled agent sizes and stores all of this information in
+    :paramref:`generation_results`.
+
     Args:
         generation_results: An array maintained solely by the\
             primary process (secondary processes have this variable\
@@ -40,13 +45,12 @@ def compute_generation_results(
             :paramref:`generation_results` maintained by the process\
             calling this function.
         fitnesses_and_num_env_steps_batch: The output values of\
-            the evaluation performed in :func:`.run_evaluation_cpu`\
-            or :func:`.run_evaluation_gpu` on the agents maintained\
+            the evaluation performed in :func:`.evaluate_on_cpu`\
+            or :func:`.evaluate_on_gpu` on the agents maintained\
             by the process calling this function.
         agents_batch: A 2D list of agents maintained by the process\
             calling this function.
-        num_pops: See\
-            :meth:`~.BaseSpace.num_pops`.
+        num_pops: See :meth:`.BaseSpace.num_pops`.
     """
     comm, _, _ = retrieve_mpi_variables()
     # Store the fitnesses and number of environment steps
@@ -57,7 +61,9 @@ def compute_generation_results(
             generation_results_batch[i, j, 2] = len(
                 pickle.dumps(obj=agents_batch[i][j]),
             )
-    # Gather the results on the primary process
+    # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+    # for a full example execution of the genetic algorithm.
+    # The following block is examplified in section 6.
     comm.Gather(
         sendbuf=generation_results_batch,
         recvbuf=generation_results,
@@ -70,7 +76,7 @@ def compute_save_points(
     save_interval: An[int, ge(0)],
     *,
     save_first_gen: bool,
-) -> list[int]:
+) -> list[int]:  # save_points
     """Compute generations at which to save the state.
 
     Args:
@@ -108,24 +114,32 @@ def compute_start_time_and_seeds(
 ) -> tuple[float | None, Seeds_type | None]:  # start_time, seeds
     """Compute the start time and seeds for the current generation.
 
+    Fetches the start time and generates the seeds for the current\
+    generation. If :paramref:`pop_merge` is ``True``, the seeds are\
+    shared between the populations.
+
     Args:
         generation_results: See\
             :paramref:`~compute_generation_results.generation_results`.
-        curr_gen: Current generation number.
-        num_pops: See :meth:`~.BaseSpace.num_pops`.
-        pop_size: Total population size.
+        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
+        num_pops: See :meth:`.BaseSpace.num_pops`.
+        pop_size: Total number of agent per population.
         pop_merge: See\
             :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
         * The start time for the current generation.
-        * The seeds to set randomness for the current generation.
+        * See\
+            :paramref:`~.update_exchange_and_mutate_info.seeds`.
     """
     comm, rank, size = retrieve_mpi_variables()
     np.random.seed(seed=curr_gen)
     if rank != 0:
         return None, None
     start_time = time.time()
+    # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+    # for a full example execution of the genetic algorithm.
+    # The following block is examplified in section 1 & 8.
     seeds = np.random.randint(
         low=0,
         high=2**32,
@@ -136,19 +150,28 @@ def compute_start_time_and_seeds(
         dtype=np.uint32,
     )
     if pop_merge:
+        # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+        # for a full example execution of the genetic algorithm.
+        # The following block is examplified in section 2 & 9.
         seeds = np.repeat(a=seeds, repeats=2, axis=1)
         if curr_gen == 1:
             seeds[:, 1] = seeds[:, 1][::-1]
-    # `generation_results` is only `None` when `rank != 0`. The
-    # following `assert` statement is for static type checking reasons
-    # and has no execution purposes.
-    assert generation_results  # noqa: S101
-    fitnesses = generation_results[:, :, 0]
-    fitness_sorting_indices = fitnesses.argsort(axis=0)
-    fitnesses_rankings = fitness_sorting_indices.argsort(axis=0)
-    if curr_gen != 0:
+    if curr_gen > 1:
+        # `generation_results` is only `None` when `rank != 0`. The
+        # following `assert` statement is for static type checking
+        # reasons and has no execution purposes.
+        assert generation_results  # noqa: S101
+        fitnesses = generation_results[:, :, 0]
+        # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+        # for a full example execution of the genetic algorithm.
+        # The following block is examplified in section 10.
+        fitnesses_sorting_indices = fitnesses.argsort(axis=0)
+        fitnesses_index_ranking = fitnesses_sorting_indices.argsort(axis=0)
+        # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+        # for a full example execution of the genetic algorithm.
+        # The following block is examplified in section 11.
         for j in range(num_pops):
-            seeds[:, j] = seeds[:, j][fitnesses_rankings[:, j]]
+            seeds[:, j] = seeds[:, j][fitnesses_index_ranking[:, j]]
     return start_time, seeds
 
 
@@ -164,15 +187,15 @@ def compute_total_num_env_steps_and_process_fitnesses(
 
     Args:
         generation_results: See\
-            :paramref:`~compute_generation_results.generation_results`.
+            :paramref:`~.compute_generation_results.generation_results`.
         total_num_env_steps: The total number of environment\
             steps taken by all agents during the entire experiment.\
             This variable is maintained solely by the primary process\
             (secondary processes set this to ``None``).
-        curr_gen: Current generation number.
+        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         start_time: Generation start time.
         pop_merge: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Returns:
         The updated total number of environment steps.
@@ -189,10 +212,13 @@ def compute_total_num_env_steps_and_process_fitnesses(
     assert start_time  # noqa: S101
     fitnesses = generation_results[:, :, 0]
     if pop_merge:
+        # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+        # for a full example execution of the genetic algorithm.
+        # The following block is examplified in section 7.
         fitnesses[:, 0] += fitnesses[:, 1][::-1]
         fitnesses[:, 1] = fitnesses[:, 0][::-1]
     num_env_steps = generation_results[:, :, 1]
     total_num_env_steps += int(num_env_steps.sum())
-    logging.info(f"{curr_gen+1}: {int(time.time() - start_time)}")
+    logging.info(f"{curr_gen}: {int(time.time() - start_time)}")
     logging.info(f"{fitnesses.mean(axis=0)}\n{fitnesses.max(axis=0)}\n")
     return total_num_env_steps

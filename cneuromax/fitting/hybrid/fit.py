@@ -9,6 +9,6 @@ def fit(config: HybridFittingHydraConfig) -> float:  # noqa: ARG001
     """Fits a model using Deep Learning + Neuroevolution.
 
     Args:
-        config: The run's :mod:`hydra-core` structured config.
+        config: See :paramref:`~.post_process_base_config.config`.
     """
     return 0

@@ -31,7 +31,7 @@ class MLP(nn.Module):
     dropout probability.
 
     Args:
-        config
+        config: The instance's configuration.
         activation_fn: The singular activation function to use in\
             between each layer.
 

@@ -12,19 +12,10 @@ class BaseAgentConfig:
     """Holds :class:`BaseAgent` config values.
 
     Args:
-        env_transfer: Whether the agent's environment state\
-            (position, velocity, ...) is transferred to its children\
-            if it passes through the selection process.
-        fit_transfer: Whether the agent's fitness is transferred to\
-            its children if it passes through the selection process.
-        mem_transfer: Whether the agent's memory (hidden state) is\
-            transferred to its children if it passes through the\
-            selection process.
+
     """
 
-    env_transfer: bool = False
-    fit_transfer: bool = False
-    mem_transfer: bool = False
+    pass
 
 
 class BaseAgent(metaclass=ABCMeta):
@@ -45,13 +36,13 @@ class BaseAgent(metaclass=ABCMeta):
     an ``AgentContainer`` class rather than an ``Agent`` class.
 
     Args:
-        config: See :class:`BaseAgentConfig`.
+        config: The instance's configuration.
         pop_idx: The agent's population index. An index of ``0`` means\
             that the agent is in the generator population while an\
             index of ``1`` means that the agent is in the\
             discriminator population.
         pops_are_merged: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
 
     Attributes:
         config (:class:`BaseAgentConfig`)

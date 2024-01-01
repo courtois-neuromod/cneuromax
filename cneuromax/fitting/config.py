@@ -38,7 +38,7 @@ def pre_process_base_fitting_config(config: DictConfig) -> None:
     Used for changing the computing device if CUDA is not available.
 
     Args:
-        config: See :paramref:`.pre_process_base_config.config`.
+        config: See :paramref:`~.pre_process_base_config.config`.
     """
     pre_process_base_config(config)
     if not torch.cuda.is_available():
@@ -50,6 +50,6 @@ def post_process_base_fitting_config(config: BaseFittingHydraConfig) -> None:
     """Validates the structured task config.
 
     Args:
-        config: See :paramref:`.post_process_base_config.config`.
+        config: See :paramref:`~.post_process_base_config.config`.
     """
     post_process_base_config(config)

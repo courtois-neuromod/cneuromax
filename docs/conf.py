@@ -6,7 +6,6 @@ from pathlib import Path
 from sphinx.application import Sphinx
 
 sys.path.insert(0, str(Path("..").resolve()))
-suppress_warnings = ["*"]
 project = "CNeuroMax"
 copyright = "2023, The CNeuroMax Authors"  # noqa: A001
 author = "The CNeuroMax Authors"

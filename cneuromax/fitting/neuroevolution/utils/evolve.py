@@ -1,7 +1,7 @@
 """Evolutionary operations for Neuroevolution fitting.
 
 The selection operation is implicit in :mod:`cneuromax`, see
-:func:`~.update_exchange_and_mutate_info` for more details.
+:func:`.update_exchange_and_mutate_info` for more details.
 """
 
 from typing import Annotated as An
@@ -21,52 +21,59 @@ from cneuromax.utils.annotations import ge
 from cneuromax.utils.mpi import retrieve_mpi_variables
 
 
-def run_mutation(
+def mutate(
     agents_batch: list[list[BaseSingularAgent]],
     exchange_and_mutate_info_batch: Exchange_and_mutate_info_batch_type,
     num_pops: int,
 ) -> None:
-    """Mutate all agents maintained by this process.
+    """Mutate :paramref:`agents_batch`.
 
     Args:
-        agents_batch: See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        exchange_and_mutate_info_batch: See return value of\
-            ``exchange_and_mutate_info_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        num_pops: See\
-            :meth:`~.neuroevolution.space.base.BaseSpace.num_pops`.
+        agents_batch: See\
+            :paramref:`~.compute_generation_results.agents_batch`.
+        exchange_and_mutate_info_batch: A sub-array of\
+            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`
+            maintained by this process.
+        num_pops: See :meth:`.BaseSpace.num_pops`.
     """
     seeds = exchange_and_mutate_info_batch[:, :, 3]
     for i in range(num_pops):
         for j in range(len(agents_batch)):
-            agents_batch[i][j].curr_seed = seeds[i, j]
+            agents_batch[i][j].seed = int(seeds[i, j])
+            # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+            # for a full example execution of the genetic algorithm.
+            # The following block is examplified in section 4 & 16.
             agents_batch[i][j].mutate()
 
 
-def run_evaluation_cpu(
+def evaluate_on_cpu(
     agents_batch: list[list[BaseSingularAgent]],
     space: BaseSpace,
     curr_gen: An[int, ge(1)],
 ) -> (
     Fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
 ):
-    """Evaluate all agents maintained by this process.
+    """Evaluate :paramref:`agents_batch`.
 
     Args:
-        agents_batch: See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        space: The experiment's pace, see :class:`~.BaseSpace`.
-        curr_gen: Current generation number.
+        agents_batch: See\
+            :paramref:`~.compute_generation_results.agents_batch`.
+        space: The :class:`~.BaseSpace` used throughout the run.
+        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 
     Returns:
-        The output of agent evaluation by this process. See\
+        The output of agent evaluation performed by the process calling\
+            this function on the agents it maintains\
+            (:paramref:`agents_batch`). See\
             :meth:`~.BaseSpace.evaluate`.
     """
     fitnesses_and_num_env_steps_batch = np.zeros(
         shape=(len(agents_batch), space.num_pops, 2),
         dtype=np.float32,
     )
+    # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+    # for a full example execution of the genetic algorithm.
+    # The following block is examplified in section 5.
     for i in range(len(agents_batch)):
         fitnesses_and_num_env_steps_batch[i] = space.evaluate(
             agent_s=[agents_batch[i]],
@@ -75,7 +82,7 @@ def run_evaluation_cpu(
     return fitnesses_and_num_env_steps_batch
 
 
-def run_evaluation_gpu(
+def evaluate_on_gpu(
     ith_gpu_comm: MPI.Comm,
     agents_batch: list[list[BaseSingularAgent]],
     space: BaseSpace,
@@ -85,21 +92,21 @@ def run_evaluation_gpu(
 ) -> (
     Fitnesses_and_num_env_steps_batch_type  # fitnesses_and_num_env_steps_batch
 ):
-    """Evaluate all agents maintained by this process.
+    """Gather :paramref:`agents_batch` on process subset & evaluate.
 
     Args:
-        ith_gpu_comm: See return value of ``ith_gpu_comm`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_gpu_comm`.
-        agents_batch: See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        space: The experiment's pace, see :class:`~.BaseSpace`.
-        curr_gen: Current generation number.
+        ith_gpu_comm: A :mod:`mpi4py` communicator used by existing CPU\
+            processes to exchange agents for GPU work queueing.
+        agents_batch: See\
+            :paramref:`~.compute_generation_results.agents_batch`.
+        space: See :paramref:`~.evaluate_on_cpu.space`.
+        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         transfer: Whether any of\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.env_transfer`,\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.fit_transfer`\
+            :paramref:`~.NeuroevolutionFittingHydraConfig.env_transfer`,\
+            :paramref:`~.NeuroevolutionFittingHydraConfig.fit_transfer`\
             or\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.mem_transfer`\
-            is `True`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.mem_transfer`\
+            is ``True``.
 
     Returns:
         The output of agent evaluation by this process. See\
@@ -107,6 +114,13 @@ def run_evaluation_gpu(
     """
     comm, rank, size = retrieve_mpi_variables()
     ith_gpu_comm_rank = ith_gpu_comm.Get_rank()
+    # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+    # for a full example execution of the genetic algorithm.
+    # The following block is examplified in section 5.
+    # As opposed to the CPU evaluation, agents are not evaluated on the
+    # process that mutates them but instead gathered on a single process
+    # that evaluates them on the GPU, before sending back their
+    # fitnesses to the process that mutated them.
     ith_gpu_batched_agents: list[
         list[list[BaseSingularAgent]]
     ] | None = ith_gpu_comm.gather(sendobj=agents_batch)
@@ -134,7 +148,7 @@ def run_evaluation_gpu(
         recvbuf=fitnesses_and_num_env_steps_batch,
     )
     # Send back the agents to their corresponding processes if
-    # `transfer` is `True` as the agents have been modified by the
+    # `transfer == True` as the agents have been modified by the
     # evaluation process.
     if transfer:
         # Prevents `agents_batch` from being overwritten.

@@ -27,19 +27,16 @@ def load_state(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.prev_num_gens`.
-        len_agents_batch: See return value of ``len_agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+        len_agents_batch: See\
+            :paramref:`~.initialize_agents.len_agents_batch`.
 
     Returns:
-        * (agents_batch) See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        * (generation_results) See return value of\
-            ``generation_results`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        * (total_num_env_steps) See return value of\
-            ``total_num_env_steps`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
+        * See ~.compute_generation_results.agents_batch`.
+        * See\
+            :paramref:`~.compute_generation_results.generation_results`.
+        * See\
+            :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
     comm, rank, size = retrieve_mpi_variables()
     if rank == 0:
@@ -76,15 +73,13 @@ def save_state(
     """Dump the current experiment state to disk.
 
     Args:
-        agents_batch: See return value of ``agents_batch`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        generation_results: See return value of ``generation_results``\
-            from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        total_num_env_steps: See return value of\
-            ``total_num_env_steps`` from\
-            :func:`~.neuroevolution.utils.initialize.initialize_common_variables`.
-        curr_gen: The current generation number.
+        agents_batch: See\
+            :paramref:`~.compute_generation_results.agents_batch`.
+        generation_results: See\
+            :paramref:`~.compute_generation_results.generation_results`.
+        total_num_env_steps: See\
+            :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
+        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
     """
     comm, rank, _ = retrieve_mpi_variables()
     batched_agents: list[list[list[BaseSingularAgent]]] | None = comm.gather(

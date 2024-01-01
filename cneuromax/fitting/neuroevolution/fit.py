@@ -14,9 +14,9 @@ from cneuromax.fitting.neuroevolution.utils.compute import (
     compute_total_num_env_steps_and_process_fitnesses,
 )
 from cneuromax.fitting.neuroevolution.utils.evolve import (
-    run_evaluation_cpu,
-    run_evaluation_gpu,
-    run_mutation,
+    evaluate_on_cpu,
+    evaluate_on_gpu,
+    mutate,
 )
 from cneuromax.fitting.neuroevolution.utils.exchange import (
     exchange_agents,
@@ -51,8 +51,7 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
     variables are set in the Hydra launcher configuration.
 
     Args:
-        config: The run's :mod:`hydra-core` structured config, see\
-            :class:`~.NeuroevolutionFittingHydraConfig`.
+        config: See :paramref:`~.post_process_base_config.config`.
     """
     comm, _, _ = retrieve_mpi_variables()
     space: BaseSpace = instantiate(config=config.space)
@@ -93,7 +92,6 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
             num_pops=space.num_pops,
             pop_merge=config.pop_merge,
         )
-    agent_0 = agents_batch[0][0]
     setup_wandb(entity=config.wandb_entity)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
@@ -103,7 +101,15 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
             pop_size=pop_size,
             pop_merge=config.pop_merge,
         )
-        if curr_gen > 1:
+        if curr_gen == 1:
+            # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+            # for a full example execution of the genetic algorithm.
+            # The following block is examplified in section 3.
+            comm.Scatter(
+                sendbuf=seeds,
+                recvbuf=exchange_and_mutate_info_batch[:, :, 3],
+            )
+        else:
             update_exchange_and_mutate_info(
                 num_pops=space.num_pops,
                 pop_size=pop_size,
@@ -111,6 +117,9 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                 generation_results=generation_results,
                 seeds=seeds,
             )
+            # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
+            # for a full example execution of the genetic algorithm.
+            # The following block is examplified in section 13.
             comm.Scatter(
                 sendbuf=exchange_and_mutate_info,
                 recvbuf=exchange_and_mutate_info_batch,
@@ -121,25 +130,25 @@ def fit(config: NeuroevolutionFittingHydraConfig) -> None:
                 agents_batch=agents_batch,
                 exchange_and_mutate_info_batch=exchange_and_mutate_info_batch,
             )
-        run_mutation(
+        mutate(
             agents_batch=agents_batch,
             exchange_and_mutate_info_batch=exchange_and_mutate_info_batch,
             num_pops=space.num_pops,
         )
         fitnesses_and_num_env_steps_batch = (
             (
-                run_evaluation_gpu(
+                evaluate_on_gpu(
                     ith_gpu_comm=ith_gpu_comm,
                     agents_batch=agents_batch,
                     space=space,
                     curr_gen=curr_gen,
-                    transfer=agent_0.config.env_transfer
-                    or agent_0.config.fit_transfer
-                    or agent_0.config.mem_transfer,
+                    transfer=config.env_transfer
+                    or config.fit_transfer
+                    or config.mem_transfer,
                 )
             )
             if space.evaluates_on_gpu
-            else run_evaluation_cpu(
+            else evaluate_on_cpu(
                 agents_batch=agents_batch,
                 space=space,
                 curr_gen=curr_gen,

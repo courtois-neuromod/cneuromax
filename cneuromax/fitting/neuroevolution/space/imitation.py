@@ -72,7 +72,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         Used to either set the env seed or resume from a previous state.
 
         Args:
-            curr_gen: Current generation.
+            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         Returns:
             The initial environment observation.
         """
@@ -111,7 +111,7 @@ class BaseImitationSpace(BaseSpace, metaclass=ABCMeta):
         Reset function called whenever the env returns done.
 
         Args:
-            curr_gen: Current generation.
+            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         Returns:
             A new environment observation (np.ndarray).
         """

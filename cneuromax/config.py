@@ -68,12 +68,12 @@ def process_config(config: DictConfig, structured_config_class: type[T]) -> T:
     """Turns the raw task config into a structured config.
 
     Args:
-        config: See :paramref:`~pre_process_base_config.config`.
+        config: See :paramref:`~.pre_process_base_config.config`.
         structured_config_class: The structured config class to turn\
             the raw config into.
 
     Returns:
-        See :paramref:`~post_process_base_config.config`.
+        See :paramref:`~.post_process_base_config.config`.
     """
     OmegaConf.resolve(config)
     OmegaConf.set_struct(config, value=True)
@@ -93,7 +93,8 @@ def post_process_base_config(config: BaseHydraConfig) -> None:
     Creates the run directory if it does not exist.
 
     Args:
-        config: The structured :mod:`hydra-core` config.
+        config: The structured :mod:`hydra-core` config used throughout\
+            the run that was resolved in :func:`process_config`.
     """
     path = Path(config.run_dir)
     if not path.exists():

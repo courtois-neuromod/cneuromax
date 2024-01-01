@@ -23,7 +23,7 @@ class BaseSpaceConfig:
             until the environment terminates (`eval_num_steps = 0` is\
             not supported for `env_transfer = True`).
         wandb_entity: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.wandb_entity`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.wandb_entity`.
     """
 
     eval_num_steps: An[int, ge(0)]
@@ -83,7 +83,7 @@ class BaseSpace(metaclass=ABCMeta):
 
         Args:
             agent_s: Agent(s) to evaluate.
-            curr_gen: Current generation.
+            curr_gen: The current generation number/index.
 
         Returns:
             The fitnesses and number of steps ran.

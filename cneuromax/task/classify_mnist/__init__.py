@@ -23,7 +23,7 @@ def store_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` MNIST classification configs.
 
     Args:
-        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
+        cs: See :paramref:`~.store_task_configs.cs`.
     """
     cs.store(
         group="datamodule",

@@ -32,7 +32,7 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
     """Root classification :mod:`lightning` ``LitModule``.
 
     Args:
-        config
+        config: The instance's configuration.
         nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
         optimizer: See :paramref:`~.BaseLitModule.optimizer`.
         scheduler: See :paramref:`~.BaseLitModule.scheduler`.

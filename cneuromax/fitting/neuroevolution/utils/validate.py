@@ -8,9 +8,9 @@ def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:
     """Makes sure that the run's Space is valid given the run's config.
 
     Args:
-        space: The run's :class:`~.BaseSpace` instance.
+        space: See :paramref:`~.evaluate_on_cpu.space`.
         pop_merge: See\
-            :paramref:`~.neuroevolution.config.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
     """
     launcher_config = get_launcher_config()
     if pop_merge and space.num_pops != 2:  # noqa: PLR2004

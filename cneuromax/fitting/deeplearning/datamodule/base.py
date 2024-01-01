@@ -50,7 +50,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
     ``dataset.<stage>`` instance attribute(s) for each desired stage.
 
     Args:
-        config
+        config: The instance's configuration.
 
     Attributes:
         config (:class:`BaseDataModuleConfig`)

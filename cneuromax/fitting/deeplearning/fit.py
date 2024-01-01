@@ -27,7 +27,7 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
     returns the final validation loss.
 
     Args:
-        config: The run's :mod:`hydra-core` structured config.
+        config: See :paramref:`~.post_process_base_config.config`.
 
     Returns:
         The final validation loss.

@@ -14,7 +14,7 @@ def store_nnmodule_configs(cs: ConfigStore) -> None:
     Config names: ``mlp``.
 
     Args:
-        cs: See :paramref:`~cneuromax.store_task_configs.cs`.
+        cs: See :paramref:`~.store_task_configs.cs`.
     """
     cs.store(
         group="litmodule/nnmodule",
