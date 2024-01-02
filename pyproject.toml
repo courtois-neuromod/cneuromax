@@ -46,7 +46,7 @@ dependencies = [
     "ipywidgets==8.1.1",
     # Testing
     "black[jupyter]==23.12.1",
-    "ruff==0.1.9",
+    "ruff==0.1.10",
     "doc8==1.1.1",
     "yamllint==1.33.0",
     "pre-commit==3.6.0",
