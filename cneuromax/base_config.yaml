@@ -1,0 +1,23 @@
+# Make sure to respect 4 space indent & copy the change into `__init__.py`
+hydra:
+    callbacks:
+        log_job_return:
+            _target_: >
+                hydra.experimental.callbacks.LogJobReturnCallback
+    job:
+        config:
+            override_dirname:
+                kv_sep: '.'
+                item_sep: '~'
+                exclude_keys:
+                    - task
+    mode: MULTIRUN
+    searchpath:
+        - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
+    sweep:
+        dir: >
+          ${oc.env:CNEUROMAX_PATH}/cneuromax/data/task_run/${hydra.runtime.choices.task}/
+        subdir: ${hydra.job.override_dirname}/
+defaults:
+    - _self_
+    - task: null

@@ -26,7 +26,7 @@ class BaseAgent(metaclass=ABCMeta):
     score are selected and will produce two children agents each.
 
     From an implementation perspective, ``pop_size`` instances of this
-    class will be created upon the run's initialization. Whenever an
+    class will be created upon initialization. Whenever an
     agent is selected, a copy of this object will be created and sent
     to a MPI process in possession of a non-selected agent. Both the
     original instance and the copy sent to the other process will be

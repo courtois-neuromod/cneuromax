@@ -36,7 +36,7 @@ def update_exchange_and_mutate_info(
     in this function.
 
     Args:
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: See\
             :paramref:`~.compute_start_time_and_seeds.pop_size`.
         exchange_and_mutate_info: An array maintained only by\
@@ -109,7 +109,7 @@ def exchange_agents(
     """Exchange agents between processes.
 
     Args:
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: See\
             :paramref:`~.compute_start_time_and_seeds.pop_size`.
         agents_batch: See\

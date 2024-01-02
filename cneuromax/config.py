@@ -16,49 +16,35 @@ class BaseHydraConfig:
     """Base structured :mod:`hydra-core` configuration.
 
     Args:
-        run_dir: Path to the run's directory. Every artifact generated\
-            during the run will be stored in this directory.
+        task_run_dir: Path to the task run's directory. Every artifact\
+            generated while running the task will be stored in this\
+            directory.
         data_dir: Path to the data directory. This directory is\
-            typically shared between runs. It is used to store\
+            typically shared between task runs. It is used to store\
             datasets, pre-trained models, etc.
-        run_dir_exist_ok: Whether the run directory is allowed to\
-            already exist. If ``False`` and the run directory already\
-            exists, it will be renamed to ``{run_dir}_i``,\
-            where ``i`` is the smallest non-zero integer such that\
-            ``{run_dir}_i`` does not exist. Generally, do not modify\
-            this parameter unless you want to resume a run.
     """
 
-    run_dir: An[str, not_empty()] = "data/untitled_run/"
-    data_dir: An[str, not_empty()] = "${run_dir}/../"
-    run_dir_exist_ok: bool = False
+    task_run_dir: An[str, not_empty()] = "${hydra:runtime.output_dir}"
+    data_dir: An[str, not_empty()] = "${oc.env:CNEUROMAX_PATH}/data/"
 
 
 def pre_process_base_config(config: DictConfig) -> None:
     """Validates raw task config before it is made structured.
 
-    Makes sure that the ``run_dir`` does not already exist if
-    ``run_dir_exist_ok`` is ``False``. It loops through ``{run_dir}_1``,
-    ``{run_dir}_2``, etc until it finds a directory that does not exist.
-
     Args:
         config: The "raw" config returned by the :mod:`hydra-core`\
             :func:`main` decorator.
     """
-    if config.run_dir_exist_ok:
-        return
-    run_dir = config.run_dir
-    path = Path(run_dir)
+    path = Path(config.task_run_dir)
     if path.exists():
-        i = 1
-        while path.exists():
-            path = Path(run_dir + f"_{i}")
-            i += 1
         logging.info(
-            f"{Path(run_dir).absolute()} already exists, "
-            f"changing it to {path.absolute()}.",
+            f"The task run directory {path.absolute()} exists. Ignore this "
+            "message if it appears in the middle of a task run. However, if "
+            "you are starting a new task run, the previous task run's "
+            "artifacts will possibly be overwritten.",
         )
-        run_dir = str(path)
+    else:
+        path.mkdir(parents=True)
 
 
 T = TypeVar("T", bound=BaseHydraConfig)
@@ -94,9 +80,9 @@ def post_process_base_config(config: BaseHydraConfig) -> None:
 
     Args:
         config: The structured :mod:`hydra-core` config used throughout\
-            the run that was resolved in :func:`process_config`.
+            the execution that was resolved in :func:`process_config`.
     """
-    path = Path(config.run_dir)
+    path = Path(config.task_run_dir)
     if not path.exists():
         logging.info(
             f"Creating the run directory {path.absolute()} as it does not "

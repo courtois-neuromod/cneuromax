@@ -34,7 +34,7 @@ def mutate(
         exchange_and_mutate_info_batch: A sub-array of\
             :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`
             maintained by this process.
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
     """
     seeds = exchange_and_mutate_info_batch[:, :, 3]
     for i in range(num_pops):
@@ -58,7 +58,8 @@ def evaluate_on_cpu(
     Args:
         agents_batch: See\
             :paramref:`~.compute_generation_results.agents_batch`.
-        space: The :class:`~.BaseSpace` used throughout the run.
+        space: The :class:`~.BaseSpace` instance used throughout the\
+            execution.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 
     Returns:

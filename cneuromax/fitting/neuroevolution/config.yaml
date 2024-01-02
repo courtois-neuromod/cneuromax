@@ -1,14 +1,10 @@
+# Make sure to respect 4 space indent & copy the change into `__init__.py`
 hydra:
-  job:
-    chdir: True
-  searchpath:
-    - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
-  run:
-    dir: ${run_dir}/
-  sweep:
-    dir: ${run_dir}/
+    searchpath:
+        - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
 
 defaults:
-  - neuroevolution_fitting
-  - _self_
-  - task: null
+    - neuroevolution_fitting
+    - logger: wandb_simexp
+    - _self_
+    - base_config

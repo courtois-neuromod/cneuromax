@@ -284,7 +284,7 @@ all machines. On a machine with Dropbox, run:
 
 .. code-block:: bash
 
-    mkdir -p data/ docs/_build/ docs/autoapi/ .vscode/ .coverage
+    mkdir -p data/ docs/_build/ docs/_autosummary/ .vscode/ .coverage
     mkdir -p .mypy_cache/ .pytest_cache/ .ruff_cache/
     sudo attr -s com.dropbox.ignored -V 1 data/
     sudo attr -s com.dropbox.ignored -V 1 docs/_build/

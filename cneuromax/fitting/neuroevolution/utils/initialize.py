@@ -38,7 +38,7 @@ def initialize_common_variables(
     Args:
         agents_per_task: See\
             :paramref:`~.NeuroevolutionFittingHydraConfig.agents_per_task`.
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
 
     Returns:
         * See :paramref:`~.compute_start_time_and_seeds.pop_size`.
@@ -144,7 +144,7 @@ def initialize_agents(
             :paramref:`~.compute_generation_results.agents_batch`\
             by the process calling this function during a\
             given generation.
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_merge: See\
             :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
 

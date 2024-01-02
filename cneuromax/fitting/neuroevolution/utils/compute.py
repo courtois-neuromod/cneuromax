@@ -1,4 +1,4 @@
-"""Not Agent-based computation functions for Neuroevolution fitting."""
+"""Not agent-based computation functions for Neuroevolution fitting."""
 
 import logging
 import pickle
@@ -50,7 +50,7 @@ def compute_generation_results(
             by the process calling this function.
         agents_batch: A 2D list of agents maintained by the process\
             calling this function.
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
     """
     comm, _, _ = retrieve_mpi_variables()
     # Store the fitnesses and number of environment steps
@@ -122,7 +122,7 @@ def compute_start_time_and_seeds(
         generation_results: See\
             :paramref:`~compute_generation_results.generation_results`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
-        num_pops: See :meth:`.BaseSpace.num_pops`.
+        num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: Total number of agent per population.
         pop_merge: See\
             :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.

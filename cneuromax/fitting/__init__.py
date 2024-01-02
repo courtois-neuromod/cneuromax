@@ -17,7 +17,7 @@ def store_base_fitting_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` root fitting configs.
 
     Args:
-        cs: See :paramref:`~.store_task_configs.cs`.
+        cs: See :paramref:`~.store_project_configs.cs`.
     """
     store_launcher_configs(cs)
     cs.store(name="base_fitting", node=BaseFittingHydraConfig)
@@ -30,7 +30,7 @@ def store_launcher_configs(cs: ConfigStore) -> None:
         ``submitit_slurm_acan_simexp``.
 
     Args:
-        cs: See :paramref:`~.store_task_configs.cs`.
+        cs: See :paramref:`~.store_project_configs.cs`.
     """
     cs.store(name="setup_apptainer_acan", node=["module load apptainer"])
     setup: Any = "${merge:${setup_apptainer_acan},${copy_data_commands}}"

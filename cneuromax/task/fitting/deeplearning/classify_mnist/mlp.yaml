@@ -5,7 +5,6 @@ defaults:
   - /litmodule/nnmodule: mlp
   - override /hydra/launcher: submitit_local
   - _self_
-
 litmodule:
   optimizer:
     lr: 0.002
@@ -14,13 +13,6 @@ litmodule:
       dims: [784, 128, 10]
     activation_fn:
       _target_: torch.nn.ReLU
-
-logger:
-  name: mlp
-  project: classify_mnist
-  entity: cneuroml
-
 trainer:
   max_epochs: 3
-
 device: gpu

@@ -40,7 +40,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
     def init_reset(
         self: "BaseReinforcementSpace", curr_gen: int
     ) -> TensorDict:
-        """First reset function called during the run.
+        """First reset function called during the execution.
 
         Used to reset the
         environment & potentially resume from a previous state.

@@ -22,6 +22,12 @@ On an Ubuntu machine
 Run a python script
 -------------------
 
+
+.. note::
+
+    Run ``cd ${CNEUROMAX_PATH}/cneuromax`` before the following command to get
+    tab completion for the ``task`` argument.
+
 .. code-block:: bash
 
     # Example of a simple MNIST training run
@@ -29,7 +35,8 @@ Run a python script
                -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
                -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm \
                -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest \
-               python3 -m cneuromax.fitting.deeplearning task=classify_mnist/mlp
+               python3 -m cneuromax task=fitting/deeplearning/classify_mnist/mlp
+
 
 Run a notebook
 --------------
@@ -39,7 +46,7 @@ From your own machine create a SSH tunnel to the running machine.
 .. code-block:: bash
 
    # Example
-   ssh mleclei@123.456.7.8 -NL 8888:localhost:8888
+   ssh MY_USER@123.456.7.8 -NL 8888:localhost:8888
 
 Run the lab.
 

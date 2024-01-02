@@ -1,4 +1,4 @@
-"""Tests for :mod:`~cneuromax.task.classify_mnist.datamodule`."""
+"""Tests for :mod:`~.classify_mnist.datamodule`."""
 
 from pathlib import Path
 
@@ -6,7 +6,7 @@ import pytest
 from torch.utils.data import Subset
 from torchvision.datasets import MNIST
 
-from cneuromax.task.classify_mnist import (
+from . import (
     MNISTClassificationDataModule,
     MNISTClassificationDataModuleConfig,
 )
