@@ -1,4 +1,4 @@
-r"""Common :class:`lightning.pytorch.LightningDataModule`\s."""
+r""":class:`~lightning.pytorch.LightningDataModule`\s."""
 
 from cneuromax.fitting.deeplearning.datamodule.base import (
     BaseDataModule,

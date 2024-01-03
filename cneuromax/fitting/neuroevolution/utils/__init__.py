@@ -1,3 +1,3 @@
-"""Utility functions for Neuroevolution fitting."""
+r""":mod:`cneuromax.fitting.neuroevolution`\-wide utilities."""
 
 pass

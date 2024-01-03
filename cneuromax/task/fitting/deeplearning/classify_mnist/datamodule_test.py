@@ -35,12 +35,17 @@ def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
 def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
     """Tests :meth:`~.MNISTClassificationDataModule.setup` #1.
 
+    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves
+    correctly when
+    :paramref:`~.MNISTClassificationDataModule.setup.stage` is
+    ``"fit"``.
+
     Args:
         datamodule: A generic :class:`~.MNISTClassificationDataModule`\
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()
-    datamodule.setup("fit")
+    datamodule.setup(stage="fit")
 
     assert isinstance(datamodule.dataset.train, Subset)
     assert isinstance(datamodule.dataset.val, Subset)
@@ -52,12 +57,17 @@ def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
 def test_setup_test(datamodule: MNISTClassificationDataModule) -> None:
     """Tests :meth:`~.MNISTClassificationDataModule.setup` #2.
 
+    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves
+    correctly when
+    :paramref:`~.MNISTClassificationDataModule.setup.stage` is
+    ``"test"``.
+
     Args:
         datamodule: A generic :class:`~.MNISTClassificationDataModule`\
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()
-    datamodule.setup("test")
+    datamodule.setup(stage="test")
 
     assert isinstance(datamodule.dataset.test, MNIST)
     assert len(datamodule.dataset.test) == 10000

@@ -1,4 +1,4 @@
-r"""Common :class:`torch.nn.Module`\s."""
+r""":class:`torch.nn.Module`\s."""
 
 from hydra.core.config_store import ConfigStore
 

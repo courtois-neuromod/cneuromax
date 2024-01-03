@@ -1,17 +1,4 @@
-"""Fitting with Deep Learning.
-
-``__main__.py`` abridged code:
-
-.. highlight:: python
-.. code-block:: python
-
-    @hydra.main(config_name="config", config_path=".")
-    def run(config: DictConfig) -> None:
-        config = process(config)
-        fit(config)
-
-    if __name__ == "__main__":
-        run()
+"""Deep net training.
 
 ``config.yaml``:
 
@@ -31,39 +18,51 @@
         - _self_
         - base_config
 """
-from typing import Any
 
+import hydra
 from hydra.core.config_store import ConfigStore
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.trainer import Trainer
-from omegaconf import MISSING
+from omegaconf import DictConfig
 from torch.optim import SGD, Adam, AdamW
 from transformers import (
     get_constant_schedule,
     get_constant_schedule_with_warmup,
 )
 
-from cneuromax import store_project_configs
+from cneuromax.config import process_config
 from cneuromax.fitting import store_base_fitting_configs
 from cneuromax.fitting.deeplearning.config import (
     DeepLearningFittingHydraConfig,
+    post_process_deep_learning_fitting_config,
+    pre_process_deep_learning_fitting_config,
 )
+from cneuromax.fitting.deeplearning.fit import fit
 from cneuromax.fitting.deeplearning.nnmodule import store_nnmodule_configs
 from cneuromax.utils.hydra import fs_builds, pfs_builds
 from cneuromax.utils.wandb import store_logger_configs
 
-__all__ = [
-    "store_deep_learning_fitting_configs",
-    "store_optimizer_configs",
-    "store_scheduler_configs",
-    "store_trainer_configs",
-]
+__all__ = ["run", "store_configs"]
 
 
-def store_deep_learning_fitting_configs() -> None:
+@hydra.main(config_name="config", config_path=".", version_base=None)
+def run(config: DictConfig) -> None:
+    """Processes the :mod:`hydra-core` config and fits w/ Deep Learning.
+
+    Args:
+        config: See :paramref:`~.pre_process_base_config.config`.
+    """
+    pre_process_deep_learning_fitting_config(config)
+    config = process_config(
+        config=config,
+        structured_config_class=DeepLearningFittingHydraConfig,
+    )
+    post_process_deep_learning_fitting_config(config)
+    fit(config)
+
+
+def store_configs(cs: ConfigStore) -> None:
     """Stores :mod:`hydra-core` Deep Learning fitting configs."""
-    cs = ConfigStore.instance()
-    store_project_configs(cs)
     store_base_fitting_configs(cs)
     store_logger_configs(cs, clb=WandbLogger)
     store_nnmodule_configs(cs)

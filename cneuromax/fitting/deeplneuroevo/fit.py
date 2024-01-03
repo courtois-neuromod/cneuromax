@@ -1,11 +1,11 @@
 """Fitting function for Deep Learning + Neuroevolution."""
 
-from cneuromax.fitting.hybrid.config import (
-    HybridFittingHydraConfig,
+from cneuromax.fitting.deeplneuroevo.config import (
+    DeepLNeuroEvoFittingHydraConfig,
 )
 
 
-def fit(config: HybridFittingHydraConfig) -> float:  # noqa: ARG001
+def fit(config: DeepLNeuroEvoFittingHydraConfig) -> float:  # noqa: ARG001
     """Fits a model using Deep Learning + Neuroevolution.
 
     Args:

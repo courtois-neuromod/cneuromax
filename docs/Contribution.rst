@@ -133,9 +133,9 @@ There are so far two small pain points:
 
 - The esbonio server will sometimes announce a build error (bottom right),
   which will prevent further documentation visualization. To fix this, you
-  should delete the contents of the ``docs/_build`` and ``docs/_autosummary``
-  folders (do not delete the folders themselves if you use Dropbox/Maestral)
-  and restart the esbonio server (by its icon).
+  should delete the contents of the ``docs/_build`` (do not delete the folder
+  itself if you use Dropbox/Maestral) and ``docs/_autosummary`` folders and
+  and restart the esbonio server (by pressing its icon).
 
 GitHub Copilot is installed in the DevContainer. Simply discard the log-in
 notifications if you do not want to make use of it.
@@ -284,11 +284,10 @@ all machines. On a machine with Dropbox, run:
 
 .. code-block:: bash
 
-    mkdir -p data/ docs/_build/ docs/_autosummary/ .vscode/ .coverage
+    mkdir -p data/ docs/_build/ .vscode/ .coverage
     mkdir -p .mypy_cache/ .pytest_cache/ .ruff_cache/
     sudo attr -s com.dropbox.ignored -V 1 data/
     sudo attr -s com.dropbox.ignored -V 1 docs/_build/
-    sudo attr -s com.dropbox.ignored -V 1 docs/_autosummary/
     sudo attr -s com.dropbox.ignored -V 1 .vscode/
     sudo attr -s com.dropbox.ignored -V 1 .coverage
     sudo attr -s com.dropbox.ignored -V 1 .mypy_cache/

@@ -1,3 +1,3 @@
-""":mod:`cneuromax.serving` tasks."""
+""":mod:`cneuromax.serving` projects & tasks."""
 
 pass

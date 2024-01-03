@@ -33,7 +33,7 @@ class BaseFittingHydraConfig(BaseHydraConfig):
 
 
 def pre_process_base_fitting_config(config: DictConfig) -> None:
-    """Validates raw task config before it is made structured.
+    """Validates :paramref:`config` before it is made structured.
 
     Used for changing the computing device if CUDA is not available.
 

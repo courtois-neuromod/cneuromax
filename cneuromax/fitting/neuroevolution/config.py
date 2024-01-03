@@ -66,7 +66,7 @@ class NeuroevolutionFittingHydraConfig(BaseFittingHydraConfig):
 
 
 def pre_process_neuroevolution_fitting_config(config: DictConfig) -> None:
-    """Validates raw task config before it is made structured.
+    """Validates :paramref:`config` before it is made structured.
 
     Args:
         config: See :paramref:`~.pre_process_base_config.config`.

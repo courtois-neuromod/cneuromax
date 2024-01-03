@@ -1,3 +1,3 @@
-"""Utility functions for Deep Learning fitting."""
+r""":mod:`cneuromax.fitting.deeplearning`\-wide utilities."""
 
 pass

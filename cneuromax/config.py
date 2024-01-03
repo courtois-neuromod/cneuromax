@@ -29,7 +29,7 @@ class BaseHydraConfig:
 
 
 def pre_process_base_config(config: DictConfig) -> None:
-    """Validates raw task config before it is made structured.
+    """Validates :paramref:`config` before it is made structured.
 
     Args:
         config: The "raw" config returned by the :mod:`hydra-core`\
@@ -51,7 +51,7 @@ T = TypeVar("T", bound=BaseHydraConfig)
 
 
 def process_config(config: DictConfig, structured_config_class: type[T]) -> T:
-    """Turns the raw task config into a structured config.
+    """Turns the :paramref:`config` into a structured config.
 
     Args:
         config: See :paramref:`~.pre_process_base_config.config`.

@@ -1,3 +1,3 @@
-""":mod:`cneuromax.fitting.neuroevolution` tasks."""
+""":mod:`cneuromax.fitting.neuroevolution` projects & tasks."""
 
 pass

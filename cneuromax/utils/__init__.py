@@ -1,3 +1,3 @@
-"""Package-wide utility functions."""
+r""":mod:`cneuromax`\-wide utilities."""
 
 pass

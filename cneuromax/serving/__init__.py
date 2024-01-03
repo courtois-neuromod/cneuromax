@@ -1,3 +1,3 @@
-"""Serving module."""
+"""Model serving."""
 
 pass

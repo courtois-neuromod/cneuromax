@@ -111,9 +111,9 @@ cneuromax/
 │  │  │  ├─ config.py        <-- Deep Learning structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Deep Learning Hydra configs & settings
 │  │  │  └─ fit.py           <-- Deep Learning fitting function
-│  │  ├─ hybrid/             <-- Hybrid Deep Learning + Neuroevolution code
+│  │  ├─ deeplneuroevo/      <-- Hybrid Deep Learning + Neuroevolution code
 │  │  │  ├─ __init__.py      <-- Stores Hybrid DL + NE Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.hybrid`
+│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.deeplneuroevo`
 │  │  │  ├─ config.py        <-- Hybrid DL + NE structured Hydra config & utilities
 │  │  │  ├─ config.yaml      <-- Default Hybrid DL + NE Hydra configs & settings
 │  │  │  └─ fit.py           <-- Hybrid DL + NE fitting function

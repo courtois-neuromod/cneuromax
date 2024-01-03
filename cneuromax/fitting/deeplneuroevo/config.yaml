@@ -4,7 +4,7 @@ hydra:
         - file://${oc.env:CNEUROMAX_PATH}/cneuromax/
 
 defaults:
-    - hybrid_fitting
+    - deeplneuroevo_fitting
     - trainer: base
     - litmodule/scheduler: constant
     - litmodule/optimizer: adamw

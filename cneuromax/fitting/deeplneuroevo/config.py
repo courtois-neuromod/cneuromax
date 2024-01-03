@@ -12,12 +12,12 @@ from cneuromax.fitting.config import (
 
 
 @dataclass(frozen=True)
-class HybridFittingHydraConfig(BaseFittingHydraConfig):
+class DeepLNeuroEvoFittingHydraConfig(BaseFittingHydraConfig):
     """Structured :mod:`hydra-core` config for DL + NE fitting."""
 
 
-def pre_process_hybrid_fitting_config(config: DictConfig) -> None:
-    """Validates raw task config before it is made structured.
+def pre_process_deeplneuroevo_fitting_config(config: DictConfig) -> None:
+    """Validates :paramref:`config` before it is made structured.
 
     Args:
         config: See :paramref:`~.pre_process_base_config.config`.
@@ -25,8 +25,8 @@ def pre_process_hybrid_fitting_config(config: DictConfig) -> None:
     pre_process_base_fitting_config(config)
 
 
-def post_process_hybrid_fitting_config(
-    config: HybridFittingHydraConfig,
+def post_process_deeplneuroevo_fitting_config(
+    config: DeepLNeuroEvoFittingHydraConfig,
 ) -> None:
     """Validates the structured task config.
 
