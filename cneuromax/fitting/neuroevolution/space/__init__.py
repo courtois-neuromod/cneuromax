@@ -1,5 +1,4 @@
 """Neuroevolution Spaces (Evaluation wrappers for Gym-like Envs)."""
-
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
 from cneuromax.fitting.neuroevolution.space.imitation import (
     BaseImitationSpace,

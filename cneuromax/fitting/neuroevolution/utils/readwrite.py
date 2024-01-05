@@ -1,5 +1,4 @@
 """File reading and writing utilities for Neuroevolution fitting."""
-
 import pickle
 from pathlib import Path
 from typing import Annotated as An
@@ -27,7 +26,7 @@ def load_state(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.prev_num_gens`.
         len_agents_batch: See\
             :paramref:`~.initialize_agents.len_agents_batch`.
 

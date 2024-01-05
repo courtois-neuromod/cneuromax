@@ -1,5 +1,4 @@
 """Process agent exchange for Neuroevolution fitting."""
-
 from typing import Annotated as An
 
 import numpy as np

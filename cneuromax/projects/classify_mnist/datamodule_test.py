@@ -1,5 +1,4 @@
 """Tests for :mod:`~.classify_mnist.datamodule`."""
-
 from pathlib import Path
 
 import pytest

@@ -1,5 +1,4 @@
 """:class:`BaseAgent` & its config."""
-
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -42,7 +41,7 @@ class BaseAgent(metaclass=ABCMeta):
             index of ``1`` means that the agent is in the\
             discriminator population.
         pops_are_merged: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Attributes:
         config (:class:`BaseAgentConfig`)

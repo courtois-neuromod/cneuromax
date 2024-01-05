@@ -1,5 +1,4 @@
 """."""
-
 from cneuromax.fitting.neuroevolution.agent.base import BaseAgent
 
 

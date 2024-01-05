@@ -1,5 +1,4 @@
 """:class:`BaseLitModule`."""
-
 from abc import ABCMeta
 from functools import partial
 from typing import Annotated as An
@@ -15,12 +14,12 @@ from cneuromax.utils.annotations import one_of
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
-    """Root :mod:`lightning` ``LitModule``.
+    """Base :mod:`lightning` ``LitModule``.
 
     Subclasses need to implement the :meth:`step` method that inputs
-    both a tuple (``batch``) of :class:`~torch.Tensor` and string
-    (``stage``) while returning the loss value(s) also in the form of
-    a :class:`~torch.Tensor`.
+    both ``batch`` (``tuple[torch.Tensor]``) and  ``stage`` (``str``)
+    arguments while returning the loss value(s) in the form of a
+    :class:`torch.Tensor`.
 
     Example definition:
 
@@ -37,7 +36,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         ) -> Float[Tensor, " "]:
             ...
 
-    Warning:
+    Note:
         ``batch`` and loss value(s) type hints in this class are not
         rendered properly in the documentation due to an\
         incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\
@@ -45,13 +44,13 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         signatures to find the correct types.
 
     Args:
-        nnmodule: The :mod:`torch` ``nn.Module`` to be used by this\
+        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\
             instance.
-        optimizer: The :mod:`torch` ``Optimizer`` to be used by this\
+        optimizer: A :mod:`torch` ``Optimizer`` to be used by this\
             instance. It is partial as an argument as the\
             :paramref:`nnmodule` parameters are required for its\
             initialization.
-        scheduler: The :mod:`torch` ``Scheduler`` to be used by this\
+        scheduler: A :mod:`torch` ``Scheduler`` to be used by this\
             instance. It is partial as an argument as the\
             :paramref:`optimizer` is required for its initialization.
 
@@ -64,7 +63,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             :paramref:`~BaseLitModule.scheduler`.
 
     Raises:
-        :class:`NotImplementedError`: If the :meth:`step` method is not\
+        NotImplementedError: If the :meth:`step` method is not\
             defined or not callable.
     """
 

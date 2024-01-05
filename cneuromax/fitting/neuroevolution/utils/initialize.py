@@ -1,5 +1,4 @@
 """Variable initialization for Neuroevolution fitting."""
-
 from typing import Annotated as An
 from typing import Any
 
@@ -37,7 +36,7 @@ def initialize_common_variables(
 
     Args:
         agents_per_task: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.agents_per_task`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.agents_per_task`.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
 
     Returns:
@@ -146,7 +145,7 @@ def initialize_agents(
             given generation.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_merge: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:
         A 2D list of agents maintained by this process.

@@ -1,3 +1,3 @@
-r""":mod:`cneuromax.fitting.deeplearning`\-wide utilities."""
+r""":mod:`~cneuromax.fitting.deeplearning`\-wide utilities."""
 
 pass

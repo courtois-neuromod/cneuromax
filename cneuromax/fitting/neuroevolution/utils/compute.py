@@ -1,5 +1,4 @@
 """Not agent-based computation functions for Neuroevolution fitting."""
-
 import logging
 import pickle
 import time
@@ -81,13 +80,13 @@ def compute_save_points(
 
     Args:
         prev_num_gens: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.prev_num_gens`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.prev_num_gens`.
         total_num_gens: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.total_num_gens`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.total_num_gens`.
         save_interval: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.save_interval`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.save_interval`.
         save_first_gen: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.save_first_gen`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.save_first_gen`.
 
     Returns:
         A list of generations at which to save the state.
@@ -125,7 +124,7 @@ def compute_start_time_and_seeds(
         num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: Total number of agent per population.
         pop_merge: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:
         * The start time for the current generation.
@@ -195,7 +194,7 @@ def compute_total_num_env_steps_and_process_fitnesses(
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         start_time: Generation start time.
         pop_merge: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:
         The updated total number of environment steps.

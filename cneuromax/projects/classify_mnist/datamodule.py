@@ -1,5 +1,4 @@
 """:mod:`lightning` DataModule + conf for MNIST classification task."""
-
 from dataclasses import dataclass
 from typing import Annotated as An
 

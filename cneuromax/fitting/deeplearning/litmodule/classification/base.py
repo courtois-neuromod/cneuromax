@@ -1,5 +1,4 @@
 """:class:`BaseClassificationLitModule` & its config dataclass."""
-
 from abc import ABCMeta
 from dataclasses import dataclass
 from functools import partial
@@ -29,10 +28,10 @@ class BaseClassificationLitModuleConfig:
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
-    """Root classification :mod:`lightning` ``LitModule``.
+    """Base Classification :mod:`lightning` ``LitModule``.
 
     Args:
-        config: The instance's configuration.
+        config: See :class:`BaseClassificationLitModuleConfig`.
         nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
         optimizer: See :paramref:`~.BaseLitModule.optimizer`.
         scheduler: See :paramref:`~.BaseLitModule.scheduler`.

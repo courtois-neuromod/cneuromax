@@ -1,5 +1,4 @@
 """Typing for various Neuroevolution fitting variables."""
-
 from nptyping import Float32, NDArray, Shape, UInt32
 
 Exchange_and_mutate_info_batch_type = NDArray[

@@ -3,7 +3,6 @@
 The selection operation is implicit in :mod:`cneuromax`, see
 :func:`.update_exchange_and_mutate_info` for more details.
 """
-
 from typing import Annotated as An
 
 import numpy as np
@@ -103,10 +102,10 @@ def evaluate_on_gpu(
         space: See :paramref:`~.evaluate_on_cpu.space`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         transfer: Whether any of\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.env_transfer`,\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.fit_transfer`\
+            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,\
+            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`\
             or\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.mem_transfer`\
+            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`\
             is ``True``.
 
     Returns:

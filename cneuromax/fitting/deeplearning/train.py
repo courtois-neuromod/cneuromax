@@ -1,7 +1,6 @@
 """Fitting function for Deep Learning."""
-
 from cneuromax.fitting.deeplearning.config import (
-    DeepLearningFittingHydraConfig,
+    DeepLearningSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.utils.lightning import (
     instantiate_lightning_objects,
@@ -11,7 +10,7 @@ from cneuromax.fitting.deeplearning.utils.lightning import (
 from cneuromax.utils.hydra import get_launcher_config
 
 
-def fit(config: DeepLearningFittingHydraConfig) -> float:
+def train(config: DeepLearningSubtaskConfig) -> float:
     """Trains a Deep Learning model.
 
     This function is the main entry point of the Deep Learning module.
@@ -27,7 +26,7 @@ def fit(config: DeepLearningFittingHydraConfig) -> float:
     returns the final validation loss.
 
     Args:
-        config: See :paramref:`~.post_process_base_config.config`.
+        config: See :paramref:`~.DeepLearningSubtaskConfig`.
 
     Returns:
         The final validation loss.

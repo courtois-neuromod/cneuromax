@@ -1,5 +1,4 @@
 """Tests for :mod:`cneuromax.utils.run`."""
-
 from unittest.mock import patch
 
 from cneuromax.utils.run import (

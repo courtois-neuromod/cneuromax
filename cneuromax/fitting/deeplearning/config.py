@@ -1,19 +1,14 @@
-""":mod:`hydra-core` Deep Learning fitting config & validation."""
-
+""":class:`DeepLearningSubtaskConfig`."""
 from dataclasses import dataclass
 from typing import Any
 
-from omegaconf import MISSING, DictConfig
+from omegaconf import MISSING
 
-from cneuromax.fitting.config import (
-    BaseFittingHydraConfig,
-    post_process_base_fitting_config,
-    pre_process_base_fitting_config,
-)
+from cneuromax.fitting.config import FittingSubtaskConfig
 
 
 @dataclass(frozen=True)
-class DeepLearningFittingHydraConfig(BaseFittingHydraConfig):
+class DeepLearningSubtaskConfig(FittingSubtaskConfig):
     """Structured :mod:`hydra-core` config for Deep Learning fitting.
 
     Args:
@@ -35,24 +30,3 @@ class DeepLearningFittingHydraConfig(BaseFittingHydraConfig):
     litmodule: Any = MISSING
     datamodule: Any = MISSING
     logger: Any = MISSING
-
-
-def pre_process_deep_learning_fitting_config(config: DictConfig) -> None:
-    """Validates :paramref:`config` before it is made structured.
-
-    Args:
-        config: See :paramref:`~.pre_process_base_config.config`.
-
-    """
-    pre_process_base_fitting_config(config)
-
-
-def post_process_deep_learning_fitting_config(
-    config: DeepLearningFittingHydraConfig,
-) -> None:
-    """Validates the structured task config.
-
-    Args:
-        config: See :paramref:`~.post_process_base_config.config`.
-    """
-    post_process_base_fitting_config(config)

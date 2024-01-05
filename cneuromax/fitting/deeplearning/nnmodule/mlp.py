@@ -1,14 +1,32 @@
-""":class:`MLP` & its config dataclass."""
-
+""":class:`MLP` + its config dataclass & config storing function."""
 from dataclasses import dataclass
 from typing import Annotated as An
 
 from einops import rearrange
+from hydra_zen import ZenStore
 from jaxtyping import Float
 from omegaconf import MISSING
 from torch import Tensor, nn
 
 from cneuromax.utils.annotations import ge, lt
+from cneuromax.utils.zen import fs_builds
+
+
+def store_mlp_config(store: ZenStore) -> None:
+    """Stores name ``mlp`` in :mod:`hydra-core` config store.
+
+    Config group: ``litmodule/nnmodule``.
+
+    Config name: ``mlp``.
+
+    Args:
+        store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
+    """
+    store(
+        fs_builds(MLP, config=MLPConfig()),
+        name="mlp",
+        group="litmodule/nnmodule",
+    )
 
 
 @dataclass(frozen=True)
@@ -31,7 +49,7 @@ class MLP(nn.Module):
     dropout probability.
 
     Args:
-        config: The instance's configuration.
+        config: See :class:`MLPConfig`.
         activation_fn: The singular activation function to use in\
             between each layer.
 

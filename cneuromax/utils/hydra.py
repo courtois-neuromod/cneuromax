@@ -1,5 +1,4 @@
 """:mod:`hydra-core` utilities."""
-
 from collections.abc import Callable
 from typing import Any
 
@@ -11,7 +10,6 @@ from hydra_plugins.hydra_submitit_launcher.config import (
 from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
     LocalLauncher,
 )
-from hydra_zen import make_custom_builds_fn
 from omegaconf import DictConfig, OmegaConf
 
 
@@ -46,14 +44,3 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
         == get_path(LocalLauncher)
         else SlurmQueueConf(**launcher_config_dict)
     )
-
-
-fs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
-    populate_full_signature=True,
-    hydra_convert="partial",
-)
-pfs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
-    zen_partial=True,
-    populate_full_signature=True,
-    hydra_convert="partial",
-)

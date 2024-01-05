@@ -21,11 +21,11 @@
 
 <h2>Overview</h2>
 
-CNeuroMax is a workspace for fitting
+CNeuroMax is a Machine Learning workspace for model fitting
 ([Deep Learning](https://en.wikipedia.org/wiki/Deep_learning) +
 [Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution) +
 [HPO](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
-w/ [Oríon](https://github.com/Epistimio/orion))
+w/ [Oríon](https://github.com/Epistimio/orion)), testing
 and serving (with [Lightning Apps](https://lightning.ai/docs/app/stable/))
 AI/ML models. CNeuroMax aims to:
 
@@ -79,7 +79,7 @@ unit-testing with [pytest](https://github.com/pytest-dev/pytest).
 tensors using [jaxtyping](https://github.com/google/jaxtyping) &
 [NumPy](https://github.com/numpy/numpy) arrays using
 [nptyping](https://github.com/ramonhagenaars/nptyping). Fully type checkable
-with [Beartype](https://github.com/beartype/beartype).
+at runtime with [Beartype](https://github.com/beartype/beartype).
 * Providing a common [Development Container](https://containers.dev/)
 recipe with the above features enabled + documentation preview
 with [esbonio](https://github.com/swyddfa/esbonio) &
@@ -99,52 +99,43 @@ to prune unrelated components of the library for paper publication.
 ```
 cneuromax/
 ├─ .github/                  <-- Config files for GitHub Actions (tests, containers, etc)
-├─ cneuromax/                <-- Machine Learning code
-│  ├─ fitting/               <-- ML model fitting code
+├─ cneuromax/                <-- Root
+│  ├─ fitting/               <-- Model fitting code
 │  │  ├─ deeplearning/       <-- Deep Learning code
 │  │  │  ├─ datamodule/      <-- Lightning DataModules
 │  │  │  ├─ litmodule/       <-- Lightning Modules
 │  │  │  ├─ nnmodule/        <-- PyTorch Modules
 │  │  │  ├─ utils/           <-- Deep Learning utilities
-│  │  │  ├─ __init__.py      <-- Stores Deep Learning Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.deeplearning`
-│  │  │  ├─ config.py        <-- Deep Learning structured Hydra config & utilities
-│  │  │  ├─ config.yaml      <-- Default Deep Learning Hydra configs & settings
-│  │  │  └─ fit.py           <-- Deep Learning fitting function
-│  │  ├─ deeplneuroevo/      <-- Hybrid Deep Learning + Neuroevolution code
-│  │  │  ├─ __init__.py      <-- Stores Hybrid DL + NE Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.deeplneuroevo`
-│  │  │  ├─ config.py        <-- Hybrid DL + NE structured Hydra config & utilities
-│  │  │  ├─ config.yaml      <-- Default Hybrid DL + NE Hydra configs & settings
-│  │  │  └─ fit.py           <-- Hybrid DL + NE fitting function
+│  │  │  ├─ config.py        <-- Deep Learning structured configs
+│  │  │  ├─ runner.py        <-- Deep Learning task runner
+│  │  │  └─ train.py         <-- Deep Learning training function
 │  │  ├─ neuroevolution/     <-- Neuroevolution code
 │  │  │  ├─ agent/           <-- Neuroevolution agents (encapsulate networks)
 │  │  │  ├─ net/             <-- Neuroevolution networks
 │  │  │  ├─ space/           <-- Neuroevolution spaces (where agents get evaluated)
 │  │  │  ├─ utils/           <-- Neuroevolution utilities
-│  │  │  ├─ __init__.py      <-- Stores Neuroevolution Hydra configs
-│  │  │  ├─ __main__.py      <-- Entrypoint for `python cneuromax.fitting.neuroevolution`
-│  │  │  ├─ config.py        <-- Neuroevolution structured Hydra config & utilities
-│  │  │  ├─ config.yaml      <-- Default Neuroevolution Hydra configs & settings
-│  │  │  └─ fit.py           <-- Neuroevolution fitting function
-│  │  ├─ __init__.py         <-- Stores Fitting Hydra configs
-│  │  ├─ __main__.py         <-- Entrypoint for `python cneuromax.fitting`
-│  │  └─ config.py           <-- Base Structured Hydra fitting config & utilities
+│  │  │  ├─ config.py        <-- Neuroevolution structured configs
+│  │  │  ├─ evolve.py        <-- Neuroevolution evolution function
+│  │  │  └─ runner.py        <-- Neuroevolution task runner
+│  │  ├─ config.py           <-- Fitting structured configs
+│  │  └─ runner.py           <-- Fitting task runner
 │  ├─ serving/               <-- Contains the code to create apps (cozmo inference, etc)
-│  ├─ task/                  <-- Contains the Deep Learning tasks
+│  ├─ projects/              <-- Contains all existing projects
 │  │  │
 │  │  │                          ******************************************
-│  │  └─ my_new_task/        <-- *** Your new Deep Learning task folder ***
-│  │     ├─ __init__.py      <-- ********** Your Hydra Configs ************
+│  │  └─ my_new_project/     <-- ******** Your new project folder *********
+│  │     ├─ task/            <-- *********** Your task folder *************
+│  │     │  └─ config.yaml   <-- ****** Your task configuration file ******
+│  │     ├─ __main__.py      <-- **** Your Hydra Configs & entrypoint *****
 │  │     ├─ datamodule.py    <-- ******* Your Lightning DataModule ********
 │  │     ├─ litmodule.py     <-- ********* Your Lightning Module **********
 │  │     ├─ nnmodule.py      <-- ********** Your PyTorch Module ***********
-│  │     └─ config.yaml      <-- ****** Your Hydra configuration file *****
 │  │                             ******************************************
 │  │
 │  ├─ utils/                 <-- CNeuroMax utilities
 │  ├─ __init__.py            <-- Sets up Beartype
-│  └─ config.py              <-- Base Structured Hydra config & utilities
+│  └─ config.py              <-- Base structured configs
+│  └─ runner.py              <-- Base task runner
 ├─ docs/                     <-- Documentation files
 ├─ .devcontainer.json        <-- VSCode container development config
 ├─ .gitignore                <-- Files to not track with Git/GitHub

@@ -1,5 +1,4 @@
 """Configuration file for the Sphinx documentation builder."""
-
 import sys
 from pathlib import Path
 
@@ -21,7 +20,11 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_paramlinks",
 ]
-autodoc_default_options = {"show-inheritance": True}
+autodoc_default_options = {
+    "private-members": True,
+    "show-inheritance": True,
+    "special-members": "__main__",
+}
 autodoc_member_order = "bysource"
 autosummary_generate = True
 html_static_path = ["_static"]

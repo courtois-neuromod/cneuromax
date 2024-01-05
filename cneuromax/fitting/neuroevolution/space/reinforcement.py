@@ -1,5 +1,4 @@
 """."""
-
 from abc import ABCMeta
 from typing import Annotated as An
 from typing import final

@@ -1,5 +1,4 @@
 """:mod:`wandb` utilities for Neuroevolution fitting."""
-
 import wandb
 from wandb.util import generate_id
 

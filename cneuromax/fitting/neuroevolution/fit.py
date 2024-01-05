@@ -1,10 +1,9 @@
-"""Neuroevolution fitting."""
-
+""":func:`fit`."""
 import wandb
 from hydra.utils import instantiate
 
 from cneuromax.fitting.neuroevolution.config import (
-    NeuroevolutionFittingHydraConfig,
+    NeuroevolutionSubtaskConfig,
 )
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.fitting.neuroevolution.utils.compute import (
@@ -38,7 +37,7 @@ from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
 from cneuromax.utils.mpi import retrieve_mpi_variables
 
 
-def fit(config: NeuroevolutionFittingHydraConfig) -> None:
+def fit(config: NeuroevolutionSubtaskConfig) -> None:
     """Fitting function for Neuroevolution algorithms.
 
     This function is the main entry point of the Neuroevolution module.

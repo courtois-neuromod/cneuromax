@@ -1,5 +1,4 @@
-""":mod:`lightning` Module for MNIST classification."""
-
+""":class:`MNISTClassificationLitModule` class."""
 from functools import partial
 
 from torch import nn

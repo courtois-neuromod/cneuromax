@@ -1,5 +1,4 @@
 """:mod:`wandb` utilities."""
-
 import logging
 import os
 from collections.abc import Callable
@@ -7,10 +6,10 @@ from pathlib import Path
 from typing import Any
 
 import wandb
-from hydra.core.config_store import ConfigStore
+from hydra_zen import ZenStore
 from omegaconf import MISSING
 
-from cneuromax.utils.hydra import fs_builds
+from cneuromax.utils.zen import fs_builds
 
 
 def login_wandb() -> None:
@@ -31,28 +30,30 @@ def login_wandb() -> None:
         )
 
 
-def store_logger_configs(cs: ConfigStore, clb: Callable[..., Any]) -> None:
+def store_wandb_logger_configs(
+    store: ZenStore,
+    clb: Callable[..., Any],
+) -> None:
     """Stores :mod:`hydra-core` ``logger`` group configs.
 
     Config names: ``wandb``, ``wandb_simexp``.
 
     Args:
-        cs: See :paramref:`~.store_project_configs.cs`.
+        store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         clb: :mod:`wandb` initialization callable.
     """
     base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
-        "name": "{task_run_dir}".split("/")[1],
+        "name": "{output_dir}".split("/")[1],
         "save_dir": "${data_dir}",
-        "project": "{task_run_dir}".split("/")[0],
+        "project": "{output_dir}".split("/")[0],
     }
-
-    cs.store(
+    store(
+        fs_builds(clb, **base_args, entity=MISSING),
         group="logger",
         name="wandb",
-        node=fs_builds(clb, **base_args, entity=MISSING),
     )
-    cs.store(
+    store(
+        fs_builds(clb, **base_args, entity="cneuroml"),
         group="logger",
         name="wandb_simexp",
-        node=fs_builds(clb, **base_args, entity="cneuroml"),
     )

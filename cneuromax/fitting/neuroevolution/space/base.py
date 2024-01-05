@@ -1,5 +1,4 @@
 """:class:`BaseSpace` and its config class."""
-
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -18,15 +17,10 @@ class BaseSpaceConfig:
     """Holds :class:`BaseSpace` config values.
 
     Args:
-        eval_num_steps: Number of environment steps to run each agent\
-            for during evaluation. `0` means that the agent will run\
-            until the environment terminates (`eval_num_steps = 0` is\
-            not supported for `env_transfer = True`).
-        wandb_entity: See\
-            :paramref:`~.NeuroevolutionFittingHydraConfig.wandb_entity`.
-    """
 
-    eval_num_steps: An[int, ge(0)]
+        wandb_entity: See\
+            :paramref:`~.NeuroevolutionSubtaskConfig.wandb_entity`.
+    """
 
 
 @dataclass
