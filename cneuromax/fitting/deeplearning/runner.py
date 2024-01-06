@@ -1,5 +1,5 @@
 """:class:`DeepLearningTaskRunner`."""
-from typing import Any
+from typing import Any, ClassVar
 
 from hydra_zen import ZenStore
 from lightning.pytorch.loggers.wandb import WandbLogger
@@ -8,8 +8,11 @@ from cneuromax.fitting.deeplearning.config import (
     DeepLearningSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.train import train
+from cneuromax.fitting.deeplearning.utils.zen import (
+    store_basic_deeplearning_configs,
+)
 from cneuromax.fitting.runner import FittingTaskRunner
-from cneuromax.utils.wandb import store_wandb_logger_configs
+from cneuromax.utils.zen import store_wandb_logger_configs
 
 
 class DeepLearningTaskRunner(FittingTaskRunner):
@@ -21,8 +24,11 @@ class DeepLearningTaskRunner(FittingTaskRunner):
 
     subtask_config: type[DeepLearningSubtaskConfig] = DeepLearningSubtaskConfig
 
-    @staticmethod
-    def store_configs(store: ZenStore) -> None:
+    @classmethod
+    def store_configs(
+        cls: type["DeepLearningTaskRunner"],
+        store: ZenStore,
+    ) -> None:
         """Stores structured configs.
 
         .. warning::
@@ -33,9 +39,13 @@ class DeepLearningTaskRunner(FittingTaskRunner):
             store:\
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
-        FittingTaskRunner.store_configs(store)
+        super().store_configs(store)
+        store_basic_deeplearning_configs(store)
         store_wandb_logger_configs(store, clb=WandbLogger)
-        store(DeepLearningSubtaskConfig, name="deeplearning")
+        store(
+            fs_builds(cls.run_subtask, config=cls.subtask_config()),
+            name="config",
+        )
 
     @staticmethod
     def run_subtask(

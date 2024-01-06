@@ -1,6 +1,7 @@
-"""MNIST classification ``task`` runner."""
+""":class:`TaskRunner`."""
 from hydra_zen import ZenStore
 
+from cneuromax.fitting.deeplearning.nnmodule.mlp import store_mlp_config
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
 from cneuromax.utils.zen import fs_builds
 
@@ -14,13 +15,14 @@ from .litmodule import MNISTClassificationLitModule
 class TaskRunner(DeepLearningTaskRunner):
     """MNIST classification ``task`` runner."""
 
-    @staticmethod
-    def store_configs(store: ZenStore) -> None:
+    @classmethod
+    def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
         """Stores :mod:`hydra-core` MNIST classification configs.
 
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         """
+        super().store_configs(store)
         store(
             fs_builds(
                 MNISTClassificationDataModule,
@@ -30,13 +32,11 @@ class TaskRunner(DeepLearningTaskRunner):
             group="datamodule",
         )
         store(
-            fs_builds(
-                MNISTClassificationLitModule,
-                config=MNISTClassificationDataModuleConfig(),
-            ),
+            fs_builds(MNISTClassificationLitModule),
             name="classify_mnist",
             group="litmodule",
         )
+        store_mlp_config(store)
 
 
 if __name__ == "__main__":

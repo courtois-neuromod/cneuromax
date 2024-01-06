@@ -9,7 +9,7 @@ from cneuromax.fitting.neuroevolution.config import (
 )
 from cneuromax.fitting.neuroevolution.fit import fit
 from cneuromax.fitting.runner import FittingTaskRunner
-from cneuromax.utils.wandb import store_wandb_logger_configs
+from cneuromax.utils.zen import store_wandb_logger_configs
 
 
 class NeuroevolutionTaskRunner(FittingTaskRunner):

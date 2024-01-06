@@ -6,7 +6,7 @@ from cneuromax.config import BaseSubtaskConfig
 from cneuromax.utils.annotations import one_of
 
 
-@dataclass(frozen=True)
+@dataclass
 class FittingSubtaskConfig(BaseSubtaskConfig):
     """Fitting ``subtask`` config.
 

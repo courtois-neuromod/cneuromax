@@ -34,7 +34,7 @@ from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.hydra import get_launcher_config, get_path
 
 
-def instantiate_lightning_objects(
+def instantiate_logger_and_trainer(
     config: DeepLearningSubtaskConfig,
     launcher_config: LocalQueueConf | SlurmQueueConf,
 ) -> tuple[Logger | None, Trainer, BaseDataModule, BaseLitModule]:

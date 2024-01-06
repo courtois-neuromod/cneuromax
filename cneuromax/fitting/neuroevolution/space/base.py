@@ -12,7 +12,7 @@ from cneuromax.fitting.neuroevolution.agent.singular import (
 from cneuromax.utils.annotations import ge, le
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseSpaceConfig:
     """Holds :class:`BaseSpace` config values.
 

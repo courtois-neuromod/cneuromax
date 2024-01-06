@@ -28,7 +28,7 @@ class Datasets:
     predict: Dataset[Tensor] | None = None
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseDataModuleConfig:
     """Holds :class:`BaseDataModule` config values.
 

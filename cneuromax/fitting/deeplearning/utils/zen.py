@@ -10,6 +10,17 @@ from transformers import (
 from cneuromax.utils.zen import fs_builds, pfs_builds
 
 
+def store_basic_deeplearning_configs(store: ZenStore) -> None:
+    """Stores basic :mod:`hydra-core` configs.
+
+    Args:
+        store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
+    """
+    store_basic_optimizer_configs(store)
+    store_basic_scheduler_configs(store)
+    store_basic_trainer_config(store)
+
+
 def store_basic_optimizer_configs(store: ZenStore) -> None:
     """Stores :mod:`hydra-core` ``litmodule/optimizer`` group configs.
 
@@ -55,7 +66,7 @@ def store_basic_trainer_config(store: ZenStore) -> None:
         fs_builds(
             Trainer,
             accelerator="${device}",
-            default_root_dir="${subtask_run_dir}/lightning/",
+            default_root_dir="${output_dir}/lightning/",
         ),
         name="base",
         group="trainer",

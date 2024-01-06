@@ -29,7 +29,7 @@ def store_mlp_config(store: ZenStore) -> None:
     )
 
 
-@dataclass(frozen=True)
+@dataclass
 class MLPConfig:
     """Holds :class:`MLP` config values.
 

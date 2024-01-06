@@ -9,18 +9,19 @@ best utilize them.
 """
 from dataclasses import dataclass, field
 from typing import Annotated as An
-from typing import Any
 
 from hydra.conf import HydraConf, JobConf, SweepDir
-from hydra.experimental.callbacks import LogJobReturnCallback
 from hydra.types import RunMode
 
 from cneuromax.utils.annotations import not_empty
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseSubtaskConfig:
-    """``subtask`` config.
+    """Base ``subtask`` config.
+
+    See :meth:`~.BaseTaskRunner.store_configs` to see how this config
+    is being stored.
 
     Args:
         output_dir: Path to the ``subtask`` output directory. Every\
@@ -41,18 +42,11 @@ OverrideDirname = JobConfig.OverrideDirname
 
 @dataclass
 class BaseHydraConfig(HydraConf):
-    """Base :mod:`hydra.conf.HydraConf` config."""
+    """Base :mod:`hydra.conf.HydraConf` config.
 
-    defaults: list[Any] = field(
-        default_factory=lambda: [
-            "_self_",
-            {"task": None},
-            *HydraConf.defaults,
-        ],
-    )
-    callbacks: dict[str, Any] = field(
-        default_factory=lambda: {"log_job_return": LogJobReturnCallback},
-    )
+    See :meth:`~.BaseTaskRunner.store_configs` to see how this config
+    is being stored.
+    """
 
     @dataclass
     class BaseHydraJobConfig(JobConf):
@@ -70,15 +64,14 @@ class BaseHydraConfig(HydraConf):
                 ),
             )
 
+    project_name: str = "project"
+    task_name: str = "task"
     job: BaseHydraJobConfig = field(default_factory=BaseHydraJobConfig)
     mode: RunMode = RunMode.MULTIRUN
-    searchpath: list[str] = field(
-        default_factory=lambda: ["file://${oc.env:CNEUROMAX_PATH}/cneuromax/"]
-    )
     sweep: SweepDir = field(
         default_factory=lambda: SweepDir(
-            dir=" ${oc.env:CNEUROMAX_PATH}/cneuromax/data/outputs/"
-            "${hydra.runtime.choices.task}/",
-            subdir="${hydra.sweep.subdir}",
+            dir="${oc.env:CNEUROMAX_PATH}/data/test/",
+            # "${hydra:project_name}/${hydra:task_name}",
+            subdir="${hydra:job.override_dirname}",
         ),
     )

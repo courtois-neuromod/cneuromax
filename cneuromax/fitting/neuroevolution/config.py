@@ -20,7 +20,7 @@ from cneuromax.fitting.config import FittingSubtaskConfig
 from cneuromax.utils.annotations import ge
 
 
-@dataclass(frozen=True)
+@dataclass
 class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     """Neuroevolution ``subtask`` config.
 

@@ -6,7 +6,7 @@ from typing import Annotated as An
 from cneuromax.utils.annotations import ge, le
 
 
-@dataclass(frozen=True)
+@dataclass
 class BaseAgentConfig:
     """Holds :class:`BaseAgent` config values.
 

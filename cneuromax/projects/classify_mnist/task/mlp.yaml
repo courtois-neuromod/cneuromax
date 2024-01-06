@@ -3,6 +3,7 @@ defaults:
   - /datamodule: classify_mnist
   - /litmodule: classify_mnist
   - /litmodule/nnmodule: mlp
+  - /trainer: base
   - override /hydra/launcher: submitit_local
   - _self_
 litmodule:

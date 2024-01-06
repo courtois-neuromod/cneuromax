@@ -13,7 +13,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
 from cneuromax.utils.annotations import ge, lt, one_of
 
 
-@dataclass(frozen=True)
+@dataclass
 class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
     """Configuration for :class:`MNISTClassificationDataModule`.
 
@@ -73,13 +73,13 @@ class MNISTClassificationDataModule(BaseDataModule):
                 train=True,
                 transform=self.transform,
             )
-            self.dataset.train, self.dataset.val = random_split(
+            self.datasets.train, self.datasets.val = random_split(
                 dataset=mnist_full,
                 lengths=self.train_val_split,
             )
 
         else:  # stage == "test":
-            self.dataset.test = MNIST(
+            self.datasets.test = MNIST(
                 root=self.config.data_dir,
                 train=False,
                 transform=self.transform,
