@@ -10,11 +10,10 @@ from cneuromax.fitting.config import (
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.deeplearning.utils.lightning import (
-    instantiate_logger_and_trainer,
+    instantiate_trainer_and_logger,
     set_batch_size_and_num_workers,
     set_checkpoint_path,
 )
-from cneuromax.utils.hydra import get_launcher_config
 
 
 def train(
@@ -44,23 +43,28 @@ def train(
     Returns:
         The final validation loss.
     """
-    return 1
-    launcher_config = get_launcher_config()
-    logger, trainer = instantiate_logger_and_trainer(
-        config,
-        launcher_config,
+    full_trainer, full_logger = instantiate_trainer_and_logger(
+        partial_trainer=trainer,
+        partial_logger=logger,
+        device=config.device,
     )
     """TODO: Add logic for HPO"""
     set_batch_size_and_num_workers(
-        config,
-        trainer,
-        datamodule,
+        trainer=full_trainer,
+        datamodule=datamodule,
+        litmodule=litmodule,
+        device=config.device,
+        data_dir=config.data_dir,
     )
-    ckpt_path = set_checkpoint_path(config, trainer)
-    trainer.fit(model=litmodule, datamodule=datamodule, ckpt_path=ckpt_path)
+    ckpt_path = set_checkpoint_path(trainer=full_trainer, config=config)
+    full_trainer.fit(
+        model=litmodule,
+        datamodule=datamodule,
+        ckpt_path=ckpt_path,
+    )
     """TODO: Add logic for HPO
     trainer.save_checkpoint(filepath=config.model_load_path)
     """
-    return trainer.validate(model=litmodule, datamodule=datamodule)[0][
+    return full_trainer.validate(model=litmodule, datamodule=datamodule)[0][
         "val/loss"
     ]

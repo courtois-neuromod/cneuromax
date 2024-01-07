@@ -3,21 +3,16 @@ import copy
 import logging
 import os
 import time
+from functools import partial
 from pathlib import Path
-from typing import Any
+from typing import Annotated as An
 
 import numpy as np
 import torch
-from hydra.utils import instantiate
-from hydra_plugins.hydra_submitit_launcher.config import (
-    LocalQueueConf,
-    SlurmQueueConf,
-)
 from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
     SlurmLauncher,
 )
 from lightning.pytorch import Trainer
-from lightning.pytorch.loggers import Logger
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
@@ -31,59 +26,60 @@ from cneuromax.fitting.config import (
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
-from cneuromax.utils.misc import get_launcher_config, get_path
+from cneuromax.utils.beartype import one_of
+from cneuromax.utils.hydra import get_launcher_config
+from cneuromax.utils.misc import get_path
 
 
-def instantiate_logger_and_trainer(
-    config: FittingSubtaskConfig,
-    launcher_config: LocalQueueConf | SlurmQueueConf,
-) -> tuple[Logger | None, Trainer, BaseDataModule, BaseLitModule]:
+def instantiate_trainer_and_logger(
+    partial_trainer: partial[Trainer],
+    partial_logger: partial[WandbLogger],
+    device: An[str, one_of("cpu", "gpu")],
+) -> tuple[Trainer, WandbLogger | None]:
     """Creates :mod:`lightning` instances.
 
     Args:
-        config: See :paramref:`.FittingSubtaskConfig`.
-        launcher_config: See :func:`.get_launcher_config`.
+        partial_trainer: See :class:`~lightning.pytorch.Trainer`.
+        partial_logger: See\
+            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
+        device: See :paramref:`~.FittingSubtaskConfig.device`.
 
     Returns:
-        The instantiated :mod:`lightning` instances.
+        * A :class:`~lightning.pytorch.Trainer` instance.
+        * A :class:`~lightning.pytorch.loggers.wandb.WandbLogger`\
+            instance or ``None``.
     """
-    logger: Logger | None
-    if config.logger._target_ == get_path(WandbLogger):  # noqa: SLF001
-        wandb_key_path = Path(
-            str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
+    launcher_config = get_launcher_config()
+    wandb_key_path = Path(
+        str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
+    )
+    if wandb_key_path.exists():
+        offline = launcher_config._target_ == get_path(  # noqa: SLF001
+            SlurmLauncher,
         )
-        if wandb_key_path.exists():
-            kwargs = {}
-            if launcher_config._target_ == get_path(  # noqa: SLF001
-                SlurmLauncher,
-            ):
-                kwargs["offline"] = True
-            logger = instantiate(config.logger, **kwargs)
-        else:
-            logging.info("W&B key not found. Logging disabled.")
-            logger = None
+        logger = partial_logger(offline=offline)
     else:
-        logger = instantiate(config.logger)
+        logging.info("W&B key not found. Logging disabled.")
+        logger = None
     callbacks = None
     if launcher_config._target_ == get_path(SlurmLauncher):  # noqa: SLF001
         callbacks = [TriggerWandbSyncLightningCallback()]
-    trainer: Trainer = instantiate(
-        config=config.trainer,
+    trainer = partial_trainer(
         devices=launcher_config.gpus_per_node or 1
-        if config.device == "gpu"
+        if device == "gpu"
         else launcher_config.tasks_per_node,
         logger=logger,
         callbacks=callbacks,
     )
-    datamodule: BaseDataModule = instantiate(config.datamodule)
-    litmodule: BaseLitModule = instantiate(config.litmodule)
-    return logger, trainer, datamodule, litmodule
+    return trainer, logger
 
 
 def set_batch_size_and_num_workers(
-    config: FittingSubtaskConfig,
     trainer: Trainer,
     datamodule: BaseDataModule,
+    litmodule: BaseLitModule,
+    device: An[str, one_of("cpu", "gpu")],
+    data_dir: str,
 ) -> None:
     """Sets attribute values for a :class:`~.BaseDataModule`.
 
@@ -92,27 +88,29 @@ def set_batch_size_and_num_workers(
     these variables' values are determined.
 
     Args:
-        config: See :paramref:`~.FittingSubtaskConfig`.
         trainer: See :class:`~lightning.pytorch.Trainer`.
         datamodule: See :class:`.BaseDataModule`.
+        litmodule: See :class:`.BaseLitModule`.
+        device: See :paramref:`~.FittingSubtaskConfig.device`.
+        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
     """
-    proposed_per_device_batch_size: int = find_good_per_device_batch_size(
-        litmodule=instantiate(config.litmodule),
-        datamodule=instantiate(config.datamodule),
-        device=config.device,
-        data_dir=config.data_dir,
+    proposed_per_device_batch_size = find_good_per_device_batch_size(
+        litmodule=litmodule,
+        datamodule=datamodule,
+        device=device,
+        data_dir=data_dir,
     )
-    proposed_per_device_num_workers: int = find_good_per_device_num_workers(
-        datamodule_config=config.datamodule,
+    proposed_per_device_num_workers = find_good_per_device_num_workers(
+        datamodule=datamodule,
         per_device_batch_size=proposed_per_device_batch_size,
     )
-    per_device_batch_size: int = int(
+    per_device_batch_size = int(
         trainer.strategy.reduce(
             torch.tensor(proposed_per_device_batch_size),
             reduce_op=ReduceOp.MIN,  # type: ignore [arg-type]
         ),
     )
-    per_device_num_workers: int = int(
+    per_device_num_workers = int(
         trainer.strategy.reduce(
             torch.tensor(proposed_per_device_num_workers),
             reduce_op=ReduceOp.MAX,  # type: ignore [arg-type]
@@ -155,8 +153,10 @@ def find_good_per_device_batch_size(
     Returns:
         A roughly optimal ``per_device_batch_size`` value.
     """
+    litmodule_copy = copy.deepcopy(litmodule)
+    datamodule_copy = copy.deepcopy(datamodule)
     launcher_config = get_launcher_config()
-    datamodule.per_device_num_workers = launcher_config.cpus_per_task or 1
+    datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task or 1
     trainer = Trainer(
         accelerator=device,
         devices=1,
@@ -166,8 +166,8 @@ def find_good_per_device_batch_size(
     tuner = Tuner(trainer=trainer)
     logging.info("Finding good `batch_size` parameter...")
     per_device_batch_size = tuner.scale_batch_size(
-        model=litmodule,
-        datamodule=datamodule,
+        model=litmodule_copy,
+        datamodule=datamodule_copy,
         mode="binsearch",
         batch_arg_name="per_device_batch_size",
     )
@@ -186,14 +186,15 @@ def find_good_per_device_batch_size(
         # Account for GPU memory discrepancies & ensure total batch size
         # is < 1% of the train dataloader size.
         int(per_device_batch_size * 0.9),
-        len(datamodule.train_dataloader()) // (100 * num_computing_devices),
+        len(datamodule_copy.train_dataloader())
+        // (100 * num_computing_devices),
     )
     logging.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
     return per_device_batch_size
 
 
 def find_good_per_device_num_workers(
-    datamodule_config: Any,  # noqa: ANN401
+    datamodule: BaseDataModule,
     per_device_batch_size: int,
     max_num_data_passes: int = 100,
 ) -> int:
@@ -204,8 +205,7 @@ def find_good_per_device_num_workers(
     returning the value that yields the shortest time.
 
     Args:
-        datamodule_config: See\
-            :paramref:`.FittingSubtaskConfig.datamodule`.
+        datamodule: See :class:`.BaseDataModule`.
         per_device_batch_size: The return value of\
             :func:`find_good_per_device_batch_size`.
         max_num_data_passes: Maximum number of data passes to iterate\
@@ -221,15 +221,15 @@ def find_good_per_device_num_workers(
         return 0
     times = []
     for num_workers in range(launcher_config.cpus_per_task or 1 + 1):
-        datamodule: BaseDataModule = instantiate(datamodule_config)
-        datamodule.per_device_batch_size = per_device_batch_size
-        datamodule.per_device_num_workers = num_workers
-        datamodule.prepare_data()
-        datamodule.setup("fit")
+        datamodule_copy = copy.deepcopy(datamodule)
+        datamodule_copy.per_device_batch_size = per_device_batch_size
+        datamodule_copy.per_device_num_workers = num_workers
+        datamodule_copy.prepare_data()
+        datamodule_copy.setup("fit")
         start_time = time.time()
         num_data_passes = 0
         while num_data_passes < max_num_data_passes:
-            for _ in datamodule.train_dataloader():
+            for _ in datamodule_copy.train_dataloader():
                 num_data_passes += 1
                 if num_data_passes == max_num_data_passes:
                     break
@@ -243,8 +243,8 @@ def find_good_per_device_num_workers(
 
 
 def set_checkpoint_path(
-    config: FittingSubtaskConfig,  # noqa: ARG001
     trainer: Trainer,  # noqa: ARG001
+    config: FittingSubtaskConfig,  # noqa: ARG001
 ) -> str | None:
     """Sets the path to the checkpoint to resume training from.
 

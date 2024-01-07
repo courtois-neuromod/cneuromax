@@ -1,5 +1,5 @@
-""":class:`FittingSubtaskConfig` + its config."""
-from dataclasses import dataclass, field
+""":class:`FittingSubtaskConfig`."""
+from dataclasses import dataclass
 from typing import Annotated as An
 
 from cneuromax.config import BaseSubtaskConfig  # , BaseTaskConfig
@@ -22,15 +22,3 @@ class FittingSubtaskConfig(BaseSubtaskConfig):
 
     device: An[str, one_of("cpu", "gpu")] = "cpu"
     copy_data_commands: list[str] | None = None
-
-
-# class FittingTaskConfig(BaseTaskConfig):
-#     """Fitting ``task`` config.
-
-#     Args:
-#         config: See :class:`FittingSubtaskConfig`.
-#     """
-
-#     config: FittingSubtaskConfig = field(
-#         default_factory=FittingSubtaskConfig,
-#     )

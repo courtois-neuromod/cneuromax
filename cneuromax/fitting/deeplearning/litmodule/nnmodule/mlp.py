@@ -1,32 +1,13 @@
-""":class:`MLP` + its config dataclass & config storing function."""
+""":class:`MLP` + its config dataclass."""
 from dataclasses import dataclass
 from typing import Annotated as An
 
 from einops import rearrange
-from hydra_zen import ZenStore
 from jaxtyping import Float
 from omegaconf import MISSING
 from torch import Tensor, nn
 
 from cneuromax.utils.beartype import ge, lt
-from cneuromax.utils.hydra_zen import fs_builds
-
-
-def store_mlp_config(store: ZenStore) -> None:
-    """Stores name ``mlp`` in :mod:`hydra-core` config store.
-
-    Config group: ``litmodule/nnmodule``.
-
-    Config name: ``mlp``.
-
-    Args:
-        store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
-    """
-    store(
-        fs_builds(MLP, config=MLPConfig()),
-        name="mlp",
-        group="litmodule/nnmodule",
-    )
 
 
 @dataclass
@@ -85,8 +66,11 @@ class MLP(nn.Module):
         """Flattens input's dimensions and passes it through the model.
 
         Note:
-            This MLP is only capable of returning 1D\
+            This MLP is currently only capable of returning 1D\
                 :class:`torch.Tensor` batches.
+
+        TODO: Add support for returning 2D+ :class:`torch.Tensor`\
+        batches.
 
         Args:
             x: The input data batch.
