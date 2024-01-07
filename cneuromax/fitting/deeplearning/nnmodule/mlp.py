@@ -8,8 +8,8 @@ from jaxtyping import Float
 from omegaconf import MISSING
 from torch import Tensor, nn
 
-from cneuromax.utils.annotations import ge, lt
-from cneuromax.utils.zen import fs_builds
+from cneuromax.utils.beartype import ge, lt
+from cneuromax.utils.hydra_zen import fs_builds
 
 
 def store_mlp_config(store: ZenStore) -> None:

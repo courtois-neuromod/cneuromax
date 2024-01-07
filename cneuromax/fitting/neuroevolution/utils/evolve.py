@@ -16,8 +16,8 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Exchange_and_mutate_info_batch_type,
     Fitnesses_and_num_env_steps_batch_type,
 )
-from cneuromax.utils.annotations import ge
-from cneuromax.utils.mpi import retrieve_mpi_variables
+from cneuromax.utils.beartype import ge
+from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
 def mutate(

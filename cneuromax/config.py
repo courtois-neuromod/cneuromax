@@ -1,4 +1,4 @@
-""":class:`.BaseSubtaskConfig` & :class:`.BaseHydraConfig`.
+""":class:`BaseSubtaskConfig` & :class:`BaseHydraConfig`.
 
 Check-out the `hydra docs \
 <https://hydra.cc/docs/tutorials/structured_config/intro/>`_
@@ -6,22 +6,27 @@ Check-out the `hydra docs \
 <https://omegaconf.readthedocs.io/en/2.1_branch/structured_config.html>`_
 for more information on how structured configurations work and how to
 best utilize them.
+
+This module also makes use of :func:`hydra_zen.make_config` to
+simplify config creation (`reference \
+<https://mit-ll-responsible-ai.github.io/hydra-zen/generated/\
+hydra_zen.make_config.html>`_).
 """
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Annotated as An
 
-from hydra.conf import HydraConf, JobConf, SweepDir
-from hydra.types import RunMode
+from hydra import conf as hc
+from hydra import types as ht
+from hydra.experimental.callbacks import LogJobReturnCallback
+from hydra_zen import make_config
 
-from cneuromax.utils.annotations import not_empty
+from cneuromax.utils.beartype import not_empty
+from cneuromax.utils.hydra_zen import fs_builds
 
 
 @dataclass
 class BaseSubtaskConfig:
     """Base ``subtask`` config.
-
-    See :meth:`~.BaseTaskRunner.store_configs` to see how this config
-    is being stored.
 
     Args:
         output_dir: Path to the ``subtask`` output directory. Every\
@@ -36,42 +41,25 @@ class BaseSubtaskConfig:
     data_dir: An[str, not_empty()] = "${oc.env:CNEUROMAX_PATH}/data/"
 
 
-JobConfig = JobConf.JobConfig
-OverrideDirname = JobConfig.OverrideDirname
-
-
 @dataclass
-class BaseHydraConfig(HydraConf):
-    """Base :mod:`hydra.conf.HydraConf` config.
-
-    See :meth:`~.BaseTaskRunner.store_configs` to see how this config
-    is being stored.
-    """
-
-    @dataclass
-    class BaseHydraJobConfig(JobConf):
-        """Base :mod:`hydra.conf.HydraConf` job config."""
-
-        @dataclass
-        class BaseHydraJobConfigConfig(JobConfig):
-            """Base :mod:`hydra.conf.HydraConf` job config's config."""
-
-            override_dirname: OverrideDirname = field(
-                default_factory=lambda: OverrideDirname(
+class BaseHydraConfig(
+    make_config(  # type: ignore[misc]
+        bases=(hc.HydraConf,),
+        callbacks={"log_job_return": fs_builds(LogJobReturnCallback)},
+        job=hc.JobConf(
+            config=hc.JobConf.JobConfig(
+                override_dirname=hc.JobConf.JobConfig.OverrideDirname(
                     kv_sep=".",
                     item_sep="~",
                     exclude_keys=["task"],
                 ),
-            )
-
-    project_name: str = "project"
-    task_name: str = "task"
-    job: BaseHydraJobConfig = field(default_factory=BaseHydraJobConfig)
-    mode: RunMode = RunMode.MULTIRUN
-    sweep: SweepDir = field(
-        default_factory=lambda: SweepDir(
+            ),
+        ),
+        mode=ht.RunMode.MULTIRUN,
+        sweep=hc.SweepDir(
             dir="${oc.env:CNEUROMAX_PATH}/data/test/",
-            # "${hydra:project_name}/${hydra:task_name}",
             subdir="${hydra:job.override_dirname}",
         ),
-    )
+    ),
+):
+    """Base :mod:`hydra.conf.HydraConf` config."""

@@ -3,7 +3,7 @@ from typing import Annotated as An
 
 from mpi4py import MPI
 
-from cneuromax.utils.annotations import ge
+from cneuromax.utils.beartype import ge
 
 
 def retrieve_mpi_variables() -> (

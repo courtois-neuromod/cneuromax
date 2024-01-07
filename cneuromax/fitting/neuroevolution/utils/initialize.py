@@ -15,9 +15,9 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Generation_results_batch_type,
     Generation_results_type,
 )
-from cneuromax.utils.annotations import ge, le
+from cneuromax.utils.beartype import ge, le
 from cneuromax.utils.hydra import get_launcher_config
-from cneuromax.utils.mpi import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
 def initialize_common_variables(

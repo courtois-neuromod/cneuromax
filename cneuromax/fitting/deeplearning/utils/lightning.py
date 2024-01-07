@@ -26,22 +26,22 @@ from lightning.pytorch.tuner.tuning import Tuner
 from torch.distributed import ReduceOp
 from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
-from cneuromax.fitting.deeplearning.config import (
-    DeepLearningSubtaskConfig,
+from cneuromax.fitting.config import (
+    FittingSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
-from cneuromax.utils.hydra import get_launcher_config, get_path
+from cneuromax.utils.misc import get_launcher_config, get_path
 
 
 def instantiate_logger_and_trainer(
-    config: DeepLearningSubtaskConfig,
+    config: FittingSubtaskConfig,
     launcher_config: LocalQueueConf | SlurmQueueConf,
 ) -> tuple[Logger | None, Trainer, BaseDataModule, BaseLitModule]:
     """Creates :mod:`lightning` instances.
 
     Args:
-        config: See :paramref:`.DeepLearningSubtaskConfig`.
+        config: See :paramref:`.FittingSubtaskConfig`.
         launcher_config: See :func:`.get_launcher_config`.
 
     Returns:
@@ -81,7 +81,7 @@ def instantiate_logger_and_trainer(
 
 
 def set_batch_size_and_num_workers(
-    config: DeepLearningSubtaskConfig,
+    config: FittingSubtaskConfig,
     trainer: Trainer,
     datamodule: BaseDataModule,
 ) -> None:
@@ -92,7 +92,7 @@ def set_batch_size_and_num_workers(
     these variables' values are determined.
 
     Args:
-        config: See :paramref:`~.DeepLearningSubtaskConfig`.
+        config: See :paramref:`~.FittingSubtaskConfig`.
         trainer: See :class:`~lightning.pytorch.Trainer`.
         datamodule: See :class:`.BaseDataModule`.
     """
@@ -205,7 +205,7 @@ def find_good_per_device_num_workers(
 
     Args:
         datamodule_config: See\
-            :paramref:`.DeepLearningSubtaskConfig.datamodule`.
+            :paramref:`.FittingSubtaskConfig.datamodule`.
         per_device_batch_size: The return value of\
             :func:`find_good_per_device_batch_size`.
         max_num_data_passes: Maximum number of data passes to iterate\
@@ -243,7 +243,7 @@ def find_good_per_device_num_workers(
 
 
 def set_checkpoint_path(
-    config: DeepLearningSubtaskConfig,  # noqa: ARG001
+    config: FittingSubtaskConfig,  # noqa: ARG001
     trainer: Trainer,  # noqa: ARG001
 ) -> str | None:
     """Sets the path to the checkpoint to resume training from.
@@ -251,7 +251,7 @@ def set_checkpoint_path(
     TODO: Implement.
 
     Args:
-        config: See :paramref:`~.DeepLearningSubtaskConfig`.
+        config: See :paramref:`~.FittingSubtaskConfig`.
         trainer: See :class:`~lightning.pytorch.Trainer`.
 
     Returns:

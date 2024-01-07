@@ -1,6 +1,3 @@
-..
-   Modified from https://github.com/sphinx-doc/sphinx/blob/master/sphinx/ext/autosummary/templates/autosummary/module.rst
-
 {{ name | escape | underline}}
 
 .. automodule:: {{ fullname }}

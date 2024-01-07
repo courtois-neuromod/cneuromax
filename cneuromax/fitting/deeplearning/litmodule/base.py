@@ -10,7 +10,7 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuromax.utils.annotations import one_of
+from cneuromax.utils.beartype import one_of
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):

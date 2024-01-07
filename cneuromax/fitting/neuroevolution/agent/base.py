@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
 
-from cneuromax.utils.annotations import ge, le
+from cneuromax.utils.beartype import ge, le
 
 
 @dataclass

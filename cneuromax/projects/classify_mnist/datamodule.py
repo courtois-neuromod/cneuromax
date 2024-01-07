@@ -10,7 +10,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from cneuromax.utils.annotations import ge, lt, one_of
+from cneuromax.utils.beartype import ge, lt, one_of
 
 
 @dataclass

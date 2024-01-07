@@ -10,7 +10,7 @@ from torchrl.envs import EnvBase, GymEnv
 
 from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
-from cneuromax.utils.annotations import ge
+from cneuromax.utils.beartype import ge
 
 
 class BaseImitationTarget(metaclass=ABCMeta):

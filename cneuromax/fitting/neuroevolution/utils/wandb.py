@@ -2,7 +2,7 @@
 import wandb
 from wandb.util import generate_id
 
-from cneuromax.utils.mpi import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
 def setup_wandb(entity: None | str) -> None:

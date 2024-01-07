@@ -7,11 +7,10 @@ import sys
 from abc import ABC, abstractmethod
 from typing import Any, ClassVar, final
 
-from hydra.experimental.callbacks import LogJobReturnCallback
 from hydra_zen import ZenStore, zen
 
-from cneuromax.config import BaseHydraConfig, BaseSubtaskConfig
-from cneuromax.utils.zen import fs_builds
+from cneuromax.config import BaseHydraConfig  # , BaseTaskConfig
+from cneuromax.utils.hydra_zen import destructure
 
 
 class BaseTaskRunner(ABC):
@@ -28,17 +27,14 @@ class BaseTaskRunner(ABC):
             utilized in the ``service`` :meth:`store_configs` method.
         hydra_config: The structured :class:`hydra.HydraConf` config\
             used during the ``task`` execution.
-        subtask_config: The structured :class:`.BaseSubtaskConfig`\
-            config used during the ``subtask`` execution.
+        task_config: The structured ``task`` config.
     """
 
     task_config_name: ClassVar[str] = "config"
     task_config_path: ClassVar[str] = (
         sys.argv[0].rsplit("/", maxsplit=1)[0] + "/"
     )
-    task_hydra_defaults: ClassVar[list[Any]] = ["_self_", {"task": None}]
-    hydra_config: type[BaseHydraConfig] = BaseHydraConfig
-    subtask_config: type[BaseSubtaskConfig] = BaseSubtaskConfig
+    hydra_config = BaseHydraConfig
 
     @final
     @classmethod
@@ -50,8 +46,10 @@ class BaseTaskRunner(ABC):
                 method.
         """
         store = ZenStore()
+        store(cls.hydra_config, name="config", group="hydra")
+        store = store(to_config=destructure)
         cls.store_configs(store)
-        store.add_to_hydra_store()
+        store.add_to_hydra_store(overwrite_ok=True)
         zen(cls.run_subtask).hydra_main(
             config_path=cls.task_config_path,
             config_name=cls.task_config_name,
@@ -63,10 +61,6 @@ class BaseTaskRunner(ABC):
     def store_configs(cls: type["BaseTaskRunner"], store: ZenStore) -> None:
         """Stores structured configs.
 
-        .. warning::
-
-                Make sure to call this method if you are overriding it.
-
         Stores the :class:`hydra.HydraConf` config.
 
         Args:
@@ -74,13 +68,6 @@ class BaseTaskRunner(ABC):
             store: A :class:`hydra_zen.ZenStore` instance that manages\
                 the :mod:`hydra-core` configuration store.
         """
-        store(
-            cls.hydra_config(
-                callbacks={"log_job_return": fs_builds(LogJobReturnCallback)},
-            ),
-            name="config",
-            group="hydra",
-        )
 
     @staticmethod
     @abstractmethod

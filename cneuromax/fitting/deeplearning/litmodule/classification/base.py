@@ -13,7 +13,7 @@ from torch.optim.lr_scheduler import LRScheduler
 from torchmetrics.classification import MulticlassAccuracy
 
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
-from cneuromax.utils.annotations import ge, one_of
+from cneuromax.utils.beartype import ge, one_of
 
 
 @dataclass

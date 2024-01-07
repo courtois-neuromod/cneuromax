@@ -10,8 +10,8 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Generation_results_batch_type,
     Generation_results_type,
 )
-from cneuromax.utils.annotations import ge
-from cneuromax.utils.mpi import retrieve_mpi_variables
+from cneuromax.utils.beartype import ge
+from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
 def load_state(

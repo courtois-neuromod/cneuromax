@@ -4,13 +4,13 @@ from functools import partial
 from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
-from cneuromax.fitting.deeplearning.config import (
-    DeepLearningSubtaskConfig,
+from cneuromax.fitting.config import (
+    FittingSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.deeplearning.utils.lightning import (
-    instantiate_lightning_objects,
+    instantiate_logger_and_trainer,
     set_batch_size_and_num_workers,
     set_checkpoint_path,
 )
@@ -22,7 +22,7 @@ def train(
     logger: partial[WandbLogger],
     datamodule: BaseDataModule,
     litmodule: BaseLitModule,
-    config: DeepLearningSubtaskConfig,
+    config: FittingSubtaskConfig,
 ) -> float:
     """Trains a Deep Neural Network.
 
@@ -39,11 +39,12 @@ def train(
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
-        config: See :paramref:`~.DeepLearningSubtaskConfig`.
+        config: See :paramref:`~.FittingSubtaskConfig`.
 
     Returns:
         The final validation loss.
     """
+    return 1
     launcher_config = get_launcher_config()
     logger, trainer = instantiate_logger_and_trainer(
         config,

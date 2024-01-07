@@ -34,7 +34,7 @@ from cneuromax.fitting.neuroevolution.utils.validate import (
     validate_space,
 )
 from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
-from cneuromax.utils.mpi import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
 def fit(config: NeuroevolutionSubtaskConfig) -> None:

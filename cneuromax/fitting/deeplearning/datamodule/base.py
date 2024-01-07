@@ -8,7 +8,7 @@ from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-from cneuromax.utils.annotations import not_empty, one_of
+from cneuromax.utils.beartype import not_empty, one_of
 
 
 @dataclass
@@ -37,8 +37,8 @@ class BaseDataModuleConfig:
         device: See :paramref:`~.FittingSubtaskConfig.device`.
     """
 
-    data_dir: An[str, not_empty()] = "${data_dir}"
-    device: An[str, one_of("cpu", "gpu")] = "${device}"
+    data_dir: An[str, not_empty()] = "${config.data_dir}"
+    device: An[str, one_of("cpu", "gpu")] = "${config.device}"
 
 
 class BaseDataModule(LightningDataModule, metaclass=ABCMeta):

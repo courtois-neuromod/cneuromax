@@ -1,19 +1,11 @@
-""":mod:`hydra-zen` utilities."""
+r"""Global :mod:`hydra-core` config storing."""
 from collections.abc import Callable
 from typing import Any
 
-from hydra_zen import ZenStore, make_custom_builds_fn
+from hydra_zen import ZenStore
 from omegaconf import MISSING
 
-fs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
-    populate_full_signature=True,
-    hydra_convert="partial",
-)
-pfs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
-    zen_partial=True,
-    populate_full_signature=True,
-    hydra_convert="partial",
-)
+from cneuromax.utils.hydra_zen import pfs_builds
 
 
 def store_wandb_logger_configs(
@@ -28,19 +20,18 @@ def store_wandb_logger_configs(
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         clb: :mod:`wandb` initialization callable.
     """
-    return
     base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
-        "name": "{hydra:task_name}",
-        "save_dir": "${data_dir}",
-        "project": "{hydra:project_name}",
+        "name": "name",
+        "save_dir": "${config.data_dir}",
+        "project": "project",
     }
     store(
-        fs_builds(clb, **base_args, entity=MISSING),
+        pfs_builds(clb, **base_args, entity=MISSING),
         group="logger",
         name="wandb",
     )
     store(
-        fs_builds(clb, **base_args, entity="cneuroml"),
+        pfs_builds(clb, **base_args, entity="cneuroml"),
         group="logger",
         name="wandb_simexp",
     )

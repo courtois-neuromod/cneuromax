@@ -9,7 +9,7 @@ from numpy.typing import NDArray
 from cneuromax.fitting.neuroevolution.agent.singular import (
     BaseSingularAgent,
 )
-from cneuromax.utils.annotations import ge, le
+from cneuromax.utils.beartype import ge, le
 
 
 @dataclass

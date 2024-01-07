@@ -6,10 +6,11 @@ Terminology
 1. Quck definitions
 ~~~~~~~~~~~~~~~~~~~
 
-**Task**: Some work unit specified by a :mod:`hydra-core`
-config ``.yaml`` file that specifies its execution.
+**Task**: Some work unit specified by a :mod:`hydra-core` config
+``.yaml`` file or a :mod:`hydra-zen` Python function that specifies
+its execution.
 
-**Sub Task**: Some pure Python sub-work unit of a ``task``.
+**Subtask**: Some pure Python sub-work unit of a ``task``.
 
 **Project**: A collection of ``tasks`` + cross-``task``
 functionality (ex: a custom :mod:`lightning` ``datamodule``).
@@ -49,13 +50,12 @@ To create ``INTERFACE_NAME`` at path
 ``cneuromax/.../PARENT_INTERFACE_NAME/INTERFACE_NAME``, create a class
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
 by ``PARENT_INTERFACE_NAME``. Feel free to also override
-:attr:`.BaseTaskRunner.hydra_config`,
-:attr:`.BaseTaskRunner.subtask_config` & implement
+:attr:`.BaseTaskRunner.hydra_config` & implement
 :meth:`.BaseTaskRunner.store_configs`.
 
 .. warning::
 
-    Make sure to call the parent method if your interface is nested.
+    Make sure to call the parent method if your ``interface`` is nested.
 
 Example: :class:`cneuromax.fitting.runner.FittingTaskRunner`.
 
@@ -90,8 +90,7 @@ To create ``SERVICE_NAME`` at path
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
 by ``LATEST_INTERFACE_NAME`` and implement as little as
 :meth:`.BaseTaskRunner.run_subtask`. Feel free to also override
-:attr:`.BaseTaskRunner.hydra_config`,
-:attr:`.BaseTaskRunner.subtask_config` & implement
+:attr:`.BaseTaskRunner.hydra_config` & implement
 :meth:`.BaseTaskRunner.store_configs`.
 
 Example:\
@@ -120,8 +119,7 @@ To create ``PROJECT_NAME`` at path
 ``cneuromax/projects/PROJECT_NAME/``, create a class in ``__main__.py``
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
 by the ``service`` of your choice. Feel free to override
-:attr:`.BaseTaskRunner.hydra_config`,
-:attr:`.BaseTaskRunner.subtask_config` & implement
+:attr:`.BaseTaskRunner.hydra_config` & implement
 :meth:`.BaseTaskRunner.store_configs`.
 
 Finally make sure to add a ``__main__.py`` file to your ``project``

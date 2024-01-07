@@ -17,7 +17,7 @@ from typing import Any
 from omegaconf import MISSING
 
 from cneuromax.fitting.config import FittingSubtaskConfig
-from cneuromax.utils.annotations import ge
+from cneuromax.utils.beartype import ge
 
 
 @dataclass
