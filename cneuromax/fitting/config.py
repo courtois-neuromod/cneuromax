@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Annotated as An
 
-from cneuromax.config import BaseSubtaskConfig  # , BaseTaskConfig
+from cneuromax.config import BaseSubtaskConfig
 from cneuromax.utils.beartype import one_of
 
 

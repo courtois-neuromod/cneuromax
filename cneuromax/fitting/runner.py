@@ -1,11 +1,13 @@
 """:class:`FittingTaskRunner`."""
+from abc import ABC
+
 from hydra_zen import ZenStore
 
 from cneuromax.fitting.store import store_launcher_configs
 from cneuromax.runner import BaseTaskRunner
 
 
-class FittingTaskRunner(BaseTaskRunner):
+class FittingTaskRunner(BaseTaskRunner, ABC):
     """Fitting ``task`` runner.
 
     Attr:
