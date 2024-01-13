@@ -39,7 +39,7 @@ dependencies = [
     "sphinx-copybutton==0.5.2",
     "sphinx-autoapi==3.0.0",
     "sphinx-paramlinks==0.6.0",
-    "esbonio==0.16.3",
+    "esbonio==0.16.4",
     # Jupyter
     "jupyterlab==4.0.10",
     "jupyterlab-code-formatter==2.2.1",
