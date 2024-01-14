@@ -30,7 +30,7 @@ from cneuromax.store import store_wandb_logger_configs
 class DeepLearningTaskRunner(FittingTaskRunner):
     """Deep Learning ``task`` runner.
 
-    Attr:
+    Attributes:
         subtask_config: See :attr:`~.BaseTaskRunner.subtask_config`.
     """
 
@@ -56,7 +56,11 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         store_basic_scheduler_configs(store)
         store_mlp_config(store)
         store_basic_trainer_config(store)
-        store_wandb_logger_configs(store, clb=WandbLogger)
+        store_wandb_logger_configs(
+            store,
+            clb=WandbLogger,
+            project=cls.task_config_path,
+        )
         store(DeepLearningTaskConfig, name="config")
 
     @classmethod

@@ -6,20 +6,23 @@ Terminology
 1. Quck definitions
 ~~~~~~~~~~~~~~~~~~~
 
-**Task**: Some work unit specified by a :mod:`hydra-core` config
-``.yaml`` file or a :mod:`hydra-zen` Python function that specifies
-its execution.
+``subtask``: Sub-work unit of a ``task`` (ex: a model training run
+with a specific set of hyper-parameters).
 
-**Subtask**: Some pure Python sub-work unit of a ``task``.
+``task``: Some work unit specified by a :mod:`hydra-core` config
+``.yaml`` file or a :mod:`hydra-zen` Python config that specifies
+its execution (ex: the training of a range of models with various
+hyper-parameters).
 
-**Project**: A collection of ``tasks`` + cross-``task``
+``project``: A collection of ``tasks`` + cross-``task``
 functionality (ex: a custom :mod:`lightning` ``datamodule``).
 
-**Service**: Contains cross-``project`` functionality (ex: base
+``service``: Contains cross-``project`` functionality (ex: base
 :mod:`lightning` sub-classes).
 
-**Interface**: Contains cross-``service`` functionality (ex: the
+``interface``: Contains cross-``service`` functionality (ex:
 :mod:`hydra-core` base configs).
+
 
 2. Interface
 ~~~~~~~~~~~~
@@ -32,12 +35,12 @@ An ``interface`` refers to a Python package located at
 
 .. note::
 
-    Interfaces can be nested, ex: :mod:`cneuromax.fitting`.
+    Interfaces can be nested, ex: :mod:`cneuromax.serving`.
 
 b. Example interfaces
 ---------------------
 
-Base interface: :mod:`cneuromax` (`source folder <https://github.com/\
+Root interface: :mod:`cneuromax` (`source folder <https://github.com/\
 courtois-neuromod/cneuromax/tree/main/cneuromax/>`_)
 
 Fitting: :mod:`cneuromax.fitting` (`source folder <https://github.com/\
@@ -49,15 +52,8 @@ c. Creating a new interface
 To create ``INTERFACE_NAME`` at path
 ``cneuromax/.../PARENT_INTERFACE_NAME/INTERFACE_NAME``, create a class
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
-by ``PARENT_INTERFACE_NAME``. Feel free to also override
-:attr:`.BaseTaskRunner.hydra_config` & implement
-:meth:`.BaseTaskRunner.store_configs`.
-
-.. warning::
-
-    Make sure to call the parent method if your ``interface`` is nested.
-
-Example: :class:`cneuromax.fitting.runner.FittingTaskRunner`.
+by ``PARENT_INTERFACE_NAME`` (ex:
+:class:`cneuromax.fitting.runner.FittingTaskRunner`).
 
 3. Service
 ~~~~~~~~~~
@@ -86,15 +82,11 @@ c. Creating a new service
 -------------------------
 
 To create ``SERVICE_NAME`` at path
-``cneuromax/.../LATEST_INTERFACE_NAME/SERVICE_NAME``, create a class
+``cneuromax/.../INTERFACE_LATEST_NAME/SERVICE_NAME``, create a class
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
-by ``LATEST_INTERFACE_NAME`` and implement as little as
-:meth:`.BaseTaskRunner.run_subtask`. Feel free to also override
-:attr:`.BaseTaskRunner.hydra_config` & implement
-:meth:`.BaseTaskRunner.store_configs`.
-
-Example:\
- :class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`.
+by ``INTERFACE_LATEST_NAME`` and implement as little as
+:meth:`.BaseTaskRunner.run_subtask` (ex:
+:class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
 
 4. Project
 ~~~~~~~~~~
@@ -105,12 +97,16 @@ a. Project overview
 A ``project`` refers to a Python package located at
 ``cneuromax/projects/PROJECT_NAME/``.
 
-b. Example project
-------------------
+b. Example projects
+-------------------
 
 MNIST classification: :mod:`cneuromax.projects.classify_mnist` (`source
 folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
 cneuromax/projects/classify_mnist>`_)
+
+Control tasks neuroevolution: :mod:`cneuromax.projects.control_nevo`
+(`source folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
+cneuromax/projects/control_nevo>`_)
 
 c. Creating a new project
 -------------------------
@@ -118,12 +114,22 @@ c. Creating a new project
 To create ``PROJECT_NAME`` at path
 ``cneuromax/projects/PROJECT_NAME/``, create a class in ``__main__.py``
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
-by the ``service`` of your choice. Feel free to override
-:attr:`.BaseTaskRunner.hydra_config` & implement
+by the ``service`` of your choice  (ex:
+:class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
+You probabaly will want to override/implement
 :meth:`.BaseTaskRunner.store_configs`.
 
-Finally make sure to add a ``__main__.py`` file to your ``project``
-directory as ``projects`` are the entrypoint to executing ``tasks``.
+For succinctness (will reduce your command length), we suggest writing
+the above class in the ``__init__.py`` file of your ``project``
+directory and adding a ``__main__.py`` of the form:
+
+.. highlight:: python
+.. code-block:: python
+
+    from cneuromax.projects.PROJECT_NAME import TaskRunner
+
+    if __name__ == "__main__":
+        TaskRunner.store_configs_and_run_task()
 
 Check-out ``cneuromax.projects.classify_mnist.__main__.py`` as an
 `example <https://github.com/courtois-neuromod/cneuromax/tree/main/\
@@ -137,25 +143,33 @@ a. Task overview
 
 A ``task`` is a work unit specified by a :mod:`hydra-core` configuration
 ``.yaml`` file located in
-``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml``.
+``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` or a
+:mod:`hydra-zen` Python config that specifies its execution.
 
-Can be executed with the following command:
+Can be executed with the following command (if using a ``__main__.py``
+file)
 
 ``python -m cneuromax.projects.PROJECT_NAME task=TASK_NAME``.
 
-b. Example task
----------------
+b. Example tasks
+----------------
 
 MLP MNIST classification: ``cneuromax/projects/classify_mnist/task/\
 mlp.yaml`` (`source file <https://github.com/courtois-neuromod/cneuromax/\
 tree/main/cneuromax/projects/classify_mnist/task/mlp.yaml>`_)
+
+Acrobot neuroevolution: Check out the contents of
+:func:`cneuromax.projects.control_nevo.TaskRunner.store_configs`.
 
 c. Creating a new task
 ----------------------
 
 Create ``TASK_NAME.yaml`` at path
 ``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` and include
-as little as ``# @package _global_`` at the top of the file.
+``# @package _global_`` at the top of the file (as shown
+in the first above example). Otherwise, you can create a
+:mod:`hydra-zen` Python config that specifies its execution (as shown
+in the second above example).
 """
 import warnings
 

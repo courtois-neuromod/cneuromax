@@ -10,7 +10,7 @@ from cneuromax.runner import BaseTaskRunner
 class FittingTaskRunner(BaseTaskRunner, ABC):
     """Fitting ``task`` runner.
 
-    Attr:
+    Attributes:
         subtask_config: See :attr:`~.BaseTaskRunner.subtask_config`.
     """
 

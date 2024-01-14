@@ -33,8 +33,8 @@ class BaseSubtaskConfig:
             artifact generated during the ``subtask`` will be stored\
             in this directory.
         data_dir: Path to the data directory. This directory is\
-            shared between :mod:`cneuromax` ``task`` runs. It is used\
-            to store datasets, pre-trained models, etc.
+            shared between ``task`` runs. It is used to store\
+            datasets, pre-trained models, etc.
     """
 
     output_dir: An[str, not_empty()] = "${hydra:runtime.output_dir}"

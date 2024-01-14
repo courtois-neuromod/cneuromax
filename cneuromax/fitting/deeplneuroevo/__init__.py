@@ -1,2 +1,2 @@
-"""Deep Learning + Neuroevolution Fitting Module"""
+"""Deep Learning + Neuroevolution."""
 pass

@@ -1,4 +1,4 @@
-r"""Global :mod:`hydra-core` config storing."""
+r""":mod:`cneuromax`\-wide :mod:`hydra-core` config storing."""
 from collections.abc import Callable
 from typing import Any
 
@@ -11,6 +11,7 @@ from cneuromax.utils.hydra_zen import pfs_builds
 def store_wandb_logger_configs(
     store: ZenStore,
     clb: Callable[..., Any],
+    project: str,
 ) -> None:
     """Stores :mod:`hydra-core` ``logger`` group configs.
 
@@ -19,11 +20,12 @@ def store_wandb_logger_configs(
     Args:
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         clb: :mod:`wandb` initialization callable.
+        project: The :mod:`wandb` project name.
     """
     base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
-        "name": "name",
+        "name": "${task}",
         "save_dir": "${config.data_dir}",
-        "project": "project",
+        "project": project,
     }
     store(
         pfs_builds(clb, **base_args, entity=MISSING),

@@ -1,7 +1,10 @@
 """:func:`fit`."""
+from functools import partial
+
 import wandb
 from hydra.utils import instantiate
 
+from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
 )
@@ -37,7 +40,11 @@ from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
 from cneuromax.utils.mpi4py import retrieve_mpi_variables
 
 
-def fit(config: NeuroevolutionSubtaskConfig) -> None:
+def evolve(
+    space: BaseSpace,
+    agent: partial[BaseAgent],
+    config: NeuroevolutionSubtaskConfig,
+) -> None:
     """Fitting function for Neuroevolution algorithms.
 
     This function is the main entry point of the Neuroevolution module.
@@ -53,7 +60,6 @@ def fit(config: NeuroevolutionSubtaskConfig) -> None:
         config: See :paramref:`~.post_process_base_config.config`.
     """
     comm, _, _ = retrieve_mpi_variables()
-    space: BaseSpace = instantiate(config=config.space)
     validate_space(space=space, pop_merge=config.pop_merge)
     save_points = compute_save_points(
         prev_num_gens=config.prev_num_gens,
@@ -86,7 +92,7 @@ def fit(config: NeuroevolutionSubtaskConfig) -> None:
         )
     else:
         agents_batch = initialize_agents(
-            config=config.agent,
+            agent=agent,
             len_agents_batch=len_agents_batch,
             num_pops=space.num_pops,
             pop_merge=config.pop_merge,

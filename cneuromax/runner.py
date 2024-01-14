@@ -1,9 +1,4 @@
-""":class:`BaseTaskRunner`.
-
-Check-out :mod:`cneuromax` for an overview of the terms ``subtask``,
-``task``, ``project``, ``service`` and ``interface``.
-"""
-import sys
+""":class:`BaseTaskRunner`."""
 from abc import ABC, abstractmethod
 from typing import Any, ClassVar, final
 
@@ -11,6 +6,7 @@ from hydra_zen import ZenStore, zen
 
 from cneuromax.config import BaseHydraConfig  # , BaseTaskConfig
 from cneuromax.utils.hydra_zen import destructure
+from cneuromax.utils.misc import get_project_path
 
 
 class BaseTaskRunner(ABC):
@@ -18,22 +14,17 @@ class BaseTaskRunner(ABC):
 
     Stores configs and runs the ``task``.
 
-    Attr:
+    Attributes:
         task_config_name: Name of the ``task`` config file. Must be\
             utilized in the ``service`` :meth:`store_configs` method.
         task_config_path: Path to the ``task`` config file, is set to\
             the ``project`` root directory.
-        task_hydra_defaults: ``task`` :mod:`hydra` defaults. Must be\
-            utilized in the ``service`` :meth:`store_configs` method.
         hydra_config: The structured :class:`hydra.HydraConf` config\
             used during the ``task`` execution.
-        task_config: The structured ``task`` config.
     """
 
     task_config_name: ClassVar[str] = "config"
-    task_config_path: ClassVar[str] = (
-        sys.argv[0].rsplit("/", maxsplit=1)[0] + "/"
-    )
+    task_config_path: ClassVar[str] = get_project_path()
     hydra_config = BaseHydraConfig
 
     @final

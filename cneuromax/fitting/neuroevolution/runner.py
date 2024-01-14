@@ -7,15 +7,15 @@ from hydra_zen import ZenStore
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
 )
-from cneuromax.fitting.neuroevolution.fit import fit
+from cneuromax.fitting.neuroevolution.evolve import evolve
 from cneuromax.fitting.runner import FittingTaskRunner
-from cneuromax.utils.hydra_zen import store_wandb_logger_configs
+from cneuromax.store import store_wandb_logger_configs
 
 
 class NeuroevolutionTaskRunner(FittingTaskRunner):
     """Neuroevolution ``task`` runner.
 
-    Attr:
+    Attributes:
         subtask_config: See :attr:`~.BaseTaskRunner.subtask_config`.
     """
 
@@ -23,8 +23,11 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         NeuroevolutionSubtaskConfig
     ] = NeuroevolutionSubtaskConfig
 
-    @staticmethod
-    def store_configs(store: ZenStore) -> None:
+    @classmethod
+    def store_configs(
+        cls: type["NeuroevolutionTaskRunner"],
+        store: ZenStore,
+    ) -> None:
         """Stores structured configs.
 
         .. warning::
@@ -35,8 +38,12 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             store:\
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
-        FittingTaskRunner.store_configs(store)
-        store_wandb_logger_configs(store, clb=wandb.init)
+        cls.store_configs(store)
+        store_wandb_logger_configs(
+            store,
+            clb=wandb.init,
+            project=cls.task_config_path,
+        )
         store(NeuroevolutionSubtaskConfig, name="neuroevolution")
 
     @staticmethod
@@ -71,4 +78,4 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         Args:
             config: See :attr:`subtask_config`.
         """
-        return fit(config)
+        return evolve(config)

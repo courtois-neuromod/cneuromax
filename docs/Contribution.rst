@@ -18,7 +18,7 @@ improving the documentation.
 
 Regardless of whether you wish to contribute to the ``main`` branch or solely
 to your own branch, check out the ``classify_mnist`` `code folder
-<https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/task/classify_mnist>`_
+<https://github.com/courtois-neuromod/\cneuromax/tree/main/cneuromax/task/classify_mnist>`_
 for a template of how to structure your code.
 
 Making sure the code doesn't break
