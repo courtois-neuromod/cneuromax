@@ -1,156 +1,151 @@
-"""."""
+""":class:`BaseReinforcementSpace`."""
+import copy
 from abc import ABCMeta
 from typing import Annotated as An
-from typing import final
+from typing import Any, final
 
 import numpy as np
 import wandb
+from numpy.typing import NDArray
 from tensordict import TensorDict
 from torchrl.envs import EnvBase
 
-from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
+from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
 from cneuromax.utils.beartype import ge
 
 
 class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
-    """Base Reinforcement Space class.
+    """Reinforcement Base Space class.
 
-    Inside Reinforcement Spaces, agents evolve to maximize a reward
-    function.
+    Args:
+        env: The :mod:`torchrl` environment to run the evaluation on.
     """
 
-    @property
-    def env(self: "BaseReinforcementSpace") -> EnvBase:
-        """Environment to run the agent."""
-        raise NotImplementedError
-
-    @property
-    def num_pops(self: "BaseReinforcementSpace") -> int:
-        """See :class:`~.BaseSpace.num_pops`."""
-        return 1
-
-    @property
-    def evaluates_on_gpu(self: "BaseReinforcementSpace") -> bool:
-        """See :class:`~.BaseSpace.evaluates_on_gpu`."""
-        raise NotImplementedError
-
-    @final
-    def init_reset(
-        self: "BaseReinforcementSpace", curr_gen: int
-    ) -> TensorDict:
-        """First reset function called during the execution.
-
-        Used to reset the
-        environment & potentially resume from a previous state.
-
-        Args:
-            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
-
-        Returns:
-            The initial environment observation.
-        """
-        if self.agent.config.env_transfer:
-            if curr_gen == 1:
-                self.agent.saved_env_seed = curr_gen
-            self.env.set_seed(seeds=self.agent.saved_env_seed)
-            out = self.env.reset()
-            if curr_gen > 1:
-                self.env.set_state(self.agent.saved_env_state)
-                out = self.agent.saved_env_out.copy()
-        else:
-            self.env.set_seed(seeds=curr_gen)
-            out = self.env.reset(curr_gen)
-        return out
-
-    @final
-    def done_reset(
+    def __init__(
         self: "BaseReinforcementSpace",
+        env: EnvBase,
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.env = env
+
+    @final
+    def run_pre_eval(
+        self: "BaseReinforcementSpace",
+        agent: BaseAgent,
         curr_gen: int,
     ) -> TensorDict:
-        """Reset function called whenever the environment returns done.
+        """Resets/loads the environment before evaluation begins.
 
         Args:
+            agent: The agent being evaluated.
             curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 
         Returns:
-            A new environment observation (np.ndarray).
+            See :paramref:`run_post_eval.out`.
         """
-        if self.agent.config.env_transfer:
-            if self.config.wandb_entity:
-                wandb.log(
-                    {"score": self.agent.curr_episode_score, "gen": curr_gen},
-                )
-            self.agent.curr_episode_score = 0
-            self.agent.curr_episode_num_steps = 0
-            self.agent.saved_env_seed = curr_gen
-            self.env.set_seed(seeds=self.agent.saved_env_seed)
-            out = self.env.reset(self.agent.saved_env_seed)
-        else:
-            out = TensorDict()
+        if curr_gen > 1 and agent.config.env_transfer:
+            self.env = copy.deepcopy(agent.saved_env)
+            return copy.deepcopy(agent.saved_env_out)
+        if agent.config.env_transfer:
+            agent.saved_env_seed = curr_gen
+        self.env.set_seed(seed=curr_gen)
+        return self.env.reset()
+
+    @final
+    def env_done_reset(
+        self: "BaseReinforcementSpace",
+        agent: BaseAgent,
+        curr_gen: int,
+    ) -> TensorDict:
+        """Resets the agent/environment when the environment terminates.
+
+        Args:
+            agent: See :paramref:`pre_eval_reset.agent`.
+            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
+
+        Returns:
+            See :paramref:`run_post_eval.out`.
+        """
+        # env,fit,env+fit,env+fit+mem: reset, mem,mem+fit: no reset
+        if not (
+            agent.config.mem_transfer
+            or (agent.config.mem_transfer and agent.config.fit_transfer)
+        ):
+            agent.reset()
+        if agent.config.env_transfer:
+            wandb.log(
+                {"score": agent.curr_episode_score, "gen": curr_gen},
+            )
+            agent.curr_episode_score = 0
+            agent.curr_episode_num_steps = 0
+            agent.saved_env_seed = curr_gen
+            self.env.set_seed(seed=agent.saved_env_seed)
+            out = self.env.reset()
         return out
 
     @final
-    def final_reset(
+    def run_post_eval(
         self: "BaseReinforcementSpace",
+        agent: BaseAgent,
         out: TensorDict,
         curr_gen: int,
     ) -> None:
-        """Reset function called at the end of every run.
+        """Resets the agent & saves the environment post-evaluation.
 
         Args:
-            obs: The final environment observation.
+            agent: See :paramref:`pre_eval_reset.agent`.
+            out: The latest environment output.
+            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         """
-        if self.agent.config.mem_transfer:
-            self.agent.reset()
-        if self.agent.config.env_transfer:
-            self.agent.saved_env_state = self.env.get_state()
-            self.agent.saved_env_out = out.copy()
-        if (
-            not (
-                self.agent.config.env_transfer
-                or self.agent.config.mem_transfer
-            )
-            and self.config.wandb_entity
-        ):
+        if not agent.config.mem_transfer:
+            agent.reset()
+        if agent.config.env_transfer:
+            agent.saved_env = copy.deepcopy(self.env)
+            agent.saved_env_out = copy.deepcopy(out)
+        if not agent.config.env_transfer:
             wandb.log(
-                {
-                    "score": self.agent.curr_run_score,
-                    "gen": curr_gen,
-                },
+                {"score": agent.curr_run_score, "gen": curr_gen},
             )
 
     @final
     def evaluate(
         self: "BaseReinforcementSpace",
-        agent_s: list[list[BaseSingularAgent]],
+        agents: list[list[BaseAgent]],
         curr_gen: An[int, ge(1)],
-    ) -> float:
-        """."""
-        self.agent = agent_s[0][0]
-        self.agent.curr_run_score = 0
-        self.agent.curr_run_num_steps = 0
-        out = self.init_reset(curr_gen), False
+    ) -> NDArray[np.float32]:
+        """Evaluation function called once per generation.
+
+        Args:
+            agents: A 2D list containing the agent to evaluate.
+            curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
+        """
+        agent = agents[0][0]
+        agent.curr_run_score = 0
+        agent.curr_run_num_steps = 0
+        out = self.run_pre_eval(agent=agent, curr_gen=curr_gen)
         while not out["done"]:
-            out = out.set("action", self.agent(out["obs"]))
-            out = self.env.step(out)["next"]
-            self.agent.curr_run_score += out["rew"]
-            self.agent.curr_run_num_steps += 1
-            if self.agent.config.env_transfer:
-                self.agent.curr_episode_score += out["rew"]
-                self.agent.curr_episode_num_steps += 1
-            if self.agent.config.fit_transfer:
-                self.agent.continual_fitness += out["rew"]
+            out = out.set(key="action", item=agent(x=out["obs"]))
+            out = self.env.step(tensordict=out)["next"]
+            agent.curr_run_score += out["rew"]
+            agent.curr_run_num_steps += 1
+            if agent.config.env_transfer:
+                agent.curr_episode_score += out["rew"]
+                agent.curr_episode_num_steps += 1
+            if agent.config.fit_transfer:
+                agent.continual_fitness += out["rew"]
             if out["done"]:
-                obs = self.done_reset(curr_gen)
-            if self.agent.curr_run_num_steps == self.config.eval_num_steps:
+                out = self.env_done_reset(agent=agent, curr_gen=curr_gen)
+            if agent.curr_run_num_steps == self.config.eval_num_steps:
                 out["done"] = True
-        self.final_reset(obs)
+        self.run_post_eval(agent=agent, out=out, curr_gen=curr_gen)
         return np.array(
-            object=(
-                self.agent.continual_fitness
-                if self.agent.config.fit_transfer
-                else self.agent.curr_run_score,
-                self.agent.curr_run_num_steps,
+            (
+                agent.continual_fitness
+                if agent.config.fit_transfer
+                else agent.curr_run_score,
+                agent.curr_run_num_steps,
             ),
         )

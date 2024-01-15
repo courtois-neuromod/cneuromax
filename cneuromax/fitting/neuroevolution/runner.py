@@ -1,13 +1,16 @@
 """:class:`NeuroevolutionTaskRunner`."""
+from functools import partial
 from typing import Any
 
 import wandb
 from hydra_zen import ZenStore
 
+from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
 )
 from cneuromax.fitting.neuroevolution.evolve import evolve
+from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.fitting.runner import FittingTaskRunner
 from cneuromax.store import store_wandb_logger_configs
 
@@ -39,11 +42,7 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
         cls.store_configs(store)
-        store_wandb_logger_configs(
-            store,
-            clb=wandb.init,
-            project=cls.task_config_path,
-        )
+        store_wandb_logger_configs(store, clb=wandb.init)
         store(NeuroevolutionSubtaskConfig, name="neuroevolution")
 
     @staticmethod
@@ -69,13 +68,12 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             )
             raise ValueError(error_msg)
 
-    @staticmethod
-    def run_subtask(config: subtask_config) -> Any:  # noqa: ANN401
-        """Run the ``subtask`` given the :paramref:`config`.
-
-        This method is meant to hold the ``subtask`` execution logic.
-
-        Args:
-            config: See :attr:`subtask_config`.
-        """
-        return evolve(config)
+    @classmethod
+    def run_subtask(
+        cls: type["NeuroevolutionTaskRunner"],
+        space: BaseSpace,
+        agent: partial[BaseAgent],
+        config: NeuroevolutionSubtaskConfig,
+    ) -> Any:  # noqa: ANN401
+        """Runs the ``subtask``."""
+        return evolve(space=space, agent=agent, config=config)

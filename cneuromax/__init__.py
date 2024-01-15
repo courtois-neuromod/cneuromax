@@ -1,7 +1,12 @@
 """:mod:`cneuromax` package.
 
+Execution
+=========
+
+``python -m cneuromax project=PROJECT_NAME task=TASK_NAME``.
+
 Terminology
-==============
+===========
 
 1. Quck definitions
 ~~~~~~~~~~~~~~~~~~~
@@ -11,7 +16,7 @@ with a specific set of hyper-parameters).
 
 ``task``: Some work unit specified by a :mod:`hydra-core` config
 ``.yaml`` file or a :mod:`hydra-zen` Python config that specifies
-its execution (ex: the training of a range of models with various
+its execution (ex: the training of the same type of model with various
 hyper-parameters).
 
 ``project``: A collection of ``tasks`` + cross-``task``
@@ -22,7 +27,6 @@ functionality (ex: a custom :mod:`lightning` ``datamodule``).
 
 ``interface``: Contains cross-``service`` functionality (ex:
 :mod:`hydra-core` base configs).
-
 
 2. Interface
 ~~~~~~~~~~~~
@@ -112,28 +116,15 @@ c. Creating a new project
 -------------------------
 
 To create ``PROJECT_NAME`` at path
-``cneuromax/projects/PROJECT_NAME/``, create a class in ``__main__.py``
-to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
-by the ``service`` of your choice  (ex:
+``cneuromax/projects/PROJECT_NAME/``, create a class to inherit from
+the :class:`.BaseTaskRunner` class/sub-class implemented by the
+``service`` or other ``project`` of your choice (ex:
 :class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
-You probabaly will want to override/implement
-:meth:`.BaseTaskRunner.store_configs`.
+You probabaly will want to override
+:meth:`~.BaseTaskRunner.store_configs`.
 
 For succinctness (will reduce your command length), we suggest writing
-the above class in the ``__init__.py`` file of your ``project``
-directory and adding a ``__main__.py`` of the form:
-
-.. highlight:: python
-.. code-block:: python
-
-    from cneuromax.projects.PROJECT_NAME import TaskRunner
-
-    if __name__ == "__main__":
-        TaskRunner.store_configs_and_run_task()
-
-Check-out ``cneuromax.projects.classify_mnist.__main__.py`` as an
-`example <https://github.com/courtois-neuromod/cneuromax/tree/main/\
-cneuromax/projects/classify_mnist/__main__.py>`_.
+the above class in the ``__init__.py`` file of your ``project``.
 
 5. Task
 ~~~~~~~
@@ -144,12 +135,8 @@ a. Task overview
 A ``task`` is a work unit specified by a :mod:`hydra-core` configuration
 ``.yaml`` file located in
 ``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` or a
-:mod:`hydra-zen` Python config that specifies its execution.
-
-Can be executed with the following command (if using a ``__main__.py``
-file)
-
-``python -m cneuromax.projects.PROJECT_NAME task=TASK_NAME``.
+:mod:`hydra-zen` Python config implemented in your overwritten
+:meth:`.BaseTaskRunner.store_configs`.
 
 b. Example tasks
 ----------------
@@ -170,6 +157,21 @@ Create ``TASK_NAME.yaml`` at path
 in the first above example). Otherwise, you can create a
 :mod:`hydra-zen` Python config that specifies its execution (as shown
 in the second above example).
+
+__main__.py
+===========
+
+.. highlight:: python
+.. code-block:: python
+
+    from cneuromax.runner import BaseTaskRunner
+    from cneuromax.utils.runner import get_task_runner_class
+    from cneuromax.utils.wandb import login_wandb
+
+    if __name__ == "__main__":
+        TaskRunner: type[BaseTaskRunner] = get_task_runner_class()
+        login_wandb()
+        TaskRunner.store_configs_and_run_task()
 """
 import warnings
 

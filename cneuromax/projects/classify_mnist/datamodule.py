@@ -60,7 +60,7 @@ class MNISTClassificationDataModule(BaseDataModule):
 
     def setup(
         self: "MNISTClassificationDataModule",
-        stage: An[str, one_of("fit", "test")],
+        stage: An[str, one_of("fit", "validate", "test")],
     ) -> None:
         """Creates the train/val/test datasets.
 

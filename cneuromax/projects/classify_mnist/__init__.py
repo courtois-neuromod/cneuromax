@@ -1,15 +1,4 @@
-"""MNIST classification ``project``.
-
-``__main__.py``:
-
-.. highlight:: python
-.. code-block:: python
-
-    from cneuromax.projects.classify_mnist import TaskRunner
-
-    if __name__ == "__main__":
-        TaskRunner.store_configs_and_run_task()
-"""
+"""MNIST classification ``project``."""
 from hydra_zen import ZenStore
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner

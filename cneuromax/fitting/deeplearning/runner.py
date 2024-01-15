@@ -28,13 +28,7 @@ from cneuromax.store import store_wandb_logger_configs
 
 
 class DeepLearningTaskRunner(FittingTaskRunner):
-    """Deep Learning ``task`` runner.
-
-    Attributes:
-        subtask_config: See :attr:`~.BaseTaskRunner.subtask_config`.
-    """
-
-    task_config = DeepLearningTaskConfig
+    """Deep Learning ``task`` runner."""
 
     @classmethod
     def store_configs(
@@ -59,7 +53,6 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         store_wandb_logger_configs(
             store,
             clb=WandbLogger,
-            project=cls.task_config_path,
         )
         store(DeepLearningTaskConfig, name="config")
 
@@ -73,4 +66,10 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         config: FittingSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
-        return train(trainer, logger, datamodule, litmodule, config)
+        return train(
+            trainer=trainer,
+            logger=logger,
+            datamodule=datamodule,
+            litmodule=litmodule,
+            config=config,
+        )

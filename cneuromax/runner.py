@@ -1,12 +1,15 @@
 """:class:`BaseTaskRunner`."""
 from abc import ABC, abstractmethod
-from typing import Any, ClassVar, final
+from typing import Any, final
 
 from hydra_zen import ZenStore, zen
 
-from cneuromax.config import BaseHydraConfig  # , BaseTaskConfig
+from cneuromax.config import BaseHydraConfig
 from cneuromax.utils.hydra_zen import destructure
-from cneuromax.utils.misc import get_project_path
+from cneuromax.utils.runner import (
+    get_absolute_project_path,
+    get_project_and_task_names,
+)
 
 
 class BaseTaskRunner(ABC):
@@ -15,16 +18,10 @@ class BaseTaskRunner(ABC):
     Stores configs and runs the ``task``.
 
     Attributes:
-        task_config_name: Name of the ``task`` config file. Must be\
-            utilized in the ``service`` :meth:`store_configs` method.
-        task_config_path: Path to the ``task`` config file, is set to\
-            the ``project`` root directory.
         hydra_config: The structured :class:`hydra.HydraConf` config\
             used during the ``task`` execution.
     """
 
-    task_config_name: ClassVar[str] = "config"
-    task_config_path: ClassVar[str] = get_project_path()
     hydra_config = BaseHydraConfig
 
     @final
@@ -38,12 +35,14 @@ class BaseTaskRunner(ABC):
         """
         store = ZenStore()
         store(cls.hydra_config, name="config", group="hydra")
+        store({"project": get_project_and_task_names()[0]}, name="project")
+        store({"task": get_project_and_task_names()[1]}, name="task")
         store = store(to_config=destructure)
         cls.store_configs(store)
         store.add_to_hydra_store(overwrite_ok=True)
         zen(cls.run_subtask).hydra_main(
-            config_path=cls.task_config_path,
-            config_name=cls.task_config_name,
+            config_path=get_absolute_project_path(),
+            config_name="config",
             version_base=None,
         )
 

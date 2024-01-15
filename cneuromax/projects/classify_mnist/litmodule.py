@@ -1,4 +1,4 @@
-""":class:`MNISTClassificationLitModule` class."""
+""":class:`MNISTClassificationLitModule`."""
 from functools import partial
 
 from torch import nn

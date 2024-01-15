@@ -79,7 +79,7 @@ def set_batch_size_and_num_workers(
     datamodule: BaseDataModule,
     litmodule: BaseLitModule,
     device: An[str, one_of("cpu", "gpu")],
-    data_dir: str,
+    output_dir: str,
 ) -> None:
     """Sets attribute values for a :class:`~.BaseDataModule`.
 
@@ -92,13 +92,13 @@ def set_batch_size_and_num_workers(
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
     proposed_per_device_batch_size = find_good_per_device_batch_size(
         litmodule=litmodule,
         datamodule=datamodule,
         device=device,
-        data_dir=data_dir,
+        output_dir=output_dir,
     )
     proposed_per_device_num_workers = find_good_per_device_num_workers(
         datamodule=datamodule,
@@ -124,7 +124,7 @@ def find_good_per_device_batch_size(
     litmodule: BaseLitModule,
     datamodule: BaseDataModule,
     device: str,
-    data_dir: str,
+    output_dir: str,
 ) -> int:
     """Probes a :attr:`~.BaseDataModule.per_device_batch_size` value.
 
@@ -148,7 +148,7 @@ def find_good_per_device_batch_size(
         litmodule: See :class:`.BaseLitModule`.
         datamodule: See :class:`.BaseDataModule`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
         A roughly optimal ``per_device_batch_size`` value.
@@ -161,7 +161,7 @@ def find_good_per_device_batch_size(
         accelerator=device,
         devices=1,
         max_epochs=-1,
-        default_root_dir=data_dir + "/lightning/tuner/",
+        default_root_dir=output_dir + "/lightning/tuner/",
     )
     tuner = Tuner(trainer=trainer)
     logging.info("Finding good `batch_size` parameter...")

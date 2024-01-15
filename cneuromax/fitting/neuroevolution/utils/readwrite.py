@@ -3,22 +3,22 @@ import pickle
 from pathlib import Path
 from typing import Annotated as An
 
-from cneuromax.fitting.neuroevolution.agent.singular import (
-    BaseSingularAgent,
+from cneuromax.fitting.neuroevolution.agent import (
+    BaseAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
     Generation_results_batch_type,
     Generation_results_type,
 )
 from cneuromax.utils.beartype import ge
-from cneuromax.utils.mpi4py import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def load_state(
     prev_num_gens: An[int, ge(0)],
     len_agents_batch: An[int, ge(1)],
 ) -> tuple[
-    list[list[BaseSingularAgent]],  # agents_batch
+    list[list[BaseAgent]],  # agents_batch
     Generation_results_type | None,  # generation_results
     An[int, ge(0)] | None,  # total_num_env_steps
 ]:
@@ -37,7 +37,7 @@ def load_state(
         * See\
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
-    comm, rank, size = retrieve_mpi_variables()
+    comm, rank, size = get_mpi_variables()
     if rank == 0:
         path = Path.cwd() / f"/{prev_num_gens}/state.pkl"
         if not path.exists():
@@ -45,10 +45,10 @@ def load_state(
             raise FileNotFoundError(error_msg)
         with path.open(mode="rb") as f:
             state = pickle.load(file=f)
-        agents: list[list[BaseSingularAgent]] = state[0]
+        agents: list[list[BaseAgent]] = state[0]
         generation_results: Generation_results_type = state[1]
         total_num_env_steps: int = state[2]
-        batched_agents: list[list[list[BaseSingularAgent]]] = [
+        batched_agents: list[list[list[BaseAgent]]] = [
             agents[i * len_agents_batch : (i + 1) * len_agents_batch]
             for i in range(size)
         ]
@@ -64,7 +64,7 @@ def load_state(
 
 
 def save_state(
-    agents_batch: list[list[BaseSingularAgent]],
+    agents_batch: list[list[BaseAgent]],
     generation_results: Generation_results_batch_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
     curr_gen: An[int, ge(1)],
@@ -80,8 +80,8 @@ def save_state(
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
     """
-    comm, rank, _ = retrieve_mpi_variables()
-    batched_agents: list[list[list[BaseSingularAgent]]] | None = comm.gather(
+    comm, rank, _ = get_mpi_variables()
+    batched_agents: list[list[list[BaseAgent]]] | None = comm.gather(
         sendobj=agents_batch,
     )
     if rank != 0:
@@ -93,7 +93,7 @@ def save_state(
     assert batched_agents  # noqa: S101
     assert generation_results  # noqa: S101
     assert total_num_env_steps  # noqa: S101
-    agents: list[list[BaseSingularAgent]] = []
+    agents: list[list[BaseAgent]] = []
     for agent_batch in batched_agents:
         agents = agents + agent_batch
     path = Path.cwd() / f"/{curr_gen}/"

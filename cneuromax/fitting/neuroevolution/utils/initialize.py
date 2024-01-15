@@ -5,8 +5,8 @@ from typing import Annotated as An
 import numpy as np
 from mpi4py import MPI
 
-from cneuromax.fitting.neuroevolution.agent.singular import (
-    BaseSingularAgent,
+from cneuromax.fitting.neuroevolution.agent import (
+    BaseAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
     Exchange_and_mutate_info_batch_type,
@@ -16,7 +16,7 @@ from cneuromax.fitting.neuroevolution.utils.type import (
 )
 from cneuromax.utils.beartype import ge, le
 from cneuromax.utils.hydra import get_launcher_config
-from cneuromax.utils.mpi4py import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def initialize_common_variables(
@@ -51,7 +51,7 @@ def initialize_common_variables(
         * See\
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
-    comm, rank, size = retrieve_mpi_variables()
+    comm, rank, size = get_mpi_variables()
     launcher_config = get_launcher_config()
     pop_size = (
         launcher_config.nodes
@@ -107,7 +107,7 @@ def initialize_gpu_comm() -> MPI.Comm:
     Returns:
         See :paramref:`~.evaluate_on_gpu.ith_gpu_comm`.
     """
-    comm, rank, size = retrieve_mpi_variables()
+    comm, rank, size = get_mpi_variables()
     launcher_config = get_launcher_config()
     if not launcher_config.gpus_per_node:
         error_msg = (
@@ -125,16 +125,16 @@ def initialize_gpu_comm() -> MPI.Comm:
 
 
 def initialize_agents(
-    agent: partial[BaseSingularAgent],
+    agent: partial[BaseAgent],
     len_agents_batch: An[int, ge(1)],
     num_pops: An[int, ge(1), le(2)],
     *,
     pop_merge: bool,
-) -> list[list[BaseSingularAgent]]:  # agents_batch
+) -> list[list[BaseAgent]]:  # agents_batch
     """Initializes a batch of agents.
 
     Args:
-        agent: See :class:`~.BaseSingularAgent`.
+        agent: See :class:`~.BaseAgent`.
         len_agents_batch: The number of agents per population\
             maintained in\
             :paramref:`~.compute_generation_results.agents_batch`\
@@ -147,7 +147,7 @@ def initialize_agents(
     Returns:
         A 2D list of agents maintained by this process.
     """
-    agents_batch: list[list[BaseSingularAgent]] = []
+    agents_batch: list[list[BaseAgent]] = []
     for _ in range(len_agents_batch):
         agents_batch.append([])
         for pop_idx in range(num_pops):

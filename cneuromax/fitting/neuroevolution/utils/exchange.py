@@ -4,8 +4,8 @@ from typing import Annotated as An
 import numpy as np
 from mpi4py import MPI
 
-from cneuromax.fitting.neuroevolution.agent.singular import (
-    BaseSingularAgent,
+from cneuromax.fitting.neuroevolution.agent import (
+    BaseAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
     Exchange_and_mutate_info_batch_type,
@@ -14,7 +14,7 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Seeds_type,
 )
 from cneuromax.utils.beartype import ge, le
-from cneuromax.utils.mpi4py import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def update_exchange_and_mutate_info(
@@ -52,7 +52,7 @@ def update_exchange_and_mutate_info(
         seeds: The seeds to set the mutation and evaluation randomness\
             for the current generation.
     """
-    _, rank, _ = retrieve_mpi_variables()
+    _, rank, _ = get_mpi_variables()
     if rank != 0:
         return
     # `exchange_and_mutate_info`, `generation_results`, and `seeds`are
@@ -102,7 +102,7 @@ def update_exchange_and_mutate_info(
 def exchange_agents(
     num_pops: An[int, ge(1), le(2)],
     pop_size: An[int, ge(1)],
-    agents_batch: list[list[BaseSingularAgent]],
+    agents_batch: list[list[BaseAgent]],
     exchange_and_mutate_info_batch: Exchange_and_mutate_info_batch_type,
 ) -> None:
     """Exchange agents between processes.
@@ -116,7 +116,7 @@ def exchange_agents(
         exchange_and_mutate_info_batch: See\
             :paramref:`~.mutate.exchange_and_mutate_info_batch`.
     """
-    comm, rank, _ = retrieve_mpi_variables()
+    comm, rank, _ = get_mpi_variables()
     mpi_buffer_size = exchange_and_mutate_info_batch[:, :, 0]
     paired_agent_position = exchange_and_mutate_info_batch[:, :, 1]
     sending = exchange_and_mutate_info_batch[:, :, 2]
@@ -170,7 +170,7 @@ def exchange_agents(
     # Wait for all MPI requests and retrieve a list composed of the
     # agents received from the other processes and `None` for the
     # agents that were sent.
-    agent_or_none_list: list[BaseSingularAgent] = MPI.Request.waitall(req)
+    agent_or_none_list: list[BaseAgent] = MPI.Request.waitall(req)
     # Replacing existing agents with the received agents.
     for i, agent_or_none in enumerate(agent_or_none_list):
         if agent_or_none:

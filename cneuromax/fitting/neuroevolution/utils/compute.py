@@ -6,7 +6,7 @@ from typing import Annotated as An
 
 import numpy as np
 
-from cneuromax.fitting.neuroevolution.agent.singular import BaseSingularAgent
+from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.utils.type import (
     Fitnesses_and_num_env_steps_batch_type,
     Generation_results_batch_type,
@@ -14,14 +14,14 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Seeds_type,
 )
 from cneuromax.utils.beartype import ge
-from cneuromax.utils.mpi4py import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def compute_generation_results(
     generation_results: Generation_results_type | None,
     generation_results_batch: Generation_results_batch_type,
     fitnesses_and_num_env_steps_batch: Fitnesses_and_num_env_steps_batch_type,
-    agents_batch: list[list[BaseSingularAgent]],
+    agents_batch: list[list[BaseAgent]],
     num_pops: An[int, ge(1)],
 ) -> None:
     """Fills the :paramref:`generation_results` array with results.
@@ -51,7 +51,7 @@ def compute_generation_results(
             calling this function.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
     """
-    comm, _, _ = retrieve_mpi_variables()
+    comm, _, _ = get_mpi_variables()
     # Store the fitnesses and number of environment steps
     generation_results_batch[:, :, 0:2] = fitnesses_and_num_env_steps_batch
     # Store the size of the agents
@@ -131,7 +131,7 @@ def compute_start_time_and_seeds(
         * See\
             :paramref:`~.update_exchange_and_mutate_info.seeds`.
     """
-    comm, rank, size = retrieve_mpi_variables()
+    comm, rank, size = get_mpi_variables()
     np.random.seed(seed=curr_gen)
     if rank != 0:
         return None, None
@@ -199,7 +199,7 @@ def compute_total_num_env_steps_and_process_fitnesses(
     Returns:
         The updated total number of environment steps.
     """
-    _, rank, _ = retrieve_mpi_variables()
+    _, rank, _ = get_mpi_variables()
     if rank != 0:
         return None
     # `generation_results`, `total_num_env_steps` & `start_time` are

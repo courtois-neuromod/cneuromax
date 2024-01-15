@@ -1,8 +1,7 @@
-""":func:`fit`."""
+""":func:`evolve`."""
 from functools import partial
 
 import wandb
-from hydra.utils import instantiate
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
@@ -37,7 +36,7 @@ from cneuromax.fitting.neuroevolution.utils.validate import (
     validate_space,
 )
 from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
-from cneuromax.utils.mpi4py import retrieve_mpi_variables
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def evolve(
@@ -59,7 +58,7 @@ def evolve(
     Args:
         config: See :paramref:`~.post_process_base_config.config`.
     """
-    comm, _, _ = retrieve_mpi_variables()
+    comm, _, _ = get_mpi_variables()
     validate_space(space=space, pop_merge=config.pop_merge)
     save_points = compute_save_points(
         prev_num_gens=config.prev_num_gens,

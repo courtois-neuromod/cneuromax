@@ -6,9 +6,7 @@ from mpi4py import MPI
 from cneuromax.utils.beartype import ge
 
 
-def retrieve_mpi_variables() -> (
-    tuple[MPI.Comm, An[int, ge(0)], An[int, ge(1)]]
-):
+def get_mpi_variables() -> tuple[MPI.Comm, An[int, ge(0)], An[int, ge(1)]]:
     """Retrieves MPI variables from the MPI runtime.
 
     Returns:

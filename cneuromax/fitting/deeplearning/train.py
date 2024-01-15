@@ -54,7 +54,7 @@ def train(
         datamodule=datamodule,
         litmodule=litmodule,
         device=config.device,
-        data_dir=config.data_dir,
+        output_dir=config.output_dir,
     )
     ckpt_path = set_checkpoint_path(trainer=full_trainer, config=config)
     full_trainer.fit(

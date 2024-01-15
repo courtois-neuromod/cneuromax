@@ -44,13 +44,14 @@ class DeepLearningTaskConfig(
 
     defaults: list[Any] = field(
         default_factory=lambda: [
-            {"hydra/launcher": "submitit_local"},
-            {"trainer": "base"},
+            "_self_",
             {"litmodule/nnmodule": "mlp"},
             {"litmodule/scheduler": "constant"},
             {"litmodule/optimizer": "adamw"},
+            {"trainer": "base"},
             {"logger": "wandb"},
-            "_self_",
+            "project",
+            "task",
             {"task": None},
         ],
     )

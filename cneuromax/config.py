@@ -51,13 +51,13 @@ class BaseHydraConfig(
                 override_dirname=hc.JobConf.JobConfig.OverrideDirname(
                     kv_sep=".",
                     item_sep="~",
-                    exclude_keys=["task"],
+                    exclude_keys=["task", "project"],
                 ),
             ),
         ),
         mode=ht.RunMode.MULTIRUN,
         sweep=hc.SweepDir(
-            dir="${oc.env:CNEUROMAX_PATH}/data/test/",
+            dir="${oc.env:CNEUROMAX_PATH}/data/${project}/${task}/",
             subdir="${hydra:job.override_dirname}",
         ),
     ),

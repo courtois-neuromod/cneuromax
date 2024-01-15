@@ -1,19 +1,14 @@
-"""Neuroevolution Spaces (Evaluation wrappers for Gym-like Envs)."""
-from cneuromax.fitting.neuroevolution.space.base import BaseSpace
-from cneuromax.fitting.neuroevolution.space.imitation import (
-    BaseImitationSpace,
-    BaseImitationTarget,
+"""Neuroevolution Spaces."""
+from cneuromax.fitting.neuroevolution.space.base import (
+    BaseSpace,
+    BaseSpaceConfig,
 )
 from cneuromax.fitting.neuroevolution.space.reinforcement import (
     BaseReinforcementSpace,
 )
 
 __all__ = [
-    "BaseBatchImitationSpace",
-    "BaseBatchImitationTarget",
-    "BaseBatchReinforcementSpace",
-    "BaseImitationSpace",
-    "BaseImitationTarget",
-    "BaseReinforcementSpace",
     "BaseSpace",
+    "BaseSpaceConfig",
+    "BaseReinforcementSpace",
 ]

@@ -3,6 +3,8 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
 
+from torch import Tensor
+
 from cneuromax.utils.beartype import ge, le
 
 
@@ -11,10 +13,17 @@ class BaseAgentConfig:
     """Holds :class:`BaseAgent` config values.
 
     Args:
-
+        env_transfer: See\
+            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`.
+        fit_transfer: See\
+            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`.
+        mem_transfer: See\
+            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`.
     """
 
-    pass
+    env_transfer: bool = "${config.env_transfer}"  # type: ignore[assignment]
+    fit_transfer: bool = "${config.fit_transfer}"  # type: ignore[assignment]
+    mem_transfer: bool = "${config.mem_transfer}"  # type: ignore[assignment]
 
 
 class BaseAgent(metaclass=ABCMeta):
@@ -47,7 +56,7 @@ class BaseAgent(metaclass=ABCMeta):
         config (:class:`BaseAgentConfig`)
         role (``str``): The agent's role. Can be either ``"generator"``\
             or ``"discriminator"``.
-        is_other_role_other_pop (``bool``): Whether the agent is the\
+        is_other_role_in_other_pop (``bool``): Whether the agent is the\
             other role in the other population. If the two populations\
             are merged (see :paramref:`pops_are_merged`), then an\
             agent is both a generator and a discriminator. It is a\
@@ -55,27 +64,6 @@ class BaseAgent(metaclass=ABCMeta):
             discriminator/generator in the other population. Such\
             type of agent needs to accomodate this property through\
             its network architecture.
-        saved_env_state (``typing.Any``): The latest state of the\
-            environment.
-        saved_env_out (``tensordict.Tensordict``): The latest output\
-            from the environment.
-        saved_env_seed (``int``): The saved environment's seed.
-        target_curr_episode_num_steps: (``int``):
-        The target's current episode\
-            number of steps. This attribute is only used if the\
-            agent's :attr:`config`'s\
-            :attr:`~.BaseAgentConfig.env_transfer` attribute is\
-            ``True`` and the agent's :attr:`role` is\
-            ``"discriminator"``.
-        curr_episode_score: The current episode score. This attribute\
-            is only used if the agent's :attr:`config`'s\
-            :attr:`~.BaseAgentConfig.env_transfer` attribute is\
-            ``True`` and the agent's :attr:`role` is\
-            ``"generator"``.
-        continual_fitness: The agent's continual fitness. This\
-            attribute is only used if the agent's :attr:`config`'s\
-            :attr:`~.BaseAgentConfig.fit_transfer` attribute is\
-            ``True``.
     """
 
     def __init__(
@@ -87,34 +75,49 @@ class BaseAgent(metaclass=ABCMeta):
     ) -> None:
         self.config = config
         self.role = "generator" if pop_idx == 0 else "discriminator"
+        self.is_other_role_in_other_pop = pops_are_merged
+        self.initialize_attributes()
 
-        self.is_other_role_other_pop = pops_are_merged
-        self.initialize_evaluation_attributes()
-
-    def initialize_evaluation_attributes(self: "BaseAgent") -> None:
-        """Initializes attributes used during evaluation.
-
-        If this agent's :attr:`role` is ``"discriminator"``, then
-        all attributes
-        """
+    def initialize_attributes(self: "BaseAgent") -> None:
+        """Initializes attributes used during evaluation."""
+        self.curr_run_score = 0
+        self.curr_run_num_steps = 0
         if self.config.env_transfer:
-            self.saved_env_state = None
+            self.saved_env = None
             self.saved_env_out = None
-            self.saved_env_seed = None
+            self.saved_env_seed = 0
             if self.role == "discriminator":
                 self.target_curr_episode_num_steps = 0
             else:  # self.role == "generator"
+                self.curr_episode_num_steps = 0
                 self.curr_episode_score = 0
         if self.config.fit_transfer:
             self.continual_fitness = 0
 
+    @property
+    def seed(self: "BaseAgent") -> int:
+        """The agent's seed used to fix its randomness."""
+        return self._seed
+
+    @seed.setter
+    def seed(self: "BaseAgent", seed: int) -> None:
+        self._seed = seed
+
     @abstractmethod
     def mutate(self: "BaseAgent") -> None:
-        """.
+        """Applies random mutation(s) to the agent."""
 
-        Must be implemented.
+    @abstractmethod
+    def reset(self: "BaseAgent") -> None:
+        """Reset the agent's memory state."""
+
+    @abstractmethod
+    def __call__(self: "BaseAgent", x: Tensor) -> Tensor:
+        """Run the agent for one timestep given :paramref:`x`.
 
         Args:
-            seeds: An array of one or more random integers to seed the
-                agent(s) mutation randomness.
+            x: An input observation.
+
+        Returns:
+            The agent's output.
         """

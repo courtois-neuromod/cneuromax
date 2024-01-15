@@ -1,4 +1,6 @@
 """Type annotations validator using :mod:`beartype`."""
+import logging
+
 from beartype.vale import Is
 from beartype.vale._core._valecore import BeartypeValidator
 
@@ -69,7 +71,7 @@ def ge(val: float) -> BeartypeValidator:
     """
 
     def _ge(x: object, val: float) -> bool:
-        if isinstance(x, float) and x >= val:
+        if isinstance(x, int | float) and x >= val:
             return True
         return False
 
@@ -87,7 +89,7 @@ def gt(val: float) -> BeartypeValidator:
     """
 
     def _gt(x: object, val: float) -> bool:
-        if isinstance(x, float) and x > val:
+        if isinstance(x, int | float) and x > val:
             return True
         return False
 
@@ -105,7 +107,7 @@ def le(val: float) -> BeartypeValidator:
     """
 
     def _le(x: object, val: float) -> bool:
-        if isinstance(x, float) and x <= val:
+        if isinstance(x, int | float) and x <= val:
             return True
         return False
 
@@ -123,7 +125,7 @@ def lt(val: float) -> BeartypeValidator:
     """
 
     def _lt(x: object, val: float) -> bool:
-        if isinstance(x, float) and x < val:
+        if isinstance(x, int | float) and x < val:
             return True
         return False
 

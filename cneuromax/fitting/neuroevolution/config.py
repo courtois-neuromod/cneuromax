@@ -22,8 +22,6 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     """Neuroevolution ``subtask`` config.
 
     Args:
-        wandb_entity: :mod:`wandb` entity (username or team name)\
-            to use for logging. ``None`` means no logging.
         agents_per_task: Number of agents per task (``num_tasks`` =\
             ``num_nodes`` x ``tasks_per_node``).
         prev_num_gens: Number of generations from a previous experiment\
@@ -52,7 +50,6 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
             not supported for ``env_transfer = True``).
     """
 
-    wandb_entity: str | None = None
     agents_per_task: An[int, ge(1)] = 1
     prev_num_gens: An[int, ge(0)] = 0
     total_num_gens: An[int, ge(1)] = 10
@@ -84,9 +81,8 @@ class NeuroevolutionTaskConfig(
 
     defaults: list[Any] = field(
         default_factory=lambda: [
-            {"hydra/launcher": "submitit_local"},
-            {"logger": "wandb"},
             "_self_",
+            {"logger": "wandb"},
             {"task": None},
         ],
     )
