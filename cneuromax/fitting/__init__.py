@@ -1,2 +1,2 @@
 """Model fitting."""
-pass
+pass  # noqa: PIE790

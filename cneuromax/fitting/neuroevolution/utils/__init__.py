@@ -1,2 +1,2 @@
 r""":mod:`cneuromax.fitting.neuroevolution`\-wide utilities."""
-pass
+pass  # noqa: PIE790

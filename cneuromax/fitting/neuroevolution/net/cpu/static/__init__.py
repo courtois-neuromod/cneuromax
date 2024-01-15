@@ -1,2 +1,4 @@
 """Static architecture CPU-based Neural nets for neuroevolution."""
-pass
+from .rnnfc import CPUStaticRNNFC, CPUStaticRNNFCConfig
+
+__all__ = ["CPUStaticRNNFC", "CPUStaticRNNFCConfig"]

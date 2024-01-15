@@ -18,9 +18,9 @@ from cneuromax.fitting.deeplearning.utils.lightning import (
 
 def train(
     trainer: partial[Trainer],
-    logger: partial[WandbLogger],
     datamodule: BaseDataModule,
     litmodule: BaseLitModule,
+    logger: partial[WandbLogger],
     config: FittingSubtaskConfig,
 ) -> float:
     """Trains a Deep Neural Network.
@@ -34,10 +34,10 @@ def train(
 
     Args:
         trainer: See :class:`~lightning.pytorch.Trainer`.
-        logger: See\
-            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
+        logger: See\
+            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         config: See :paramref:`~.FittingSubtaskConfig`.
 
     Returns:

@@ -1,2 +1,2 @@
 """Neuroevolution."""
-pass
+pass  # noqa: PIE790

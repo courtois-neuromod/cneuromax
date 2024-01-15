@@ -42,7 +42,7 @@ class MNISTClassificationDataModule(BaseDataModule):
         self: "MNISTClassificationDataModule",
         config: MNISTClassificationDataModuleConfig,
     ) -> None:
-        super().__init__(config)
+        super().__init__(config=config)
         self.train_val_split = (
             1 - config.val_percentage,
             config.val_percentage,

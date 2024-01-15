@@ -1,2 +1,2 @@
 """Model serving."""
-pass
+pass  # noqa: PIE790

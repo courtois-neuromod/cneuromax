@@ -24,9 +24,9 @@ from cneuromax.utils.hydra_zen import (
 class DeepLearningTaskConfig(
     make_config(  # type: ignore[misc]
         trainer=pfs_builds(Trainer),
-        logger=pfs_builds(WandbLogger),
         datamodule=fs_builds(BaseDataModule, config=BaseDataModuleConfig()),
         litmodule=fs_builds(BaseLitModule),
+        logger=pfs_builds(WandbLogger),
         config=fs_builds(FittingSubtaskConfig),
     ),
 ):
@@ -35,20 +35,20 @@ class DeepLearningTaskConfig(
     Args:
         defaults: Hydra defaults.
         trainer: See :class:`~lightning.pytorch.Trainer`.
-        logger: See\
-            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
+        logger: See\
+            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         config: See :class:`.FittingSubtaskConfig`.
     """
 
     defaults: list[Any] = field(
         default_factory=lambda: [
             "_self_",
+            {"trainer": "base"},
             {"litmodule/nnmodule": "mlp"},
             {"litmodule/scheduler": "constant"},
             {"litmodule/optimizer": "adamw"},
-            {"trainer": "base"},
             {"logger": "wandb"},
             "project",
             "task",

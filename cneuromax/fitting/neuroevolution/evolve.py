@@ -42,6 +42,7 @@ from cneuromax.utils.mpi4py import get_mpi_variables
 def evolve(
     space: BaseSpace,
     agent: partial[BaseAgent],
+    logger: partial[wandb.init],
     config: NeuroevolutionSubtaskConfig,
 ) -> None:
     """Fitting function for Neuroevolution algorithms.
@@ -56,6 +57,9 @@ def evolve(
     variables are set in the Hydra launcher configuration.
 
     Args:
+        space: See :class:`~.space.BaseSpace`.
+        agent: See :class:`~.agent.BaseAgent`.
+        logger: See :func:`~.utils.wandb.setup_wandb`.
         config: See :paramref:`~.post_process_base_config.config`.
     """
     comm, _, _ = get_mpi_variables()

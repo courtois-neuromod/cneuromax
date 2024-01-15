@@ -1,2 +1,2 @@
 r""":mod:`~cneuromax.fitting.deeplearning`\-wide utilities."""
-pass
+pass  # noqa: PIE790

@@ -1,2 +1,2 @@
 """Deep Learning + Neuroevolution."""
-pass
+pass  # noqa: PIE790

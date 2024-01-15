@@ -41,7 +41,7 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             store:\
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
-        cls.store_configs(store)
+        cls.store_configs(store=store)
         store_wandb_logger_configs(store, clb=wandb.init)
         store(NeuroevolutionSubtaskConfig, name="neuroevolution")
 

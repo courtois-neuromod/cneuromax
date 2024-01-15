@@ -60,16 +60,16 @@ class DeepLearningTaskRunner(FittingTaskRunner):
     def run_subtask(  # noqa: PLR0913
         cls: type["DeepLearningTaskRunner"],
         trainer: partial[Trainer],
-        logger: partial[WandbLogger],
         datamodule: BaseDataModule,
         litmodule: BaseLitModule,
+        logger: partial[WandbLogger],
         config: FittingSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
         return train(
             trainer=trainer,
-            logger=logger,
             datamodule=datamodule,
             litmodule=litmodule,
+            logger=logger,
             config=config,
         )

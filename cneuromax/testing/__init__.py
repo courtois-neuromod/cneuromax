@@ -1,2 +1,2 @@
 """Model testing/analytics."""
-pass
+pass  # noqa: PIE790

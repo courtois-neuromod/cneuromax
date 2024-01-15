@@ -27,8 +27,8 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         scheduler: partial[LRScheduler],
     ) -> None:
         super().__init__(
-            BaseClassificationLitModuleConfig(num_classes=10),
-            nnmodule,
-            optimizer,
-            scheduler,
+            config=BaseClassificationLitModuleConfig(num_classes=10),
+            nnmodule=nnmodule,
+            optimizer=optimizer,
+            scheduler=scheduler,
         )

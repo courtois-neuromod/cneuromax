@@ -1,2 +1,2 @@
 """Documentation."""
-pass
+pass  # noqa: PIE790

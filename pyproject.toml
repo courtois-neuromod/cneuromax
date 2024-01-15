@@ -35,7 +35,7 @@ dependencies = [
     "ipywidgets==8.1.1", # Jupyter widgets
     "wandb-osh==1.2.0", # W&B support for SLURM
     "h5py==3.10.0", # HDF5 file format load/save
-    "opencv-python==4.8.1.78", # Image processing
+    "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.1.2",
     # OPTIONAL for cneuromax/fitting/deeplearning/
@@ -44,6 +44,7 @@ dependencies = [
     "datasets==2.15.0", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
+    "gymnasium==0.29.1", # RL/IL environments
     # MANDATORY for docs/
     "sphinx==7.2.6", # Documentation generator
     "esbonio==0.16.3", # Language server to render sphinx

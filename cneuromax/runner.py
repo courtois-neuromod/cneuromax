@@ -35,10 +35,12 @@ class BaseTaskRunner(ABC):
         """
         store = ZenStore()
         store(cls.hydra_config, name="config", group="hydra")
-        store({"project": get_project_and_task_names()[0]}, name="project")
-        store({"task": get_project_and_task_names()[1]}, name="task")
+        project_name, task_name = get_project_and_task_names()
+        store({"project": project_name}, name="project")
+        store({"task": task_name}, name="task")
+        # See https://github.com/mit-ll-responsible-ai/hydra-zen/discussions/621
         store = store(to_config=destructure)
-        cls.store_configs(store)
+        cls.store_configs(store=store)
         store.add_to_hydra_store(overwrite_ok=True)
         zen(cls.run_subtask).hydra_main(
             config_path=get_absolute_project_path(),

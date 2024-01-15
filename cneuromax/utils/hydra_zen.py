@@ -36,14 +36,14 @@ def destructure(x: Any) -> Any:  # noqa: ANN401
     See `discussion <https://github.com/mit-ll-responsible-ai/\
         hydra-zen/discussions/621#discussioncomment-7938326>`_.
     """
-    x = default_to_config(x)  # apply the default auto-config logic of `store`
-    if is_dataclass(x):
+    # apply the default auto-config logic of `store`
+    x = default_to_config(target=x)
+    if is_dataclass(obj=x):
         # Recursively converts:
         # dataclass -> omegaconf-dict (backed by dataclass types)
-        #
         return OmegaConf.create(
-            OmegaConf.to_container(
-                OmegaConf.create(x),  # type: ignore[call-overload]
+            obj=OmegaConf.to_container(
+                cfg=OmegaConf.create(obj=x),  # type: ignore[call-overload]
             ),
         )
     return x

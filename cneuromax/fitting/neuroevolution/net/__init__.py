@@ -1,2 +1,2 @@
 """Neural nets for neuroevolution."""
-pass
+pass  # noqa: PIE790

@@ -20,7 +20,7 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
     """
     launcher_dict_config: DictConfig = HydraConfig.get().launcher
     launcher_container_config = OmegaConf.to_container(
-        launcher_dict_config,
+        cfg=launcher_dict_config,
     )
     if not isinstance(launcher_container_config, dict):
         raise TypeError

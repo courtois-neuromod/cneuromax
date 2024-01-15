@@ -48,7 +48,11 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
-        super().__init__(nnmodule, optimizer, scheduler)
+        super().__init__(
+            nnmodule=nnmodule,
+            optimizer=optimizer,
+            scheduler=scheduler,
+        )
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
             num_classes=config.num_classes,
         )

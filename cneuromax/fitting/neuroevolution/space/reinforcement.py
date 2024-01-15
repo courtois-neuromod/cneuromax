@@ -2,7 +2,7 @@
 import copy
 from abc import ABCMeta
 from typing import Annotated as An
-from typing import Any, final
+from typing import final
 
 import numpy as np
 import wandb
@@ -11,7 +11,10 @@ from tensordict import TensorDict
 from torchrl.envs import EnvBase
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
-from cneuromax.fitting.neuroevolution.space.base import BaseSpace
+from cneuromax.fitting.neuroevolution.space.base import (
+    BaseSpace,
+    BaseSpaceConfig,
+)
 from cneuromax.utils.beartype import ge
 
 
@@ -20,15 +23,24 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
 
     Args:
         env: The :mod:`torchrl` environment to run the evaluation on.
+        config: See :paramref:`~.BaseSpace.config`.
+        num_pops: See :paramref:`~.BaseSpace.num_pops`.
+        evaluates_on_gpu: See :paramref:`~.BaseSpace.evaluates_on_gpu`.
     """
 
     def __init__(
         self: "BaseReinforcementSpace",
+        config: BaseSpaceConfig,
         env: EnvBase,
-        *args: Any,  # noqa: ANN401
-        **kwargs: Any,  # noqa: ANN401
+        num_pops: int,
+        *,
+        evaluates_on_gpu: bool,
     ) -> None:
-        super().__init__(*args, **kwargs)
+        super().__init__(
+            config=config,
+            num_pops=num_pops,
+            evaluates_on_gpu=evaluates_on_gpu,
+        )
         self.env = env
 
     @final
@@ -49,8 +61,6 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         if curr_gen > 1 and agent.config.env_transfer:
             self.env = copy.deepcopy(agent.saved_env)
             return copy.deepcopy(agent.saved_env_out)
-        if agent.config.env_transfer:
-            agent.saved_env_seed = curr_gen
         self.env.set_seed(seed=curr_gen)
         return self.env.reset()
 
@@ -81,8 +91,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             )
             agent.curr_episode_score = 0
             agent.curr_episode_num_steps = 0
-            agent.saved_env_seed = curr_gen
-            self.env.set_seed(seed=agent.saved_env_seed)
+            self.env.set_seed(seed=curr_gen)
             out = self.env.reset()
         return out
 
@@ -107,7 +116,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             agent.saved_env_out = copy.deepcopy(out)
         if not agent.config.env_transfer:
             wandb.log(
-                {"score": agent.curr_run_score, "gen": curr_gen},
+                {"score": agent.curr_eval_score, "gen": curr_gen},
             )
 
     @final
@@ -123,14 +132,14 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         """
         agent = agents[0][0]
-        agent.curr_run_score = 0
-        agent.curr_run_num_steps = 0
+        agent.curr_eval_score = 0
+        agent.curr_eval_num_steps = 0
         out = self.run_pre_eval(agent=agent, curr_gen=curr_gen)
         while not out["done"]:
             out = out.set(key="action", item=agent(x=out["obs"]))
             out = self.env.step(tensordict=out)["next"]
-            agent.curr_run_score += out["rew"]
-            agent.curr_run_num_steps += 1
+            agent.curr_eval_score += out["rew"]
+            agent.curr_eval_num_steps += 1
             if agent.config.env_transfer:
                 agent.curr_episode_score += out["rew"]
                 agent.curr_episode_num_steps += 1
@@ -138,14 +147,14 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
                 agent.continual_fitness += out["rew"]
             if out["done"]:
                 out = self.env_done_reset(agent=agent, curr_gen=curr_gen)
-            if agent.curr_run_num_steps == self.config.eval_num_steps:
+            if agent.curr_eval_num_steps == self.config.eval_num_steps:
                 out["done"] = True
         self.run_post_eval(agent=agent, out=out, curr_gen=curr_gen)
         return np.array(
             (
                 agent.continual_fitness
                 if agent.config.fit_transfer
-                else agent.curr_run_score,
-                agent.curr_run_num_steps,
+                else agent.curr_eval_score,
+                agent.curr_eval_num_steps,
             ),
         )

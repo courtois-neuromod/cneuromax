@@ -1,2 +1,2 @@
 """Project repository."""
-pass
+pass  # noqa: PIE790

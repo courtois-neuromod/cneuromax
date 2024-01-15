@@ -12,7 +12,7 @@ def login_wandb() -> None:
         str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
     )
     if wandb_key_path.exists():
-        with wandb_key_path.open("r") as f:
+        with wandb_key_path.open(mode="r") as f:
             key = f.read().strip()
         wandb.login(key=key)
     else:

@@ -1,2 +1,2 @@
 """Deep Learning."""
-pass
+pass  # noqa: PIE790

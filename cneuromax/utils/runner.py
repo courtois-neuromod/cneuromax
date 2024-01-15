@@ -61,7 +61,9 @@ def get_project_module() -> ModuleType:
     """
     project_name, _ = get_project_and_task_names()
     try:
-        project_module = import_module(f"cneuromax.projects.{project_name}")
+        project_module = import_module(
+            name=f"cneuromax.projects.{project_name}",
+        )
     except ModuleNotFoundError as error:
         error_msg = (
             "Invalid project name. Make sure that "

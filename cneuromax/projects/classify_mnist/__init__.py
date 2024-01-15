@@ -28,7 +28,7 @@ class TaskRunner(DeepLearningTaskRunner):
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         """
-        super().store_configs(store)
+        super().store_configs(store=store)
         store(
             fs_builds(
                 MNISTClassificationDataModule,

@@ -36,7 +36,7 @@ class BaseAgent(metaclass=ABCMeta):
     From an implementation perspective, ``pop_size`` instances of this
     class will be created upon initialization. Whenever an
     agent is selected, a copy of this object will be created and sent
-    to a MPI process in possession of a non-selected agent. Both the
+    to a MPI process in possession of a non-selected agent. Both this
     original instance and the copy sent to the other process will be
     mutated in-place (meaning no new instance will be created).
 
@@ -64,6 +64,24 @@ class BaseAgent(metaclass=ABCMeta):
             discriminator/generator in the other population. Such\
             type of agent needs to accomodate this property through\
             its network architecture.
+        curr_eval_score (``float``): The score obtained by the agent\
+            during the current evaluation.
+        curr_eval_num_steps (``int``): The number of steps taken by the\
+            agent during the current evaluation.
+        saved_env (``torchrl.envs.EnvBase``): The :mod:`torchrl`\
+            environment instance to resume from (only set if
+            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
+        saved_env_out (``tensordict.Tensordict``): The latest output\
+            from the environment to resume from (only set if\
+            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
+        curr_episode_score: The current episode score (only set if\
+            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
+        curr_episode_num_steps: The number of steps taken in the\
+            current episode (only set if\
+            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
+        continual_fitness: The agent's fitness in addition to all of\
+            its predecessors' fitnesses (only set if\
+            :paramref:`~.BaseAgentConfig.fit_transfer` is ``True``).
     """
 
     def __init__(
@@ -76,21 +94,17 @@ class BaseAgent(metaclass=ABCMeta):
         self.config = config
         self.role = "generator" if pop_idx == 0 else "discriminator"
         self.is_other_role_in_other_pop = pops_are_merged
-        self.initialize_attributes()
+        self.initialize_eval_attributes()
 
-    def initialize_attributes(self: "BaseAgent") -> None:
+    def initialize_eval_attributes(self: "BaseAgent") -> None:
         """Initializes attributes used during evaluation."""
-        self.curr_run_score = 0
-        self.curr_run_num_steps = 0
+        self.curr_eval_score = 0
+        self.curr_eval_num_steps = 0
         if self.config.env_transfer:
             self.saved_env = None
             self.saved_env_out = None
-            self.saved_env_seed = 0
-            if self.role == "discriminator":
-                self.target_curr_episode_num_steps = 0
-            else:  # self.role == "generator"
-                self.curr_episode_num_steps = 0
-                self.curr_episode_score = 0
+            self.curr_episode_num_steps = 0
+            self.curr_episode_score = 0
         if self.config.fit_transfer:
             self.continual_fitness = 0
 
@@ -109,11 +123,11 @@ class BaseAgent(metaclass=ABCMeta):
 
     @abstractmethod
     def reset(self: "BaseAgent") -> None:
-        """Reset the agent's memory state."""
+        """Resets the agent's memory state."""
 
     @abstractmethod
     def __call__(self: "BaseAgent", x: Tensor) -> Tensor:
-        """Run the agent for one timestep given :paramref:`x`.
+        """Runs the agent for one timestep given :paramref:`x`.
 
         Args:
             x: An input observation.

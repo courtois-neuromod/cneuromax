@@ -1,2 +1,2 @@
 r""":mod:`cneuromax`\-wide utilities."""
-pass
+pass  # noqa: PIE790

@@ -24,8 +24,8 @@ class BaseSpaceConfig:
 class BaseSpace(metaclass=ABCMeta):
     """Space Base class.
 
-    A ``Space`` is a :mod:`torchrl` wrapper in which agents produce
-    behaviour and receive fitness scores.
+    A ``Space`` is a :mod:`torchrl` environment wrapper with which
+    agents produce behaviour and receive fitness scores.
 
     Args:
         config: See :class:`~.BaseSpaceConfig`.
