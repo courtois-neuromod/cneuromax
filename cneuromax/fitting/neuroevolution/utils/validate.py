@@ -1,6 +1,6 @@
 """Run validation for Neuroevolution fitting."""
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
-from cneuromax.utils.hydra import get_launcher_config
+from cneuromax.fitting.utils.hydra import get_launcher_config
 
 
 def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:

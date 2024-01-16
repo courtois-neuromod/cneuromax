@@ -14,8 +14,8 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Generation_results_batch_type,
     Generation_results_type,
 )
+from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import ge, le
-from cneuromax.utils.hydra import get_launcher_config
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 
@@ -56,7 +56,7 @@ def initialize_common_variables(
     pop_size = (
         launcher_config.nodes
         * launcher_config.tasks_per_node
-        * (agents_per_task)
+        * agents_per_task
     )
     len_agents_batch = pop_size // size
     exchange_and_mutate_info = (

@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - /space: rl_control_nevo
+  - /agent: rl_control_nevo
+  - _self_
+
+space:
+  config:
+    env_name: "Acrobot-v1"

@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
+import wandb
 from hydra_zen import make_config
 
 from cneuromax.fitting.config import (
@@ -12,7 +13,9 @@ from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.utils.beartype import ge
 from cneuromax.utils.hydra_zen import (
+    builds,
     fs_builds,
+    p_builds,
     pfs_builds,
 )
 
@@ -61,12 +64,18 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     mem_transfer: bool = False
     eval_num_steps: An[int, ge(0)] = 0
 
+    def __post_init__(self: "NeuroevolutionSubtaskConfig") -> None:
+        """Post-initialization updates."""
+        if self.save_interval == 0:
+            self.save_interval = self.total_num_gens - self.prev_num_gens
+
 
 @dataclass
 class NeuroevolutionTaskConfig(
     make_config(  # type: ignore[misc]
-        space=fs_builds(BaseSpace),
-        agent=pfs_builds(BaseAgent),
+        space=builds(BaseSpace),
+        agent=p_builds(BaseAgent),
+        wandb_init=pfs_builds(wandb.init),
         config=fs_builds(NeuroevolutionSubtaskConfig),
     ),
 ):
@@ -76,6 +85,7 @@ class NeuroevolutionTaskConfig(
         defaults: Hydra defaults.
         space: See :class:`~neuroevolution.space.BaseSpace`.
         agent: See :class:`~neuroevolution.agent.BaseAgent`.
+        wandb_init: See :func:`wandb.init`.
         config: See :class:`.NeuroevolutionSubtaskConfig`.
     """
 
@@ -83,6 +93,9 @@ class NeuroevolutionTaskConfig(
         default_factory=lambda: [
             "_self_",
             {"logger": "wandb"},
+            "project",
+            "task",
             {"task": None},
+            {"override hydra/launcher": "base"},
         ],
     )

@@ -1,4 +1,5 @@
 """:class:`NeuroevolutionTaskRunner`."""
+from collections.abc import Callable
 from functools import partial
 from typing import Any
 
@@ -8,6 +9,7 @@ from hydra_zen import ZenStore
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
+    NeuroevolutionTaskConfig,
 )
 from cneuromax.fitting.neuroevolution.evolve import evolve
 from cneuromax.fitting.neuroevolution.space import BaseSpace
@@ -16,15 +18,7 @@ from cneuromax.store import store_wandb_logger_configs
 
 
 class NeuroevolutionTaskRunner(FittingTaskRunner):
-    """Neuroevolution ``task`` runner.
-
-    Attributes:
-        subtask_config: See :attr:`~.BaseTaskRunner.subtask_config`.
-    """
-
-    subtask_config: type[
-        NeuroevolutionSubtaskConfig
-    ] = NeuroevolutionSubtaskConfig
+    """Neuroevolution ``task`` runner."""
 
     @classmethod
     def store_configs(
@@ -41,19 +35,20 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             store:\
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
-        cls.store_configs(store=store)
+        super().store_configs(store=store)
         store_wandb_logger_configs(store, clb=wandb.init)
-        store(NeuroevolutionSubtaskConfig, name="neuroevolution")
+        store(NeuroevolutionTaskConfig, name="config")
 
     @staticmethod
     def validate_subtask_config(config: NeuroevolutionSubtaskConfig) -> None:
-        """See :meth:`BaseTaskRunner.validate_subtask_config`.
+        """Validates the ``subtask`` config.
 
         Args:
-            config: See :attr:`subtask_config`
+            config: See :class:`~.NeuroevolutionSubtaskConfig`.
 
         Raises:
-            RuntimeError: If ``.NeuroevolutionSubtaskConfig.device`` is
+            RuntimeError: If\
+                :paramref:`~.NeuroevolutionSubtaskConfig.device` is\
                 set to ``gpu`` but CUDA is not available.
         """
         if config.eval_num_steps == 0 and config.env_transfer:
@@ -73,7 +68,13 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         cls: type["NeuroevolutionTaskRunner"],
         space: BaseSpace,
         agent: partial[BaseAgent],
+        wandb_init: Callable[..., Any],
         config: NeuroevolutionSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
-        return evolve(space=space, agent=agent, config=config)
+        return evolve(
+            space=space,
+            agent=agent,
+            wandb_init=wandb_init,
+            config=config,
+        )

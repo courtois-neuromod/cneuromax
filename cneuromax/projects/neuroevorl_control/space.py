@@ -26,20 +26,13 @@ class GymReinforcementSpace(BaseReinforcementSpace):
 
     Args:
         config: See :class:`GymReinforcementSpaceConfig`.
-        num_pops: See :paramref:`~.BaseSpace.num_pops`.
-        evaluates_on_gpu: See :paramref:`~.BaseSpace.evaluates_on_gpu`.
     """
 
     def __init__(
         self: "GymReinforcementSpace",
         config: GymReinforcementSpaceConfig,
-        num_pops: int,
-        *,
-        evaluates_on_gpu: bool,
     ) -> None:
         super().__init__(
             config=config,
             env=GymEnv(env_name=config.env_name),
-            num_pops=num_pops,
-            evaluates_on_gpu=evaluates_on_gpu,
         )

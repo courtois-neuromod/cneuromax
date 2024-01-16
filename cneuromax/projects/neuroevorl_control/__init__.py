@@ -39,15 +39,3 @@ class TaskRunner(NeuroevolutionTaskRunner):
             name="rl_control_nevo",
             group="agent",
         )
-        task_store = store(group="task", package="_global_")
-        task_store(
-            make_config(
-                hydra_defaults=[
-                    {"/space": "rl_control_nevo"},
-                    {"/agent": "rl_control_nevo"},
-                    "_self_",
-                ],
-                env_name="Acrobot-v1",
-            ),
-            name="acrobot",
-        )

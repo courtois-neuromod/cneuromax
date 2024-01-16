@@ -53,5 +53,6 @@ class DeepLearningTaskConfig(
             "project",
             "task",
             {"task": None},
+            {"override hydra/launcher": "base"},
         ],
     )

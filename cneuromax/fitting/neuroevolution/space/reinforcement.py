@@ -24,23 +24,14 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
     Args:
         env: The :mod:`torchrl` environment to run the evaluation on.
         config: See :paramref:`~.BaseSpace.config`.
-        num_pops: See :paramref:`~.BaseSpace.num_pops`.
-        evaluates_on_gpu: See :paramref:`~.BaseSpace.evaluates_on_gpu`.
     """
 
     def __init__(
         self: "BaseReinforcementSpace",
         config: BaseSpaceConfig,
         env: EnvBase,
-        num_pops: int,
-        *,
-        evaluates_on_gpu: bool,
     ) -> None:
-        super().__init__(
-            config=config,
-            num_pops=num_pops,
-            evaluates_on_gpu=evaluates_on_gpu,
-        )
+        super().__init__(config=config, num_pops=1, evaluates_on_gpu=False)
         self.env = env
 
     @final

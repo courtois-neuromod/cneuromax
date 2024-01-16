@@ -1,5 +1,6 @@
 """:func:`evolve`."""
 from functools import partial
+from typing import Any, Callable
 
 import wandb
 
@@ -42,24 +43,19 @@ from cneuromax.utils.mpi4py import get_mpi_variables
 def evolve(
     space: BaseSpace,
     agent: partial[BaseAgent],
-    logger: partial[wandb.init],
+    wandb_init: Callable[..., Any],
     config: NeuroevolutionSubtaskConfig,
 ) -> None:
-    """Fitting function for Neuroevolution algorithms.
-
-    This function is the main entry point of the Neuroevolution module.
-    It acts as an interface between Hydra (configuration + launcher +
-    sweeper), Spaces, Agents and MPI resource scheduling for
-    Neuroevolution algorithms.
+    """Neuroevolution.
 
     Note that this function and all of its sub-functions will be called
-    by `num_nodes * tasks_per_node` MPI processes/tasks. These two
+    by ``num_nodes * tasks_per_node`` MPI processes/tasks. These two
     variables are set in the Hydra launcher configuration.
 
     Args:
         space: See :class:`~.space.BaseSpace`.
         agent: See :class:`~.agent.BaseAgent`.
-        logger: See :func:`~.utils.wandb.setup_wandb`.
+        wandb_init: See :func:`~.utils.wandb.setup_wandb`.
         config: See :paramref:`~.post_process_base_config.config`.
     """
     comm, _, _ = get_mpi_variables()
@@ -100,7 +96,7 @@ def evolve(
             num_pops=space.num_pops,
             pop_merge=config.pop_merge,
         )
-    setup_wandb(entity=config.wandb_entity)
+    setup_wandb(wandb_init=wandb_init)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
             generation_results=generation_results,

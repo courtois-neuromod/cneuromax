@@ -26,8 +26,8 @@ from cneuromax.fitting.config import (
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import one_of
-from cneuromax.utils.hydra import get_launcher_config
 from cneuromax.utils.misc import get_path
 
 

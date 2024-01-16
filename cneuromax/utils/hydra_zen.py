@@ -6,6 +6,30 @@ from hydra_zen import make_custom_builds_fn
 from hydra_zen.wrapper import default_to_config
 from omegaconf import OmegaConf
 
+builds = make_custom_builds_fn(  # type: ignore[var-annotated]
+    populate_full_signature=False,
+    hydra_convert="partial",
+)
+""":mod:`hydra-zen` custom build function.
+
+Args:
+    populate_full_signature: Set to ``False``.
+    hydra_convert: Set to ``"partial"``.
+"""
+
+p_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
+    zen_partial=True,
+    populate_full_signature=False,
+    hydra_convert="partial",
+)
+""":mod:`hydra-zen` custom build function.
+
+Args:
+    zen_partial: Set to ``True``.
+    populate_full_signature: Set to ``False``.
+    hydra_convert: Set to ``"partial"``.
+"""
+
 fs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=True,
     hydra_convert="partial",
@@ -16,6 +40,7 @@ Args:
     populate_full_signature: Set to ``True``.
     hydra_convert: Set to ``"partial"``.
 """
+
 pfs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     zen_partial=True,
     populate_full_signature=True,
