@@ -59,6 +59,7 @@ dependencies = [
     # Miscellanous
     "h5py==3.10.0",
     "opencv-python==4.9.0.80",
+    "datasets==2.16.1",
 ]
 
 [tool.black]
