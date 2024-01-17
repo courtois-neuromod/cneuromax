@@ -28,7 +28,8 @@ jobs:
         run: |
           git config --local user.email "maximilienlc@users.noreply.github.com"
           git config --local user.name "MaximilienLC"
-          git commit -a -m "New documentation build"
+          git add .
+          git commit -m "New documentation build"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
