@@ -28,10 +28,11 @@ jobs:
         run: |
           git config --local user.email "maximilienlc@users.noreply.github.com"
           git config --local user.name "MaximilienLC"
-          git add .
+          git add ./docs/build/
           git commit -m "New documentation build"
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           branch: gh-pages
           force: true
+          directory: ./docs/build/
