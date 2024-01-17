@@ -13,8 +13,6 @@ jobs:
   docs-build:
     runs-on: self-hosted
     steps:
-      - name: Checkout the GitHub repo
-        uses: actions/checkout@v4
       - name: Build the CNeuroMax image
         run: podman build -t cneuromod/cneuromax:docs -f Dockerfile .
       - name: Build the documentation
