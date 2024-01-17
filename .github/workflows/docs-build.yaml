@@ -22,22 +22,8 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:docs
           sphinx-build -b html ./docs/ ./docs/build/
-      - name: Upload the documentation as an artifact
-        uses: actions/upload-artifact@v4
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: docs
-          path: ./docs/build/
-  deploy:
-    needs: docs-build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: self-hosted
-    steps:
-      - name: Deploy to Github Pages
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: docs
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/
