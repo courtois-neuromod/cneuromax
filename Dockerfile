@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # PyTorch (w/ ecosystem) + CUDA + cuDNN + MPI + UCX + Python (w/ pip & headers)
-FROM nvcr.io/nvidia/pytorch:23.11-py3
+FROM nvcr.io/nvidia/pytorch:23.12-py3
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
@@ -30,7 +30,6 @@ RUN git config --global push.default current
 ADD pyproject.toml /cneuromax/pyproject.toml
 ADD cneuromax /cneuromax/cneuromax
 # Install Python dependencies
-RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir -e /cneuromax \
+RUN pip install --no-cache-dir -e /cneuromax \
     && pip uninstall -y cneuromax
 # Note: MPI UCX warnings on Rootless Docker
