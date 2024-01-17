@@ -39,12 +39,12 @@ class CPUStaticRNNFC(nn.Module):
             out_features=config.output_size,
         )
         self.h: Float32[Tensor, " hidden_size"] = torch.zeros(
-            size=config.hidden_size,
+            size=(config.hidden_size,),
         )
 
     def reset(self: "CPUStaticRNNFC") -> None:
         """Resets the hidden state of the RNN."""
-        self.h *= torch.Tensor(0)
+        self.h *= torch.zeros_like(self.h)
 
     def forward(
         self: "CPUStaticRNNFC",

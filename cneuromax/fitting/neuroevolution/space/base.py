@@ -2,9 +2,9 @@
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
+from typing import Any
 
 import numpy as np
-from numpy.typing import NDArray
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.utils.beartype import ge
@@ -51,7 +51,7 @@ class BaseSpace(metaclass=ABCMeta):
         self: "BaseSpace",
         agents: list[list[BaseAgent]],
         curr_gen: An[int, ge(1)],
-    ) -> NDArray[np.float32]:
+    ) -> np.ndarray[np.float32, Any]:
         """.
 
         Method called once per iteration (every generation) in order to

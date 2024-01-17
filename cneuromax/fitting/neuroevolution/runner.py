@@ -3,9 +3,9 @@ from collections.abc import Callable
 from functools import partial
 from typing import Any
 
-import wandb
 from hydra_zen import ZenStore
 
+import wandb
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
@@ -68,13 +68,8 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         cls: type["NeuroevolutionTaskRunner"],
         space: BaseSpace,
         agent: partial[BaseAgent],
-        wandb_init: Callable[..., Any],
+        logger: Callable[..., Any],
         config: NeuroevolutionSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
-        return evolve(
-            space=space,
-            agent=agent,
-            wandb_init=wandb_init,
-            config=config,
-        )
+        return evolve(space=space, agent=agent, logger=logger, config=config)

@@ -49,10 +49,10 @@ class DeepLearningTaskConfig(
             {"litmodule/nnmodule": "mlp"},
             {"litmodule/scheduler": "constant"},
             {"litmodule/optimizer": "adamw"},
-            {"logger": "wandb"},
+            {"logger": "wandb_simexp"},
             "project",
             "task",
             {"task": None},
-            {"override hydra/launcher": "base"},
+            {"override hydra/launcher": "submitit_local"},
         ],
     )

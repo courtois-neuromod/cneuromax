@@ -4,6 +4,13 @@ defaults:
   - /agent: rl_control_nevo
   - _self_
 
+hydra:
+  launcher:
+    tasks_per_node: 4
+
+config:
+  agents_per_task: 10
+
 space:
   config:
     env_name: "Acrobot-v1"

@@ -2,11 +2,10 @@
 import copy
 from abc import ABCMeta
 from typing import Annotated as An
-from typing import final
+from typing import Any, final
 
 import numpy as np
 import wandb
-from numpy.typing import NDArray
 from tensordict import TensorDict
 from torchrl.envs import EnvBase
 
@@ -59,12 +58,14 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
     def env_done_reset(
         self: "BaseReinforcementSpace",
         agent: BaseAgent,
+        out: TensorDict,
         curr_gen: int,
-    ) -> TensorDict:
+    ) -> TensorDict | dict[str, bool]:
         """Resets the agent/environment when the environment terminates.
 
         Args:
             agent: See :paramref:`pre_eval_reset.agent`.
+            out: The latest environment output.
             curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 
         Returns:
@@ -83,7 +84,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             agent.curr_episode_score = 0
             agent.curr_episode_num_steps = 0
             self.env.set_seed(seed=curr_gen)
-            out = self.env.reset()
+            return self.env.reset()
         return out
 
     @final
@@ -115,7 +116,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         self: "BaseReinforcementSpace",
         agents: list[list[BaseAgent]],
         curr_gen: An[int, ge(1)],
-    ) -> NDArray[np.float32]:
+    ) -> np.ndarray[np.float32, Any]:
         """Evaluation function called once per generation.
 
         Args:
@@ -127,17 +128,21 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         agent.curr_eval_num_steps = 0
         out = self.run_pre_eval(agent=agent, curr_gen=curr_gen)
         while not out["done"]:
-            out = out.set(key="action", item=agent(x=out["obs"]))
+            out = out.set(key="action", item=agent(x=out["observation"]))
             out = self.env.step(tensordict=out)["next"]
-            agent.curr_eval_score += out["rew"]
+            agent.curr_eval_score += out["reward"]
             agent.curr_eval_num_steps += 1
             if agent.config.env_transfer:
-                agent.curr_episode_score += out["rew"]
+                agent.curr_episode_score += out["reward"]
                 agent.curr_episode_num_steps += 1
             if agent.config.fit_transfer:
-                agent.continual_fitness += out["rew"]
+                agent.continual_fitness += out["reward"]
             if out["done"]:
-                out = self.env_done_reset(agent=agent, curr_gen=curr_gen)
+                out = self.env_done_reset(
+                    agent=agent,
+                    out=out,
+                    curr_gen=curr_gen,
+                )
             if agent.curr_eval_num_steps == self.config.eval_num_steps:
                 out["done"] = True
         self.run_post_eval(agent=agent, out=out, curr_gen=curr_gen)

@@ -44,7 +44,7 @@ class BaseAgent(metaclass=ABCMeta):
     an ``AgentContainer`` class rather than an ``Agent`` class.
 
     Args:
-        config: The instance's configuration.
+        config: See :class:`BaseAgentConfig`.
         pop_idx: The agent's population index. An index of ``0`` means\
             that the agent is in the generator population while an\
             index of ``1`` means that the agent is in the\
@@ -53,7 +53,7 @@ class BaseAgent(metaclass=ABCMeta):
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Attributes:
-        config (:class:`BaseAgentConfig`)
+        config (:class:`BaseAgentConfig`): See :paramref:`config`.
         role (``str``): The agent's role. Can be either ``"generator"``\
             or ``"discriminator"``.
         is_other_role_in_other_pop (``bool``): Whether the agent is the\

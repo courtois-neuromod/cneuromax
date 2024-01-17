@@ -1,6 +1,7 @@
 """:func:`evolve`."""
+from collections.abc import Callable
 from functools import partial
-from typing import Any, Callable
+from typing import Any
 
 import wandb
 
@@ -33,9 +34,7 @@ from cneuromax.fitting.neuroevolution.utils.readwrite import (
     load_state,
     save_state,
 )
-from cneuromax.fitting.neuroevolution.utils.validate import (
-    validate_space,
-)
+from cneuromax.fitting.neuroevolution.utils.validate import validate_space
 from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
 from cneuromax.utils.mpi4py import get_mpi_variables
 
@@ -43,7 +42,7 @@ from cneuromax.utils.mpi4py import get_mpi_variables
 def evolve(
     space: BaseSpace,
     agent: partial[BaseAgent],
-    wandb_init: Callable[..., Any],
+    logger: Callable[..., Any],
     config: NeuroevolutionSubtaskConfig,
 ) -> None:
     """Neuroevolution.
@@ -55,7 +54,7 @@ def evolve(
     Args:
         space: See :class:`~.space.BaseSpace`.
         agent: See :class:`~.agent.BaseAgent`.
-        wandb_init: See :func:`~.utils.wandb.setup_wandb`.
+        logger: See :func:`~.utils.wandb.setup_wandb`.
         config: See :paramref:`~.post_process_base_config.config`.
     """
     comm, _, _ = get_mpi_variables()
@@ -71,6 +70,7 @@ def evolve(
         len_agents_batch,
         exchange_and_mutate_info,
         exchange_and_mutate_info_batch,
+        seeds_batch,
         generation_results,
         generation_results_batch,
         total_num_env_steps,
@@ -88,6 +88,7 @@ def evolve(
         ) = load_state(
             prev_num_gens=config.prev_num_gens,
             len_agents_batch=len_agents_batch,
+            output_dir=config.output_dir,
         )
     else:
         agents_batch = initialize_agents(
@@ -96,7 +97,7 @@ def evolve(
             num_pops=space.num_pops,
             pop_merge=config.pop_merge,
         )
-    setup_wandb(wandb_init=wandb_init)
+    setup_wandb(logger=logger)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
             generation_results=generation_results,
@@ -111,8 +112,9 @@ def evolve(
             # The following block is examplified in section 3.
             comm.Scatter(
                 sendbuf=seeds,
-                recvbuf=exchange_and_mutate_info_batch[:, :, 3],
+                recvbuf=seeds_batch,
             )
+            exchange_and_mutate_info_batch[:, :, 3] = seeds_batch
         else:
             update_exchange_and_mutate_info(
                 num_pops=space.num_pops,
@@ -187,5 +189,6 @@ def evolve(
                 generation_results=generation_results,
                 total_num_env_steps=total_num_env_steps,
                 curr_gen=curr_gen,
+                output_dir=config.output_dir,
             )
     wandb.finish()

@@ -1,4 +1,5 @@
 """Variable initialization for Neuroevolution fitting."""
+import logging
 from functools import partial
 from typing import Annotated as An
 
@@ -13,6 +14,7 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Exchange_and_mutate_info_type,
     Generation_results_batch_type,
     Generation_results_type,
+    Seeds_batch_type,
 )
 from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import ge, le
@@ -27,6 +29,7 @@ def initialize_common_variables(
     An[int, ge(1)],  # len_agents_batch
     Exchange_and_mutate_info_type | None,  # exchange_and_mutate_info
     Exchange_and_mutate_info_batch_type,  # exchange_and_mutate_info_batch
+    Seeds_batch_type,  # seeds_batch
     Generation_results_type | None,  # generation_results
     Generation_results_batch_type,  # generation_results_batch
     An[int, ge(0)] | None,  # total_num_env_steps
@@ -44,6 +47,9 @@ def initialize_common_variables(
         * See\
             :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`.
         * See :paramref:`~.mutate.exchange_and_mutate_info_batch`.
+        * An array used as a buffer by all processes to receive the\
+            seeds from the primary process during the first generation\
+            only.
         * See\
             :paramref:`~.compute_generation_results.generation_results`.
         * See\
@@ -71,6 +77,10 @@ def initialize_common_variables(
         shape=(len_agents_batch, num_pops, 4),
         dtype=np.uint32,
     )
+    seeds_batch = np.empty(
+        shape=(len_agents_batch, num_pops),
+        dtype=np.uint32,
+    )
     generation_results_batch = np.empty(
         shape=(len_agents_batch, num_pops, 3),
         dtype=np.float32,
@@ -89,6 +99,7 @@ def initialize_common_variables(
         len_agents_batch,
         exchange_and_mutate_info,
         exchange_and_mutate_info_batch,
+        seeds_batch,
         generation_results,
         generation_results_batch,
         total_num_env_steps,

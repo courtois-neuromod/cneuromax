@@ -12,10 +12,10 @@ class RunningStandardization:
     """
 
     def __init__(self: "RunningStandardization", x_size: int) -> None:
-        self.mean: Float32[Tensor, " x_size"] = torch.zeros(size=x_size)
-        self.var: Float32[Tensor, " x_size"] = torch.zeros(size=x_size)
-        self.std: Float32[Tensor, " x_size"] = torch.zeros(size=x_size)
-        self.n: Float32[Tensor, " 1"] = torch.zeros(size=1)
+        self.mean: Float32[Tensor, " x_size"] = torch.zeros(size=(x_size,))
+        self.var: Float32[Tensor, " x_size"] = torch.zeros(size=(x_size,))
+        self.std: Float32[Tensor, " x_size"] = torch.zeros(size=(x_size,))
+        self.n: Float32[Tensor, " 1"] = torch.zeros(size=(1,))
 
     def __call__(
         self: "RunningStandardization",
@@ -29,7 +29,7 @@ class RunningStandardization:
         Returns:
             Standardized tensor.
         """
-        self.n += torch.ones(size=1)
+        self.n += torch.ones(size=(1,))
         new_mean: Float32[Tensor, " x_size"] = (
             self.mean + (x - self.mean) / self.n
         )

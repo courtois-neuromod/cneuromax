@@ -36,8 +36,8 @@ def mutate(
         num_pops: See :meth:`~.BaseSpace.num_pops`.
     """
     seeds = exchange_and_mutate_info_batch[:, :, 3]
-    for i in range(num_pops):
-        for j in range(len(agents_batch)):
+    for i in range(len(agents_batch)):
+        for j in range(num_pops):
             agents_batch[i][j].seed = int(seeds[i, j])
             # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
             # for a full example execution of the genetic algorithm.
@@ -129,7 +129,7 @@ def evaluate_on_gpu(
         # `ith_gpu_comm_rank != 0`. The following `assert` statement
         # is for static type checking reasons and has no execution
         # purposes.
-        assert ith_gpu_batched_agents  # noqa: S101
+        assert ith_gpu_batched_agents is not None  # noqa: S101
         ith_gpu_agents_batch: list[list[BaseAgent]] = []
         for agent_batch in ith_gpu_batched_agents:
             ith_gpu_agents_batch = ith_gpu_agents_batch + agent_batch

@@ -3,9 +3,9 @@ from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
-import wandb
 from hydra_zen import make_config
 
+import wandb
 from cneuromax.fitting.config import (
     FittingSubtaskConfig,
 )
@@ -75,7 +75,7 @@ class NeuroevolutionTaskConfig(
     make_config(  # type: ignore[misc]
         space=builds(BaseSpace),
         agent=p_builds(BaseAgent),
-        wandb_init=pfs_builds(wandb.init),
+        logger=pfs_builds(wandb.init),
         config=fs_builds(NeuroevolutionSubtaskConfig),
     ),
 ):
@@ -85,17 +85,17 @@ class NeuroevolutionTaskConfig(
         defaults: Hydra defaults.
         space: See :class:`~neuroevolution.space.BaseSpace`.
         agent: See :class:`~neuroevolution.agent.BaseAgent`.
-        wandb_init: See :func:`wandb.init`.
+        logger: See :func:`wandb.init`.
         config: See :class:`.NeuroevolutionSubtaskConfig`.
     """
 
     defaults: list[Any] = field(
         default_factory=lambda: [
             "_self_",
-            {"logger": "wandb"},
+            {"logger": "wandb_simexp"},
             "project",
             "task",
             {"task": None},
-            {"override hydra/launcher": "base"},
+            {"override hydra/launcher": "submitit_local"},
         ],
     )

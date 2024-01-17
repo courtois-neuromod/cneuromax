@@ -4,7 +4,7 @@ from cneuromax.fitting.utils.hydra import get_launcher_config
 
 
 def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:
-    """Makes sure that the execution's Space is valid given the execution's config.
+    """Makes sure that the Space is valid given config values.
 
     Args:
         space: See :paramref:`~.evaluate_on_cpu.space`.

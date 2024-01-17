@@ -1,8 +1,8 @@
 """Control task neuroevolution ``project``."""
-from hydra_zen import ZenStore, make_config
+from hydra_zen import ZenStore
 
 from cneuromax.fitting.neuroevolution.runner import NeuroevolutionTaskRunner
-from cneuromax.utils.hydra_zen import fs_builds
+from cneuromax.utils.hydra_zen import builds, fs_builds
 
 from .agent import GymAgent, GymAgentConfig
 from .space import GymReinforcementSpace, GymReinforcementSpaceConfig
@@ -26,15 +26,15 @@ class TaskRunner(NeuroevolutionTaskRunner):
         store(
             fs_builds(
                 GymReinforcementSpace,
-                config=GymReinforcementSpaceConfig(),
+                config=fs_builds(GymReinforcementSpaceConfig),
             ),
             name="rl_control_nevo",
             group="space",
         )
         store(
-            fs_builds(
+            builds(
                 GymAgent,
-                config=GymAgentConfig(),
+                config=fs_builds(GymAgentConfig),
             ),
             name="rl_control_nevo",
             group="agent",

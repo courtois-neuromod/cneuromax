@@ -159,7 +159,7 @@ def compute_start_time_and_seeds(
         # `generation_results` is only `None` when `rank != 0`. The
         # following `assert` statement is for static type checking
         # reasons and has no execution purposes.
-        assert generation_results  # noqa: S101
+        assert generation_results is not None  # noqa: S101
         fitnesses = generation_results[:, :, 0]
         # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
         # for a full example execution of the genetic algorithm.
@@ -206,9 +206,9 @@ def compute_total_num_env_steps_and_process_fitnesses(
     # only `None` when `rank != 0`. The following `assert` statements
     # are for static type checking reasons and have no execution
     # purposes.
-    assert generation_results  # noqa: S101
-    assert total_num_env_steps  # noqa: S101
-    assert start_time  # noqa: S101
+    assert generation_results is not None  # noqa: S101
+    assert total_num_env_steps is not None  # noqa: S101
+    assert start_time is not None  # noqa: S101
     fitnesses = generation_results[:, :, 0]
     if pop_merge:
         # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf

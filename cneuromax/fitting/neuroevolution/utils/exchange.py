@@ -59,9 +59,9 @@ def update_exchange_and_mutate_info(
     # only `None` when `rank != 0`. The following `assert` statements
     # are for static type checking reasons and have no execution
     # purposes.
-    assert exchange_and_mutate_info  # noqa: S101
-    assert generation_results  # noqa: S101
-    assert seeds  # noqa: S101
+    assert exchange_and_mutate_info is not None  # noqa: S101
+    assert generation_results is not None  # noqa: S101
+    assert seeds is not None  # noqa: S101
     serialized_agent_sizes = generation_results[:, :, 2]
     fitnesses = generation_results[:, :, 0]
     # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
@@ -162,7 +162,7 @@ def exchange_agents(
                 # The following block is examplified in section 15.
                 req.append(
                     comm.irecv(
-                        buf=mpi_buffer_size[i, j, 0],
+                        buf=mpi_buffer_size[i, j],
                         source=paired_process_rank,
                         tag=tag,
                     ),
@@ -170,7 +170,7 @@ def exchange_agents(
     # Wait for all MPI requests and retrieve a list composed of the
     # agents received from the other processes and `None` for the
     # agents that were sent.
-    agent_or_none_list: list[BaseAgent] = MPI.Request.waitall(req)
+    agent_or_none_list: list[BaseAgent | None] = MPI.Request.waitall(req)
     # Replacing existing agents with the received agents.
     for i, agent_or_none in enumerate(agent_or_none_list):
         if agent_or_none:

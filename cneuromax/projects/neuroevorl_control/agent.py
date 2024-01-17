@@ -1,9 +1,12 @@
 """:class:`GymAgent` & :class:`GymAgentConfig`."""
+from dataclasses import dataclass
 from typing import Annotated as An
 
 import torch
-from jaxtyping import Float32
+import torch.nn.functional as f
+from jaxtyping import Float32, Int64
 from torch import Tensor
+from torchrl.data.tensor_specs import ContinuousBox
 from torchrl.envs.libs.gym import GymEnv
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent, BaseAgentConfig
@@ -15,6 +18,7 @@ from cneuromax.utils.beartype import ge, le, one_of
 from cneuromax.utils.torch import RunningStandardization
 
 
+@dataclass
 class GymAgentConfig(BaseAgentConfig):
     """:class:`CPUStaticRNNFC` config values.
 
@@ -22,9 +26,12 @@ class GymAgentConfig(BaseAgentConfig):
         env_name: See\
             :paramref:`~.NeuroevolutionSubtaskConfig.env_name`.
         hidden_size: Size of the RNN hidden state.
+        mutation_std: Standard deviation of the mutation noise.
     """
 
-    env_name: str = "${space.env_name}"
+    env_name: str = "${space.config.env_name}"
+    hidden_size: int = 50
+    mutation_std: float = 0.01
 
 
 class GymAgent(BaseAgent):
@@ -48,12 +55,16 @@ class GymAgent(BaseAgent):
             pop_idx=pop_idx,
             pops_are_merged=pops_are_merged,
         )
+        self.config: GymAgentConfig
         temp_env = GymEnv(env_name=config.env_name)
+        self.num_actions = temp_env.action_spec.shape.numel()
         self.net = CPUStaticRNNFC(
             config=CPUStaticRNNFCConfig(
-                input_size=temp_env.observation_spec["observation"].shape,
-                hidden_size=50,
-                output_size=temp_env.action_spec.shape,
+                input_size=temp_env.observation_spec[
+                    "observation"
+                ].shape.numel(),
+                hidden_size=config.hidden_size,
+                output_size=self.num_actions,
             ),
         )
         self.output_mode: An[
@@ -61,14 +72,26 @@ class GymAgent(BaseAgent):
             one_of("continuous", "discrete"),
         ] = temp_env.action_spec.domain
         if self.output_mode == "continuous":
-            self.output_low = temp_env.action_spec.space.low
-            self.output_high = temp_env.action_spec.space.high
+            action_space: ContinuousBox = temp_env.action_spec.space
+            self.output_low = action_space.low
+            self.output_high = action_space.high
         self.standardizer = RunningStandardization(self.net.rnn.input_size)
+
+    def mutate(self: "GymAgent") -> None:
+        """Mutates the agent."""
+        for param in self.net.parameters():
+            param.data += self.config.mutation_std * torch.randn_like(
+                input=param.data,
+            )
+
+    def reset(self: "GymAgent") -> None:
+        """Resets the agent's memory state."""
+        self.net.reset()
 
     def __call__(
         self: "GymAgent",
         x: Float32[Tensor, " obs_size"],
-    ) -> Float32[Tensor, " #act_size"]:
+    ) -> Float32[Tensor, " act_size"] | Int64[Tensor, " act_size"]:
         """Forward pass.
 
         Args:
@@ -77,9 +100,15 @@ class GymAgent(BaseAgent):
         Returns:
             The output action.
         """
-        x: Float32[Tensor, " obs_size"] = self.env_to_net(x)
-        x: Float32[Tensor, " act_size"] = self.net(x)
-        x: Float32[Tensor, " #act_size"] = self.net_to_env(x)
+        x: Float32[Tensor, " obs_size"] = self.env_to_net(x=x)
+        x: Float32[Tensor, " act_size"] = self.net(x=x)
+        x: Float32[
+            Tensor,
+            " act_size",
+        ] | Int64[
+            Tensor,
+            " act_size",
+        ] = self.net_to_env(x=x)
         return x
 
     def env_to_net(
@@ -100,7 +129,7 @@ class GymAgent(BaseAgent):
     def net_to_env(
         self: "GymAgent",
         x: Float32[Tensor, " act_size"],
-    ) -> Float32[Tensor, " #act_size"]:
+    ) -> Float32[Tensor, " act_size"] | Int64[Tensor, " act_size"]:
         """Processes the network output before feeding it to the env.
 
         Args:
@@ -111,9 +140,14 @@ class GymAgent(BaseAgent):
         """
         if self.output_mode == "discrete":
             x_d: Float32[Tensor, " act_size"] = torch.softmax(input=x, dim=0)
-            x_d: Float32[Tensor, " 1"] = torch.multinomial(
+            x_d: Int64[Tensor, " "] = torch.multinomial(
                 input=x_d,
                 num_samples=1,
+            ).squeeze()
+            # Turn the integer into a one-hot vector.
+            x_d: Int64[Tensor, " act_size"] = f.one_hot(
+                x_d,
+                num_classes=self.num_actions,
             )
             return x_d
         else:  # self.output_mode == "continuous"  # noqa: RET505

@@ -4,8 +4,6 @@ from typing import Any
 from hydra_plugins.hydra_submitit_launcher.config import SlurmQueueConf
 from hydra_zen import ZenStore
 
-from cneuromax.fitting.utils.hydra import BaseLauncherConf
-
 
 def store_launcher_configs(store: ZenStore) -> None:
     """Stores Hydra ``hydra/launcher`` group configs.
@@ -19,11 +17,6 @@ def store_launcher_configs(store: ZenStore) -> None:
     store(["module load apptainer"], name="setup_apptainer_acan")
     setup: Any = "${merge:${setup_apptainer_acan},${copy_data_commands}}"
     python = "apptainer --nv exec ${oc.env:SCRATCH}/cneuromax.sif python"
-    store(
-        BaseLauncherConf(),
-        group="hydra/launcher",
-        name="base",
-    )
     store(
         SlurmQueueConf(python=python, setup=setup),
         group="hydra/launcher",
