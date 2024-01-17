@@ -22,19 +22,19 @@ jobs:
   typecheck-unittest:
     runs-on: self-hosted
     steps:
-      - name: Pull the container image
-        run: podman pull docker.io/cneuromod/cneuromax:latest
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
+      - name: Build the CNeuroMax image
+        run: podman build -t cneuromod/cneuromax:tcut -f Dockerfile .
       - name: Run mypy
         run: >
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
-          docker.io/cneuromod/cneuromax:latest
+          cneuromod/cneuromax:tcut
           mypy --config-file=pyproject.toml cneuromax
       - name: Run pytest
         run: >
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
-          docker.io/cneuromod/cneuromax:latest
+          cneuromod/cneuromax:tcut
           pytest --cov cneuromax
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
