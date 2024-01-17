@@ -11,7 +11,7 @@ on:
 
 jobs:
   docs-build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
