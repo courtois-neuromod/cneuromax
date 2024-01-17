@@ -22,17 +22,8 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:docs
           sphinx-build -b html ./docs/ ./docs/build/
-      - name: Push the documentation
-        run: |
-          git config --local user.email "maximilienlc@users.noreply.github.com"
-          git config --local user.name "MaximilienLC"
-          ls | grep -vE 'docs|.git' | xargs rm -rf
-          cp -r ./docs/build/* .
-          rm -rf ./docs
-          git add .
-          git commit -m "New documentation build"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Push the documentation to the gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages
-          force: true
+          deploy_key: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/
