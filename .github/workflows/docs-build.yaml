@@ -27,6 +27,16 @@ jobs:
         with:
           name: docs
           path: ./docs/build/
+  deploy:
+    needs: docs-build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: self-hosted
+    steps:
       - name: Deploy to Github Pages
         uses: actions/deploy-pages@v4
         with:
