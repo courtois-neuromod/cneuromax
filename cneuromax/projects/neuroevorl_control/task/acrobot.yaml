@@ -6,10 +6,11 @@ defaults:
 
 hydra:
   launcher:
-    tasks_per_node: 4
+    tasks_per_node: 3
 
 config:
-  agents_per_task: 10
+  agents_per_task: 20
+  total_num_gens: 50
 
 space:
   config:

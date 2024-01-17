@@ -2,7 +2,7 @@
 from cneuromax.fitting.neuroevolution.utils.compute import compute_save_points
 
 
-def compute_save_points_test() -> None:
+def test_compute_save_points() -> None:
     """:func:`~.compute_save_points` tests."""
     assert compute_save_points(
         prev_num_gens=0,
@@ -30,13 +30,13 @@ def compute_save_points_test() -> None:
     ) == [1, *list(range(2, 11, 2))]
     assert compute_save_points(
         prev_num_gens=20,
-        total_num_gens=10,
+        total_num_gens=30,
         save_interval=2,
         save_first_gen=False,
     ) == list(range(22, 31, 2))
     assert compute_save_points(
         prev_num_gens=20,
-        total_num_gens=10,
+        total_num_gens=30,
         save_interval=2,
         save_first_gen=True,
     ) == [21, *list(range(22, 31, 2))]

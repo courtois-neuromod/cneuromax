@@ -2,8 +2,9 @@
 from collections.abc import Callable
 from typing import Any
 
-from cneuromax.utils.mpi4py import get_mpi_variables
 from wandb.util import generate_id
+
+from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def setup_wandb(logger: Callable[..., Any]) -> None:

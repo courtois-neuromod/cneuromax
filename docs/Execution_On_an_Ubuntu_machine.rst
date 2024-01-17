@@ -35,7 +35,7 @@ Run a python script
                -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
                -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm \
                -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest \
-               python3 -m cneuromax task=fitting/deeplearning/classify_mnist/mlp
+               python -m cneuromax project=classify_mnist task=mlp
 
 
 Run a notebook

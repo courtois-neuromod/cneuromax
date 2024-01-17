@@ -3,9 +3,9 @@ from collections.abc import Callable
 from functools import partial
 from typing import Any
 
+import wandb
 from hydra_zen import ZenStore
 
-import wandb
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,

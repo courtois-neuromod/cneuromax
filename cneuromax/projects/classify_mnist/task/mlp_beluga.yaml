@@ -1,5 +1,5 @@
 # @package _global_
-# Run the ``mlp.yaml`` version locally first, then copy the data over to your
+# Run the ``mlp`` version locally first, then copy the data over to your
 # SLURM machine. Command template:
 # scp -r MY_DATA_PATH/MNIST/ MY_USER@MY_MACHINE_IP:MY_DATA_PATH/.
 defaults:

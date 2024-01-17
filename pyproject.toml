@@ -19,13 +19,18 @@ dependencies = [
     "hydra-zen==0.11.0", # Cleaner Hydra configs
     "beartype==0.16.4", # Dynamic type checking
     "wandb==0.16.0", # Logging
-    # OPTIONAL for cneuromax/
     """
-    hydra-submitit-launcher"
+    submitit
+    @git+https://github.com/courtois-neuromod/submitit
+    @b289f81004ab063b185dc97982934c266e605fad
+    """, # Local & SLURM job launcher
+    """
+    hydra-submitit-launcher
     @git+https://github.com/courtois-neuromod/hydra
     @f89f83fc4095b3fa4fefd858b5fef00a296c3aec
     #subdirectory=plugins/hydra_submitit_launcher/
-    """, # SLURM job launcher
+    """, # Launcher config
+    # OPTIONAL for cneuromax/
     "hydra-orion-sweeper==1.6.3", # Hyperparameter optimization
     "jaxtyping==0.2.24", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
@@ -39,11 +44,11 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.1.2",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "torchrl==0.2.1", # For reinforcement/imitation Learning tasks
     "transformers==4.35.2", # HuggingFace models & utils
     "datasets==2.15.0", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
+    "torchrl==0.2.1", # For reinforcement/imitation Learning tasks
     "gymnasium==0.29.1", # RL/IL environments
     # MANDATORY for docs/
     "sphinx==7.2.6", # Documentation generator
@@ -129,3 +134,7 @@ convention = "google"
 
 [tool.doc8]
 max-line-length = 79
+# docs/index.rst:1: D000 Error in "include" directive:
+# invalid option value: (option: "parser"; value: 'myst_parser.sphinx_')
+# Parser "myst_parser.sphinx_" not found. No module named 'myst_parser'.
+ignore-path-errors = ["docs/index.rst;D000"]

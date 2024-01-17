@@ -108,15 +108,6 @@ class BaseAgent(metaclass=ABCMeta):
         if self.config.fit_transfer:
             self.continual_fitness = 0
 
-    @property
-    def seed(self: "BaseAgent") -> int:
-        """The agent's seed used to fix its randomness."""
-        return self._seed
-
-    @seed.setter
-    def seed(self: "BaseAgent", seed: int) -> None:
-        self._seed = seed
-
     @abstractmethod
     def mutate(self: "BaseAgent") -> None:
         """Applies random mutation(s) to the agent."""

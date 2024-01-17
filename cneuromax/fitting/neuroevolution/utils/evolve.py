@@ -17,6 +17,7 @@ from cneuromax.fitting.neuroevolution.utils.type import (
     Fitnesses_and_num_env_steps_batch_type,
 )
 from cneuromax.utils.beartype import ge
+from cneuromax.utils.misc import seed_all
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 
@@ -38,7 +39,7 @@ def mutate(
     seeds = exchange_and_mutate_info_batch[:, :, 3]
     for i in range(len(agents_batch)):
         for j in range(num_pops):
-            agents_batch[i][j].seed = int(seeds[i, j])
+            seed_all(seed=seeds[i, j])
             # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
             # for a full example execution of the genetic algorithm.
             # The following block is examplified in section 4 & 16.
@@ -71,6 +72,7 @@ def evaluate_on_cpu(
         shape=(len(agents_batch), space.num_pops, 2),
         dtype=np.float32,
     )
+    seed_all(seed=curr_gen)
     # See https://github.com/courtois-neuromod/cneuromax/blob/main/docs/genetic.pdf
     # for a full example execution of the genetic algorithm.
     # The following block is examplified in section 5.
@@ -133,6 +135,7 @@ def evaluate_on_gpu(
         ith_gpu_agents_batch: list[list[BaseAgent]] = []
         for agent_batch in ith_gpu_batched_agents:
             ith_gpu_agents_batch = ith_gpu_agents_batch + agent_batch
+        seed_all(seed=curr_gen)
         ith_gpu_fitnesses_and_num_env_steps_batch = space.evaluate(
             ith_gpu_agents_batch,
             curr_gen,

@@ -1,5 +1,4 @@
 """Variable initialization for Neuroevolution fitting."""
-import logging
 from functools import partial
 from typing import Annotated as An
 
@@ -18,6 +17,7 @@ from cneuromax.fitting.neuroevolution.utils.type import (
 )
 from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import ge, le
+from cneuromax.utils.misc import seed_all
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 
@@ -159,11 +159,12 @@ def initialize_agents(
         A 2D list of agents maintained by this process.
     """
     agents_batch: list[list[BaseAgent]] = []
-    for _ in range(len_agents_batch):
+    for i in range(len_agents_batch):
         agents_batch.append([])
-        for pop_idx in range(num_pops):
+        for j in range(num_pops):
+            seed_all(len_agents_batch * i + j)
             agents_batch[-1].append(
-                agent(pop_idx=pop_idx, pops_are_merged=pop_merge),
+                agent(pop_idx=j, pops_are_merged=pop_merge),
             )
 
     return agents_batch

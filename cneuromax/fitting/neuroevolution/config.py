@@ -3,9 +3,9 @@ from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
+import wandb
 from hydra_zen import make_config
 
-import wandb
 from cneuromax.fitting.config import (
     FittingSubtaskConfig,
 )
