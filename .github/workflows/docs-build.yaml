@@ -23,3 +23,8 @@ jobs:
         run: pip install -r ./docs/requirements.txt
       - name: Build the documentation
         run: sphinx-build -b html ./docs/ ./docs/build/
+      - name: Upload the documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/
