@@ -13,6 +13,8 @@ jobs:
   docs-build:
     runs-on: self-hosted
     steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
       - name: Build the CNeuroMax image
         run: podman build -t cneuromod/cneuromax:docs -f Dockerfile .
       - name: Build the documentation
@@ -20,6 +22,8 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:docs
           sphinx-build -b html ./docs/ ./docs/build/
+      - name: Kill the SSH agent
+        run: eval $(ssh-agent -k)
       - name: Push the documentation to the gh-pages branch
         uses: peaceiris/actions-gh-pages@v3
         with:
