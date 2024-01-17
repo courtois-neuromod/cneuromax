@@ -1,43 +1,39 @@
 """Configuration file for the Sphinx documentation builder."""
-
 import sys
 from pathlib import Path
 
+from sphinx.application import Sphinx
+
 sys.path.insert(0, str(Path("..").resolve()))
-
-# -- Project information
-
-project = "cneuromax"
-copyright = "2023, The cneuromax Authors"  # noqa: A001
-author = "The cneuromax Authors"
+project = "CNeuroMax"
+copyright = "2023, The CNeuroMax Authors"  # noqa: A001
+author = "The CNeuroMax Authors"
 version = "0.0.1"
-
-# -- General configuration
-
 extensions = [
-    "autoapi.extension",
-    "sphinx.ext.duration",
-    "sphinx.ext.doctest",
+    "myst_parser",
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx_autodoc_typehints",
     "sphinx_copybutton",
+    "sphinx_paramlinks",
 ]
-
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3/", None),
-    "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
+autodoc_default_options = {
+    "private-members": True,
+    "show-inheritance": True,
+    "special-members": "__main__",
 }
-intersphinx_disabled_domains = ["std"]
-
-templates_path = ["_templates"]
-
-# -- Options for HTML output
-
+autodoc_member_order = "bysource"
+autosummary_generate = True
+html_static_path = ["_static"]
 html_theme = "furo"
+html_title = "CNeuroMax"
+paramlinks_hyperlink_param = "name"
+templates_path = ["_templates"]
+typehints_defaults = "comma"
 
-autoapi_type = "python"
-autoapi_dirs = ["../cneuromax"]
-autoapi_python_class_content = "both"
-autoapi_keep_files = True
+
+def setup(app: Sphinx) -> None:  # noqa: D103
+    app.add_css_file("paramlink_target_color.css")

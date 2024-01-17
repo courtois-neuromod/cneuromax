@@ -1,1 +1,1 @@
-"""Neuroevolution module."""
+"""Neuroevolution."""

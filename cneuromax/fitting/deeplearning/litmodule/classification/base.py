@@ -1,6 +1,6 @@
-"""."""
-
+""":class:`BaseClassificationLitModule` & its config dataclass."""
 from abc import ABCMeta
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 
@@ -13,45 +13,48 @@ from torch.optim.lr_scheduler import LRScheduler
 from torchmetrics.classification import MulticlassAccuracy
 
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
-from cneuromax.utils.annotations import ge, one_of
+from cneuromax.utils.beartype import ge, one_of
 
 
+@dataclass
 class BaseClassificationLitModuleConfig:
-    """Base classification Lightning Module config.
+    """Holds :class:`BaseClassificationLitModule` config values.
 
-    Attributes:
-        num_classes: .
+    Args:
+        num_classes: Number of classes to classify between.
     """
 
     num_classes: An[int, ge(2)]
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
-    """Base classification Lightning Module.
+    """Base Classification :mod:`lightning` ``LitModule``.
+
+    Args:
+        config: See :class:`BaseClassificationLitModuleConfig`.
+        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
+        optimizer: See :paramref:`~.BaseLitModule.optimizer`.
+        scheduler: See :paramref:`~.BaseLitModule.scheduler`.
 
     Attributes:
-        accuracy (``MulticlassAccuracy``): The accuracy metric.
-        config (``BaseClassificationLitModuleConfig``): .
+        accuracy\
+            (:class:`~torchmetrics.classification.MulticlassAccuracy`)
     """
 
     def __init__(
         self: "BaseClassificationLitModule",
+        config: BaseClassificationLitModuleConfig,
         nnmodule: nn.Module,
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
-        num_classes: An[int, ge(2)],
     ) -> None:
-        """Calls parent constructor & initializes accuracy metric.
-
-        Args:
-            nnmodule: .
-            optimizer: .
-            scheduler: .
-            num_classes: .
-        """
-        super().__init__(nnmodule, optimizer, scheduler)
+        super().__init__(
+            nnmodule=nnmodule,
+            optimizer=optimizer,
+            scheduler=scheduler,
+        )
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
-            num_classes=num_classes,
+            num_classes=config.num_classes,
         )
 
     def step(
@@ -62,11 +65,13 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         ],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
-        """Computes accuracy and cross entropy loss.
+        """Computes the model accuracy and cross entropy loss.
 
         Args:
-            batch: .
-            stage: .
+            batch: A tuple ``(X, y)`` where ``X`` is the input data and\
+                ``y`` is the target data.
+            stage: See\
+                :paramref:`~.BaseLitModule.stage_step.stage`.
 
         Returns:
             The cross entropy loss.
@@ -74,7 +79,7 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         x: Float[Tensor, " batch_size *x_shape"] = batch[0]
         y: Int[Tensor, " batch_size"] = batch[1]
         logits: Float[Tensor, " batch_size num_classes"] = self.nnmodule(x)
-        preds: Int[Tensor, " batch_size"] = torch.argmax(logits, dim=1)
-        accuracy: Float[Tensor, " "] = self.accuracy(preds, y)
-        self.log(f"{stage}/acc", accuracy)
-        return f.cross_entropy(logits, y)
+        preds: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
+        accuracy: Float[Tensor, " "] = self.accuracy(preds=preds, target=y)
+        self.log(name=f"{stage}/acc", value=accuracy)
+        return f.cross_entropy(input=logits, target=y)

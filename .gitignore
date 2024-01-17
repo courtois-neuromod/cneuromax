@@ -1,5 +1,5 @@
 **/_build/
-**/autoapi/
+**/_autosummary/
 **/cneuromax.egg-info/
 **/.coverage
 **/data/
@@ -11,3 +11,5 @@
 **/.ruff_cache/
 **/.vscode/
 WANDB_KEY.txt
+test.ipynb
+cneuromax/fitting/neuroevolution/space/imitation.py

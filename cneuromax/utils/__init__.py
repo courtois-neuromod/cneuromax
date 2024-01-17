@@ -1,1 +1,1 @@
-"""Utility functions for cneuromax."""
+r""":mod:`cneuromax`\-wide utilities."""

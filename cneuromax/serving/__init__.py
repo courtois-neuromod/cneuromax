@@ -1,1 +1,1 @@
-"""Serving module."""
+"""Model serving."""

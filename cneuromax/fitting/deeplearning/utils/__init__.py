@@ -1,1 +1,1 @@
-"""Deep Learning utilities."""
+r""":mod:`~cneuromax.fitting.deeplearning`\-wide utilities."""

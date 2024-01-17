@@ -1,0 +1,19 @@
+# Builds the Docker image
+name: Docker Build
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - Dockerfile
+      - pyproject.toml
+      - .github/workflows/docker-build.yaml
+
+jobs:
+  docker-build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Build the tentative CNeuroMax image
+        run: podman build -f Dockerfile .

@@ -1,1 +1,1 @@
-"""Fitting module."""
+"""Model fitting."""

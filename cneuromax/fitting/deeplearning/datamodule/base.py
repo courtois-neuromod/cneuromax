@@ -1,5 +1,4 @@
-"""Base DataModule class & related utilities."""
-
+""":class:`BaseDataModule` + its datasets/config classes."""
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -9,18 +8,18 @@ from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-from cneuromax.utils.annotations import not_empty, one_of
+from cneuromax.utils.beartype import not_empty, one_of
 
 
 @dataclass
-class BaseDataset:
-    """.
+class Datasets:
+    """Holds stage-specific :class:`~torch.utils.data.Dataset` objects.
 
-    Attributes:
-        train: .
-        val: .
-        test: .
-        predict: .
+    Args:
+        train: Training dataset.
+        val: Validation dataset.
+        test: Testing dataset.
+        predict: Prediction dataset.
     """
 
     train: Dataset[Tensor] | None = None
@@ -31,48 +30,48 @@ class BaseDataset:
 
 @dataclass
 class BaseDataModuleConfig:
-    """.
+    """Holds :class:`BaseDataModule` config values.
 
-    Attributes:
-        data_dir: .
-        device: .
+    Args:
+        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
+        device: See :paramref:`~.FittingSubtaskConfig.device`.
     """
 
-    data_dir: An[str, not_empty()] = "${data_dir}"
-    device: An[str, one_of("cpu", "gpu")] = "${device}"
+    data_dir: An[str, not_empty()] = "${config.data_dir}"
+    device: An[str, one_of("cpu", "gpu")] = "${config.device}"
 
 
 class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
-    """Root Lightning ``DataModule`` class.
+    """Base :mod:`lightning` ``DataModule``.
 
-    With ``stage`` being any of ``"train"``, ``"val"``, ``"test"`` or
-    ``"predict"``, subclasses need to properly define the
-    ``dataset[stage]`` instance attribute(s) for each desired ``stage``.
+    With ``<stage>`` being any of ``train``, ``val``, ``test`` or
+    ``predict``, subclasses need to properly define the
+    ``datasets.<stage>`` attribute(s) for each desired stage.
+
+    Args:
+        config: See :class:`BaseDataModuleConfig`.
 
     Attributes:
-        config (``BaseDataModuleConfig``): .
-        dataset (``BaseDataset``): .
-        pin_memory (``bool``): Whether to copy tensors into device
-            pinned memory before returning them (is set to ``True`` by
-            default if using GPUs).
-        per_device_batch_size (``int``): Per-device number of samples to
-            load per iteration. Default value (``1``) is later
-            overwritten with the use of a Lightning ``Tuner``.
-        per_device_num_workers (``int``): Per-device number of CPU
-            processes to use for data loading (``0`` means that the data
-            will be loaded by each device's assigned CPU process).
-            Default value (``0``) is later overwritten.
+        config (:class:`BaseDataModuleConfig`)
+        datasets (:class:`Datasets`)
+        pin_memory (``bool``): Whether to copy tensors into device\
+            pinned memory before returning them (is set to ``True`` by\
+            default if :paramref:`~BaseDataModuleConfig.device` is\
+            ``"gpu"``).
+        per_device_batch_size (``int``): Per-device number of samples\
+            to load per iteration. Temporary value (``1``) is\
+            overwritten in :func:`.set_batch_size_and_num_workers`.
+        per_device_num_workers (``int``): Per-device number of CPU\
+            processes to use for data loading (``0`` means that the\
+            data will be loaded by each device's assigned CPU\
+            process). Temporary value (``0``) is later overwritten\
+            in :func:`.set_batch_size_and_num_workers`.
     """
 
     def __init__(self: "BaseDataModule", config: BaseDataModuleConfig) -> None:
-        """Calls parent constructor & initializes instance attributes.
-
-        Args:
-            config: .
-        """
         super().__init__()
         self.config = config
-        self.dataset = BaseDataset()
+        self.datasets = Datasets()
         self.pin_memory = self.config.device == "gpu"
         self.per_device_batch_size = 1
         self.per_device_num_workers = 0
@@ -82,21 +81,24 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         self: "BaseDataModule",
         state_dict: dict[str, int],
     ) -> None:
-        """Sets the instance's per-device batch_size & num_workers.
+        """Replace instance attrib vals w/ :paramref:`state_dict` vals.
 
         Args:
-            state_dict: .
+            state_dict: Dictionary containing values to override\
+                :attr:`per_device_batch_size` &\
+                :attr:`per_device_num_workers`.
         """
         self.per_device_batch_size = state_dict["per_device_batch_size"]
         self.per_device_num_workers = state_dict["per_device_num_workers"]
 
     @final
     def state_dict(self: "BaseDataModule") -> dict[str, int]:
-        """.
+        """Returns instance attribute values.
 
         Returns:
-            This instance's per-device batch size & number of workers
-            inside a new dictionary.
+            A new dictionary containing attribute values\
+                :attr:`per_device_batch_size` &\
+                :attr:`per_device_num_workers`.
         """
         return {
             "per_device_batch_size": self.per_device_batch_size,
@@ -110,64 +112,67 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
         *,
         shuffle: bool = True,
     ) -> DataLoader[Tensor]:
-        """Generic ``DataLoader`` factory method.
+        """Generic :class:`~torch.utils.data.DataLoader` factory method.
+
+        Args:
+            dataset: A :mod:`torch` ``Dataset`` to wrap with a\
+                :class:`~torch.utils.data.DataLoader`
+            shuffle: Whether to shuffle the dataset when iterating\
+                over it.
 
         Raises:
-            AttributeError: If ``dataset`` is ``None``.
+            AttributeError: If :paramref:`dataset` is ``None``.
 
         Returns:
-            A new PyTorch ``DataLoader`` instance.
+            A new :class:`~torch.utils.data.DataLoader` instance\
+                wrapping the :paramref:`dataset` argument.
         """
         if dataset is None:
             raise AttributeError
-
-        if not hasattr(self, "collate_fn"):
-            self.collate_fn = None
-
         return DataLoader(
             dataset=dataset,
             batch_size=self.per_device_batch_size,
             shuffle=shuffle,
             num_workers=self.per_device_num_workers,
-            collate_fn=self.collate_fn,
             pin_memory=self.pin_memory,
         )
 
     @final
     def train_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls ``x_dataloader`` with train dataset.
+        """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.train``.
 
         Returns:
-            A new training PyTorch ``DataLoader`` instance.
+            A new training :class:`torch.utils.data.DataLoader`\
+                instance.
         """
-        return self.x_dataloader(dataset=self.dataset.train)
+        return self.x_dataloader(dataset=self.datasets.train)
 
     @final
     def val_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls ``x_dataloader`` with val dataset.
+        """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.val``.
 
         Returns:
-            A new validation PyTorch ``DataLoader`` instance.
+            A new validation :class:`~torch.utils.data.DataLoader`\
+                instance.
         """
-        return self.x_dataloader(dataset=self.dataset.val)
+        return self.x_dataloader(dataset=self.datasets.val)
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls ``x_dataloader`` with test dataset.
+        """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.test``.
 
         Returns:
-            A new testing PyTorch ``DataLoader`` instance.
+            A new testing :class:`~torch.utils.data.DataLoader`\
+                instance.
         """
-        return self.x_dataloader(dataset=self.dataset.test)
+        return self.x_dataloader(dataset=self.datasets.test)
 
     @final
     def predict_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
-        """Calls ``x_dataloader`` with predict dataset.
-
-        The predict PyTorch ``DataLoader`` instance does not shuffle the
-        dataset.
+        """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.predict``.
 
         Returns:
-            A new prediction PyTorch ``DataLoader`` instance.
+            A new prediction :class:`~torch.utils.data.DataLoader`\
+                instance that does not shuffle the dataset.
         """
-        return self.x_dataloader(dataset=self.dataset.test, shuffle=False)
+        return self.x_dataloader(dataset=self.datasets.predict, shuffle=False)

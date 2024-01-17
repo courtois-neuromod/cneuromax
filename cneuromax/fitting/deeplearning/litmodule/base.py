@@ -1,5 +1,4 @@
-"""."""
-
+""":class:`BaseLitModule`."""
 from abc import ABCMeta
 from functools import partial
 from typing import Annotated as An
@@ -11,19 +10,61 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuromax.utils.annotations import one_of
+from cneuromax.utils.beartype import one_of
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
-    """Root Lightning ``Module`` class.
+    """Base :mod:`lightning` ``LitModule``.
 
-    Subclasses need to implement the ``step`` method that inputs a batch
-    and returns the loss value(s).
+    Subclasses need to implement the :meth:`step` method that inputs
+    both ``batch`` (``tuple[torch.Tensor]``) and  ``stage`` (``str``)
+    arguments while returning the loss value(s) in the form of a
+    :class:`torch.Tensor`.
+
+    Example definition:
+
+    .. highlight:: python
+    .. code-block:: python
+
+        def step(
+            self: "BaseClassificationLitModule",
+            batch: tuple[
+                Float[Tensor, " batch_size *x_shape"],
+                Int[Tensor, " batch_size"],
+            ],
+            stage: An[str, one_of("train", "val", "test")],
+        ) -> Float[Tensor, " "]:
+            ...
+
+    Note:
+        ``batch`` and loss value(s) type hints in this class are not
+        rendered properly in the documentation due to an\
+        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\
+        Refer to the source code available next to the method\
+        signatures to find the correct types.
+
+    Args:
+        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\
+            instance.
+        optimizer: A :mod:`torch` ``Optimizer`` to be used by this\
+            instance. It is partial as an argument as the\
+            :paramref:`nnmodule` parameters are required for its\
+            initialization.
+        scheduler: A :mod:`torch` ``Scheduler`` to be used by this\
+            instance. It is partial as an argument as the\
+            :paramref:`optimizer` is required for its initialization.
 
     Attributes:
-        nnmodule (PyTorch ``nn.Module``): .
-        optimizer (PyTorch ``Optimizer``): .
-        scheduler (PyTorch ``LRScheduler``): .
+        nnmodule (:class:`torch.nn.Module`): See\
+            :paramref:`~BaseLitModule.nnmodule`.
+        optimizer (:class:`torch.optim.Optimizer`): See\
+            :paramref:`~BaseLitModule.optimizer`.
+        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\
+            :paramref:`~BaseLitModule.scheduler`.
+
+    Raises:
+        NotImplementedError: If the :meth:`step` method is not\
+            defined or not callable.
     """
 
     def __init__(
@@ -32,18 +73,15 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
-        """Calls parent constructor & initializes instance attributes.
-
-        Args:
-            nnmodule: .
-            optimizer: .
-            scheduler: .
-        """
         super().__init__()
-
-        self.nnmodule: nn.Module = nnmodule
-        self.optimizer: Optimizer = optimizer(params=self.parameters())
-        self.scheduler: LRScheduler = scheduler(optimizer=self.optimizer)
+        self.nnmodule = nnmodule
+        self.optimizer = optimizer(params=self.parameters())
+        self.scheduler = scheduler(optimizer=self.optimizer)
+        if not callable(getattr(self, "step", None)):
+            error_msg = (
+                "The `BaseLitModule.step` method is not defined/not callable."
+            )
+            raise NotImplementedError(error_msg)
 
     @final
     def stage_step(
@@ -53,31 +91,23 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         | list[Num[Tensor, " ..."]],
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
-        """Generic stage wrapper around the ``step`` instance method.
+        """Generic stage wrapper around the :meth:`step` method.
 
-        Verifies that the ``step`` instance method is callable, calls
-        it and logs the loss value(s).
+        Verifies that the :meth:`step` method exists and is callable,
+        calls it and logs the loss value(s).
 
         Args:
-            batch: .
-            stage: .
+            batch: The batched input data.
+            stage: The current stage (``train``, ``val``, ``test`` or\
+                ``predict``).
 
         Returns:
             The loss value(s).
-
-        Raises:
-            AttributeError: If the ``step`` instance method is not
-                callable.
         """
-        if not (hasattr(self, "step") and callable(self.step)):
-            raise AttributeError
-
         if isinstance(batch, list):
             tupled_batch: tuple[Num[Tensor, " ..."], ...] = tuple(batch)
-
         loss: Num[Tensor, " ..."] = self.step(tupled_batch, stage)
-        self.log(f"{stage}/loss", loss)
-
+        self.log(name=f"{stage}/loss", value=loss)
         return loss
 
     @final
@@ -87,7 +117,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
     ) -> Num[Tensor, " ..."]:
-        """Calls ``stage_step`` method with argument ``stage=train``.
+        """Calls :meth:`stage_step` with argument ``stage="train"``.
+
+        Args:
+            batch: See :paramref:`~stage_step.batch`.
 
         Returns:
             The loss value(s).
@@ -100,15 +133,18 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         batch: Num[Tensor, " ..."]
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
+        # :paramref:`*args` & :paramref:`**kwargs` type annotations
+        # cannot be more specific because of
+        # :meth:`LightningModule.validation_step`\'s signature.
         *args: Any,  # noqa: ANN401, ARG002
         **kwargs: Any,  # noqa: ANN401, ARG002
     ) -> Num[Tensor, " ..."]:
-        """Calls ``stage_step`` method with argument ``stage=val``.
+        """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
-            batch: .
-            *args: .
-            **kwargs: .
+            batch: See :paramref:`~stage_step.batch`.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
 
         Returns:
             The loss value(s).
@@ -122,10 +158,10 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         | tuple[Num[Tensor, " ..."], ...]
         | list[Num[Tensor, " ..."]],
     ) -> Num[Tensor, " ..."]:
-        """Calls ``stage_step`` method with argument ``stage=test``.
+        """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
-            batch: .
+            batch: See :paramref:`~stage_step.batch`.
 
         Returns:
             The loss value(s).
@@ -136,12 +172,13 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
-        """.
+        """Returns a dict with :attr:`optimizer` and :attr:`scheduler`.
 
         Returns:
-            A tuple containing the PyTorch ``Optimizer`` and
-            ``LRScheduler`` instance attributes (each nested in a
-            list).
+            A tuple containing this instance's\
+            :class:`~torch.optim.Optimizer` and\
+            :class:`~torch.optim.lr_scheduler.LRScheduler`\
+            attributes.
         """
         return [self.optimizer], [
             {"scheduler": self.scheduler, "interval": "step", "frequency": 1},

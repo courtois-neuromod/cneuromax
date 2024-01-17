@@ -1,0 +1,16 @@
+# @package _global_
+defaults:
+  - /datamodule: classify_mnist
+  - /litmodule: classify_mnist
+  - _self_
+litmodule:
+  optimizer:
+    lr: 0.002
+  nnmodule:
+    config:
+      dims: [784, 128, 10]
+    activation_fn:
+      _target_: torch.nn.ReLU
+trainer:
+  max_epochs: 3
+device: gpu
