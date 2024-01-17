@@ -1,0 +1,8 @@
+evolve
+======
+
+.. automodule:: cneuromax.fitting.neuroevolution.utils.evolve
+   :members:
+
+
+

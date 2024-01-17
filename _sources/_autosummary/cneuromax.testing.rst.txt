@@ -1,0 +1,8 @@
+testing
+=======
+
+.. automodule:: cneuromax.testing
+   :members:
+
+
+

@@ -1,0 +1,26 @@
+﻿cneuromax
+=========
+
+.. automodule:: cneuromax
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.config
+      cneuromax.fitting
+      cneuromax.projects
+      cneuromax.runner
+      cneuromax.serving
+      cneuromax.store
+      cneuromax.testing
+      cneuromax.utils
+
+

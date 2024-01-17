@@ -1,0 +1,19 @@
+datamodule
+==========
+
+.. automodule:: cneuromax.fitting.deeplearning.datamodule
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.fitting.deeplearning.datamodule.base
+
+

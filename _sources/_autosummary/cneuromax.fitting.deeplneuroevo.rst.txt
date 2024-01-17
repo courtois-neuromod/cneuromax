@@ -1,0 +1,8 @@
+deeplneuroevo
+=============
+
+.. automodule:: cneuromax.fitting.deeplneuroevo
+   :members:
+
+
+

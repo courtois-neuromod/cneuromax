@@ -1,0 +1,8 @@
+type
+====
+
+.. automodule:: cneuromax.fitting.neuroevolution.utils.type
+   :members:
+
+
+

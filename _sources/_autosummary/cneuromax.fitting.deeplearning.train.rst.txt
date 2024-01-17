@@ -1,0 +1,8 @@
+train
+=====
+
+.. automodule:: cneuromax.fitting.deeplearning.train
+   :members:
+
+
+

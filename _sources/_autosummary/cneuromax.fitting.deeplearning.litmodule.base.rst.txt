@@ -1,0 +1,8 @@
+base
+====
+
+.. automodule:: cneuromax.fitting.deeplearning.litmodule.base
+   :members:
+
+
+

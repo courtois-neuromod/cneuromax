@@ -1,0 +1,8 @@
+config
+======
+
+.. automodule:: cneuromax.fitting.neuroevolution.config
+   :members:
+
+
+

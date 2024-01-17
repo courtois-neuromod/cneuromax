@@ -1,0 +1,19 @@
+utils
+=====
+
+.. automodule:: cneuromax.fitting.deeplearning.utils
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.fitting.deeplearning.utils.lightning
+
+

@@ -1,0 +1,8 @@
+datamodule
+==========
+
+.. automodule:: cneuromax.projects.classify_mnist.datamodule
+   :members:
+
+
+

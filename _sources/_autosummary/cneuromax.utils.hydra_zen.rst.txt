@@ -1,0 +1,8 @@
+hydra\_zen
+==========
+
+.. automodule:: cneuromax.utils.hydra_zen
+   :members:
+
+
+

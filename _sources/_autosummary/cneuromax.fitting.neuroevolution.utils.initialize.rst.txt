@@ -1,0 +1,8 @@
+initialize
+==========
+
+.. automodule:: cneuromax.fitting.neuroevolution.utils.initialize
+   :members:
+
+
+

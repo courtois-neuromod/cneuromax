@@ -1,0 +1,19 @@
+cpu
+===
+
+.. automodule:: cneuromax.fitting.neuroevolution.net.cpu
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.fitting.neuroevolution.net.cpu.static
+
+

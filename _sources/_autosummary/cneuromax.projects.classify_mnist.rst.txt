@@ -1,0 +1,21 @@
+classify\_mnist
+===============
+
+.. automodule:: cneuromax.projects.classify_mnist
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.projects.classify_mnist.datamodule
+      cneuromax.projects.classify_mnist.datamodule_test
+      cneuromax.projects.classify_mnist.litmodule
+
+

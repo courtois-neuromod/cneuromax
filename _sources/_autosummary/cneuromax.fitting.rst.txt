@@ -1,0 +1,25 @@
+fitting
+=======
+
+.. automodule:: cneuromax.fitting
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.fitting.config
+      cneuromax.fitting.deeplearning
+      cneuromax.fitting.deeplneuroevo
+      cneuromax.fitting.neuroevolution
+      cneuromax.fitting.runner
+      cneuromax.fitting.store
+      cneuromax.fitting.utils
+
+

@@ -1,0 +1,20 @@
+projects
+========
+
+.. automodule:: cneuromax.projects
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.projects.classify_mnist
+      cneuromax.projects.neuroevorl_control
+
+

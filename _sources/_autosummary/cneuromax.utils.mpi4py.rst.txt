@@ -1,0 +1,8 @@
+mpi4py
+======
+
+.. automodule:: cneuromax.utils.mpi4py
+   :members:
+
+
+

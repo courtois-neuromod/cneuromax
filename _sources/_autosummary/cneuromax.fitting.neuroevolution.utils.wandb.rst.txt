@@ -1,0 +1,8 @@
+wandb
+=====
+
+.. automodule:: cneuromax.fitting.neuroevolution.utils.wandb
+   :members:
+
+
+

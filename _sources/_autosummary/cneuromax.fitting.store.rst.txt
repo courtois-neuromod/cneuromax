@@ -1,0 +1,8 @@
+store
+=====
+
+.. automodule:: cneuromax.fitting.store
+   :members:
+
+
+

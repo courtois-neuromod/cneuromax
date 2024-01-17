@@ -1,0 +1,8 @@
+rnnfc
+=====
+
+.. automodule:: cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc
+   :members:
+
+
+

@@ -1,0 +1,8 @@
+litmodule
+=========
+
+.. automodule:: cneuromax.projects.classify_mnist.litmodule
+   :members:
+
+
+

@@ -1,0 +1,8 @@
+hydra
+=====
+
+.. automodule:: cneuromax.fitting.utils.hydra
+   :members:
+
+
+

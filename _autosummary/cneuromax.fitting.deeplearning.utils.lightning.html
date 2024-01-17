@@ -1,0 +1,541 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="deeplneuroevo" href="cneuromax.fitting.deeplneuroevo.html" /><link rel="prev" title="utils" href="cneuromax.fitting.deeplearning.utils.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>lightning - CNeuroMax</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/paramlink_target_color.css?v=5605e3d9" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../index.html"><div class="brand">CNeuroMax</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
+  
+  
+  <span class="sidebar-brand-text">CNeuroMax</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="../Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Execution.html">Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Contribution.html">Contribution</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="cneuromax.html">cneuromax</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of cneuromax</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cneuromax.config.html">config</a></li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="cneuromax.fitting.html">fitting</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.config.html">config</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.html">deeplearning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.config.html">config</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html">datamodule</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of datamodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html">litmodule</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of litmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.base.html">base</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.classification.html">classification</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of classification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.classification.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.nnmodule.html">nnmodule</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of nnmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html">mlp</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.runner.html">runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.store.html">store</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
+<li class="toctree-l4 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">lightning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.deeplneuroevo.html">deeplneuroevo</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.html">neuroevolution</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of neuroevolution</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.agent.html">agent</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.agent.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.neuroevolution.config.html">config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html">rnnfc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.neuroevolution.runner.html">runner</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.space.html">space</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of space</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.space.base.html">base</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.space.reinforcement.html">reinforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.readwrite.html">readwrite</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.type.html">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.validate.html">validate</a></li>
+<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.store.html">store</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.fitting.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.utils.hydra.html">hydra</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cneuromax.projects.html">projects</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of projects</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.projects.classify_mnist.html">classify_mnist</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of classify_mnist</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html">datamodule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule_test.html">datamodule_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.litmodule.html">litmodule</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.projects.neuroevorl_control.html">neuroevorl_control</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of neuroevorl_control</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.neuroevorl_control.agent.html">agent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.neuroevorl_control.space.html">space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cneuromax.runner.html">runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cneuromax.serving.html">serving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cneuromax.store.html">store</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cneuromax.testing.html">testing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="cneuromax.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.beartype.html">beartype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.gymnasium_test.html">gymnasium_test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.hydra_zen.html">hydra_zen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.misc.html">misc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.mpi4py.html">mpi4py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.torch.html">torch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="module-cneuromax.fitting.deeplearning.utils.lightning">
+<span id="lightning"></span><h1>lightning<a class="headerlink" href="#module-cneuromax.fitting.deeplearning.utils.lightning" title="Link to this heading">#</a></h1>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> utilities.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">instantiate_trainer_and_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partial_trainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#instantiate_trainer_and_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger" title="Link to this definition">#</a></dt>
+<dd><p>Creates <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_trainer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_trainer"><strong>partial_trainer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>]</span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_logger"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_logger"><strong>partial_logger</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>]</span>) – See            <code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>]]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code> instance.</p></li>
+<li><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>            instance or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">set_batch_size_and_num_workers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datamodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">litmodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#set_batch_size_and_num_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="Link to this definition">#</a></dt>
+<dd><p>Sets attribute values for a <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p>
+<p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a> and
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a> for more details on how
+these variables’ values are determined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.trainer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.trainer"><strong>trainer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.datamodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.datamodule"><strong>datamodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a></span>) – See <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.litmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.litmodule"><strong>litmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a></span>) – See <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.output_dir"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers.params.output_dir"><strong>output_dir</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.output_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">output_dir</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">find_good_per_device_batch_size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">litmodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">datamodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#find_good_per_device_batch_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="Link to this definition">#</a></dt>
+<dd><p>Probes a <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> value.</p>
+<p>This functionality makes the following, not always correct, but
+generally reasonable assumptions:</p>
+<ul class="simple">
+<li><p>As long as the <code class="docutils literal notranslate"><span class="pre">total_batch_size</span> <span class="pre">/</span> <span class="pre">dataset_size</span></code> ratio remains    small (e.g. <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">0.01</span></code> so as to benefit from the stochasticity of    gradient updates), running the same number of gradient updates with    a larger batch size will yield better training performance than    running the same number of gradient updates with a smaller batch    size.</p></li>
+<li><p>Loading data from disk to RAM is a larger bottleneck than loading    data from RAM to GPU VRAM.</p></li>
+<li><p>If you are training on multiple GPUs, each GPU has roughly the    same amount of VRAM.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.litmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.litmodule"><strong>litmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a></span>) – See <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.datamodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.datamodule"><strong>datamodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a></span>) – See <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.output_dir"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size.params.output_dir"><strong>output_dir</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.output_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">output_dir</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A roughly optimal <code class="docutils literal notranslate"><span class="pre">per_device_batch_size</span></code> value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">find_good_per_device_num_workers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datamodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">per_device_batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_num_data_passes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#find_good_per_device_num_workers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers" title="Link to this definition">#</a></dt>
+<dd><p>Probes a <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a> value.</p>
+<p>Iterates through a range of <code class="docutils literal notranslate"><span class="pre">num_workers</span></code> values and measures the
+time it takes to iterate through a fixed number of data passes;
+returning the value that yields the shortest time.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.datamodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.datamodule"><strong>datamodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a></span>) – See <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.per_device_batch_size"><strong>per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – The return value of            <a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.max_num_data_passes"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers.params.max_num_data_passes"><strong>max_num_data_passes</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">100</span></code>) – Maximum number of data passes to iterate            through.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A roughly optimal <code class="docutils literal notranslate"><span class="pre">per_device_num_workers</span></code> value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">set_checkpoint_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#set_checkpoint_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path" title="Link to this definition">#</a></dt>
+<dd><p>Sets the path to the checkpoint to resume training from.</p>
+<p>TODO: Implement.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">FittingSubtaskConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.FittingSubtaskConfig" title="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">FittingSubtaskConfig</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.trainer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.trainer"><strong>trainer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The path to the checkpoint to resume training from.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">InitOptimParamsCheckpointConnector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#InitOptimParamsCheckpointConnector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_CheckpointConnector</span></code></p>
+<p>Tweaked <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> checkpoint connector.</p>
+<p>Allows to make use of the instantiated optimizers’
+hyper-parameters rather than the checkpointed hyper-parameters.
+For use when resuming training with different optimizer
+hyper-parameters (e.g. with a PBT <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra-core</span></code> Sweeper).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector.restore_optimizers">
+<span class="sig-name descname"><span class="pre">restore_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#InitOptimParamsCheckpointConnector.restore_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector.restore_optimizers" title="Link to this definition">#</a></dt>
+<dd><p>Tweaked method to preserve newly instantiated parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cneuromax.fitting.deeplneuroevo.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">deeplneuroevo</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cneuromax.fitting.deeplearning.utils.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">utils</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, The CNeuroMax Authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">lightning</a><ul>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger"><code class="docutils literal notranslate"><span class="pre">instantiate_trainer_and_logger()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path"><code class="docutils literal notranslate"><span class="pre">set_checkpoint_path()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector"><code class="docutils literal notranslate"><span class="pre">InitOptimParamsCheckpointConnector</span></code></a><ul>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector.restore_optimizers"><code class="docutils literal notranslate"><span class="pre">InitOptimParamsCheckpointConnector.restore_optimizers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

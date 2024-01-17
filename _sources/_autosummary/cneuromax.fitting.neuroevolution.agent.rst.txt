@@ -1,0 +1,19 @@
+agent
+=====
+
+.. automodule:: cneuromax.fitting.neuroevolution.agent
+   :members:
+
+
+
+
+.. rubric:: Submodules
+
+.. autosummary::
+   :toctree:
+   :template: module.rst
+   :recursive:
+   
+      cneuromax.fitting.neuroevolution.agent.base
+
+
