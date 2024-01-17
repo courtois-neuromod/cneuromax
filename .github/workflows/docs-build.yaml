@@ -18,7 +18,10 @@ jobs:
       - name: Build the CNeuroMax image
         run: podman build -t cneuromod/cneuromax:docs -f Dockerfile .
       - name: Build the documentation
-        run: sphinx-build -b html ./docs/ ./docs/build/
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:docs
+          sphinx-build -b html ./docs/ ./docs/build/
       - name: Push the documentation
         run: |
           git config --local user.email "maximilienlc@users.noreply.github.com"
