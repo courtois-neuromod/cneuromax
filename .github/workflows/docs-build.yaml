@@ -11,15 +11,28 @@ on:
 
 jobs:
   docs-build:
-    runs-on: ubuntu-22.04
+    runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
-      - name: Load Python 3.10
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Install dependencies
-        run: pip install -r docs/requirements.txt
+      - name: Build the CNeuroMax image
+        run: podman build -t cneuromod/cneuromax:docs -f Dockerfile .
       - name: Build the documentation
-        run: sphinx-build -b html docs/ docs/build/
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:docs
+          sphinx-build -b html ./docs/ ./docs/build/
+      - name: Push the documentation
+        run: |
+          git config --local user.email "maximilienlc@users.noreply.github.com"
+          git config --local user.name "MaximilienLC"
+          ls | grep -vE 'docs|.git' | xargs rm -rf
+          cp -r ./docs/build/* .
+          rm -rf ./docs
+          git add .
+          git commit -m "New documentation build"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          force: true
