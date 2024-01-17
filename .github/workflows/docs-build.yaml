@@ -22,15 +22,12 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:docs
           sphinx-build -b html ./docs/ ./docs/build/
-      - name: Push the documentation
-        run: |
-          rm -rf !("docs")
-          cp -r ./docs/build/* .
-          rm -rf ./docs ./.github
-          git add .
-          git commit -m "New documentation build"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Upload the documentation as an artifact
+        uses: actions/upload-artifact@v4
         with:
-          branch: gh-pages
-          force: true
+          name: docs
+          path: ./docs/build/
+      - name: Deploy to Github Pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: docs
