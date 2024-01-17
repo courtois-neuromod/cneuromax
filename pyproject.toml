@@ -16,9 +16,9 @@ version = "0.0.1"
 dependencies = [
     # MANDATORY for cneuromax/
     "hydra-core==1.3.2", # Configuration management
-    "hydra-zen==0.11.0", # Cleaner Hydra configs
+    "hydra-zen==0.12.0", # Cleaner Hydra configs
     "beartype==0.16.4", # Dynamic type checking
-    "wandb==0.16.0", # Logging
+    "wandb==0.16.2", # Logging
     """
     submitit
     @git+https://github.com/courtois-neuromod/submitit
@@ -31,40 +31,40 @@ dependencies = [
     #subdirectory=plugins/hydra_submitit_launcher/
     """, # Launcher config
     # OPTIONAL for cneuromax/
-    "hydra-orion-sweeper==1.6.3", # Hyperparameter optimization
-    "jaxtyping==0.2.24", # Torch tensor annotations
+    "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
+    "jaxtyping==0.2.25", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.7.0", # Makes shape transformations more readable
-    "jupyterlab==4.0.9", # Jupyter notebook
+    "jupyterlab==4.0.10", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.1", # Jupyter widgets
     "wandb-osh==1.2.0", # W&B support for SLURM
     "h5py==3.10.0", # HDF5 file format load/save
     "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
-    "lightning==2.1.2",
+    "lightning==2.1.3",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "transformers==4.35.2", # HuggingFace models & utils
-    "datasets==2.15.0", # HuggingFace datasets
+    "transformers==4.36.2", # HuggingFace models & utils
+    "datasets==2.16.1", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.2.1", # For reinforcement/imitation Learning tasks
     "gymnasium==0.29.1", # RL/IL environments
     # MANDATORY for docs/
     "sphinx==7.2.6", # Documentation generator
-    "esbonio==0.16.3", # Language server to render sphinx
+    "esbonio==0.16.4", # Language server to render sphinx
     "furo==2023.9.10", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
     "sphinx_autodoc_typehints==1.25.2", # More type hint customization
     "myst-parser==2.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
-    "black[jupyter]==23.11.0", # Python Formatter
-    "ruff==0.1.6", # Python Linter
+    "black[jupyter]==23.12.1", # Python Formatter
+    "ruff==0.1.13", # Python Linter
     "doc8==1.1.1", # Documentation linter
     "yamllint==1.33.0", # YAML linter
-    "pre-commit==3.5.0", # Git commit hooks
-    "mypy==1.7.1", # Static type checker
+    "pre-commit==3.6.0", # Git commit hooks
+    "mypy==1.8.0", # Static type checker
     "pytest==7.4.3", # Testing framework
     "pytest-cov==4.1.0", # Test coverage
 ]
