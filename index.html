@@ -1,0 +1,542 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation" href="Installation.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>CNeuroMax</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/paramlink_target_color.css?v=5605e3d9" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">CNeuroMax</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">CNeuroMax</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Execution.html">Execution</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Contribution.html">Contribution</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/cneuromax.html">cneuromax</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of cneuromax</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.config.html">config</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.html">fitting</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.config.html">config</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.html">deeplearning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.config.html">config</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.datamodule.html">datamodule</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of datamodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.html">litmodule</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of litmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html">base</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.html">classification</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of classification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.html">nnmodule</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of nnmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html">mlp</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.store.html">store</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplneuroevo.html">deeplneuroevo</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.html">neuroevolution</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of neuroevolution</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.agent.html">agent</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.agent.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.config.html">config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html">rnnfc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.runner.html">runner</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.html">space</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of space</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.base.html">base</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html">reinforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.readwrite.html">readwrite</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.type.html">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.validate.html">validate</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.store.html">store</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.utils.hydra.html">hydra</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.html">projects</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of projects</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.html">classify_mnist</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of classify_mnist</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.datamodule.html">datamodule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.datamodule_test.html">datamodule_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.litmodule.html">litmodule</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.html">neuroevorl_control</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of neuroevorl_control</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.agent.html">agent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.space.html">space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.runner.html">runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.serving.html">serving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.store.html">store</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.testing.html">testing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.beartype.html">beartype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.gymnasium_test.html">gymnasium_test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.hydra_zen.html">hydra_zen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.misc.html">misc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.mpi4py.html">mpi4py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.torch.html">torch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="cneuromax">
+<h1>CNeuroMax<a class="headerlink" href="#cneuromax" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml"><img alt="container-build-push" src="https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml"><img alt="docs-build-push" src="https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml/badge.svg" /></a>
+<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml"><img alt="format-lint" src="https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml/badge.svg?event=push" /></a>
+<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml"><img alt="typecheck-unittest" src="https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push" /></a>
+<a class="reference external" href="https://codecov.io/gh/courtois-neuromod/cneuromax"><img alt="codecov" src="https://codecov.io/gh/courtois-neuromod/cneuromax/branch/main/graph/badge.svg?token=AN8GLFP9CB" /></a>
+<a class="reference external" href="https://github.com/psf/black"><img alt="code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg" /></a></p>
+<h2>Overview</h2>
+<p>CNeuroMax is a Machine Learning workspace for model fitting
+(<a class="reference external" href="https://en.wikipedia.org/wiki/Deep_learning">Deep Learning</a> +
+<a class="reference external" href="https://en.wikipedia.org/wiki/Neuroevolution">Neuroevolution</a> +
+<a class="reference external" href="https://en.wikipedia.org/wiki/Hyperparameter_optimization">HPO</a>
+w/ <a class="reference external" href="https://github.com/Epistimio/orion">Oríon</a>), testing
+and serving (with <a class="reference external" href="https://lightning.ai/docs/app/stable/">Lightning Apps</a>)
+AI/ML models. CNeuroMax aims to:</p>
+<p><strong>1. Reduce code &amp; configuration boilerplate with:</strong></p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/facebookresearch/hydra">Hydra</a> for task/experiment
+configuration.</p></li>
+<li><p><a class="reference external" href="https://github.com/mit-ll-responsible-ai/hydra-zen">Hydra-zen</a> for
+<a class="reference external" href="https://github.com/facebookresearch/hydra">Hydra</a> structured configuration
+management.</p></li>
+<li><p><a class="reference external" href="https://github.com/Lightning-AI/pytorch-lightning">Lightning</a> for
+<a class="reference external" href="https://github.com/pytorch/pytorch">PyTorch</a> code.</p></li>
+</ul>
+<p><strong>2. Simplify machine learning workflows:</strong></p>
+<ul class="simple">
+<li><p>Hyperparameter optimization with <a class="reference external" href="https://github.com/Epistimio/orion">Orion</a>
+through its
+<a class="reference external" href="https://github.com/Epistimio/hydra_orion_sweeper">Hydra Sweeper plugin</a>.</p></li>
+<li><p>SLURM job definition, queuing and monitoring with
+<a class="reference external" href="https://github.com/facebookincubator/submitit">Submitit</a> through its
+<a class="reference external" href="https://hydra.cc/docs/plugins/submitit_launcher/">Hydra Launcher plugin</a>.</p></li>
+<li><p><a class="reference external" href="https://www.docker.com/">Docker</a> / <a class="reference external" href="https://apptainer.org/">Apptainer</a>
+environment containerization for both regular &amp; SLURM-based execution.</p></li>
+<li><p>Transition from regular execution to SLURM-based execution by only swapping
+container technology and as little as a single
+<a class="reference external" href="https://github.com/facebookresearch/hydra">Hydra</a>
+configuration field.</p></li>
+</ul>
+<p><strong>3. Automate workspace &amp; coding processes:</strong></p>
+<ul class="simple">
+<li><p>Package upgrades through
+<a class="reference external" href="https://github.com/renovatebot/renovate">Renovate</a>.</p></li>
+<li><p>Docstring documentation generation with
+<a class="reference external" href="https://github.com/sphinx-doc/sphinx">Sphinx</a>.</p></li>
+<li><p>Pre-commit formatting &amp; linting hooks with
+<a class="reference external" href="https://pre-commit.com/">pre-commit</a>.</p></li>
+<li><p>Documentation/Docker image validation/deployment, formatting, linting,
+type-checking &amp; unit tests upon contribution to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch using
+<a class="reference external" href="https://github.com/features/actions">GitHub Actions</a>.</p></li>
+</ul>
+<p><strong>4. Facilitate researcher collaboration through:</strong></p>
+<ul class="simple">
+<li><p>An object-oriented structure for code sharing &amp; reusability.</p></li>
+<li><p>A mono-repository workspace with task/experiment-specific subdirectories.</p></li>
+<li><p>A very informative &amp; clear to navigate Python API reference.</p></li>
+<li><p>Shared logging with a <a class="reference external" href="https://wandb.ai/site">Weights &amp; Biases</a> team space.</p></li>
+</ul>
+<p><strong>5. Promote high-quality and reproducible code by:</strong></p>
+<ul class="simple">
+<li><p>Linting with <a class="reference external" href="https://github.com/astral-sh/ruff">Ruff</a>,
+formatting with <a class="reference external" href="https://github.com/psf/black">Black</a>,
+unit-testing with <a class="reference external" href="https://github.com/pytest-dev/pytest">pytest</a>.</p></li>
+<li><p>Type-checking with <a class="reference external" href="https://github.com/python/mypy">Mypy</a> (static)
+&amp; <a class="reference external" href="https://github.com/beartype/beartype">Beartype</a> (dynamic).</p></li>
+<li><p>DType &amp; Shape type hinting for <a class="reference external" href="https://github.com/pytorch/pytorch">PyTorch</a>
+tensors using <a class="reference external" href="https://github.com/google/jaxtyping">jaxtyping</a> &amp;
+<a class="reference external" href="https://github.com/numpy/numpy">NumPy</a> arrays using
+<a class="reference external" href="https://github.com/ramonhagenaars/nptyping">nptyping</a>. Fully type checkable
+at runtime with <a class="reference external" href="https://github.com/beartype/beartype">Beartype</a>.</p></li>
+<li><p>Providing a common <a class="reference external" href="https://containers.dev/">Development Container</a>
+recipe with the above features enabled + documentation preview
+with <a class="reference external" href="https://github.com/swyddfa/esbonio">esbonio</a> &amp;
+<a class="reference external" href="https://github.com/features/copilot">GitHub Copilot</a>.</p></li>
+</ul>
+<p><strong>6. Smoothen up rough edges by providing:</strong></p>
+<ul class="simple">
+<li><p>Extensive documentation on how to install/execute on regular &amp; SLURM-based
+systems.</p></li>
+<li><p>Unassuming guides on how to contribute to the codebase.</p></li>
+<li><p>Tutorials on i) how to facilitate code transport across machines &amp;  ii) how
+to prune unrelated components of the library for paper publication.</p></li>
+<li><p>Offline <a class="reference external" href="https://wandb.ai/site">Weights &amp; Biases</a> support with
+<a class="reference external" href="https://github.com/klieret/wandb-offline-sync-hook">wandb-osh</a>.</p></li>
+</ul>
+<h2>High-level repository tree:</h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cneuromax/
+├─ .github/                  &lt;-- Config files for GitHub Actions (tests, containers, etc)
+├─ cneuromax/                &lt;-- Root
+│  ├─ fitting/               &lt;-- Model fitting code
+│  │  ├─ deeplearning/       &lt;-- Deep Learning code
+│  │  │  ├─ datamodule/      &lt;-- Lightning DataModules
+│  │  │  ├─ litmodule/       &lt;-- Lightning Modules
+│  │  │  ├─ nnmodule/        &lt;-- PyTorch Modules
+│  │  │  ├─ utils/           &lt;-- Deep Learning utilities
+│  │  │  ├─ config.py        &lt;-- Deep Learning structured configs
+│  │  │  ├─ runner.py        &lt;-- Deep Learning task runner
+│  │  │  └─ train.py         &lt;-- Deep Learning training function
+│  │  ├─ neuroevolution/     &lt;-- Neuroevolution code
+│  │  │  ├─ agent/           &lt;-- Neuroevolution agents (encapsulate networks)
+│  │  │  ├─ net/             &lt;-- Neuroevolution networks
+│  │  │  ├─ space/           &lt;-- Neuroevolution spaces (where agents get evaluated)
+│  │  │  ├─ utils/           &lt;-- Neuroevolution utilities
+│  │  │  ├─ config.py        &lt;-- Neuroevolution structured configs
+│  │  │  ├─ evolve.py        &lt;-- Neuroevolution evolution function
+│  │  │  └─ runner.py        &lt;-- Neuroevolution task runner
+│  │  ├─ config.py           &lt;-- Fitting structured configs
+│  │  └─ runner.py           &lt;-- Fitting task runner
+│  ├─ serving/               &lt;-- Contains the code to create apps (cozmo inference, etc)
+│  ├─ projects/              &lt;-- Contains all existing projects
+│  │  │
+│  │  │                          ******************************************
+│  │  └─ my_new_project/     &lt;-- ******** Your new project folder *********
+│  │     ├─ task/            &lt;-- *********** Your task folder *************
+│  │     │  └─ config.yaml   &lt;-- ****** Your task configuration file ******
+│  │     ├─ __main__.py      &lt;-- **** Your Hydra Configs &amp; entrypoint *****
+│  │     ├─ datamodule.py    &lt;-- ******* Your Lightning DataModule ********
+│  │     ├─ litmodule.py     &lt;-- ********* Your Lightning Module **********
+│  │     ├─ nnmodule.py      &lt;-- ********** Your PyTorch Module ***********
+│  │                             ******************************************
+│  │
+│  ├─ utils/                 &lt;-- CNeuroMax utilities
+│  ├─ __init__.py            &lt;-- Sets up Beartype
+│  └─ config.py              &lt;-- Base structured configs
+│  └─ runner.py              &lt;-- Base task runner
+├─ docs/                     &lt;-- Documentation files
+├─ .devcontainer.json        &lt;-- VSCode container development config
+├─ .gitignore                &lt;-- Files to not track with Git/GitHub
+├─ .pre-commit-config.yaml   &lt;-- Pre-&quot;git commit&quot; actions config (format, lint, etc)
+├─ .yamllint.yaml            &lt;-- YAML files config
+├─ Dockerfile                &lt;-- To build the Docker image
+├─ LICENSE                   &lt;-- MIT License file
+├─ README.md                 &lt;-- Repository description file
+├─ pyproject.toml            &lt;-- Python code &amp; dependencies config
+└─ renovate.json             &lt;-- Renovate Bot config (keeps dependencies up-to-date)
+</pre></div>
+</div>
+<h2>Additional information:</h1>
+<p>CNeuroMax is developed in the context of the
+<a class="reference external" href="https://cneuromod.ca">Courtois Project on Neuronal Modelling</a>, also known as
+CNeuroMod. Launched in 2018, CNeuroMod aims to create more human-like AI models
+by training them to emulate both human brain dynamics and behaviour. Phase I
+(2018-2023) of the project saw large-scale data acquisition and preliminary
+unimodal modelling. Phase II (2023-2027) of the project aims to create
+multimodal phantom models of the subjects. CNeuroMax is used as the framework
+to train these phantom models.</p>
+</section>
+<section id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Link to this heading">#</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#common-to-all-machines">Common to all machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#on-an-ubuntu-machine">On an Ubuntu machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Installation.html#on-a-slurm-cluster">On a Slurm cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Execution.html">Execution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Execution.html#on-an-ubuntu-machine">On an Ubuntu machine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Execution.html#on-a-slurm-cluster">On a Slurm cluster</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Contribution.html">Contribution</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#making-sure-the-code-doesn-t-break">Making sure the code doesn’t break</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#testing-locally">Testing locally</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#setting-up-vscode">Setting up VSCode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#git-github-workflow-for-contributing">Git/GitHub workflow for contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#documenting-your-contribution">Documenting your contribution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#setting-up-maestral-dropbox-to-move-code-across-machines">Setting up Maestral/Dropbox to move code across machines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Contribution.html#freezing-the-repositories-for-publication">Freezing the repositories for publication</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/cneuromax.html#module-cneuromax" title="cneuromax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cneuromax</span></code></a></p></td>
+<td><p><a class="reference internal" href="_autosummary/cneuromax.html#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a> package.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="Installation.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Installation</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, The CNeuroMax Authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>

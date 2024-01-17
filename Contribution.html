@@ -1,0 +1,653 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="cneuromax" href="_autosummary/cneuromax.html" /><link rel="prev" title="Execution" href="Execution.html" />
+
+    <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
+        <title>Contribution - CNeuroMax</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/paramlink_target_color.css?v=5605e3d9" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_paramlinks.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">CNeuroMax</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">CNeuroMax</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Execution.html">Execution</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Contribution</a></li>
+</ul>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="_autosummary/cneuromax.html">cneuromax</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of cneuromax</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.config.html">config</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.html">fitting</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.config.html">config</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.html">deeplearning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.config.html">config</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.datamodule.html">datamodule</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of datamodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.html">litmodule</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of litmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html">base</a></li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.html">classification</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of classification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.html">nnmodule</a><input class="toctree-checkbox" id="toctree-checkbox-7" name="toctree-checkbox-7" role="switch" type="checkbox"/><label for="toctree-checkbox-7"><div class="visually-hidden">Toggle navigation of nnmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html">mlp</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.store.html">store</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplneuroevo.html">deeplneuroevo</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.html">neuroevolution</a><input class="toctree-checkbox" id="toctree-checkbox-9" name="toctree-checkbox-9" role="switch" type="checkbox"/><label for="toctree-checkbox-9"><div class="visually-hidden">Toggle navigation of neuroevolution</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.agent.html">agent</a><input class="toctree-checkbox" id="toctree-checkbox-10" name="toctree-checkbox-10" role="switch" type="checkbox"/><label for="toctree-checkbox-10"><div class="visually-hidden">Toggle navigation of agent</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.agent.base.html">base</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.config.html">config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l6 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l7"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html">rnnfc</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.runner.html">runner</a></li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.html">space</a><input class="toctree-checkbox" id="toctree-checkbox-14" name="toctree-checkbox-14" role="switch" type="checkbox"/><label for="toctree-checkbox-14"><div class="visually-hidden">Toggle navigation of space</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.base.html">base</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html">reinforcement</a></li>
+</ul>
+</li>
+<li class="toctree-l4 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.readwrite.html">readwrite</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.type.html">type</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.validate.html">validate</a></li>
+<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.fitting.store.html">store</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.fitting.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-16" name="toctree-checkbox-16" role="switch" type="checkbox"/><label for="toctree-checkbox-16"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.utils.hydra.html">hydra</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.html">projects</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of projects</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.html">classify_mnist</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of classify_mnist</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.datamodule.html">datamodule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.datamodule_test.html">datamodule_test</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.classify_mnist.litmodule.html">litmodule</a></li>
+</ul>
+</li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.html">neuroevorl_control</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of neuroevorl_control</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.agent.html">agent</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.projects.neuroevorl_control.space.html">space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.runner.html">runner</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.serving.html">serving</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.store.html">store</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/cneuromax.testing.html">testing</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/cneuromax.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-20" name="toctree-checkbox-20" role="switch" type="checkbox"/><label for="toctree-checkbox-20"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.beartype.html">beartype</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.gymnasium_test.html">gymnasium_test</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.hydra_zen.html">hydra_zen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.misc.html">misc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.mpi4py.html">mpi4py</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.runner.html">runner</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.torch.html">torch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/cneuromax.utils.wandb.html">wandb</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="contribution">
+<span id="id1"></span><h1>Contribution<a class="headerlink" href="#contribution" title="Link to this heading">#</a></h1>
+<p>Link to the GitHub repository: <a class="reference external" href="https://github.com/courtois-neuromod/cneuromax">https://github.com/courtois-neuromod/cneuromax</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to have completed the installation steps before moving to
+this section.</p>
+</div>
+<p>There are many ways to interact with the code base, with ranging levels of
+collaborativity. The following instructions are meant for people who wish to
+contribute to the code base, either by fixing bugs, adding new features or
+improving the documentation.</p>
+<p>Regardless of whether you wish to contribute to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch or solely
+to your own branch, check out the <code class="docutils literal notranslate"><span class="pre">classify_mnist</span></code> <a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/task/classify_mnist">code folder</a>
+for a template of how to structure your code.</p>
+<section id="making-sure-the-code-doesn-t-break">
+<h2>Making sure the code doesn’t break<a class="headerlink" href="#making-sure-the-code-doesn-t-break" title="Link to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">main</span></code> branch is protected meaning that contributions happen through
+pull requests rather than direct pushes.</p>
+<p>In order for any pull request to go through, it will need to pass a number of
+common and standard checks (using GitHub Actions) that ensure that the code is
+of high quality and does not break any portion of the existing code base.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not be intimidated by the number of checks, we will later introduce how to
+seemlessly integrate them in your workflow.</p>
+</div>
+<p>Those checks are:</p>
+<ul>
+<li><p>Making sure that the Python code follows a clean common format and is
+PEP8 compliant. In order to do so we make use of the following libraries:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Formatting: <a class="reference external" href="https://black.readthedocs.io/en/stable/the_black_code_style/current_style.html">black</a>
+(79 lines for code, 72 for comments)</p></li>
+<li><p>Linting: <a class="reference external" href="https://beta.ruff.rs/docs/tutorial/#getting-started">ruff</a>
+(all rules that don’t create conflicts with existing libraries)</p></li>
+<li><p>Type checking: <a class="reference external" href="https://mypy.readthedocs.io/en/stable/getting_started.html">mypy</a> (strict)</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>Making sure that the Python code passes all of the existing unit-tests. If
+they do not, it means that your code is breaking a portion of the
+code base. We currently only make use of unit-tests (leveraging <a class="reference external" href="https://docs.pytest.org/en/7.3.x/getting-started.html">pytest</a>) but will most
+likely eventually develop tests with broader purposes.</p></li>
+<li><p>Making sure that the reST documentation files are formatted and linted
+(using <a class="reference external" href="https://github.com/PyCQA/doc8">doc8</a> 79 lines).</p></li>
+<li><p>Making sure that the YAML files are formatted and linted
+(using <a class="reference external" href="https://yamllint.readthedocs.io/en/stable/quickstart.html#running-yamllint">yamllint</a>).</p></li>
+<li><p>Making sure that there are no trailing whitespaces and that all files,
+regardless of the extension end with a newline.</p></li>
+<li><p>Making sure that the Docker image can still be built.</p></li>
+<li><p>Making sure that the documentation can still be built and pushed to Github
+Pages.</p></li>
+</ul>
+</section>
+<section id="testing-locally">
+<h2>Testing locally<a class="headerlink" href="#testing-locally" title="Link to this heading">#</a></h2>
+<p>Rather than having to wait for the GitHub tests to finish verifying your code,
+you can run some of the tests locally to debug preventively.</p>
+<p><strong>Fast Tests (sub 1 second)</strong></p>
+<p>Formatting and linting tests are quick to run. The most common way to execute
+them is through pre-commit hooks. We use the <a class="reference external" href="https://pre-commit.com/#quick-start">pre-commit</a> library, which configure to run
+formatting and linting tests upon each <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> command, preventing the
+commit from going through if the tests fail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To disable this behaviour (for instance when you’re commiting to a
+dev/local branch and don’t want to deal with formatting / code validity,
+you can instead run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span> <span class="pre">--no-verify</span></code>.</p>
+</div>
+<p><strong>Slow Tests</strong></p>
+<p>Unit-tests and typecheck tests are slower, hence not suitable to run upon each
+commit. However they are pretty useful to save time right before merging your
+branch. To run those tests, you can use the following commands:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>cneuromax
+mypy<span class="w"> </span>--config-file<span class="o">=</span>pyproject.toml<span class="w"> </span>cneuromax
+</pre></div>
+</div>
+</section>
+<section id="setting-up-vscode">
+<h2>Setting up VSCode<a class="headerlink" href="#setting-up-vscode" title="Link to this heading">#</a></h2>
+<p>Rather than being welcomed to a red wave of errors and warnings every time you
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">commit</span></code> or run the slow tests, we suggest that you set up your editor to
+notify you of most issues before you commit.</p>
+<p>We provide a <code class="docutils literal notranslate"><span class="pre">.devcontainer.json</span></code> file that allows you to develop locally
+using VSCode and the repository’s Docker image (it should not be too hard to
+adapt this file to other IDEs). In order to use it, you will need to install
+the <cite>Remote - Containers</cite> extension.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>code<span class="w"> </span>--install-extension<span class="w"> </span>ms-vscode-remote.remote-containers
+</pre></div>
+</div>
+<p>From then on, upon opening the repository in VSCode, you should be prompted to
+open the repository in a container. If you are not, you can open the command
+palette (<code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code>) and search for
+<code class="docutils literal notranslate"><span class="pre">Remote-Containers:</span> <span class="pre">Reopen</span> <span class="pre">in</span> <span class="pre">Container</span></code>.</p>
+<p>There are so far two small pain points:</p>
+<ul class="simple">
+<li><p>The very first time you boot-up the Dev Container, some extensions won’t be
+loaded correctly. A window could pop-up asking you to reload the window which
+you will need to do. If it doesn’t pop up, open the command palette
+(<code class="docutils literal notranslate"><span class="pre">Ctrl+Shift+P</span></code>) and search for <code class="docutils literal notranslate"><span class="pre">Developer:</span> <span class="pre">Reopen</span> <span class="pre">folder</span> <span class="pre">locally</span></code> before
+reopening the Dev Container.</p></li>
+<li><p>The esbonio server will sometimes announce a build error (bottom right),
+which will prevent further documentation visualization. To fix this, you
+should delete the contents of the <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code> (do not delete the folder
+itself if you use Dropbox/Maestral) and <code class="docutils literal notranslate"><span class="pre">docs/_autosummary</span></code> folders and
+and restart the esbonio server (by pressing its icon).</p></li>
+</ul>
+<p>GitHub Copilot is installed in the DevContainer. Simply discard the log-in
+notifications if you do not want to make use of it.
+You can run <code class="docutils literal notranslate"><span class="pre">git</span></code>, <code class="docutils literal notranslate"><span class="pre">pytest</span></code> &amp; <code class="docutils literal notranslate"><span class="pre">mypy</span></code> commands from the integrated
+terminal. However running the library itself requires special Docker flags and
+should thus be ran from the terminal outside of VSCode (refere to the
+<code class="docutils literal notranslate"><span class="pre">Execution</span></code> section).</p>
+</section>
+<section id="git-github-workflow-for-contributing">
+<h2>Git/GitHub workflow for contributing<a class="headerlink" href="#git-github-workflow-for-contributing" title="Link to this heading">#</a></h2>
+<p>In a terminal window, change directory to the cneuromax repository.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">CNEUROMAX_PATH</span><span class="si">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You can avoid typing the following commands by hand by using the VSCode
+<code class="docutils literal notranslate"><span class="pre">Source</span> <span class="pre">Control</span></code> tab on the left and the branch tab on the bottom left.
+To commit with no verification, press the <code class="docutils literal notranslate"><span class="pre">...</span></code> button above the
+<code class="docutils literal notranslate"><span class="pre">Commit</span></code> button and select <code class="docutils literal notranslate"><span class="pre">Commit</span> <span class="pre">All</span> <span class="pre">(No</span> <span class="pre">Verify)</span></code>.</p>
+</div>
+<p>Create a new branch for your contribution.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>pull
+git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>&lt;YOUR_BRANCH_NAME&gt;
+</pre></div>
+</div>
+<p>Make your changes, commit them and push them to the remote repository.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;&lt;COMMIT_MESSAGE&gt;&quot;</span><span class="w"> </span><span class="c1"># can add the --no-verify flag to skip tests</span>
+git<span class="w"> </span>push
+</pre></div>
+</div>
+<p>If you are done with your contribution, you can create a pull request on
+GitHub. If new changes have been introducted to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch while you
+were working on your development branch, you will need to update your branch
+with the latest changes from <code class="docutils literal notranslate"><span class="pre">main</span></code>, you can do so by running the following
+commands.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>pull
+git<span class="w"> </span>checkout<span class="w"> </span>&lt;YOUR_BRANCH_NAME&gt;
+git<span class="w"> </span>merge<span class="w"> </span>main<span class="w"> </span><span class="c1"># might need to resolve conflicts (easier to do in VSCode)</span>
+git<span class="w"> </span>push
+</pre></div>
+</div>
+<p>Once you have pushed your changes, you can create a pull request on GitHub.
+Once it is approved, delete your branch and make sure to pull the changes to
+your local repository.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>checkout<span class="w"> </span>main
+git<span class="w"> </span>pull
+git<span class="w"> </span>branch<span class="w"> </span>-d<span class="w"> </span>&lt;YOUR_BRANCH_NAME&gt;
+</pre></div>
+</div>
+</section>
+<section id="documenting-your-contribution">
+<h2>Documenting your contribution<a class="headerlink" href="#documenting-your-contribution" title="Link to this heading">#</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to not leave any of your <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> files empty else the
+specific subpackage will not be documented.</p>
+</div>
+<p>We use <a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/autosummary.html">sphinx.ext.autosummary</a> to
+automatically generate documentation from <a class="reference external" href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">Google-style Python docstrings</a>.
+This webpage holds the API reference documentation for the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch of
+the repository and is automatically updated upon each push.
+Take a look at <a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/blob/main/cneuromax/fitting/deeplearning/datamodule/base.py">this Python file</a>
+and its <a class="reference external" href="https://courtois-neuromod.github.io/cneuromax/cneuromax.fitting.deeplearning.datamodule.base.html">corresponding documentation webpage</a>
+that showcase most of the available docstring commands available and their
+effects on the documentation page.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Document your <code class="docutils literal notranslate"><span class="pre">__init__</span></code> method arguments in the class docstring rather
+than in the <code class="docutils literal notranslate"><span class="pre">__init__</span></code> docstring.</p>
+</div>
+<p>Assuming that you are using the library’s development Docker image in your
+editor, you can preview your changes to <code class="docutils literal notranslate"><span class="pre">.rst</span></code> by clicking the preview button
+on the top right of the editor. In general, you can preview your changes to all
+<code class="docutils literal notranslate"><span class="pre">.rst</span></code>, <code class="docutils literal notranslate"><span class="pre">.py</span></code> and <code class="docutils literal notranslate"><span class="pre">README.md</span></code> files after re-building the documentation
+by pressing the <code class="docutils literal notranslate"><span class="pre">esbonio</span></code> button on the bottom right of the editor and then
+opening the locally created <code class="docutils literal notranslate"><span class="pre">.html</span></code> files.</p>
+</section>
+<section id="setting-up-maestral-dropbox-to-move-code-across-machines">
+<h2>Setting up Maestral/Dropbox to move code across machines<a class="headerlink" href="#setting-up-maestral-dropbox-to-move-code-across-machines" title="Link to this heading">#</a></h2>
+<p>Rather than having to manually move code across machines, we suggest that you
+use a Dropbox folder to automatically sync your code across machines.</p>
+<p>On machines where you have root access, you can simply install Dropbox.
+On machines where you do not have root access, you can install Maestral as a
+drop-in replacement for Dropbox (Make sure not to install both Dropbox and
+Maestral on the same machine).</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tmux
+module<span class="w"> </span>load<span class="w"> </span>python/3.10
+pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>maestral
+python<span class="w"> </span>-m<span class="w"> </span>maestral<span class="w"> </span>start
+</pre></div>
+</div>
+<p>You will be prompted the following question: <strong>How would you like to you link
+your account?</strong></p>
+<p>Choose: <strong>Print auth URL to console</strong></p>
+<p>Open the URL and press Allow.</p>
+<p>Copy the code that appears in the browser.</p>
+<p><strong>Enter the auth code:</strong> Paste.</p>
+<p><strong>Please choose a local Dropbox folder:</strong>  <code class="docutils literal notranslate"><span class="pre">/scratch/&lt;USER&gt;/Dropbox</span></code></p>
+<p>Would you like sync all folders? <strong>No</strong></p>
+<p>Choose which folders to include: <strong>cneuromax</strong></p>
+<p>You can now close the console window (<code class="docutils literal notranslate"><span class="pre">Ctrl+B</span></code>, <code class="docutils literal notranslate"><span class="pre">D</span></code>) and the
+synchronization will continue in the background.</p>
+<p>You can reattach to the console window and check the status of the
+synchronization by running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tmux<span class="w"> </span>attach<span class="w"> </span>-t<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="c1"># The number is the index of the window</span>
+python<span class="w"> </span>-m<span class="w"> </span>maestral<span class="w"> </span>status
+</pre></div>
+</div>
+<p>Finally, there are some files that you probably do not want to sync across
+all machines. On a machine with Dropbox, run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>data/<span class="w"> </span>docs/_build/<span class="w"> </span>.vscode/<span class="w"> </span>.coverage
+mkdir<span class="w"> </span>-p<span class="w"> </span>.mypy_cache/<span class="w"> </span>.pytest_cache/<span class="w"> </span>.ruff_cache/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>data/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>docs/_build/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.vscode/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.coverage
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.mypy_cache/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.pytest_cache/
+sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.ruff_cache/
+</pre></div>
+</div>
+<p>On a machine with Maestral, edit your <cite>.mignore</cite> file to exclude the files you
+do not want to sync.</p>
+<p>Example of the contents of a <cite>.mignore</cite> file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">**/</span><span class="n">data</span>
+</pre></div>
+</div>
+</section>
+<section id="freezing-the-repositories-for-publication">
+<h2>Freezing the repositories for publication<a class="headerlink" href="#freezing-the-repositories-for-publication" title="Link to this heading">#</a></h2>
+<p>For your code to remain reproducible after publication, we suggest that you
+create a new branch or fork the repository.</p>
+<p>If you want to freeze and make your branch/fork of this repository as light as
+possible, you can delete the following:</p>
+<ul class="simple">
+<li><p>Any non-relevant folder inside <code class="docutils literal notranslate"><span class="pre">cneuromax/fitting/deeplearning/datamodule/</span></code></p></li>
+<li><p>Any non-relevant folder inside <code class="docutils literal notranslate"><span class="pre">cneuromax/fitting/deeplearning/litmodule/</span></code></p></li>
+<li><p>Any non-relevant folder inside <code class="docutils literal notranslate"><span class="pre">cneuromax/fitting/deeplearning/nnmodule/</span></code></p></li>
+<li><p>If you are not doing Neuroevolution, the
+<code class="docutils literal notranslate"><span class="pre">cneuromax/fitting/neuroevolution/</span></code> folder</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">cneuromax/serving/</span></code> folder</p></li>
+<li><p>Any non-relevant folder inside <code class="docutils literal notranslate"><span class="pre">cneuromax/task/</span></code></p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">docs/</span></code> folder</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> file</p></li>
+<li><p>Most of the contents of the <code class="docutils literal notranslate"><span class="pre">README.md</span></code> file</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">renovate.json</span></code> file</p></li>
+<li><p>The irrelevant dependencies in the <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="_autosummary/cneuromax.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">cneuromax</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="Execution.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Execution</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2023, The CNeuroMax Authors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Contribution</a><ul>
+<li><a class="reference internal" href="#making-sure-the-code-doesn-t-break">Making sure the code doesn’t break</a></li>
+<li><a class="reference internal" href="#testing-locally">Testing locally</a></li>
+<li><a class="reference internal" href="#setting-up-vscode">Setting up VSCode</a></li>
+<li><a class="reference internal" href="#git-github-workflow-for-contributing">Git/GitHub workflow for contributing</a></li>
+<li><a class="reference internal" href="#documenting-your-contribution">Documenting your contribution</a></li>
+<li><a class="reference internal" href="#setting-up-maestral-dropbox-to-move-code-across-machines">Setting up Maestral/Dropbox to move code across machines</a></li>
+<li><a class="reference internal" href="#freezing-the-repositories-for-publication">Freezing the repositories for publication</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>
