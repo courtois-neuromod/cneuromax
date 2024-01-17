@@ -22,7 +22,18 @@ jobs:
       - name: Install dependencies
         run: pip install -r ./docs/requirements.txt
       - name: Build the documentation
+        id: build
         run: sphinx-build -b html ./docs/ ./docs/build/
+      - name: Upload the artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: ./docs/build/
+      - name: Download the artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: docs
+          path: ./docs/build/
       - name: Upload the documentation
         uses: peaceiris/actions-gh-pages@v3
         with:
