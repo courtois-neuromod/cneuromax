@@ -31,7 +31,7 @@ dependencies = [
     "ipywidgets==8.1.1", # Jupyter widgets
     "wandb-osh==1.2.0", # W&B support for SLURM
     "h5py==3.10.0", # HDF5 file format load/save
-    "opencv-python==4.8.0.74", # Image processing
+    "opencv-python==4.9.0.80", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.1.3",
     # OPTIONAL for cneuromax/fitting/deeplearning/
