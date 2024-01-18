@@ -1,0 +1,29 @@
+name: On pull request workflows requiring the CNeuroMax image
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  docker-build:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Build the tentative CNeuroMax image
+        run: podman build -t cneuromod/cneuromax:test -f Dockerfile .
+      - name: Build the documentation
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:test
+          sphinx-build -b html ./docs/ ./docs/build/
+      - name: Run mypy
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:test
+          mypy --config-file=pyproject.toml cneuromax
+      - name: Run pytest
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:test
+          pytest --cov cneuromax

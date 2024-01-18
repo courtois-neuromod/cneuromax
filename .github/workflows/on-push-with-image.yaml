@@ -1,35 +1,29 @@
-# Runs pytest & mypy (type checking and unit tests)
-name: Typecheck & Unittest
+name: On push workflows requiring the CNeuroMax image
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - cneuromax/**
-      - pyproject.toml
-      - .github/workflows/typecheck-unittest.yaml
   push:
     branches: [main]
-    paths:
-      - cneuromax/**
-      - pyproject.toml
-      - .github/workflows/typecheck-unittest.yaml
-
-permissions:
-  contents: read
 
 jobs:
-  typecheck-unittest:
+  docker-build-push:
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
-      # Waiting for `Docker Build` to complete to not build the image twice
-      - name: Stall the job for 5 minutes if it is a pull request
-        if: github.event_name == 'pull_request'
-        run: sleep 300
       - name: Build the CNeuroMax image
-        run: podman build -t cneuromod/cneuromax:test -f Dockerfile .
+        run: podman build -t cneuromod/cneuromax:latest -f Dockerfile .
+      - name: Push the CNeuroMax image to Docker Hub
+        run: podman push docker.io/cneuromod/cneuromax:latest
+      - name: Build the documentation
+        run: >
+          podman run --rm -v $PWD:/cneuromax -w /cneuromax
+          cneuromod/cneuromax:docs
+          sphinx-build -b html ./docs/ ./docs/build/
+      - name: Deploy the documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs/build/
       - name: Run mypy
         run: >
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
