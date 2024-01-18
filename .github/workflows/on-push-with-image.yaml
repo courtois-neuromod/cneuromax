@@ -5,7 +5,7 @@ on:
     branches: [main]
 
 jobs:
-  docker-build-push:
+  on-push-with-image:
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
