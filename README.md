@@ -1,17 +1,11 @@
 # CNeuroMax
 
-[![container-build-push](
-    https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuromax/actions/workflows/container-build-push.yaml)
-[![docs-build-push](
-    https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml/badge.svg)](
-        https://github.com/courtois-neuromod/cneuromax/actions/workflows/docs-build-push.yaml)
 [![format-lint](
     https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml/badge.svg?event=push)](
         https://github.com/courtois-neuromod/cneuromax/actions/workflows/format-lint.yaml)
-[![typecheck-unittest](
-    https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml/badge.svg?event=push)](
-        https://github.com/courtois-neuromod/cneuromax/actions/workflows/typecheck-unittest.yaml)
+[![on-push-with-image](
+    https://github.com/courtois-neuromod/cneuromax/actions/workflows/on-push-with-image.yaml/badge.svg?event=push)](
+        https://github.com/courtois-neuromod/cneuromax/actions/workflows/on-push-with-image.yaml)
 [![codecov](
     https://codecov.io/gh/courtois-neuromod/cneuromax/branch/main/graph/badge.svg?token=AN8GLFP9CB)](
         https://codecov.io/gh/courtois-neuromod/cneuromax)
@@ -104,11 +98,13 @@ cneuromax/
 │  │  ├─ deeplearning/       <-- Deep Learning code
 │  │  │  ├─ datamodule/      <-- Lightning DataModules
 │  │  │  ├─ litmodule/       <-- Lightning Modules
-│  │  │  ├─ nnmodule/        <-- PyTorch Modules
+│  │  │  │  └─ nnmodule/     <-- PyTorch Modules
 │  │  │  ├─ utils/           <-- Deep Learning utilities
 │  │  │  ├─ config.py        <-- Deep Learning structured configs
 │  │  │  ├─ runner.py        <-- Deep Learning task runner
+│  │  │  ├─ store.py         <-- Deep Learning configs storing
 │  │  │  └─ train.py         <-- Deep Learning training function
+│  │  ├─ deeplneuroevo/      <-- Deep Learning + Neuroevolution code
 │  │  ├─ neuroevolution/     <-- Neuroevolution code
 │  │  │  ├─ agent/           <-- Neuroevolution agents (encapsulate networks)
 │  │  │  ├─ net/             <-- Neuroevolution networks
@@ -117,25 +113,29 @@ cneuromax/
 │  │  │  ├─ config.py        <-- Neuroevolution structured configs
 │  │  │  ├─ evolve.py        <-- Neuroevolution evolution function
 │  │  │  └─ runner.py        <-- Neuroevolution task runner
+│  │  ├─ utils/              <-- Fitting utililities
 │  │  ├─ config.py           <-- Fitting structured configs
-│  │  └─ runner.py           <-- Fitting task runner
-│  ├─ serving/               <-- Contains the code to create apps (cozmo inference, etc)
+│  │  ├─ runner.py           <-- Fitting task runner
+│  │  └─ store.py            <-- Fitting configs storing
 │  ├─ projects/              <-- Contains all existing projects
 │  │  │
 │  │  │                          ******************************************
 │  │  └─ my_new_project/     <-- ******** Your new project folder *********
 │  │     ├─ task/            <-- *********** Your task folder *************
 │  │     │  └─ config.yaml   <-- ****** Your task configuration file ******
-│  │     ├─ __main__.py      <-- **** Your Hydra Configs & entrypoint *****
 │  │     ├─ datamodule.py    <-- ******* Your Lightning DataModule ********
 │  │     ├─ litmodule.py     <-- ********* Your Lightning Module **********
-│  │     ├─ nnmodule.py      <-- ********** Your PyTorch Module ***********
+│  │     └─ nnmodule.py      <-- ********** Your PyTorch Module ***********
 │  │                             ******************************************
 │  │
+│  ├─ serving/               <-- Contains the code to create apps (cozmo inference, etc)
+│  ├─ testing/               <-- Contains code for more complex testing of models
 │  ├─ utils/                 <-- CNeuroMax utilities
 │  ├─ __init__.py            <-- Sets up Beartype
-│  └─ config.py              <-- Base structured configs
-│  └─ runner.py              <-- Base task runner
+│  ├─ __init__.py            <-- Entry-point
+│  ├─ config.py              <-- Base structured configs
+│  ├─ runner.py              <-- Base task runner
+│  └─ store.py               <-- Base configs storing
 ├─ docs/                     <-- Documentation files
 ├─ .devcontainer.json        <-- VSCode container development config
 ├─ .gitignore                <-- Files to not track with Git/GitHub
