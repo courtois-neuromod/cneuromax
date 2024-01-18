@@ -1,4 +1,4 @@
-""":class:`GymAgent` & :class:`GymAgentConfig`."""
+""":class:`GymAgent` & its config."""
 from dataclasses import dataclass
 from typing import Annotated as An
 
@@ -20,11 +20,11 @@ from cneuromax.utils.torch import RunningStandardization
 
 @dataclass
 class GymAgentConfig(BaseAgentConfig):
-    """:class:`CPUStaticRNNFC` config values.
+    """Holds :class:`GymAgent` config values.
 
     Args:
         env_name: See\
-            :paramref:`~.NeuroevolutionSubtaskConfig.env_name`.
+            :paramref:`~.GymReinforcementSpaceConfig.env_name`.
         hidden_size: Size of the RNN hidden state.
         mutation_std: Standard deviation of the mutation noise.
     """
@@ -35,12 +35,12 @@ class GymAgentConfig(BaseAgentConfig):
 
 
 class GymAgent(BaseAgent):
-    """Gym Feature-Based Control Static Agent.
+    """``project`` :class:`BaseAgent`.
 
     Args:
-        config: See :paramref:`~BaseAgent.config`.
-        pop_idx: See :paramref:`~BaseAgent.pop_idx`.
-        pops_are_merged: See :paramref:`~BaseAgent.pops_are_merged`.
+        config: See :paramref:`~.BaseAgent.config`.
+        pop_idx: See :paramref:`~.BaseAgent.pop_idx`.
+        pops_are_merged: See :paramref:`~.BaseAgent.pops_are_merged`.
     """
 
     def __init__(
@@ -118,10 +118,10 @@ class GymAgent(BaseAgent):
         """Processes the observation before feeding it to the network.
 
         Args:
-            x: The input observation.
+            x: See :paramref:`~__call__.x`.
 
         Returns:
-            The processed observation.
+            The observation processed for the network.
         """
         x: Float32[Tensor, " obs_size"] = self.standardizer(x=x)
         return x
@@ -136,7 +136,7 @@ class GymAgent(BaseAgent):
             x: The network output.
 
         Returns:
-            The processed network output.
+            The network output processed for the env.
         """
         if self.output_mode == "discrete":
             x_d: Float32[Tensor, " act_size"] = torch.softmax(input=x, dim=0)
