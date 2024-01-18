@@ -305,7 +305,7 @@
         </div>
         <article role="main">
           <h1>Source code for cneuromax.projects.neuroevorl_control</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Control task neuroevolution ``project``.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Reinforcement Neuroevolution on Control environments ``project``.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">hydra_zen</span> <span class="kn">import</span> <span class="n">ZenStore</span>
 
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.runner</span> <span class="kn">import</span> <span class="n">NeuroevolutionTaskRunner</span>
@@ -316,19 +316,23 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;TaskRunner&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GymAgent&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GymAgentConfig&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GymReinforcementSpace&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GymReinforcementSpaceConfig&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="TaskRunner">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.projects.neuroevorl_control.html#cneuromax.projects.neuroevorl_control.TaskRunner">[docs]</a>
 <span class="k">class</span> <span class="nc">TaskRunner</span><span class="p">(</span><span class="n">NeuroevolutionTaskRunner</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;MNIST classification ``task`` runner.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``project`` ``task`` runner.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TaskRunner.store_configs">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.projects.neuroevorl_control.html#cneuromax.projects.neuroevorl_control.TaskRunner.store_configs">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">store_configs</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;TaskRunner&quot;</span><span class="p">],</span> <span class="n">store</span><span class="p">:</span> <span class="n">ZenStore</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores :mod:`hydra-core` MNIST classification configs.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores :mod:`hydra-core` ``project`` configs.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            store: See :paramref:`~.BaseTaskRunner.store_configs.store`.</span>

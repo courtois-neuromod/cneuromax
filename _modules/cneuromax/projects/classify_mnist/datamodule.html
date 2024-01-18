@@ -305,7 +305,7 @@
         </div>
         <article role="main">
           <h1>Source code for cneuromax.projects.classify_mnist.datamodule</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:mod:`lightning` DataModule + conf for MNIST classification task.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;:class:`MNISTClassificationDataModule` &amp; its config.&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 
@@ -324,7 +324,7 @@
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MNISTClassificationDataModuleConfig</span><span class="p">(</span><span class="n">BaseDataModuleConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for :class:`MNISTClassificationDataModule`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`MNISTClassificationDataModule` config values.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        val_percentage: Percentage of the training dataset to use for\</span>
@@ -338,10 +338,10 @@
 <div class="viewcode-block" id="MNISTClassificationDataModule">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">MNISTClassificationDataModule</span><span class="p">(</span><span class="n">BaseDataModule</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;MNIST Classification :mod:`lightning` DataModule.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;``project`` :class:`.BaseDataModule`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: The instance&#39;s configuration.</span>
+<span class="sd">        config: See :class:`MNISTClassificationDataModuleConfig`.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        train_val_split (`tuple[float, float]`): The train/validation\</span>
