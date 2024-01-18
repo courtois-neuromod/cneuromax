@@ -12,7 +12,7 @@ from cneuromax.fitting.deeplearning.litmodule.classification import (
 
 
 class MNISTClassificationLitModule(BaseClassificationLitModule):
-    """MNIST Classification :mod:`lightning` Module.
+    """``project`` :class:`BaseClassificationLitModule`.
 
     Args:
         nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.

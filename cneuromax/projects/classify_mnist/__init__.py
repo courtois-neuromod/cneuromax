@@ -19,11 +19,11 @@ __all__ = [
 
 
 class TaskRunner(DeepLearningTaskRunner):
-    """MNIST classification ``task`` runner."""
+    """``project`` ``task`` runner."""
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
-        """Stores :mod:`hydra-core` MNIST classification configs.
+        """Stores :mod:`hydra-core` ``project`` configs.
 
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.

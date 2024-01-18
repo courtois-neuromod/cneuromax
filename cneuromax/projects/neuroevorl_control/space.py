@@ -22,7 +22,7 @@ class GymReinforcementSpaceConfig(BaseSpaceConfig):
 
 
 class GymReinforcementSpace(BaseReinforcementSpace):
-    """:class:`.BaseSpace` for reinforcement on :mod:`gymnasium`.
+    """``project`` :class:`.BaseReinforcementSpace`.
 
     Args:
         config: See :class:`GymReinforcementSpaceConfig`.
