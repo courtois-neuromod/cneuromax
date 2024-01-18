@@ -1,0 +1,17 @@
+# @package _global_
+defaults:
+  - /space: rl_control_nevo
+  - /agent: gen_transfer
+  - _self_
+
+hydra:
+  launcher:
+    tasks_per_node: 3
+
+config:
+  agents_per_task: 20
+  total_num_gens: 50
+
+space:
+  config:
+    env_name: "Acrobot-v1"
