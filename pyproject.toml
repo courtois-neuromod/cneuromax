@@ -26,7 +26,7 @@ dependencies = [
     "jaxtyping==0.2.25", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.7.0", # Makes shape transformations more readable
-    "jupyterlab==4.0.10", # Jupyter notebook
+    "jupyterlab==4.0.11", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.1", # Jupyter widgets
     "wandb-osh==1.2.0", # W&B support for SLURM
