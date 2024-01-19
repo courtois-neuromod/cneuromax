@@ -462,7 +462,7 @@
                     <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">curr_eval_num_steps</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_num_steps</span><span class="p">:</span>
-                <span class="n">out</span><span class="p">[</span><span class="s2">&quot;done&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">run_post_eval</span><span class="p">(</span><span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">,</span> <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
             <span class="p">(</span>
