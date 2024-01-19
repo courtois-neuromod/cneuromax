@@ -5,6 +5,7 @@ import time
 from typing import Annotated as An
 
 import numpy as np
+import wandb
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.utils.type import (
@@ -218,6 +219,18 @@ def compute_total_num_env_steps_and_process_fitnesses(
         fitnesses[:, 1] = fitnesses[:, 0][::-1]
     num_env_steps = generation_results[:, :, 1]
     total_num_env_steps += int(num_env_steps.sum())
-    logging.info(f"{curr_gen}: {int(time.time() - start_time)}")
-    logging.info(f"{fitnesses.mean(axis=0)}\n{fitnesses.max(axis=0)}\n")
+    elapsed_time = time.time() - start_time
+    fitnesses_mean = fitnesses.mean(axis=0)
+    fitnesses_max = fitnesses.max(axis=0)
+    logging.info(f"{curr_gen}: {elapsed_time}")
+    logging.info(f"{fitnesses_mean}\n{fitnesses_max}\n")
+    wandb.log(
+        {
+            "gen": curr_gen,
+            "fitnesses_mean": fitnesses_mean,
+            "fitnesses_max": fitnesses_max,
+            "elapsed_time": elapsed_time,
+            "total_num_env_steps": total_num_env_steps,
+        },
+    )
     return total_num_env_steps

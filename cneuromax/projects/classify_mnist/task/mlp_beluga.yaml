@@ -1,10 +1,10 @@
 # @package _global_
-# Run the ``mlp`` version locally first, then copy the data over to your
+# First run the ``mlp`` version locally, then copy the data over to your
 # SLURM machine. Command template:
-# scp -r MY_DATA_PATH/MNIST/ MY_USER@MY_MACHINE_IP:MY_DATA_PATH/.
+# scp -r ${CNEUROMAX_PATH}/data/MNIST/ USER@HOSTNAME:/CNEUROMAX_PATH/data/.
 defaults:
   - mlp
-  - override /hydra/launcher: submitit_slurm
+  - override /hydra/launcher: slurm
   - _self_
 hydra:
   launcher:
@@ -12,6 +12,7 @@ hydra:
     cpus_per_task: 10
     mem_gb: 46
     timeout_min: 15
+    # Update the following lines appropriately
     account: rrg-pbellec
     python: "/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/\
       apptainer/1.1.8/bin/apptainer \
