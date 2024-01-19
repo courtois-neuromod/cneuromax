@@ -18,7 +18,7 @@ class BaseSpaceConfig:
         eval_num_steps: See :attr:`~.BaseSpaceConfig.eval_num_steps`.
     """
 
-    eval_num_steps: An[int, ge(0)] = 0
+    eval_num_steps: An[int, ge(0)] = "${config.eval_num_steps}"  # type: ignore[assignment]
 
 
 class BaseSpace(metaclass=ABCMeta):

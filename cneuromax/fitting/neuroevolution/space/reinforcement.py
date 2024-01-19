@@ -142,7 +142,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
                     curr_gen=curr_gen,
                 )
             if agent.curr_eval_num_steps == self.config.eval_num_steps:
-                out["done"] = True
+                break
         self.run_post_eval(agent=agent, out=out, curr_gen=curr_gen)
         return np.array(
             (
