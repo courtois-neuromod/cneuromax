@@ -1,4 +1,4 @@
-""":class:`ARDataModule` + its config."""
+""":class:`ARDataModule` & its config."""
 from dataclasses import dataclass
 from typing import Annotated as An
 
@@ -11,11 +11,11 @@ from cneuromax.utils.beartype import one_of
 
 @dataclass
 class ARDataModuleConfig(BaseDataModuleConfig):
-    """Configuration for :class:`ARDataModule`."""
+    """Holds :class:`ARDataModule` config values."""
 
 
 class ARDataModule(BaseDataModule):
-    """Autoregression :mod:`lightning` DataModule.
+    """``project`` :class:`.BaseDataModule`.
 
     Args:
         config: See :class:`ARDataModuleConfig`.
