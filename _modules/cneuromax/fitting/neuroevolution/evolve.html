@@ -310,8 +310,6 @@
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">wandb</span>
-
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.agent</span> <span class="kn">import</span> <span class="n">BaseAgent</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.config</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">NeuroevolutionSubtaskConfig</span><span class="p">,</span>
@@ -342,7 +340,10 @@
     <span class="n">save_state</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.validate</span> <span class="kn">import</span> <span class="n">validate_space</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.wandb</span> <span class="kn">import</span> <span class="n">setup_wandb</span>
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.wandb</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">setup_wandb</span><span class="p">,</span>
+    <span class="n">terminate_wandb</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
 
 
@@ -500,7 +501,7 @@
                 <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
                 <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
             <span class="p">)</span>
-    <span class="n">wandb</span><span class="o">.</span><span class="n">finish</span><span class="p">()</span></div>
+    <span class="n">terminate_wandb</span><span class="p">()</span></div>
 
 </pre></div>
         </article>

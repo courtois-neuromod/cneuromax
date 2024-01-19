@@ -474,10 +474,10 @@
 <span class="sd">        A 2D list of agents maintained by this process.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">agents_batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_agents_batch</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">len_agents_batch</span><span class="p">):</span>
         <span class="n">agents_batch</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
         <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pops</span><span class="p">):</span>
-            <span class="n">seed_all</span><span class="p">(</span><span class="n">len_agents_batch</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">seed_all</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">agents_batch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">agent</span><span class="p">(</span><span class="n">pop_idx</span><span class="o">=</span><span class="n">j</span><span class="p">,</span> <span class="n">pops_are_merged</span><span class="o">=</span><span class="n">pop_merge</span><span class="p">),</span>
             <span class="p">)</span>
