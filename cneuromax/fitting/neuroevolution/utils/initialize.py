@@ -159,10 +159,10 @@ def initialize_agents(
         A 2D list of agents maintained by this process.
     """
     agents_batch: list[list[BaseAgent]] = []
-    for i in range(len_agents_batch):
+    for _ in range(len_agents_batch):
         agents_batch.append([])
         for j in range(num_pops):
-            seed_all(len_agents_batch * i + j)
+            seed_all(0)
             agents_batch[-1].append(
                 agent(pop_idx=j, pops_are_merged=pop_merge),
             )

@@ -3,7 +3,9 @@ from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
 
+from tensordict import TensorDict
 from torch import Tensor
+from torchrl.envs import EnvBase
 
 from cneuromax.utils.beartype import ge, le
 
@@ -98,15 +100,15 @@ class BaseAgent(metaclass=ABCMeta):
 
     def initialize_eval_attributes(self: "BaseAgent") -> None:
         """Initializes attributes used during evaluation."""
-        self.curr_eval_score = 0
+        self.curr_eval_score: float = 0
         self.curr_eval_num_steps = 0
         if self.config.env_transfer:
-            self.saved_env = None
-            self.saved_env_out = None
+            self.saved_env: EnvBase
+            self.saved_env_out: TensorDict
+            self.curr_episode_score: float = 0
             self.curr_episode_num_steps = 0
-            self.curr_episode_score = 0
         if self.config.fit_transfer:
-            self.continual_fitness = 0
+            self.continual_fitness: float = 0
 
     @abstractmethod
     def mutate(self: "BaseAgent") -> None:

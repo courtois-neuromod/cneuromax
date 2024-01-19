@@ -3,8 +3,6 @@ from collections.abc import Callable
 from functools import partial
 from typing import Any
 
-import wandb
-
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
@@ -35,7 +33,10 @@ from cneuromax.fitting.neuroevolution.utils.readwrite import (
     save_state,
 )
 from cneuromax.fitting.neuroevolution.utils.validate import validate_space
-from cneuromax.fitting.neuroevolution.utils.wandb import setup_wandb
+from cneuromax.fitting.neuroevolution.utils.wandb import (
+    setup_wandb,
+    terminate_wandb,
+)
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 
@@ -191,4 +192,4 @@ def evolve(
                 curr_gen=curr_gen,
                 output_dir=config.output_dir,
             )
-    wandb.finish()
+    terminate_wandb()
