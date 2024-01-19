@@ -23,7 +23,7 @@ def store_wandb_logger_configs(
     dir_key = "save_dir" if clb == WandbLogger else "dir"
     base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
         "name": "${task}",
-        dir_key: "${config.output_dir}",
+        dir_key: "${config.output_dir}/${now:%H-%M-%S}",
         "project": "${project}",
     }
     store(

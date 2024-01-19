@@ -5,7 +5,6 @@ from typing import Annotated as An
 from typing import Any, final
 
 import numpy as np
-import wandb
 from tensordict import TensorDict
 from torchrl.envs import EnvBase
 
@@ -14,6 +13,7 @@ from cneuromax.fitting.neuroevolution.space.base import (
     BaseSpace,
     BaseSpaceConfig,
 )
+from cneuromax.fitting.neuroevolution.utils.wandb import gather
 from cneuromax.utils.beartype import ge
 
 
@@ -78,9 +78,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         ):
             agent.reset()
         if agent.config.env_transfer:
-            wandb.log(
-                {"score": agent.curr_episode_score, "gen": curr_gen},
-            )
+            self.logged_score: float | None = agent.curr_episode_score
             agent.curr_episode_score = 0
             agent.curr_episode_num_steps = 0
             self.env.set_seed(seed=curr_gen)
@@ -107,9 +105,8 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             agent.saved_env = copy.deepcopy(self.env)
             agent.saved_env_out = copy.deepcopy(out)
         if not agent.config.env_transfer:
-            wandb.log(
-                {"score": agent.curr_eval_score, "gen": curr_gen},
-            )
+            self.logged_score = agent.curr_eval_score
+        gather(logged_score=self.logged_score, curr_gen=curr_gen)
 
     @final
     def evaluate(
@@ -126,17 +123,18 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         agent = agents[0][0]
         agent.curr_eval_score = 0
         agent.curr_eval_num_steps = 0
+        self.logged_score = None
         out = self.run_pre_eval(agent=agent, curr_gen=curr_gen)
         while not out["done"]:
             out = out.set(key="action", item=agent(x=out["observation"]))
             out = self.env.step(tensordict=out)["next"]
-            agent.curr_eval_score += out["reward"]
+            agent.curr_eval_score += float(out["reward"])
             agent.curr_eval_num_steps += 1
             if agent.config.env_transfer:
-                agent.curr_episode_score += out["reward"]
+                agent.curr_episode_score += float(out["reward"])
                 agent.curr_episode_num_steps += 1
             if agent.config.fit_transfer:
-                agent.continual_fitness += out["reward"]
+                agent.continual_fitness += float(out["reward"])
             if out["done"]:
                 out = self.env_done_reset(
                     agent=agent,

@@ -46,8 +46,8 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
     ):
         error_msg = (
             "`hydra/launcher: basic` (the default launcher) is not supported. "
-            "Use `override hydra/launcher: submitit_local` or "
-            "`override hydra/launcher: submitit_slurm`."
+            "Use `override hydra/launcher: local` or "
+            "`override hydra/launcher: slurm`."
         )
         raise TypeError(error_msg)
     error_msg = (
