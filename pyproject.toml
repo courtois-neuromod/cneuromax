@@ -20,7 +20,7 @@ dependencies = [
     "beartype==0.16.4", # Dynamic type checking
     "wandb==0.16.2", # Logging
     "submitit@git+https://github.com/courtois-neuromod/submitit@b289f81004ab063b185dc97982934c266e605fad", # Local & SLURM job launcher
-    "hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@f89f83fc4095b3fa4fefd858b5fef00a296c3aec#subdirectory=plugins/hydra_submitit_launcher/", # Launcher config
+    "hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@9e227a095345b5ea3d914efa95b74b622e7d1fdf#subdirectory=plugins/hydra_submitit_launcher/", # Launcher config
     # OPTIONAL for cneuromax/
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
     "jaxtyping==0.2.25", # Torch tensor annotations
