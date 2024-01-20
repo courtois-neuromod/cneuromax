@@ -325,26 +325,22 @@
 <span class="sd">    Args:</span>
 <span class="sd">        store: See :meth:`~.BaseTaskRunner.store_configs`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">submitit_folder</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{hydra.sweep.dir}</span><span class="s2">/${now:%H-%M-%S}&quot;</span>
-    <span class="n">store</span><span class="p">(</span>
-        <span class="n">LocalQueueConf</span><span class="p">(</span>
-            <span class="n">submitit_folder</span><span class="o">=</span><span class="n">submitit_folder</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">,</span>
+    <span class="c1"># Setting up the launchers is a little bit different from the other</span>
+    <span class="c1"># configs. Fields get resolved before the ``subtask`` is created.</span>
+    <span class="n">args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># `fs_builds`` does not like dict[str, str]</span>
+        <span class="s2">&quot;submitit_folder&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{hydra.sweep.dir}</span><span class="s2">/${now:%Y-%m-</span><span class="si">%d</span><span class="s2">-%H-%M-%S}/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;stderr_to_stdout&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">store</span><span class="p">(</span><span class="n">LocalQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
+    <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;setup&quot;</span><span class="p">:</span> <span class="s2">&quot;${merge:$</span><span class="si">{setup_apptainer_slurm}</span><span class="s2">,$</span><span class="si">{copy_data_commands}</span><span class="s2">}&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+            <span class="s2">&quot;apptainer --nv exec ${oc.env:SCRATCH}/cneuromax.sif python&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
     <span class="p">)</span>
-    <span class="n">store</span><span class="p">([</span><span class="s2">&quot;module load apptainer&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;setup_apptainer_slurm&quot;</span><span class="p">)</span>
-    <span class="n">setup</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="s2">&quot;${merge:$</span><span class="si">{setup_apptainer_slurm}</span><span class="s2">,$</span><span class="si">{copy_data_commands}</span><span class="s2">}&quot;</span>
-    <span class="n">python</span> <span class="o">=</span> <span class="s2">&quot;apptainer --nv exec ${oc.env:SCRATCH}/cneuromax.sif python&quot;</span>
-    <span class="n">store</span><span class="p">(</span>
-        <span class="n">SlurmQueueConf</span><span class="p">(</span>
-            <span class="n">submitit_folder</span><span class="o">=</span><span class="n">submitit_folder</span><span class="p">,</span>
-            <span class="n">python</span><span class="o">=</span><span class="n">python</span><span class="p">,</span>
-            <span class="n">setup</span><span class="o">=</span><span class="n">setup</span><span class="p">,</span>
-        <span class="p">),</span>
-        <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">,</span>
-    <span class="p">)</span></div>
+    <span class="n">store</span><span class="p">(</span><span class="n">SlurmQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">)</span>
+    <span class="n">store</span><span class="p">([</span><span class="s2">&quot;module load apptainer&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;setup_apptainer_slurm&quot;</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

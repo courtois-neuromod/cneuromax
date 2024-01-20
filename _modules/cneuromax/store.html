@@ -331,8 +331,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dir_key</span> <span class="o">=</span> <span class="s2">&quot;save_dir&quot;</span> <span class="k">if</span> <span class="n">clb</span> <span class="o">==</span> <span class="n">WandbLogger</span> <span class="k">else</span> <span class="s2">&quot;dir&quot;</span>
     <span class="n">base_args</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># `fs_builds`` does not like dict[str, str]</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{task}</span><span class="s2">&quot;</span><span class="p">,</span>
-        <span class="n">dir_key</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{config.output_dir}</span><span class="s2">/${now:%H-%M-%S}&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{task}</span><span class="s2">/${hydra:job.override_dirname}&quot;</span><span class="p">,</span>
+        <span class="n">dir_key</span><span class="p">:</span> <span class="s2">&quot;${hydra:sweep.dir}/${now:%Y-%m-</span><span class="si">%d</span><span class="s2">-%H-%M-%S}&quot;</span><span class="p">,</span>
         <span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{project}</span><span class="s2">&quot;</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">store</span><span class="p">(</span>
