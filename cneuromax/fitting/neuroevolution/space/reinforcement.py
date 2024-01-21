@@ -106,7 +106,11 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             agent.saved_env_out = copy.deepcopy(out)
         if not agent.config.env_transfer:
             self.logged_score = agent.curr_eval_score
-        gather(logged_score=self.logged_score, curr_gen=curr_gen)
+        gather(
+            logged_score=self.logged_score,
+            curr_gen=curr_gen,
+            agent_total_num_steps=agent.total_num_steps,
+        )
 
     @final
     def evaluate(
@@ -130,6 +134,7 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             out = self.env.step(tensordict=out)["next"]
             agent.curr_eval_score += float(out["reward"])
             agent.curr_eval_num_steps += 1
+            agent.total_num_steps += 1
             if agent.config.env_transfer:
                 agent.curr_episode_score += float(out["reward"])
                 agent.curr_episode_num_steps += 1
