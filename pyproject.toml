@@ -47,11 +47,9 @@ dependencies = [
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.2.1", # For reinforcement/imitation Learning tasks
     """
-    gymnasium@git+https://github.com/Farama-Foundation/Gymnasium@\
+    gymnasium[mujoco]@git+https://github.com/Farama-Foundation/Gymnasium@\
     6baf8708bfb08e37ce3027b529193169eaa230fd""", # RL/IL environments
     # Bug fixes for Gymnasium
-    # OPTIONAL for cneuromax/fitting/neuroevolution/
-    "mujoco==3.1.1", # MuJoCo physics engine
     # MANDATORY for docs/
     "sphinx==7.2.6", # Documentation generator
     "esbonio==0.16.4", # Language server to render sphinx
