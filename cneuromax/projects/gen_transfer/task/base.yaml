@@ -1,6 +1,6 @@
 # @package _global_
 defaults:
-  - /space: neuroevorl_control
+  - /space: rl_control_nevo
   - /agent: gen_transfer
   - _self_
 
@@ -11,7 +11,9 @@ hydra:
     params:
       config.mem_transfer: true,false
       config.fit_transfer: true,false
-      agent.config.partial_obs: false,true
-      space.config.env_name: Acrobot-v1,Swimmer-v4
+      agent.config.partial_obs: true,false
+      space.config.env_name: Swimmer-v4,Acrobot-v1
 config:
   agents_per_task: 1
+  save_interval: 10
+  save_first_gen: true

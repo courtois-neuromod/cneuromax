@@ -5,4 +5,4 @@ defaults:
 
 config:
   env_transfer: false
-  total_num_gens: 2500
+  total_num_gens: 1000

@@ -4,7 +4,7 @@ from typing import Annotated as An
 
 import torch
 import torch.nn.functional as f
-from jaxtyping import Float32, Int64
+from jaxtyping import Float, Float32, Int64
 from torch import Tensor
 from torchrl.data.tensor_specs import ContinuousBox
 from torchrl.envs.libs.gym import GymEnv
@@ -90,7 +90,7 @@ class GymAgent(BaseAgent):
 
     def __call__(
         self: "GymAgent",
-        x: Float32[Tensor, " obs_size"],
+        x: Float[Tensor, " obs_size"],
     ) -> Float32[Tensor, " act_size"] | Int64[Tensor, " act_size"]:
         """Forward pass.
 
@@ -113,7 +113,7 @@ class GymAgent(BaseAgent):
 
     def env_to_net(
         self: "GymAgent",
-        x: Float32[Tensor, " obs_size"],
+        x: Float[Tensor, " obs_size"],
     ) -> Float32[Tensor, " out_size"]:
         """Processes the observation before feeding it to the network.
 
@@ -123,6 +123,7 @@ class GymAgent(BaseAgent):
         Returns:
             The observation processed for the network.
         """
+        x: Float32[Tensor, " obs_size"] = x.float()
         x: Float32[Tensor, " obs_size"] = self.standardizer(x=x)
         return x
 

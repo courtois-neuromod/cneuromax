@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 from typing import Annotated as An
 
-from jaxtyping import Float32
+from jaxtyping import Float, Float32
 from torch import Tensor
 
 from cneuromax.projects.neuroevorl_control import GymAgent, GymAgentConfig
@@ -29,7 +29,7 @@ class TransferAgent(GymAgent):
 
     def env_to_net(
         self: "TransferAgent",
-        x: Float32[Tensor, " obs_size"],
+        x: Float[Tensor, " obs_size"],
     ) -> Float32[Tensor, " out_size"]:
         """Hides velocity from observation and calls parent method.
 
@@ -46,7 +46,7 @@ class TransferAgent(GymAgent):
 
 
 def hide_velocity(
-    x: Float32[Tensor, " obs_size"],
+    x: Float[Tensor, " obs_size"],
     env_name: An[str, one_of("Acrobot-v1", "Swimmer-v4")],
 ) -> None:
     """Hide velocity from observation.
