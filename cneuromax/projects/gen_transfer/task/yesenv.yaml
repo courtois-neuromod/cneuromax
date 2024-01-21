@@ -1,0 +1,9 @@
+# @package _global_
+defaults:
+  - base
+  - _self_
+
+config:
+  env_transfer: true
+  eval_num_steps: 50
+  total_num_gens: 5000

@@ -1,46 +1,53 @@
 """:class:`TransferAgent` & :class:`TransferAgentConfig`."""
+from dataclasses import dataclass
 from typing import Annotated as An
 
 from jaxtyping import Float32
 from torch import Tensor
 
-from cneuromax.projects.neuroevorl_control import GymAgent
+from cneuromax.projects.neuroevorl_control import GymAgent, GymAgentConfig
 from cneuromax.utils.beartype import one_of
 
 
+@dataclass
+class TransferAgentConfig(GymAgentConfig):
+    """Holds :class:`TransferAgent` config values.
+
+    Args:
+        partial_obs: Whether the agent has partial observability.
+    """
+
+    partial_obs: bool = True
+    env_name: An[
+        str,
+        one_of("Acrobot-v1", "Swimmer-v4"),
+    ] = "${space.config.env_name}"
+
+
 class TransferAgent(GymAgent):
-    """Transfer Feature-Based Control Static Agent."""
+    """``gen_transfer project`` :class:`BaseAgent`."""
 
     def env_to_net(
         self: "TransferAgent",
         x: Float32[Tensor, " obs_size"],
     ) -> Float32[Tensor, " out_size"]:
-        """Processes the observation before feeding it to the network.
-
-        Hides the velocity from the observation and standardizes it.
+        """Hides velocity from observation and calls parent method.
 
         Args:
-            x: The input observation.
+            x: See :paramref:`~.GymAgent.env_to_net.x`.
 
         Returns:
-            The processed observation.
+            See return value of :meth:`~.GymAgent.env_to_net`.
         """
-        hide_velocity(x=x, env_name=self.config.env_name)
+        self.config: TransferAgentConfig
+        if self.config.partial_obs:
+            hide_velocity(x=x, env_name=self.config.env_name)
         return super().env_to_net(x=x)
 
 
 def hide_velocity(
     x: Float32[Tensor, " obs_size"],
-    env_name: An[
-        str,
-        one_of(
-            "Acrobot-v1",
-            "CartPole-v1",
-            "MountainCarContinuous-v0",
-            "MountainCar-v0",
-            "Pendulum-v1",
-        ),
-    ],
+    env_name: An[str, one_of("Acrobot-v1", "Swimmer-v4")],
 ) -> None:
     """Hide velocity from observation.
 
@@ -50,16 +57,7 @@ def hide_velocity(
     """
     # https://gymnasium.farama.org/environments/classic_control/acrobot/
     if env_name == "Acrobot-v1":
-        x[4] = 0
-        x[5] = 0
-    # https://gymnasium.farama.org/environments/classic_control/cart_pole/
-    elif env_name == "CartPole-v1":
-        x[1] = 0
-        x[3] = 0
-    # https://gymnasium.farama.org/environments/classic_control/mountain_car_continuous/
-    # https://gymnasium.farama.org/environments/classic_control/mountain_car/
-    elif env_name in ["MountainCarContinuous-v0", "MountainCar-v0"]:
-        x[1] = 0
-    # https://gymnasium.farama.org/environments/classic_control/pendulum/
-    else:  # env_name == "Pendulum-v1":
-        x[2] = 0
+        x[4:] = 0
+    # https://www.gymlibrary.dev/environments/mujoco/swimmer/
+    else:  # env_name == "Swimmer-v4":
+        x[3:] = 0

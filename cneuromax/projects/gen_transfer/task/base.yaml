@@ -1,0 +1,17 @@
+# @package _global_
+defaults:
+  - /space: neuroevorl_control
+  - /agent: gen_transfer
+  - _self_
+
+hydra:
+  launcher:
+    tasks_per_node: 40
+  sweeper:
+    params:
+      config.mem_transfer: true,false
+      config.fit_transfer: true,false
+      agent.config.partial_obs: false,true
+      space.config.env_name: Acrobot-v1,Swimmer-v4
+config:
+  agents_per_task: 1

@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+  - base
+  - _self_
+
+config:
+  env_transfer: false
+  total_num_gens: 2500
