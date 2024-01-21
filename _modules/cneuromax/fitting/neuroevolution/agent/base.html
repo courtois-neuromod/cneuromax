@@ -378,6 +378,8 @@
 <span class="sd">            discriminator/generator in the other population. Such\</span>
 <span class="sd">            type of agent needs to accomodate this property through\</span>
 <span class="sd">            its network architecture.</span>
+<span class="sd">        total_num_steps (``int``): The total number of steps taken by\</span>
+<span class="sd">            the agent and all of its predecessors.</span>
 <span class="sd">        curr_eval_score (``float``): The score obtained by the agent\</span>
 <span class="sd">            during the current evaluation.</span>
 <span class="sd">        curr_eval_num_steps (``int``): The number of steps taken by the\</span>
@@ -414,6 +416,7 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.agent.base.html#cneuromax.fitting.neuroevolution.agent.BaseAgent.initialize_eval_attributes">[docs]</a>
     <span class="k">def</span> <span class="nf">initialize_eval_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseAgent&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initializes attributes used during evaluation.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">total_num_steps</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curr_eval_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curr_eval_num_steps</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span><span class="p">:</span>

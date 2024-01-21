@@ -423,7 +423,11 @@
             <span class="n">agent</span><span class="o">.</span><span class="n">saved_env_out</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">curr_eval_score</span>
-        <span class="n">gather</span><span class="p">(</span><span class="n">logged_score</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span><span class="p">,</span> <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">)</span></div>
+        <span class="n">gather</span><span class="p">(</span>
+            <span class="n">logged_score</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span><span class="p">,</span>
+            <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
+            <span class="n">agent_total_num_steps</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">total_num_steps</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseReinforcementSpace.evaluate">
@@ -450,6 +454,7 @@
             <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">tensordict</span><span class="o">=</span><span class="n">out</span><span class="p">)[</span><span class="s2">&quot;next&quot;</span><span class="p">]</span>
             <span class="n">agent</span><span class="o">.</span><span class="n">curr_eval_score</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">&quot;reward&quot;</span><span class="p">])</span>
             <span class="n">agent</span><span class="o">.</span><span class="n">curr_eval_num_steps</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">agent</span><span class="o">.</span><span class="n">total_num_steps</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span><span class="p">:</span>
                 <span class="n">agent</span><span class="o">.</span><span class="n">curr_episode_score</span> <span class="o">+=</span> <span class="nb">float</span><span class="p">(</span><span class="n">out</span><span class="p">[</span><span class="s2">&quot;reward&quot;</span><span class="p">])</span>
                 <span class="n">agent</span><span class="o">.</span><span class="n">curr_episode_num_steps</span> <span class="o">+=</span> <span class="mi">1</span>

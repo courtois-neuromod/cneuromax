@@ -343,27 +343,46 @@
 
 <div class="viewcode-block" id="gather">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html#cneuromax.fitting.neuroevolution.utils.wandb.gather">[docs]</a>
-<span class="k">def</span> <span class="nf">gather</span><span class="p">(</span><span class="n">logged_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">curr_gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">gather</span><span class="p">(</span>
+    <span class="n">logged_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">curr_gen</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">agent_total_num_steps</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Gathers logged scores from all MPI processes.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        logged_score: A value logged during evaluation. If ``None``,\</span>
 <span class="sd">            then no value was logged during evaluation.</span>
 <span class="sd">        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.</span>
+<span class="sd">        agent_total_num_steps: See\</span>
+<span class="sd">            :attr:`~.BaseAgent.total_num_steps`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="n">logged_scores</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
         <span class="n">sendobj</span><span class="o">=</span><span class="n">logged_score</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">logged_agent_total_num_steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">comm</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+        <span class="n">sendobj</span><span class="o">=</span><span class="n">agent_total_num_steps</span><span class="p">,</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
-    <span class="c1"># `logged_scores` is only `None` when `rank != 0`. The following</span>
-    <span class="c1"># `assert` statement is for static type checking reasons and has no</span>
-    <span class="c1"># execution purposes.</span>
+    <span class="c1"># `logged_scores` &amp; `logged_agent_total_num_steps` are only `None`</span>
+    <span class="c1"># when `rank != 0`. The following `assert` statements are for static</span>
+    <span class="c1"># type checking reasons and have no execution purposes.</span>
     <span class="k">assert</span> <span class="n">logged_scores</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>  <span class="c1"># noqa: S101</span>
+    <span class="k">assert</span> <span class="n">logged_agent_total_num_steps</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>  <span class="c1"># noqa: S101</span>
     <span class="n">non_none_logged_scores</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">logged_scores</span><span class="p">))</span>
-    <span class="n">non_none_logged_scores_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">non_none_logged_scores</span><span class="p">)</span>
-    <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">non_none_logged_scores_mean</span><span class="p">,</span> <span class="s2">&quot;gen&quot;</span><span class="p">:</span> <span class="n">curr_gen</span><span class="p">})</span></div>
+    <span class="n">non_none_logged_scores_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">non_none_logged_scores</span><span class="p">)</span>
+    <span class="n">logged_agent_total_num_steps_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span>
+        <span class="n">a</span><span class="o">=</span><span class="n">logged_agent_total_num_steps</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">non_none_logged_scores_mean</span><span class="p">,</span>
+            <span class="s2">&quot;num_steps&quot;</span><span class="p">:</span> <span class="n">logged_agent_total_num_steps_mean</span><span class="p">,</span>
+            <span class="s2">&quot;gen&quot;</span><span class="p">:</span> <span class="n">curr_gen</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span></div>
 
 </pre></div>
         </article>
