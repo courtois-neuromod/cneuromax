@@ -21,6 +21,7 @@ def store_launcher_configs(store: ZenStore) -> None:
     args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
         "submitit_folder": "${hydra.sweep.dir}/${now:%Y-%m-%d-%H-%M-%S}/",
         "stderr_to_stdout": True,
+        "timeout_min": 1440,  # 24 hours
     }
     store(LocalQueueConf(**args), group="hydra/launcher", name="local")
     args.update(
