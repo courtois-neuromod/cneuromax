@@ -66,6 +66,8 @@ class BaseAgent(metaclass=ABCMeta):
             discriminator/generator in the other population. Such\
             type of agent needs to accomodate this property through\
             its network architecture.
+        total_num_steps (``int``): The total number of steps taken by\
+            the agent and all of its predecessors.
         curr_eval_score (``float``): The score obtained by the agent\
             during the current evaluation.
         curr_eval_num_steps (``int``): The number of steps taken by the\
@@ -100,6 +102,7 @@ class BaseAgent(metaclass=ABCMeta):
 
     def initialize_eval_attributes(self: "BaseAgent") -> None:
         """Initializes attributes used during evaluation."""
+        self.total_num_steps = 0
         self.curr_eval_score: float = 0
         self.curr_eval_num_steps = 0
         if self.config.env_transfer:

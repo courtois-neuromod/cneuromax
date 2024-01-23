@@ -1,4 +1,4 @@
-"""Neuroevolution ``subtask`` and ``task`` configs."""
+"""Neuroevolution ``subtask`` (regular + test) and ``task`` configs."""
 from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
@@ -6,18 +6,11 @@ from typing import Any
 import wandb
 from hydra_zen import make_config
 
-from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
-)
+from cneuromax.fitting.config import FittingSubtaskConfig
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.utils.beartype import ge
-from cneuromax.utils.hydra_zen import (
-    builds,
-    fs_builds,
-    p_builds,
-    pfs_builds,
-)
+from cneuromax.utils.hydra_zen import builds, fs_builds, p_builds, pfs_builds
 
 
 @dataclass
@@ -51,6 +44,7 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
             for during evaluation. ``0`` means that the agent will run\
             until the environment terminates (``eval_num_steps = 0`` is\
             not supported for ``env_transfer = True``).
+        logging: Whether to log the experiment to Weights & Biases.
     """
 
     agents_per_task: An[int, ge(1)] = 1
@@ -63,11 +57,29 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     fit_transfer: bool = False
     mem_transfer: bool = False
     eval_num_steps: An[int, ge(0)] = 0
+    logging: bool = True
 
     def __post_init__(self: "NeuroevolutionSubtaskConfig") -> None:
         """Post-initialization updates."""
         if self.save_interval == 0:
             self.save_interval = self.total_num_gens - self.prev_num_gens
+
+
+@dataclass
+class NeuroevolutionSubtaskTestConfig(NeuroevolutionSubtaskConfig):
+    """Neuroevolution ``subtask`` test config.
+
+    Args:
+        num_tests: Number of episodes to evaluate each agent on.
+        test_num_steps: Number of environment steps to run each agent\
+            for during testing. ``0`` means that the agent will run\
+            until the environment terminates.
+        logging: See :paramref:`.NeuroevolutionSubtaskConfig.logging`.
+    """
+
+    num_tests: An[int, ge(1)] = 2
+    test_num_steps: An[int, ge(0)] = 0
+    logging: bool = False
 
 
 @dataclass

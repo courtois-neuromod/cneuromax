@@ -25,6 +25,10 @@
           "files.trimTrailingWhitespace": true,
           "git.allowNoVerifyCommit": true,
           "mypy.configFile": "pyproject.toml",
+          "notebook.formatOnSave.enabled": true,
+          "notebook.codeActionsOnSave": {
+            "notebook.source.organizeImports": true
+          },
           "python.analysis.ignore": [
               "/**"
           ],
