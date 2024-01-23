@@ -29,6 +29,7 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN pip install --no-cache-dir -e /cneuromax \
+RUN pip install --no-dependencies --no-cache-dir torchaudio==2.1.2 \
+    && pip install --no-cache-dir -e /cneuromax \
     && pip uninstall -y cneuromax
 # Note: MPI UCX warnings on Rootless Docker
