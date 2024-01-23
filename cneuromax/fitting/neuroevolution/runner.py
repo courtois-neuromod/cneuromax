@@ -9,9 +9,10 @@ from hydra_zen import ZenStore
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
     NeuroevolutionSubtaskConfig,
+    NeuroevolutionSubtaskTestConfig,
     NeuroevolutionTaskConfig,
 )
-from cneuromax.fitting.neuroevolution.evolve import evolve
+from cneuromax.fitting.neuroevolution.fit import fit
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.fitting.runner import FittingTaskRunner
 from cneuromax.store import store_wandb_logger_configs
@@ -38,6 +39,7 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         super().store_configs(store=store)
         store_wandb_logger_configs(store, clb=wandb.init)
         store(NeuroevolutionTaskConfig, name="config")
+        store(NeuroevolutionSubtaskTestConfig, group="config", name="test")
 
     @staticmethod
     def validate_subtask_config(config: NeuroevolutionSubtaskConfig) -> None:
@@ -72,4 +74,4 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         config: NeuroevolutionSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
-        return evolve(space=space, agent=agent, logger=logger, config=config)
+        return fit(space=space, agent=agent, logger=logger, config=config)
