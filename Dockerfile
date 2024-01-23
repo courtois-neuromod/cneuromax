@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # PyTorch (w/ ecosystem) + CUDA + cuDNN + MPI + UCX + Python (w/ pip & headers)
-FROM nvcr.io/nvidia/pytorch:23.12-py3
+FROM nvcr.io/nvidia/pytorch:23.11-py3
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
@@ -29,7 +29,7 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN pip install --no-dependencies --no-cache-dir git+https://github.com/pytorch/audio \
+RUN pip install --no-dependencies --no-cache-dir torchaudio==2.1.2 \
     && pip install --no-cache-dir -e /cneuromax \
     && pip uninstall -y cneuromax
 # Note: MPI UCX warnings on Rootless Docker
