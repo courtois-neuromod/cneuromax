@@ -15,10 +15,13 @@ class BaseSpaceConfig:
     """Holds :class:`BaseSpace` config values.
 
     Args:
-        eval_num_steps: See :attr:`~.BaseSpaceConfig.eval_num_steps`.
+        eval_num_steps: See\
+            :paramref:`~.NeuroevolutionSubtaskConfig.eval_num_steps`.
+        logging: See :paramref:`~.NeuroevolutionSubtaskConfig.logging`.
     """
 
     eval_num_steps: An[int, ge(0)] = "${config.eval_num_steps}"  # type: ignore[assignment]
+    logging: bool = "${config.logging}"  # type: ignore[assignment]
 
 
 class BaseSpace(metaclass=ABCMeta):
