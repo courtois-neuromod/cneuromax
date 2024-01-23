@@ -1,0 +1,6 @@
+defaults:
+  - _self_
+
+space:
+  config:
+    env_name: Acrobot-v1

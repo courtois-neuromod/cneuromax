@@ -1,0 +1,6 @@
+defaults:
+  - _self_
+
+config:
+  env_transfer: true
+  total_num_gens: 5000

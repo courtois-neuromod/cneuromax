@@ -1,6 +1,4 @@
-# @package _global_
 defaults:
-  - base
   - _self_
 
 config:

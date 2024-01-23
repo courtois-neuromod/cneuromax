@@ -1,0 +1,10 @@
+# @package _global_
+defaults:
+  - /config: test # Comment when evolving
+  - base
+  - half_cheetah
+  - env_transfer
+  - _self_
+
+config:
+  eval_num_steps: 100

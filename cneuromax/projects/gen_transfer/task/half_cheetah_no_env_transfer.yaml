@@ -1,0 +1,7 @@
+# @package _global_
+defaults:
+  - /config: test # Comment when evolving
+  - base
+  - half_cheetah
+  - no_env_transfer
+  - _self_

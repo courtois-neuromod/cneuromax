@@ -20,7 +20,7 @@ class TransferAgentConfig(GymAgentConfig):
     partial_obs: bool = True
     env_name: An[
         str,
-        one_of("Acrobot-v1", "Swimmer-v4"),
+        one_of("Acrobot-v1", "HalfCheetah-v4"),
     ] = "${space.config.env_name}"
 
 
@@ -47,7 +47,7 @@ class TransferAgent(GymAgent):
 
 def hide_velocity(
     x: Float[Tensor, " obs_size"],
-    env_name: An[str, one_of("Acrobot-v1", "Swimmer-v4")],
+    env_name: An[str, one_of("Acrobot-v1", "HalfCheetah-v4")],
 ) -> None:
     """Hide velocity from observation.
 
@@ -58,6 +58,6 @@ def hide_velocity(
     # https://gymnasium.farama.org/environments/classic_control/acrobot/
     if env_name == "Acrobot-v1":
         x[4:] = 0
-    # https://www.gymlibrary.dev/environments/mujoco/swimmer/
-    else:  # env_name == "Swimmer-v4":
-        x[3:] = 0
+    # https://gymnasium.farama.org/environments/mujoco/half_cheetah/
+    else:  # env_name == "HalfCheetah-v4":
+        x[8:] = 0
