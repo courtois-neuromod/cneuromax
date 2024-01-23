@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # PyTorch (w/ ecosystem) + CUDA + cuDNN + MPI + UCX + Python (w/ pip & headers)
-FROM nvcr.io/nvidia/pytorch:23.11-py3
+FROM nvcr.io/nvidia/pytorch:23.12-py3
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
@@ -20,8 +20,15 @@ RUN apt update && apt install -y software-properties-common && \
     git \
     # Java to build our fork of Hydra
     default-jre \
+    # Audio libraries
+    ffmpeg \
+    sox \
+    libavdevice-dev \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
+# Install torchaudio
+COPY install_torchaudio_latest.sh /install_torchaudio_latest.sh
+RUN /bin/bash /install_torchaudio_latest.sh
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
 # To push the current branch to the existing same name branch
@@ -29,7 +36,6 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN pip install --no-dependencies --no-cache-dir torchaudio==2.1.2 \
-    && pip install --no-cache-dir -e /cneuromax \
+RUN pip install --no-cache-dir -e /cneuromax \
     && pip uninstall -y cneuromax
 # Note: MPI UCX warnings on Rootless Docker
