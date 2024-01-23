@@ -1,12 +1,14 @@
-""":func:`evolve`."""
+""":func:`fit`, :func:`train` and :func:`test`."""
+import logging
+import pickle
 from collections.abc import Callable
 from functools import partial
+from pathlib import Path
 from typing import Any
 
+import numpy as np
+
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
-from cneuromax.fitting.neuroevolution.config import (
-    NeuroevolutionSubtaskConfig,
-)
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.fitting.neuroevolution.utils.compute import (
     compute_generation_results,
@@ -32,12 +34,45 @@ from cneuromax.fitting.neuroevolution.utils.readwrite import (
     load_state,
     save_state,
 )
+from cneuromax.fitting.neuroevolution.utils.type import Generation_results_type
 from cneuromax.fitting.neuroevolution.utils.validate import validate_space
 from cneuromax.fitting.neuroevolution.utils.wandb import (
     setup_wandb,
     terminate_wandb,
 )
+from cneuromax.utils.misc import seed_all
 from cneuromax.utils.mpi4py import get_mpi_variables
+
+from .config import (
+    NeuroevolutionSubtaskConfig,
+    NeuroevolutionSubtaskTestConfig,
+)
+
+MAX_INT = 2**31 - 1
+
+
+def fit(
+    space: BaseSpace,
+    agent: partial[BaseAgent],
+    logger: Callable[..., Any],
+    config: NeuroevolutionSubtaskConfig,
+) -> None:
+    """Neuroevolution + testing.
+
+    Note that this function and all of its sub-functions will be called
+    by ``num_nodes * tasks_per_node`` MPI processes/tasks. These two
+    variables are set in the Hydra launcher configuration.
+
+    Args:
+        space: See :class:`.BaseSpace`.
+        agent: See :class:`~.BaseAgent`.
+        logger: See :func:`~.utils.wandb.setup_wandb`.
+        config: See :class:`.NeuroevolutionSubtaskConfig`.
+    """
+    if not isinstance(config, NeuroevolutionSubtaskTestConfig):
+        evolve(space=space, agent=agent, logger=logger, config=config)
+    else:
+        test(space=space, config=config)
 
 
 def evolve(
@@ -48,15 +83,11 @@ def evolve(
 ) -> None:
     """Neuroevolution.
 
-    Note that this function and all of its sub-functions will be called
-    by ``num_nodes * tasks_per_node`` MPI processes/tasks. These two
-    variables are set in the Hydra launcher configuration.
-
     Args:
-        space: See :class:`~.space.BaseSpace`.
-        agent: See :class:`~.agent.BaseAgent`.
+        space: See :class:`.BaseSpace`.
+        agent: See :class:`~.BaseAgent`.
         logger: See :func:`~.utils.wandb.setup_wandb`.
-        config: See :paramref:`~.post_process_base_config.config`.
+        config: See :class:`.NeuroevolutionSubtaskConfig`.
     """
     comm, _, _ = get_mpi_variables()
     validate_space(space=space, pop_merge=config.pop_merge)
@@ -193,3 +224,84 @@ def evolve(
                 output_dir=config.output_dir,
             )
     terminate_wandb()
+
+
+def test(
+    space: BaseSpace,
+    config: NeuroevolutionSubtaskTestConfig,
+) -> None:
+    """Neuroevolution testing.
+
+    Args:
+        space: See :class:`.BaseReinforcementSpace`.
+        config: See :paramref:`.NeuroevolutionTestingSubtaskConfig`.
+    """
+    # Get MPI info
+    comm, rank, size = get_mpi_variables()
+    # Setup work distribution across MPI processes
+    save_points = compute_save_points(
+        prev_num_gens=config.prev_num_gens,
+        total_num_gens=config.total_num_gens,
+        save_interval=config.save_interval,
+        save_first_gen=config.save_first_gen,
+    )
+    assigned_save_points = [
+        save_points[i] for i in range(len(save_points)) if i % size == rank
+    ]
+    # Loop over work assigned to this MPI process
+    for gen in assigned_save_points:
+        # Validate path & load state
+        path = Path(f"{config.output_dir}/{gen}/")
+        if not (path / "state.pkl").is_file():
+            logging.info(f"No saved state found at {path}.")
+            continue
+        if (path / "evaluation.pkl").is_file():
+            logging.info(f"Already evaluated generation {gen}.")
+            continue
+        with (path / "state.pkl").open(mode="rb") as f:
+            state = pickle.load(f)
+        # Extract state information for testing
+        agents: list[list[BaseAgent]] = state[0]
+        pop_size: int = len(agents)
+        generation_results: Generation_results_type = state[1]
+        total_num_env_steps: int = state[2]
+        fitnesses = generation_results[:, :, 0]
+        fitnesses_sorting_indices = fitnesses.argsort(axis=0)
+        fitnesses_index_ranking = fitnesses_sorting_indices.argsort(axis=0)
+        selected = np.greater_equal(fitnesses_index_ranking, pop_size // 2)
+        selected_indices = np.where(selected[:, 0])[0]
+        # Setup evaluation
+        scores = np.empty((pop_size // 2, config.num_tests))
+        # Setting `eval_num_steps` to `test_num_steps` to have
+        # later evaluate the agent for this potentially different
+        # number of steps.
+        space.config.eval_num_steps = config.test_num_steps
+        # Loop over selected agents
+        for i in range(pop_size // 2):
+            agent: BaseAgent = agents[selected_indices[i]][0]
+            for j in range(config.num_tests):
+                logging.info(f"Test #{j}, agent #{i}, generation #{gen}.")
+                seed_all(MAX_INT - j)
+                # env,fit,env+fit,env+fit+mem: reset
+                # mem,mem+fit: no reset
+                if not (
+                    agent.config.mem_transfer
+                    or (
+                        agent.config.mem_transfer and agent.config.fit_transfer
+                    )
+                ):
+                    agent.reset()
+                # Setting `fit_transfer` to `False` to have
+                # `space.evaluate` return the evaluation score rather
+                # than the continual fitness.
+                agent.config.fit_transfer = False
+                # Setting `env_transfer` to `False` to not have
+                # `space.evaluate` loop forever.
+                agent.config.env_transfer = False
+                fitnesses_and_num_env_steps = space.evaluate(
+                    agents=[[agent]],
+                    curr_gen=MAX_INT - j,
+                )
+                scores[i][j] = fitnesses_and_num_env_steps[0]
+        with (path / "evaluation.pkl").open(mode="wb") as f:
+            pickle.dump([scores, total_num_env_steps], f)

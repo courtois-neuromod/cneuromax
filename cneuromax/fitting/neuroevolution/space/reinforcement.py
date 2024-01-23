@@ -54,7 +54,6 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         self.env.set_seed(seed=curr_gen)
         return self.env.reset()
 
-    @final
     def env_done_reset(
         self: "BaseReinforcementSpace",
         agent: BaseAgent,
@@ -106,11 +105,12 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
             agent.saved_env_out = copy.deepcopy(out)
         if not agent.config.env_transfer:
             self.logged_score = agent.curr_eval_score
-        gather(
-            logged_score=self.logged_score,
-            curr_gen=curr_gen,
-            agent_total_num_steps=agent.total_num_steps,
-        )
+        if self.config.logging:
+            gather(
+                logged_score=self.logged_score,
+                curr_gen=curr_gen,
+                agent_total_num_steps=agent.total_num_steps,
+            )
 
     @final
     def evaluate(
