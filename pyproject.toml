@@ -28,6 +28,7 @@ dependencies = [
     # `submitit`'s `python` option. Also modifies the `local` launcher
     # so that it queues the jobs sequentially rather than in parallel.
     # OPTIONAL for cneuromax/
+    "torchaudio==2.1.2", # Torch w/ audio
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
     "jaxtyping==0.2.25", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
