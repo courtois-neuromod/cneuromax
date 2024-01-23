@@ -201,7 +201,7 @@
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html">config</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html">fit</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l6 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -324,10 +324,13 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseSpace` config values.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        eval_num_steps: See :attr:`~.BaseSpaceConfig.eval_num_steps`.</span>
+<span class="sd">        eval_num_steps: See\</span>
+<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.eval_num_steps`.</span>
+<span class="sd">        logging: See :paramref:`~.NeuroevolutionSubtaskConfig.logging`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">eval_num_steps</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{config.eval_num_steps}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[assignment]</span></div>
+    <span class="n">eval_num_steps</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{config.eval_num_steps}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="n">logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{config.logging}</span><span class="s2">&quot;</span>  <span class="c1"># type: ignore[assignment]</span></div>
 
 
 

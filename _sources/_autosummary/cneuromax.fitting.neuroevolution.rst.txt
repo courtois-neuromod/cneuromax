@@ -16,7 +16,7 @@ neuroevolution
    
       cneuromax.fitting.neuroevolution.agent
       cneuromax.fitting.neuroevolution.config
-      cneuromax.fitting.neuroevolution.evolve
+      cneuromax.fitting.neuroevolution.fit
       cneuromax.fitting.neuroevolution.net
       cneuromax.fitting.neuroevolution.runner
       cneuromax.fitting.neuroevolution.space

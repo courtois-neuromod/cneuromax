@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../genindex.html" /><link rel="search" title="Search" href="../../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>cneuromax.fitting.neuroevolution.evolve - CNeuroMax</title>
+        <title>cneuromax.fitting.neuroevolution.fit - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -201,7 +201,7 @@
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html">config</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html">fit</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l6 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -304,16 +304,18 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for cneuromax.fitting.neuroevolution.evolve</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:func:`evolve`.&quot;&quot;&quot;</span>
+          <h1>Source code for cneuromax.fitting.neuroevolution.fit</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;:func:`fit`, :func:`train` and :func:`test`.&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.agent</span> <span class="kn">import</span> <span class="n">BaseAgent</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.config</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">NeuroevolutionSubtaskConfig</span><span class="p">,</span>
-<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.space</span> <span class="kn">import</span> <span class="n">BaseSpace</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.compute</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">compute_generation_results</span><span class="p">,</span>
@@ -339,16 +341,52 @@
     <span class="n">load_state</span><span class="p">,</span>
     <span class="n">save_state</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.type</span> <span class="kn">import</span> <span class="n">Generation_results_type</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.validate</span> <span class="kn">import</span> <span class="n">validate_space</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.wandb</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">setup_wandb</span><span class="p">,</span>
     <span class="n">terminate_wandb</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">cneuromax.utils.misc</span> <span class="kn">import</span> <span class="n">seed_all</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
+
+<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">NeuroevolutionSubtaskConfig</span><span class="p">,</span>
+    <span class="n">NeuroevolutionSubtaskTestConfig</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">MAX_INT</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<div class="viewcode-block" id="fit">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.fit">[docs]</a>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+    <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
+    <span class="n">agent</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">],</span>
+    <span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">NeuroevolutionSubtaskConfig</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution + testing.</span>
+
+<span class="sd">    Note that this function and all of its sub-functions will be called</span>
+<span class="sd">    by ``num_nodes * tasks_per_node`` MPI processes/tasks. These two</span>
+<span class="sd">    variables are set in the Hydra launcher configuration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        space: See :class:`.BaseSpace`.</span>
+<span class="sd">        agent: See :class:`~.BaseAgent`.</span>
+<span class="sd">        logger: See :func:`~.utils.wandb.setup_wandb`.</span>
+<span class="sd">        config: See :class:`.NeuroevolutionSubtaskConfig`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">NeuroevolutionSubtaskTestConfig</span><span class="p">):</span>
+        <span class="n">evolve</span><span class="p">(</span><span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">agent</span><span class="o">=</span><span class="n">agent</span><span class="p">,</span> <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">test</span><span class="p">(</span><span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span></div>
+
 
 
 <div class="viewcode-block" id="evolve">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.evolve.html#cneuromax.fitting.neuroevolution.evolve.evolve">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.evolve">[docs]</a>
 <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span>
     <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
     <span class="n">agent</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">],</span>
@@ -357,15 +395,11 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution.</span>
 
-<span class="sd">    Note that this function and all of its sub-functions will be called</span>
-<span class="sd">    by ``num_nodes * tasks_per_node`` MPI processes/tasks. These two</span>
-<span class="sd">    variables are set in the Hydra launcher configuration.</span>
-
 <span class="sd">    Args:</span>
-<span class="sd">        space: See :class:`~.space.BaseSpace`.</span>
-<span class="sd">        agent: See :class:`~.agent.BaseAgent`.</span>
+<span class="sd">        space: See :class:`.BaseSpace`.</span>
+<span class="sd">        agent: See :class:`~.BaseAgent`.</span>
 <span class="sd">        logger: See :func:`~.utils.wandb.setup_wandb`.</span>
-<span class="sd">        config: See :paramref:`~.post_process_base_config.config`.</span>
+<span class="sd">        config: See :class:`.NeuroevolutionSubtaskConfig`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="n">validate_space</span><span class="p">(</span><span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">pop_merge</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">pop_merge</span><span class="p">)</span>
@@ -502,6 +536,90 @@
                 <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
             <span class="p">)</span>
     <span class="n">terminate_wandb</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="test">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.test">[docs]</a>
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span>
+    <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">NeuroevolutionSubtaskTestConfig</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution testing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        space: See :class:`.BaseReinforcementSpace`.</span>
+<span class="sd">        config: See :paramref:`.NeuroevolutionTestingSubtaskConfig`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get MPI info</span>
+    <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
+    <span class="c1"># Setup work distribution across MPI processes</span>
+    <span class="n">save_points</span> <span class="o">=</span> <span class="n">compute_save_points</span><span class="p">(</span>
+        <span class="n">prev_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span><span class="p">,</span>
+        <span class="n">total_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span><span class="p">,</span>
+        <span class="n">save_interval</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_interval</span><span class="p">,</span>
+        <span class="n">save_first_gen</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_first_gen</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">assigned_save_points</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">save_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">save_points</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">size</span> <span class="o">==</span> <span class="n">rank</span>
+    <span class="p">]</span>
+    <span class="c1"># Loop over work assigned to this MPI process</span>
+    <span class="k">for</span> <span class="n">gen</span> <span class="ow">in</span> <span class="n">assigned_save_points</span><span class="p">:</span>
+        <span class="c1"># Validate path &amp; load state</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;state.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No saved state found at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;evaluation.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Already evaluated generation </span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;state.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="c1"># Extract state information for testing</span>
+        <span class="n">agents</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">]]</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">agents</span><span class="p">)</span>
+        <span class="n">generation_results</span><span class="p">:</span> <span class="n">Generation_results_type</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">total_num_env_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">fitnesses</span> <span class="o">=</span> <span class="n">generation_results</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">fitnesses_sorting_indices</span> <span class="o">=</span> <span class="n">fitnesses</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">fitnesses_index_ranking</span> <span class="o">=</span> <span class="n">fitnesses_sorting_indices</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">selected</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">greater_equal</span><span class="p">(</span><span class="n">fitnesses_index_ranking</span><span class="p">,</span> <span class="n">pop_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">selected_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">selected</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Setup evaluation</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">pop_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">num_tests</span><span class="p">))</span>
+        <span class="c1"># Setting `eval_num_steps` to `test_num_steps` to have</span>
+        <span class="c1"># later evaluate the agent for this potentially different</span>
+        <span class="c1"># number of steps.</span>
+        <span class="n">space</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">eval_num_steps</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">test_num_steps</span>
+        <span class="c1"># Loop over selected agents</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pop_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">agent</span><span class="p">:</span> <span class="n">BaseAgent</span> <span class="o">=</span> <span class="n">agents</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_tests</span><span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test #</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, agent #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, generation #</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">seed_all</span><span class="p">(</span><span class="n">MAX_INT</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
+                <span class="c1"># env,fit,env+fit,env+fit+mem: reset</span>
+                <span class="c1"># mem,mem+fit: no reset</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mem_transfer</span>
+                    <span class="ow">or</span> <span class="p">(</span>
+                        <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">mem_transfer</span> <span class="ow">and</span> <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fit_transfer</span>
+                    <span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">agent</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+                <span class="c1"># Setting `fit_transfer` to `False` to have</span>
+                <span class="c1"># `space.evaluate` return the evaluation score rather</span>
+                <span class="c1"># than the continual fitness.</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fit_transfer</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="c1"># Setting `env_transfer` to `False` to not have</span>
+                <span class="c1"># `space.evaluate` loop forever.</span>
+                <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">fitnesses_and_num_env_steps</span> <span class="o">=</span> <span class="n">space</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+                    <span class="n">agents</span><span class="o">=</span><span class="p">[[</span><span class="n">agent</span><span class="p">]],</span>
+                    <span class="n">curr_gen</span><span class="o">=</span><span class="n">MAX_INT</span> <span class="o">-</span> <span class="n">j</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">scores</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">fitnesses_and_num_env_steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">with</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;evaluation.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">([</span><span class="n">scores</span><span class="p">,</span> <span class="n">total_num_env_steps</span><span class="p">],</span> <span class="n">f</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

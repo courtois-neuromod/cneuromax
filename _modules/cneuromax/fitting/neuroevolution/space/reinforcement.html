@@ -201,7 +201,7 @@
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html">config</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.evolve.html">evolve</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html">fit</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.html">net</a><input class="toctree-checkbox" id="toctree-checkbox-11" name="toctree-checkbox-11" role="switch" type="checkbox"/><label for="toctree-checkbox-11"><div class="visually-hidden">Toggle navigation of net</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.html">cpu</a><input class="toctree-checkbox" id="toctree-checkbox-12" name="toctree-checkbox-12" role="switch" type="checkbox"/><label for="toctree-checkbox-12"><div class="visually-hidden">Toggle navigation of cpu</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l6 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.html">static</a><input class="toctree-checkbox" id="toctree-checkbox-13" name="toctree-checkbox-13" role="switch" type="checkbox"/><label for="toctree-checkbox-13"><div class="visually-hidden">Toggle navigation of static</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -368,7 +368,6 @@
 
 <div class="viewcode-block" id="BaseReinforcementSpace.env_done_reset">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html#cneuromax.fitting.neuroevolution.space.BaseReinforcementSpace.env_done_reset">[docs]</a>
-    <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">env_done_reset</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseReinforcementSpace&quot;</span><span class="p">,</span>
         <span class="n">agent</span><span class="p">:</span> <span class="n">BaseAgent</span><span class="p">,</span>
@@ -423,11 +422,12 @@
             <span class="n">agent</span><span class="o">.</span><span class="n">saved_env_out</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">agent</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">curr_eval_score</span>
-        <span class="n">gather</span><span class="p">(</span>
-            <span class="n">logged_score</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span><span class="p">,</span>
-            <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
-            <span class="n">agent_total_num_steps</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">total_num_steps</span><span class="p">,</span>
-        <span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">logging</span><span class="p">:</span>
+            <span class="n">gather</span><span class="p">(</span>
+                <span class="n">logged_score</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">logged_score</span><span class="p">,</span>
+                <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
+                <span class="n">agent_total_num_steps</span><span class="o">=</span><span class="n">agent</span><span class="o">.</span><span class="n">total_num_steps</span><span class="p">,</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseReinforcementSpace.evaluate">
