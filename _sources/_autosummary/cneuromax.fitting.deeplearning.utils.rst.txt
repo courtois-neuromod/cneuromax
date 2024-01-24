@@ -15,5 +15,6 @@ utils
    :recursive:
    
       cneuromax.fitting.deeplearning.utils.lightning
+      cneuromax.fitting.deeplearning.utils.type
 
 

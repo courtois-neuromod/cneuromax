@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="deeplearning" href="cneuromax.fitting.deeplearning.html" /><link rel="prev" title="fitting" href="cneuromax.fitting.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="deeplneuroevo" href="cneuromax.fitting.deeplneuroevo.html" /><link rel="prev" title="lightning" href="cneuromax.fitting.deeplearning.utils.lightning.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
-        <title>config - CNeuroMax</title>
+        <title>type - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -137,7 +137,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -166,8 +166,8 @@
 <li class="toctree-l1 current has-children"><a class="reference internal" href="cneuromax.html">cneuromax</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of cneuromax</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cneuromax.config.html">config</a></li>
 <li class="toctree-l2 current has-children"><a class="reference internal" href="cneuromax.fitting.html">fitting</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">config</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.html">deeplearning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.config.html">config</a></li>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.html">deeplearning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.config.html">config</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html">datamodule</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of datamodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html">base</a></li>
@@ -189,9 +189,9 @@
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.runner.html">runner</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.store.html">store</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
+<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">type</a></li>
 </ul>
 </li>
 </ul>
@@ -301,32 +301,15 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main">
-          <section id="module-cneuromax.fitting.config">
-<span id="config"></span><h1>config<a class="headerlink" href="#module-cneuromax.fitting.config" title="Link to this heading">#</a></h1>
-<p><a class="reference internal" href="#cneuromax.fitting.config.FittingSubtaskConfig" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">FittingSubtaskConfig</span></code></a>.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.config.FittingSubtaskConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.config.</span></span><span class="sig-name descname"><span class="pre">FittingSubtaskConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${hydra:runtime.output_dir}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${oc.env:CNEUROMAX_PATH}/data/'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cpu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy_data_commands</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/config.html#FittingSubtaskConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.config.FittingSubtaskConfig" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseSubtaskConfig</span></code></a></p>
-<p>Fitting <code class="docutils literal notranslate"><span class="pre">subtask</span></code> config.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.config.FittingSubtaskConfig.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.config.FittingSubtaskConfig.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'cpu'</span></code>) – Computing device to use for large matrix operations.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.config.FittingSubtaskConfig.params.copy_data_commands"></span><a class="paramname reference internal" href="#cneuromax.fitting.config.FittingSubtaskConfig.params.copy_data_commands"><strong>copy_data_commands</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of commands to execute to transfer the            training data to the
-<a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.data_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data_dir</span></code></a> directory.            This is useful when the training data is originally stored            in a different location than
-<a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.data_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data_dir</span></code></a>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+          <section id="module-cneuromax.fitting.deeplearning.utils.type">
+<span id="type"></span><h1>type<a class="headerlink" href="#module-cneuromax.fitting.deeplearning.utils.type" title="Link to this heading">#</a></h1>
+<p>Typing utilities.</p>
 </section>
 
         </article>
@@ -334,23 +317,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="cneuromax.fitting.deeplearning.html">
+          <a class="next-page" href="cneuromax.fitting.deeplneuroevo.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">deeplearning</div>
+                <div class="title">deeplneuroevo</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="cneuromax.fitting.html">
+          <a class="prev-page" href="cneuromax.fitting.deeplearning.utils.lightning.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">fitting</div>
+                <div class="title">lightning</div>
                 
               </div>
             </a>
@@ -372,27 +355,8 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">config</a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.config.FittingSubtaskConfig"><code class="docutils literal notranslate"><span class="pre">FittingSubtaskConfig</span></code></a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>
