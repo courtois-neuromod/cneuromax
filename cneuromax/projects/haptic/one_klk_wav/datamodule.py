@@ -27,5 +27,6 @@ class OneKLKWavDataModule(BaseDataModule):
                 data_dir=self.config.data_dir,
             )
         else:  # stage == "test":
-            error_msg = "No test dataset available."
-            raise NotImplementedError(error_msg)
+            self.datasets.test = OneKLKWavDataset(
+                data_dir=self.config.data_dir,
+            )

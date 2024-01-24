@@ -1,7 +1,9 @@
 """:class:`OneKLKWavLitModule`."""
 from typing import Annotated as An
 
+import torch
 import torch.nn.functional as f
+from einops import rearrange
 from jaxtyping import Float
 from torch import Tensor
 
@@ -16,7 +18,7 @@ class OneKLKWavLitModule(BaseLitModule):
 
     def step(
         self: "OneKLKWavLitModule",
-        batch: dict[str, Float[Tensor, " data_len"]],
+        batch: dict[str, Float[Tensor, " 1 data_len"]],
         _: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
         """Next time step prediction w/ MSE loss.
@@ -28,7 +30,10 @@ class OneKLKWavLitModule(BaseLitModule):
         Returns:
             The MSE loss.
         """
-        inputs: Float[Tensor, " data_len-1"] = batch["BR"][:-1]
-        targets: Float[Tensor, " data_len-1"] = batch["BR"][1:]
-        outputs: Float[Tensor, " data_len-1"] = self.nnmodule(inputs)
+        x: Float[Tensor, " data_len 1"] = rearrange(batch["BR"], "b n -> n b")
+        inputs: Float[Tensor, " data_len_minus_1 1"] = x[:-1]
+        targets: Float[Tensor, " data_len_minus_1 1"] = x[1:]
+        outputs: Float[Tensor, " data_len_minus_1 1"] = torch.tanh(
+            input=self.nnmodule(inputs),
+        )
         return f.mse_loss(outputs, targets)
