@@ -189,6 +189,8 @@ def find_good_per_device_batch_size(
         len(datamodule_copy.train_dataloader())
         // (100 * num_computing_devices),
     )
+    if per_device_batch_size == 0:
+        per_device_batch_size = 1
     logging.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
     return per_device_batch_size
 
