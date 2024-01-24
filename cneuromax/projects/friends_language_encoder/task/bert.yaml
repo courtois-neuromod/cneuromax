@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+  - /datamodule: friends_language_encoder
+  - /litmodule: friends_language_encoder
+  - override /litmodule/nnmodule: friends_language_encoder
+  - _self_
+
+model_name: distilbert-base-uncased
