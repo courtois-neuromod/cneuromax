@@ -10,6 +10,7 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
+from cneuromax.fitting.deeplearning.utils.type import Batch_type
 from cneuromax.utils.beartype import one_of
 
 
@@ -86,9 +87,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @final
     def stage_step(
         self: "BaseLitModule",
-        batch: Num[Tensor, " ..."]
-        | tuple[Num[Tensor, " ..."], ...]
-        | list[Num[Tensor, " ..."]],
+        batch: Batch_type,
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
         """Generic stage wrapper around the :meth:`step` method.
@@ -105,17 +104,15 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             The loss value(s).
         """
         if isinstance(batch, list):
-            tupled_batch: tuple[Num[Tensor, " ..."], ...] = tuple(batch)
-        loss: Num[Tensor, " ..."] = self.step(tupled_batch, stage)
+            batch = tuple(batch)
+        loss: Num[Tensor, " ..."] = self.step(batch, stage)
         self.log(name=f"{stage}/loss", value=loss)
         return loss
 
     @final
     def training_step(
         self: "BaseLitModule",
-        batch: Num[Tensor, " ..."]
-        | tuple[Num[Tensor, " ..."], ...]
-        | list[Num[Tensor, " ..."]],
+        batch: Batch_type,
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
@@ -130,9 +127,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @final
     def validation_step(
         self: "BaseLitModule",
-        batch: Num[Tensor, " ..."]
-        | tuple[Num[Tensor, " ..."], ...]
-        | list[Num[Tensor, " ..."]],
+        batch: Batch_type,
         # :paramref:`*args` & :paramref:`**kwargs` type annotations
         # cannot be more specific because of
         # :meth:`LightningModule.validation_step`\'s signature.
@@ -154,9 +149,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @final
     def test_step(
         self: "BaseLitModule",
-        batch: Num[Tensor, " ..."]
-        | tuple[Num[Tensor, " ..."], ...]
-        | list[Num[Tensor, " ..."]],
+        batch: Batch_type,
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
