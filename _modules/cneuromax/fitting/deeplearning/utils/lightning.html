@@ -505,6 +505,8 @@
         <span class="nb">len</span><span class="p">(</span><span class="n">datamodule_copy</span><span class="o">.</span><span class="n">train_dataloader</span><span class="p">())</span>
         <span class="o">//</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">num_computing_devices</span><span class="p">),</span>
     <span class="p">)</span>
+    <span class="k">if</span> <span class="n">per_device_batch_size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best `batch_size` parameter: </span><span class="si">{</span><span class="n">per_device_batch_size</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">per_device_batch_size</span></div>
 
