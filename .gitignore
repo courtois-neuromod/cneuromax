@@ -2,7 +2,7 @@
 **/_autosummary/
 **/cneuromax.egg-info/
 **/.coverage
-**/data/
+/data/
 **/.ipynb_checkpoints/
 **/.mypy_cache/
 **/*.pyc
