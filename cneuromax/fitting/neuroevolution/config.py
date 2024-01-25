@@ -77,7 +77,7 @@ class NeuroevolutionSubtaskTestConfig(NeuroevolutionSubtaskConfig):
         logging: See :paramref:`.NeuroevolutionSubtaskConfig.logging`.
     """
 
-    num_tests: An[int, ge(1)] = 2
+    num_tests: An[int, ge(1)] = 3
     test_num_steps: An[int, ge(0)] = 0
     logging: bool = False
 

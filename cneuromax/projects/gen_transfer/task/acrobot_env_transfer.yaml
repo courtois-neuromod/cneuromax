@@ -1,6 +1,6 @@
 # @package _global_
 defaults:
-  #- /config: test # Comment when evolving
+  - /config: test # Comment when evolving
   - base
   - acrobot
   - env_transfer
