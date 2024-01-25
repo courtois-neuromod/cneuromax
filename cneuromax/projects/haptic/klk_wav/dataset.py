@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 
 
 class KLKWavDataset(Dataset[dict[str, Tensor]]):
-    """:mod:`klk_wav`` :class:`torch.utils.data.Dataset`.
+    """:mod:`.klk_wav` :class:`torch.utils.data.Dataset`.
 
     The dataset file structure is of the form:
 

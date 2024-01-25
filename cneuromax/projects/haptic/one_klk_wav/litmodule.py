@@ -14,7 +14,7 @@ from cneuromax.utils.beartype import one_of
 
 
 class OneKLKWavLitModule(BaseLitModule):
-    """:mod:`one_klk_wav`` :class:`.BaseLitModule`."""
+    """:mod:`.one_klk_wav` :class:`.BaseLitModule`."""
 
     def step(
         self: "OneKLKWavLitModule",

@@ -8,7 +8,7 @@ from .dataset import OneKLKWavDataset
 
 
 class OneKLKWavDataModule(BaseDataModule):
-    """:mod:`one_klk_wav`` :class:`.BaseDataModule`."""
+    """:mod:`.one_klk_wav` :class:`.BaseDataModule`."""
 
     def setup(
         self: "OneKLKWavDataModule",

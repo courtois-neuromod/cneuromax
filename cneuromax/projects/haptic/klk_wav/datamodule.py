@@ -26,7 +26,7 @@ class KLKWavDataModuleConfig(BaseDataModuleConfig):
 
 
 class KLKWavDataModule(BaseDataModule):
-    """:mod:`klk_wav`` :class:`.BaseDataModule`.
+    """:mod:`.klk_wav` :class:`.BaseDataModule`.
 
     Args:
         config: See :class:`KLKWavDataModuleConfig`.

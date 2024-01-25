@@ -5,7 +5,7 @@ from cneuromax.projects.haptic.klk_wav import KLKWavDataset
 
 
 class OneKLKWavDataset(KLKWavDataset):
-    """:mod:`one_klk_wav`` :class:`.KLKWavDataset`."""
+    """:mod:`.one_klk_wav` :class:`.KLKWavDataset`."""
 
     def __len__(self: "OneKLKWavDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
