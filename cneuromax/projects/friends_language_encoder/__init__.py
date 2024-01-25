@@ -1,17 +1,15 @@
-"""Friends Finetuning task."""
-
+"""Friends language finetuning ``project``."""
 from hydra_zen import ZenStore
+from transformers import AutoModelForMaskedLM
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
 from cneuromax.utils.hydra_zen import fs_builds
 
-from .friends_datamodule import (
+from .datamodule import (
     FriendsDataModule,
     FriendsDataModuleConfig,
 )
-from .friends_finetune_model import (
-    FriendsFinetuningModel,
-)
+from .litmodule import FriendsFinetuningModel
 
 __all__ = [
     "TaskRunner",
@@ -22,16 +20,17 @@ __all__ = [
 
 
 class TaskRunner(DeepLearningTaskRunner):
-    """MNIST classification ``task`` runner."""
+    """``project`` ``task`` runner."""
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
-        """Stores :mod:`hydra-core` MNIST classification configs.
+        """Stores :mod:`hydra-core` ``project`` configs.
 
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
         """
         super().store_configs(store=store)
+        store(name="model_name")
         store(
             fs_builds(
                 FriendsDataModule,
@@ -44,4 +43,12 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(FriendsFinetuningModel),
             name="friends_language_encoder",
             group="litmodule",
+        )
+        store(
+            fs_builds(
+                AutoModelForMaskedLM.from_pretrained,
+                pretrained_model_name_or_path="${model_name}",
+            ),
+            name="friends_language_encoder",
+            group="litmodule/nnmodule",
         )
