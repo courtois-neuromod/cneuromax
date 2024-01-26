@@ -41,6 +41,7 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.1.3",
     # OPTIONAL for cneuromax/fitting/deeplearning/
+    "diffusers==0.25.1", # Diffusion models
     "transformers==4.37.1", # HuggingFace models & utils
     "datasets==2.16.1", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
@@ -56,7 +57,7 @@ dependencies = [
     "furo==2023.9.10", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
-    "sphinx_autodoc_typehints==1.25.2", # More type hint customization
+    "sphinx-autodoc-typehints==1.25.2", # More type hint customization
     "myst-parser==2.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==23.12.1", # Python Formatter
