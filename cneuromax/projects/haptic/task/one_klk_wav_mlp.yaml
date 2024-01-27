@@ -3,6 +3,9 @@ defaults:
   - one_klk_wav
   - _self_
 
+hydra:
+  launcher:
+    gpus_per_node: 1
 device: gpu
 
 litmodule:
