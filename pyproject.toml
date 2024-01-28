@@ -66,7 +66,7 @@ dependencies = [
     "yamllint==1.33.0", # YAML linter
     "pre-commit==3.6.0", # Git commit hooks
     "mypy==1.8.0", # Static type checker
-    "pytest==7.4.3", # Testing framework
+    "pytest==8.0.0", # Testing framework
     "pytest-cov==4.1.0", # Test coverage
 ]
 
