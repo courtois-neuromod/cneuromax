@@ -1,4 +1,5 @@
 r""":mod:`cneuromax`\-wide :mod:`hydra-core` config storing."""
+
 from collections.abc import Callable
 from typing import Any
 

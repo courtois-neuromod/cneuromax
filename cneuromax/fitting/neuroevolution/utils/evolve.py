@@ -3,6 +3,7 @@
 The selection operation is implicit in :mod:`cneuromax`, see
 :func:`.update_exchange_and_mutate_info` for more details.
 """
+
 from typing import Annotated as An
 
 import numpy as np
@@ -123,9 +124,9 @@ def evaluate_on_gpu(
     # process that mutates them but instead gathered on a single process
     # that evaluates them on the GPU, before sending back their
     # fitnesses to the process that mutated them.
-    ith_gpu_batched_agents: list[
-        list[list[BaseAgent]]
-    ] | None = ith_gpu_comm.gather(sendobj=agents_batch)
+    ith_gpu_batched_agents: list[list[list[BaseAgent]]] | None = (
+        ith_gpu_comm.gather(sendobj=agents_batch)
+    )
     if ith_gpu_comm_rank == 0:
         # `ith_gpu_agents_batch` is only `None` when
         # `ith_gpu_comm_rank != 0`. The following `assert` statement
@@ -145,9 +146,11 @@ def evaluate_on_gpu(
         dtype=np.float32,
     )
     ith_gpu_comm.Scatter(
-        sendbuf=None
-        if ith_gpu_comm_rank != 0
-        else ith_gpu_fitnesses_and_num_env_steps_batch,
+        sendbuf=(
+            None
+            if ith_gpu_comm_rank != 0
+            else ith_gpu_fitnesses_and_num_env_steps_batch
+        ),
         recvbuf=fitnesses_and_num_env_steps_batch,
     )
     # Send back the agents to their corresponding processes if

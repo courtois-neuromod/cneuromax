@@ -1,4 +1,5 @@
 """:mod:`wandb` utilities for Neuroevolution fitting."""
+
 from collections.abc import Callable
 from typing import Any
 

@@ -1,4 +1,5 @@
 """:class:`BaseReinforcementSpace`."""
+
 import copy
 from abc import ABCMeta
 from typing import Annotated as An
@@ -151,9 +152,11 @@ class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
         self.run_post_eval(agent=agent, out=out, curr_gen=curr_gen)
         return np.array(
             (
-                agent.continual_fitness
-                if agent.config.fit_transfer
-                else agent.curr_eval_score,
+                (
+                    agent.continual_fitness
+                    if agent.config.fit_transfer
+                    else agent.curr_eval_score
+                ),
                 agent.curr_eval_num_steps,
             ),
         )

@@ -1,4 +1,5 @@
 r"""Fitting :mod:`hydra-core` config storing."""
+
 from typing import Any
 
 from hydra_plugins.hydra_submitit_launcher.config import (

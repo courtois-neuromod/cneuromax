@@ -1,4 +1,5 @@
 """:mod:`mpi4py` utilities."""
+
 from typing import Annotated as An
 
 from mpi4py import MPI

@@ -1,4 +1,5 @@
 """:class:`FittingTaskRunner`."""
+
 from hydra_zen import ZenStore
 
 from cneuromax.fitting.store import store_launcher_configs

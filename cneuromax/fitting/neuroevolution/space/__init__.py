@@ -1,4 +1,5 @@
 """Neuroevolution Spaces."""
+
 from cneuromax.fitting.neuroevolution.space.base import (
     BaseSpace,
     BaseSpaceConfig,

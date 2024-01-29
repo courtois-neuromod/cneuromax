@@ -1,4 +1,5 @@
 """:class:`MLP` & its config."""
+
 from dataclasses import dataclass
 from typing import Annotated as An
 

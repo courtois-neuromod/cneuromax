@@ -1,4 +1,5 @@
 """:class:`GymAgent` & its config."""
+
 from dataclasses import dataclass
 from typing import Annotated as An
 
@@ -102,13 +103,16 @@ class GymAgent(BaseAgent):
         """
         x: Float32[Tensor, " obs_size"] = self.env_to_net(x=x)
         x: Float32[Tensor, " act_size"] = self.net(x=x)
-        x: Float32[
-            Tensor,
-            " act_size",
-        ] | Int64[
-            Tensor,
-            " act_size",
-        ] = self.net_to_env(x=x)
+        x: (
+            Float32[
+                Tensor,
+                " act_size",
+            ]
+            | Int64[
+                Tensor,
+                " act_size",
+            ]
+        ) = self.net_to_env(x=x)
         return x
 
     def env_to_net(

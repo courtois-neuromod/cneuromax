@@ -12,6 +12,7 @@ simplify config creation (`reference \
 <https://mit-ll-responsible-ai.github.io/hydra-zen/generated/\
 hydra_zen.make_config.html>`_).
 """
+
 from dataclasses import dataclass
 from typing import Annotated as An
 

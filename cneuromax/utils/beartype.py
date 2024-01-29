@@ -1,4 +1,5 @@
 """Type annotations validator using :mod:`beartype`."""
+
 from beartype.vale import Is
 from beartype.vale._core._valecore import BeartypeValidator
 

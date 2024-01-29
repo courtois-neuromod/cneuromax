@@ -1,4 +1,5 @@
 """:func:`fit`, :func:`train` and :func:`test`."""
+
 import logging
 import pickle
 from collections.abc import Callable
