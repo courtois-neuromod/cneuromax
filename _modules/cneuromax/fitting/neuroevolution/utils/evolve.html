@@ -311,6 +311,7 @@
 <span class="sd">The selection operation is implicit in :mod:`cneuromax`, see</span>
 <span class="sd">:func:`.update_exchange_and_mutate_info` for more details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -439,9 +440,9 @@
     <span class="c1"># process that mutates them but instead gathered on a single process</span>
     <span class="c1"># that evaluates them on the GPU, before sending back their</span>
     <span class="c1"># fitnesses to the process that mutated them.</span>
-    <span class="n">ith_gpu_batched_agents</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span>
-        <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">]]</span>
-    <span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">ith_gpu_comm</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">sendobj</span><span class="o">=</span><span class="n">agents_batch</span><span class="p">)</span>
+    <span class="n">ith_gpu_batched_agents</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">]]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">ith_gpu_comm</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="n">sendobj</span><span class="o">=</span><span class="n">agents_batch</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="k">if</span> <span class="n">ith_gpu_comm_rank</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1"># `ith_gpu_agents_batch` is only `None` when</span>
         <span class="c1"># `ith_gpu_comm_rank != 0`. The following `assert` statement</span>
@@ -461,9 +462,11 @@
         <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">ith_gpu_comm</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-        <span class="n">sendbuf</span><span class="o">=</span><span class="kc">None</span>
-        <span class="k">if</span> <span class="n">ith_gpu_comm_rank</span> <span class="o">!=</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="n">ith_gpu_fitnesses_and_num_env_steps_batch</span><span class="p">,</span>
+        <span class="n">sendbuf</span><span class="o">=</span><span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">ith_gpu_comm_rank</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="k">else</span> <span class="n">ith_gpu_fitnesses_and_num_env_steps_batch</span>
+        <span class="p">),</span>
         <span class="n">recvbuf</span><span class="o">=</span><span class="n">fitnesses_and_num_env_steps_batch</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="c1"># Send back the agents to their corresponding processes if</span>
