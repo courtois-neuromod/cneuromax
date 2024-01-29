@@ -1,4 +1,5 @@
 """:func:`train`."""
+
 from functools import partial
 
 from lightning.pytorch import Trainer

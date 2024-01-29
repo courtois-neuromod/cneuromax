@@ -1,4 +1,5 @@
 """:class:`FittingSubtaskConfig`."""
+
 from dataclasses import dataclass
 from typing import Annotated as An
 

@@ -1,4 +1,5 @@
 """Miscellaneous utilities."""
+
 import random
 from collections.abc import Callable
 from typing import Any

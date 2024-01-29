@@ -1,4 +1,5 @@
 """Run validation for Neuroevolution fitting."""
+
 from cneuromax.fitting.neuroevolution.space.base import BaseSpace
 from cneuromax.fitting.utils.hydra import get_launcher_config
 

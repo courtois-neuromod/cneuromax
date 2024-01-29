@@ -1,4 +1,5 @@
 """:class:`GymReinforcementSpace` & its config."""
+
 from dataclasses import dataclass
 
 from omegaconf import MISSING

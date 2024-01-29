@@ -1,4 +1,5 @@
 """Variable initialization for Neuroevolution fitting."""
+
 from functools import partial
 from typing import Annotated as An
 

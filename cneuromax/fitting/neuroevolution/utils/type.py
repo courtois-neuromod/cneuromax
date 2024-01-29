@@ -1,4 +1,5 @@
 """Typing for various Neuroevolution fitting variables."""
+
 import numpy as np
 from nptyping import Float32, Shape, UInt32
 

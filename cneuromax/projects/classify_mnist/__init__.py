@@ -1,4 +1,5 @@
 """MNIST classification ``project``."""
+
 from hydra_zen import ZenStore
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
