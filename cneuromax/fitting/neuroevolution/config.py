@@ -1,4 +1,5 @@
 """Neuroevolution ``subtask`` (regular + test) and ``task`` configs."""
+
 from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any

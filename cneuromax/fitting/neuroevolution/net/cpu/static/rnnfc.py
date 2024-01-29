@@ -1,4 +1,5 @@
 """:class:`CPUStaticRNN` & its config."""
+
 from dataclasses import dataclass
 
 import torch

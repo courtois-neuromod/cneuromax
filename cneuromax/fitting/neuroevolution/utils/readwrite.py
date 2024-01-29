@@ -1,4 +1,5 @@
 """File reading and writing utilities for Neuroevolution fitting."""
+
 import pickle
 from pathlib import Path
 from typing import Annotated as An

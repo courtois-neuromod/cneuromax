@@ -1,4 +1,5 @@
 """:class:`BaseClassificationLitModule` & its config."""
+
 from abc import ABCMeta
 from dataclasses import dataclass
 from functools import partial

@@ -1,4 +1,5 @@
 """:mod:`lightning` utilities."""
+
 import copy
 import logging
 import os
@@ -65,9 +66,11 @@ def instantiate_trainer_and_logger(
     if launcher_config._target_ == get_path(SlurmLauncher):  # noqa: SLF001
         callbacks = [TriggerWandbSyncLightningCallback()]
     trainer = partial_trainer(
-        devices=launcher_config.gpus_per_node or 1
-        if device == "gpu"
-        else launcher_config.tasks_per_node,
+        devices=(
+            launcher_config.gpus_per_node or 1
+            if device == "gpu"
+            else launcher_config.tasks_per_node
+        ),
         logger=logger,
         callbacks=callbacks,
     )
@@ -290,6 +293,6 @@ class InitOptimParamsCheckpointConnector(_CheckpointConnector):
                     if ckpt_optim_param_group_key != "params":
                         # Place the new Hydra instantiated optimizers'
                         # HPs back into the restored optimizers.
-                        ckpt_optim_param_group[
-                            ckpt_optim_param_group_key
-                        ] = new_optim_param_group[ckpt_optim_param_group_key]
+                        ckpt_optim_param_group[ckpt_optim_param_group_key] = (
+                            new_optim_param_group[ckpt_optim_param_group_key]
+                        )

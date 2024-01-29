@@ -1,4 +1,5 @@
 """:class:`BaseDataModule` + its datasets/config classes."""
+
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An

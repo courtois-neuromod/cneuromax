@@ -1,4 +1,5 @@
 """:class:`BaseAgent` & its config."""
+
 from abc import ABCMeta, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An

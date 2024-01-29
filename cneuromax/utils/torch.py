@@ -1,4 +1,5 @@
 """:mod:`torch` utilities."""
+
 import torch
 from jaxtyping import Float32
 from torch import Tensor
