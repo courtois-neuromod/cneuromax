@@ -41,7 +41,7 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.1.4",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "diffusers==0.26.0", # Diffusion models
+    "diffusers==0.26.1", # Diffusion models
     "transformers==4.37.2", # HuggingFace models & utils
     "datasets==2.16.1", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
