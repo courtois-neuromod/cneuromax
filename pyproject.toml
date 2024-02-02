@@ -35,7 +35,7 @@ dependencies = [
     "jupyterlab==4.0.12", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.1", # Jupyter widgets
-    "wandb-osh==1.2.0", # W&B support for SLURM
+    "wandb-osh==1.2.1", # W&B support for SLURM
     "h5py==3.10.0", # HDF5 file format load/save
     "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
