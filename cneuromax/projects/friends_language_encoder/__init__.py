@@ -1,4 +1,5 @@
 """Friends language finetuning ``project``."""
+
 from hydra_zen import ZenStore
 from transformers import AutoModelForMaskedLM
 
@@ -9,13 +10,17 @@ from .datamodule import (
     FriendsDataModule,
     FriendsDataModuleConfig,
 )
-from .litmodule import FriendsFinetuningModel
+from .litmodule import (
+    FriendsFinetuningModel,
+    FriendsLitModuleConfig,
+)
 
 __all__ = [
     "TaskRunner",
     "FriendsDataModule",
     "FriendsDataModuleConfig",
     "FriendsFinetuningModel",
+    "FriendsLitModuleConfig",
 ]
 
 
@@ -40,7 +45,10 @@ class TaskRunner(DeepLearningTaskRunner):
             group="datamodule",
         )
         store(
-            fs_builds(FriendsFinetuningModel),
+            fs_builds(
+                FriendsFinetuningModel,
+                config=FriendsLitModuleConfig(),
+            ),
             name="friends_language_encoder",
             group="litmodule",
         )

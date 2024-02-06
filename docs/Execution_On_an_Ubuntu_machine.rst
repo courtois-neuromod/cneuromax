@@ -13,7 +13,7 @@ On an Ubuntu machine
 
     .. code-block:: bash
 
-        podman run --security-opt=label=disable --device=nvidia.com/gpu=all
+        podman run --security-opt=label=disable --tz=local --device=nvidia.com/gpu=all
 
     if you are using Podman.
 
@@ -28,10 +28,12 @@ Run a python script
     Run ``cd ${CNEUROMAX_PATH}/cneuromax`` before the following command to get
     tab completion for the ``task`` argument.
 
+    Don't forget to change the time zone flag `TZ` to your local timezone.
+
 .. code-block:: bash
 
     # Example of a simple MNIST training run
-    docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
+    docker run -e TZ=America/New_York --privileged --gpus all --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH} \
                -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH} \
                -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm \
                -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest \

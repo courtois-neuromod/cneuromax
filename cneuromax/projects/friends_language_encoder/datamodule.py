@@ -89,7 +89,9 @@ class FriendsDataModule(BaseDataModule):
             tokenizer=tokenizer,
             mlm_probability=self.config.mlm_probability,
         )
-        project_data_path = Path(f"{self.config.data_dir}/friends/")
+        project_data_path = Path(
+            f"{self.config.data_dir}/friends_language_encoder/",
+        )
         if stage == "fit":
             self.datasets.train = create_dataset(
                 csv_file_path=project_data_path / "train.csv",

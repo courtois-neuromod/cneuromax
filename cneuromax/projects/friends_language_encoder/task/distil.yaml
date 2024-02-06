@@ -5,12 +5,5 @@ defaults:
   - override /litmodule/nnmodule: friends_language_encoder
   - _self_
 
-model_name: bert-base-uncased
-layer_name: cls.predictions.transform.dense
-
-
-hydra:
-  launcher:
-    gpus_per_node: 1
-config:
-  device: gpu
+model_name: distilbert-base-uncased
+layer_name: vocab_transform

@@ -173,14 +173,11 @@ __main__.py
         login_wandb()
         TaskRunner.store_configs_and_run_task()
 """
+
 import os
 import warnings
 
-from beartype import BeartypeConf
-from beartype.claw import beartype_this_package
-
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
-# beartype_this_package(conf=BeartypeConf(is_pep484_tower=True))
 warnings.filterwarnings(action="ignore", module="beartype")
 warnings.filterwarnings(action="ignore", module="lightning")
 warnings.filterwarnings(action="ignore", module="gymnasium")

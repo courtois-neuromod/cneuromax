@@ -1,12 +1,28 @@
 """:class:`FriendsFinetuningModel`."""
+
+from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
 
 from jaxtyping import Num
 from torch import Tensor
 
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule import (
+    BaseLitModule,
+    BaseLitModuleConfig,
+)
 from cneuromax.utils.beartype import one_of
+
+
+@dataclass
+class FriendsLitModuleConfig(BaseLitModuleConfig):
+    """Holds :class:`FriendsLitModule` config values.
+
+    Args:
+        layer_name: layer to unfreeze
+    """
+
+    layer_name: str = "${layer_name}"
 
 
 class FriendsFinetuningModel(BaseLitModule):
@@ -18,11 +34,10 @@ class FriendsFinetuningModel(BaseLitModule):
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(*args, **kwargs)
+
+        self.config: FriendsLitModuleConfig
         for name, param in self.nnmodule.named_parameters():
-            if (
-                "cls.predictions.transform.dense" in name
-                or "vocab_transform" in name
-            ):
+            if self.config.layer_name in name:
                 param.requires_grad = True
             else:
                 param.requires_grad = False

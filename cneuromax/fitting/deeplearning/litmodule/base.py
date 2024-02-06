@@ -1,5 +1,7 @@
 """:class:`BaseLitModule`."""
+
 from abc import ABCMeta
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 from typing import Any, final
@@ -12,6 +14,18 @@ from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.fitting.deeplearning.utils.type import Batch_type
 from cneuromax.utils.beartype import one_of
+
+
+@dataclass
+class BaseLitModuleConfig:
+    """Holds :class:`BaseDataModule` config values.
+
+    Args:
+        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
+        device: See :paramref:`~.FittingSubtaskConfig.device`.
+    """
+
+    device: An[str, one_of("cpu", "gpu")] = "${config.device}"
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
@@ -70,11 +84,13 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
 
     def __init__(
         self: "BaseLitModule",
+        config: BaseLitModuleConfig,
         nnmodule: nn.Module,
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
         super().__init__()
+        self.config = config
         self.nnmodule = nnmodule
         self.optimizer = optimizer(params=self.parameters())
         self.scheduler = scheduler(optimizer=self.optimizer)
