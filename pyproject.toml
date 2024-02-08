@@ -39,7 +39,7 @@ dependencies = [
     "h5py==3.10.0", # HDF5 file format load/save
     "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
-    "lightning==2.1.4",
+    "lightning==2.2.0",
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "diffusers==0.26.2", # Diffusion models
     "transformers==4.37.2", # HuggingFace models & utils
