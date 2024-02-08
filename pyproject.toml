@@ -57,7 +57,7 @@ dependencies = [
     "furo==2024.1.29", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
-    "sphinx-autodoc-typehints==1.25.3", # More type hint customization
+    "sphinx-autodoc-typehints==2.0.0", # More type hint customization
     "myst-parser==2.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==24.1.1", # Python Formatter
