@@ -242,8 +242,9 @@ use a Dropbox folder to automatically sync your code across machines. This is
 especially useful when making small config/code changes on any machine.
 
 On machines where you have GUI & root access, you can simply install Dropbox.
-On other machines, you can install Maestral as a drop-in replacement for Dropbox
-(Make sure not to install both Dropbox and Maestral on the same machine).
+On other machines, you can install Maestral as a drop-in replacement for
+Dropbox (Make sure not to install both Dropbox and Maestral on the same
+machine).
 
 .. code-block:: bash
 
@@ -287,8 +288,8 @@ all machines. On a machine with Dropbox, first install Dropboxignore:
 
     snap install dropboxignore
 
-Create a ``.dropboxignore`` file in your root Dropbox folder with the following
-content:
+Create a ``.dropboxignore`` file in your root Dropbox folder with the
+following content:
 
 .. code-block:: bash
 
