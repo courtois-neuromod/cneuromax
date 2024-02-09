@@ -13,11 +13,6 @@ Run a python script
     The following command was designed for the Béluga cluster. It will most
     likely need refining on other clusters.
 
-.. note::
-    By default, the Apptainer's local timezone is set to UTC, but when it's
-    run, the system's local timezone will overwrite it. If you'd like to set
-    it to a specific timezone, please add ``--env TZ= YOUR_TIMEZONE`` flag to the execution command.
-
 .. code-block:: bash
 
     # Example of a simple MNIST training run
