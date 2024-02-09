@@ -395,7 +395,7 @@ notify you of most issues before you commit.</p>
 <p>We provide a <code class="docutils literal notranslate"><span class="pre">.devcontainer.json</span></code> file that allows you to develop locally
 using VSCode and the repository’s Docker image (it should not be too hard to
 adapt this file to other IDEs). In order to use it, you will need to install
-the <cite>Remote - Containers</cite> extension.</p>
+the <code class="docutils literal notranslate"><span class="pre">Remote</span> <span class="pre">-</span> <span class="pre">Containers</span></code> extension.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>code<span class="w"> </span>--install-extension<span class="w"> </span>ms-vscode-remote.remote-containers
 </pre></div>
 </div>
@@ -412,9 +412,10 @@ you will need to do. If it doesn’t pop up, open the command palette
 reopening the Dev Container.</p></li>
 <li><p>The esbonio server will sometimes announce a build error (bottom right),
 which will prevent further documentation visualization. To fix this, you
-should delete the contents of the <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code> (do not delete the folder
-itself if you use Dropbox/Maestral) and <code class="docutils literal notranslate"><span class="pre">docs/_autosummary</span></code> folders and
-and restart the esbonio server (by pressing its icon).</p></li>
+should delete the contents of the <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code> and <code class="docutils literal notranslate"><span class="pre">docs/_autosummary</span></code>
+folders and restart the esbonio server by pressing its icon. If you use
+Dropbox/Maestral, make sure to re-run <code class="docutils literal notranslate"><span class="pre">dropboxignore</span> <span class="pre">&lt;DROPBOX_PATH&gt;/.</span></code>
+else the folders will start synchronizing again. See below.</p></li>
 </ul>
 <p>GitHub Copilot is installed in the DevContainer. Simply discard the log-in
 notifications if you do not want to make use of it.
@@ -499,11 +500,12 @@ opening the locally created <code class="docutils literal notranslate"><span cla
 <section id="setting-up-maestral-dropbox-to-move-code-across-machines">
 <h2>Setting up Maestral/Dropbox to move code across machines<a class="headerlink" href="#setting-up-maestral-dropbox-to-move-code-across-machines" title="Link to this heading">#</a></h2>
 <p>Rather than having to manually move code across machines, we suggest that you
-use a Dropbox folder to automatically sync your code across machines.</p>
-<p>On machines where you have root access, you can simply install Dropbox.
-On machines where you do not have root access, you can install Maestral as a
-drop-in replacement for Dropbox (Make sure not to install both Dropbox and
-Maestral on the same machine).</p>
+use a Dropbox folder to automatically sync your code across machines. This is
+especially useful when making small config/code changes on any machine.</p>
+<p>On machines where you have GUI &amp; root access, you can simply install Dropbox.
+On other machines, you can install Maestral as a drop-in replacement for
+Dropbox (Make sure not to install both Dropbox and Maestral on the same
+machine).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>tmux
 module<span class="w"> </span>load<span class="w"> </span>python/3.10
 pip<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>maestral
@@ -513,10 +515,10 @@ python<span class="w"> </span>-m<span class="w"> </span>maestral<span class="w">
 <p>You will be prompted the following question: <strong>How would you like to you link
 your account?</strong></p>
 <p>Choose: <strong>Print auth URL to console</strong></p>
-<p>Open the URL and press Allow.</p>
+<p>Open the URL and press <strong>Allow</strong>.</p>
 <p>Copy the code that appears in the browser.</p>
-<p><strong>Enter the auth code:</strong> Paste.</p>
-<p><strong>Please choose a local Dropbox folder:</strong>  <code class="docutils literal notranslate"><span class="pre">/scratch/&lt;USER&gt;/Dropbox</span></code></p>
+<p><strong>Enter the auth code:</strong> (paste).</p>
+<p><strong>Please choose a local Dropbox folder:</strong>  <code class="docutils literal notranslate"><span class="pre">&lt;DROPBOX_PATH&gt;</span></code></p>
 <p>Would you like sync all folders? <strong>No</strong></p>
 <p>Choose which folders to include: <strong>cneuromax</strong></p>
 <p>You can now close the console window (<code class="docutils literal notranslate"><span class="pre">Ctrl+B</span></code>, <code class="docutils literal notranslate"><span class="pre">D</span></code>) and the
@@ -528,29 +530,37 @@ python<span class="w"> </span>-m<span class="w"> </span>maestral<span class="w">
 </pre></div>
 </div>
 <p>Finally, there are some files that you probably do not want to sync across
-all machines. On a machine with Dropbox, run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w"> </span>data/<span class="w"> </span>docs/_build/<span class="w"> </span>.vscode/<span class="w"> </span>.coverage
-mkdir<span class="w"> </span>-p<span class="w"> </span>.mypy_cache/<span class="w"> </span>.pytest_cache/<span class="w"> </span>.ruff_cache/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>data/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>docs/_build/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.vscode/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.coverage
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.mypy_cache/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.pytest_cache/
-sudo<span class="w"> </span>attr<span class="w"> </span>-s<span class="w"> </span>com.dropbox.ignored<span class="w"> </span>-V<span class="w"> </span><span class="m">1</span><span class="w"> </span>.ruff_cache/
+all machines. On a machine with Dropbox, first install Dropboxignore:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>snap<span class="w"> </span>install<span class="w"> </span>dropboxignore
 </pre></div>
 </div>
-<p>On a machine with Maestral, edit your <cite>.mignore</cite> file to exclude the files you
-do not want to sync.</p>
-<p>Example of the contents of a <cite>.mignore</cite> file:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">cneuromax</span><span class="o">/.</span><span class="n">mypy_cache</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/.</span><span class="n">pytest_cache</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/.</span><span class="n">ruff_cache</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/.</span><span class="n">vscode</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/</span><span class="n">data</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">_build</span><span class="o">/</span>
-<span class="o">/</span><span class="n">cneuromax</span><span class="o">/</span><span class="n">docs</span><span class="o">/</span><span class="n">_autosummary</span><span class="o">/</span>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">.dropboxignore</span></code> file in your root Dropbox folder with the
+following content:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/cneuromax/.mypy_cache/
+/cneuromax/.pytest_cache/
+/cneuromax/.ruff_cache/
+/cneuromax/.vscode/
+/cneuromax/data/
+/cneuromax/docs/_build/
+/cneuromax/docs/_autosummary/
 </pre></div>
+</div>
+<p>To apply the changes run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dropboxignore<span class="w"> </span>ignore<span class="w"> </span>&lt;DROPBOX_FOLDER&gt;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Make sure to re-run this command whenever you delete any of those folders.</p>
+</div>
+<p>Copy the <code class="docutils literal notranslate"><span class="pre">.dropboxignore</span></code> file to work for Maestral:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>&lt;DROPBOX_PATH&gt;/.dropboxignore<span class="w"> </span>&lt;DROPBOX_PATH&gt;/.mignore
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Do not create a symbolic link else the <code class="docutils literal notranslate"><span class="pre">.mignore</span></code> file will not be
+synchronized across devices.</p>
 </div>
 </section>
 <section id="freezing-the-repositories-for-publication">
