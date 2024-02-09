@@ -43,7 +43,7 @@ dependencies = [
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "diffusers==0.26.2", # Diffusion models
     "transformers==4.37.2", # HuggingFace models & utils
-    "datasets==2.16.1", # HuggingFace datasets
+    "datasets==2.17.0", # HuggingFace datasets
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.3.0", # For reinforcement/imitation Learning tasks
