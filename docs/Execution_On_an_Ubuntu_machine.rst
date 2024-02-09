@@ -19,8 +19,8 @@ On an Ubuntu machine
 
     Make sure to remove the above flags if you are not using a GPU.
 
-.. note:: 
-    By default, the Podman container's timezone is either set to the timezone of the local 
+.. note::
+    By default, the Podman container's timezone is either set to the timezone of the local
     where it is built or to the UTC. To change the timezone of the container, add
     ``--tz=local`` flag to the execution command above.
 
@@ -35,8 +35,8 @@ Run a python script
 
 .. note::
     By default, Docker's local timezone is set to UTC, and all the Docker operations
-    will run according to UTC regardless of the host machine's timezone. If you 
-    would like to set it to a specific timezone, please add ``--env TZ= YOUR_TIMEZONE`` 
+    will run according to UTC regardless of the host machine's timezone. If you
+    would like to set it to a specific timezone, please add ``--env TZ= YOUR_TIMEZONE``
     flag to the execution command below.
 
 .. code-block:: bash
