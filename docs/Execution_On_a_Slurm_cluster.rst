@@ -20,7 +20,8 @@ Run a python script
         export APPTAINERENV_APPEND_PATH=/opt/software/slurm/bin:/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin && \
         apptainer exec -B /etc/passwd -B /etc/slurm/ -B /opt/software/slurm -B /usr/lib64/libmunge.so.2 \
                        -B /cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/apptainer/1.1.8/bin/apptainer \
-                       -B /var/run/munge/ --env LD_LIBRARY_PATH=/opt/software/slurm/lib64/slurm  -B $CNEUROMAX_PATH $SCRATCH/cneuromax.sif \
+                       -B /var/run/munge/ --env LD_LIBRARY_PATH=/opt/software/slurm/lib64/slurm --env TZ=America/New_York \
+                       -B $CNEUROMAX_PATH $SCRATCH/cneuromax.sif \
                        python -m cneuromax project=classify_mnist task=mlp_beluga
 
 Run Jupyter-lab

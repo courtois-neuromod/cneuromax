@@ -28,7 +28,7 @@ Run a python script
     Run ``cd ${CNEUROMAX_PATH}/cneuromax`` before the following command to get
     tab completion for the ``task`` argument.
 
-    Don't forget to change the time zone flag `TZ` to your local timezone.
+    Don't forget to modify the timezone flag `TZ` to your local timezone.
 
 .. code-block:: bash
 
