@@ -112,7 +112,7 @@ notify you of most issues before you commit.
 We provide a ``.devcontainer.json`` file that allows you to develop locally
 using VSCode and the repository's Docker image (it should not be too hard to
 adapt this file to other IDEs). In order to use it, you will need to install
-the `Remote - Containers` extension.
+the ``Remote - Containers`` extension.
 
 .. code-block:: bash
 
@@ -133,9 +133,10 @@ There are so far two small pain points:
 
 - The esbonio server will sometimes announce a build error (bottom right),
   which will prevent further documentation visualization. To fix this, you
-  should delete the contents of the ``docs/_build`` (do not delete the folder
-  itself if you use Dropbox/Maestral) and ``docs/_autosummary`` folders and
-  and restart the esbonio server (by pressing its icon).
+  should delete the contents of the ``docs/_build`` and ``docs/_autosummary``
+  folders and restart the esbonio server by pressing its icon. If you use
+  Dropbox/Maestral, make sure to re-run ``dropboxignore <DROPBOX_PATH>/.``
+  else the folders will start synchronizing again. See below.
 
 GitHub Copilot is installed in the DevContainer. Simply discard the log-in
 notifications if you do not want to make use of it.
@@ -234,15 +235,16 @@ by pressing the ``esbonio`` button on the bottom right of the editor and then
 opening the locally created ``.html`` files.
 
 Setting up Maestral/Dropbox to move code across machines
------------------------------------------------------------
+--------------------------------------------------------
 
 Rather than having to manually move code across machines, we suggest that you
-use a Dropbox folder to automatically sync your code across machines.
+use a Dropbox folder to automatically sync your code across machines. This is
+especially useful when making small config/code changes on any machine.
 
-On machines where you have root access, you can simply install Dropbox.
-On machines where you do not have root access, you can install Maestral as a
-drop-in replacement for Dropbox (Make sure not to install both Dropbox and
-Maestral on the same machine).
+On machines where you have GUI & root access, you can simply install Dropbox.
+On other machines, you can install Maestral as a drop-in replacement for
+Dropbox (Make sure not to install both Dropbox and Maestral on the same
+machine).
 
 .. code-block:: bash
 
@@ -256,13 +258,13 @@ your account?**
 
 Choose: **Print auth URL to console**
 
-Open the URL and press Allow.
+Open the URL and press **Allow**.
 
 Copy the code that appears in the browser.
 
-**Enter the auth code:** Paste.
+**Enter the auth code:** (paste).
 
-**Please choose a local Dropbox folder:**  ``/scratch/<USER>/Dropbox``
+**Please choose a local Dropbox folder:**  ``<DROPBOX_PATH>``
 
 Would you like sync all folders? **No**
 
@@ -280,26 +282,16 @@ synchronization by running:
     python -m maestral status
 
 Finally, there are some files that you probably do not want to sync across
-all machines. On a machine with Dropbox, run:
+all machines. On a machine with Dropbox, first install Dropboxignore:
 
 .. code-block:: bash
 
-    mkdir -p data/ docs/_build/ .vscode/ .coverage
-    mkdir -p .mypy_cache/ .pytest_cache/ .ruff_cache/
-    sudo attr -s com.dropbox.ignored -V 1 data/
-    sudo attr -s com.dropbox.ignored -V 1 docs/_build/
-    sudo attr -s com.dropbox.ignored -V 1 .vscode/
-    sudo attr -s com.dropbox.ignored -V 1 .coverage
-    sudo attr -s com.dropbox.ignored -V 1 .mypy_cache/
-    sudo attr -s com.dropbox.ignored -V 1 .pytest_cache/
-    sudo attr -s com.dropbox.ignored -V 1 .ruff_cache/
+    snap install dropboxignore
 
-On a machine with Maestral, edit your `.mignore` file to exclude the files you
-do not want to sync.
+Create a ``.dropboxignore`` file in your root Dropbox folder with the
+following content:
 
-Example of the contents of a `.mignore` file:
-
-.. code-block:: python
+.. code-block:: bash
 
     /cneuromax/.mypy_cache/
     /cneuromax/.pytest_cache/
@@ -308,6 +300,27 @@ Example of the contents of a `.mignore` file:
     /cneuromax/data/
     /cneuromax/docs/_build/
     /cneuromax/docs/_autosummary/
+
+To apply the changes run:
+
+.. code-block:: bash
+
+    dropboxignore ignore <DROPBOX_FOLDER>
+
+.. note::
+
+    Make sure to re-run this command whenever you delete any of those folders.
+
+Copy the ``.dropboxignore`` file to work for Maestral:
+
+.. code-block:: bash
+
+    cp <DROPBOX_PATH>/.dropboxignore <DROPBOX_PATH>/.mignore
+
+.. note::
+
+    Do not create a symbolic link else the ``.mignore`` file will not be
+    synchronized across devices.
 
 Freezing the repositories for publication
 -----------------------------------------
