@@ -323,8 +323,7 @@ Copy the ``.dropboxignore`` file to work for Maestral:
     synchronized across devices.
 
 .. note::
-
-    Please be aware that on busy computer clusters, initiating the Maestral 
+    Please be aware that on busy computer clusters, initiating the Maestral
     might take a few trials.
 
 Freezing the repositories for publication
