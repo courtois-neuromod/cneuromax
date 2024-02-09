@@ -301,7 +301,13 @@ Example of the contents of a `.mignore` file:
 
 .. code-block:: python
 
-    **/data
+    /cneuromax/.mypy_cache/
+    /cneuromax/.pytest_cache/
+    /cneuromax/.ruff_cache/
+    /cneuromax/.vscode/
+    /cneuromax/data/
+    /cneuromax/docs/_build/
+    /cneuromax/docs/_autosummary/
 
 Freezing the repositories for publication
 -----------------------------------------
