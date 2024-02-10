@@ -18,7 +18,7 @@ __all__ = [
 
 
 class TaskRunner(NeuroevolutionTaskRunner):
-    """``project`` ``task`` runner."""
+    """:mod:`.neuroevorl_control`  ``project`` ``task`` runner."""
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
