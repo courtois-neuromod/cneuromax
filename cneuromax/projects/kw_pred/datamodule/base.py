@@ -1,21 +1,23 @@
-""":class:`KLKWavDataModule` & its config."""
-from dataclasses import dataclass
-from typing import Annotated as An
+""":class:`KWPredDataset` + :class:`KWPredDataModule` & its config, ."""
 
-from torch.utils.data import random_split
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Annotated as An
+from functools import partial
+from torch import Tensor
+from torch.utils.data import Dataset, random_split
 
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
+from .dataset import KWPredDataset
 from cneuromax.utils.beartype import ge, lt, one_of
-
-from .dataset import KLKWavDataset
 
 
 @dataclass
-class KLKWavDataModuleConfig(BaseDataModuleConfig):
-    """Holds :class:`KLKWavDataModule` config values.
+class KWPredDatamoduleConfig(BaseDataModuleConfig):
+    """:class:`KWPredDataModule` config.
 
     Args:
         val_percentage: Percentage of the training dataset to use for\
@@ -25,25 +27,38 @@ class KLKWavDataModuleConfig(BaseDataModuleConfig):
     val_percentage: An[float, ge(0), lt(1)] = 0.1
 
 
-class KLKWavDataModule(BaseDataModule):
-    """:mod:`.klk_wav` :class:`.BaseDataModule`.
+class KWPredDataModule(BaseDataModule):
+    """:mod:`.kw_pred` :class:`.BaseDataModule`.
 
     Args:
-        config: See :class:`KLKWavDataModuleConfig`.
+        config: See :class:`KWPredDatamoduleConfig`.
+        dataset: See :class:`KWPredDataset`.
+
+    Attributes:
+        config (:class:`KWPredDatamoduleConfig`): See\
+            :paramref:`config`.
+        train_val_split (``tuple[float, float]``): Percentages of the\
+            data to use for training and validation, respectively.\
+            Sums to 1.
+        paths (:class:`.KWPredPaths`): See :class:`.KWPredPaths`.
     """
 
     def __init__(
-        self: "KLKWavDataModule",
-        config: KLKWavDataModuleConfig,
+        self: "KWPredDataModule",
+        config: KWPredDatamoduleConfig,
+        dataset: partial[KWPredDataset],
     ) -> None:
         super().__init__(config=config)
+        self.config: KWPredDatamoduleConfig
         self.train_val_split = (
             1 - config.val_percentage,
             config.val_percentage,
         )
+        self.dataset_partial = dataset
+
 
     def setup(
-        self: "KLKWavDataModule",
+        self: "KWPredDataModule",
         stage: An[str, one_of("fit", "validate", "test")],
     ) -> None:
         """Creates the train/val/test datasets.
@@ -52,7 +67,7 @@ class KLKWavDataModule(BaseDataModule):
             stage: Current stage type.
         """
         if stage == "fit":
-            dataset = KLKWavDataset(data_dir=self.config.data_dir)
+            dataset = KWPredDataset(paths=self.paths,
             self.datasets.train, self.datasets.val = random_split(
                 dataset=dataset,
                 lengths=self.train_val_split,

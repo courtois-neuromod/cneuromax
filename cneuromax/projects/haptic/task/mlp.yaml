@@ -1,5 +1,0 @@
-# @package _global_
-defaults:
-  - /datamodule: hemc_klk_wavs
-  - /litmodule: ar_haptic
-  - _self_

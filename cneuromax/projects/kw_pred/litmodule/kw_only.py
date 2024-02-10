@@ -1,4 +1,5 @@
-""":class:`OneKLKWavLitModule`."""
+""":class:`KWOnlyLitModule`."""
+
 from typing import Annotated as An
 
 import torch
@@ -13,12 +14,12 @@ from cneuromax.fitting.deeplearning.litmodule import (
 from cneuromax.utils.beartype import one_of
 
 
-class OneKLKWavLitModule(BaseLitModule):
+class KWOnlyLitModule(BaseLitModule):
     """:mod:`.one_klk_wav` :class:`.BaseLitModule`."""
 
     def step(
-        self: "OneKLKWavLitModule",
-        batch: dict[str, Float[Tensor, " 1 data_len"]],
+        self: "KWOnlyLitModule",
+        batch: dict[str, Float[Tensor, " batch_size num_freqs seq_len"]],
         _: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
         """Next time step prediction w/ MSE loss.

@@ -1,4 +1,0 @@
-defaults:
-  - /datamodule: one_klk_wav
-  - /litmodule: one_klk_wav
-  - _self_
