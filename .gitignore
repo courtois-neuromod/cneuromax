@@ -13,3 +13,5 @@
 WANDB_KEY.txt
 test.ipynb
 cneuromax/fitting/neuroevolution/space/imitation.py
+test/
+test.wav
