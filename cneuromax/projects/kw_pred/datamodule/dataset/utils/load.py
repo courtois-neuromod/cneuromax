@@ -1,223 +1,200 @@
-""":func:`load_interpolated_data` and its helper functions."""
+""":func:`load_data` and its helper functions."""
 
-from collections.abc import Callable
 from pathlib import Path
-from typing import Annotated as An
 
 import torch
 import torch.nn.functional as f
 import torchaudio
+from einops import rearrange
 from jaxtyping import Float32
 from torch import Tensor
 
-from cneuromax.utils.beartype import one_of
+from .paths import KWPredDatasetPaths
 
 
-def create_load_fn(
-    paths: dict[str, Path],
-    num_10s_segments: int,
-) -> Callable[[int], dict[str, Tensor]]:
-    """Creates a function to load data given an index.
+def interpolate(
+    data: Float32[Tensor, " num_samples num_features"],
+) -> Float32[Tensor, " 4000 data_dim"]:
+    """Interpolates the 10 second data to 400 Hz.
 
     Args:
-        paths: See :attr:`~.KWPredDataset.paths`.
-        num_10s_segments: See\
-            :paramref:`~.KWPredDataConfig.num_10s_segments`.
+        data: The data to interpolate.
 
     Returns:
-        A function that takes a dictionary of paths and an index and\
-            returns the data for that index.
+        The interpolated data.
     """
-    content_ids_lengths = get_valid_content_ids_lengths(paths=paths)
-    data_map = create_data_map(
-        paths=paths,
-        content_ids_lengths=content_ids_lengths,
-        num_10s_segments=num_10s_segments,
+    data = rearrange(
+        tensor=data,
+        pattern="num_samples num_features -> 1 num_features num_samples",
+    )
+    data: Float32[Tensor, " 1 num_features 4000"] = f.interpolate(
+        input=data,
+        size=4000,
+    )
+    return rearrange(
+        tensor=data,
+        pattern="1 num_features 4000 -> 4000 num_features",
     )
 
-    def load_fn(idx: int) -> dict[str, Tensor]:
-        return data_map[idx]
 
-    return load_fn
-
-
-def load_interpolated_data(
-    audio_embeddings_dir: Path,
-    video_embeddings_dir: Path,
-    klk_wavs_dir: Path,
+def load_data(
+    paths: KWPredDatasetPaths,
     content_id: int,
+    starting_second: int,
 ) -> dict[str, Tensor]:
-    """Loads :paramref:`content_id` data and interpolates to max length.
+    """Loads 10 seconds of data.
 
     Args:
-        audio_embeddings_dir: See\
-            :paramref:`~.get_valid_content_ids.audio_embeddings_dir`.
-        video_embeddings_dir: See\
-            :paramref:`~.get_valid_content_ids.video_embeddings_dir`.
-        klk_wavs_dir: See \
-            :paramref:`~.get_valid_content_ids.klk_wavs_dir`.
+        paths: See :class:`.KWPredDatasetPaths`.
         content_id: See :mod:`.kw_pred` terminology.
+        starting_second: The beginning second of the sequence.
 
     Returns:
-        The return value of :func:`load_content_id_data` interpolated\
-            to the length of the ``.klk`` ``.wav`` data.
+        A dictionary with keys "AE", "AS", "VE", "KW BL", "KW BR",\
+            "KW FL" & "KW FR" + the corresponding :class:`torch.Tensor`\
+            data.
     """
-    data = load_content_id_data(
-        audio_embeddings_dir=audio_embeddings_dir,
-        video_embeddings_dir=video_embeddings_dir,
-        klk_wavs_dir=klk_wavs_dir,
-        content_id=content_id,
+    ae_data: Float32[Tensor, " num_ae_samples num_ae_1 num_ae_2"] = (
+        load_transformed_data(
+            transformed_data_dir=paths.ae_dir,
+            transformed_data_type="AE",
+            content_id=content_id,
+            starting_second=starting_second,
+        )
     )
-    len_klk_wavs_data = data["KW BL"].shape[1]
-    for item in ["AE", "VE"]:
-        data[item] = f.interpolate(data[item], size=len_klk_wavs_data)
-    return data
+    # Average out the second dimension.
+    ae_data: Float32[Tensor, " num_ae_samples num_ae"] = torch.mean(
+        input=ae_data,
+        dim=1,
+    )
+    ae_data: Float32[Tensor, " 4000 num_ae"] = interpolate(
+        data=ae_data,
+    )
+    af_data: Float32[Tensor, " num_af_samples num_af"] = load_transformed_data(
+        transformed_data_dir=paths.af_dir,
+        transformed_data_type="AF",
+        content_id=content_id,
+        starting_second=starting_second,
+    )
+    af_data: Float32[Tensor, " 4000 num_af"] = interpolate(
+        data=af_data,
+    )
+    ve_data: Float32[Tensor, " num_ve_samples num_ve"] = load_transformed_data(
+        transformed_data_dir=paths.ve_dir,
+        transformed_data_type="VE",
+        content_id=content_id,
+        starting_second=starting_second,
+    )
+    ve_data: Float32[Tensor, " 4000 num_ve"] = interpolate(
+        data=ve_data,
+    )
+    kw_data: Float32[Tensor, " 4000"] = load_kw_data(
+        kw_dir=paths.kw_dir,
+        content_id=content_id,
+        starting_second=starting_second,
+    )
+    return {
+        "AE": ae_data,
+        "AF": af_data,
+        "VE": ve_data,
+        **kw_data,
+    }
 
 
-def load_content_id_data(
-    audio_embeddings_dir: Path,
-    video_embeddings_dir: Path,
-    klk_wavs_dir: Path,
+def get_transformed_data_path(
+    transformed_data_dir: Path,
+    transformed_data_type: str,
     content_id: int,
-) -> dict[str, Tensor]:
-    """Fetches data for :paramref:`content_id`.
+    starting_second: int,
+) -> Path:
+    """Gets the path to the transformed data.
 
     Args:
-        audio_embeddings_dir: See\
-            :paramref:`~.get_valid_content_ids.audio_embeddings_dir`.
-        video_embeddings_dir: See\
-            :paramref:`~.get_valid_content_ids.video_embeddings_dir`.
-        klk_wavs_dir: See\
-            :paramref:`~.get_valid_content_ids.klk_wavs_dir`.
+        transformed_data_dir: See\
+            :paramref:`~.get_transformed_data_content_ids.transformed_data_dir`.
+        transformed_data_type: Used to deal with the different file\
+            naming conventions.
         content_id: See :mod:`.kw_pred` terminology.
+        starting_second: See :paramref:`~load_data.starting_second`.
 
     Returns:
-        A dictionary with keys "AE", "VE", "KW BL", "KW BR", "KW FL"\
-            & "KW FR" + the corresponding :class:`torch.Tensor` data.
-    """
-    # Load all the data
-    data_ae, final_ae_second = load_embeddings_data(
-        embeddings_dir=audio_embeddings_dir,
-        embeddings_type="audio",
-        content_id=content_id,
-    )
-    data_ve, final_ve_second = load_embeddings_data(
-        embeddings_dir=video_embeddings_dir,
-        embeddings_type="video",
-        content_id=content_id,
-    )
-    data_kw, final_kw_second = load_klk_wav_data(
-        klk_wavs_dir=klk_wavs_dir,
-        content_id=content_id,
-    )
-    data: dict[str, Tensor] = {"AE": data_ae, "VE": data_ve, **data_kw}
-    # Adjust lengths so that they all match
-    min_seconds = min(final_ae_second, final_ve_second, final_kw_second)
-
-    if final_ae_second > min_seconds:
-        data["AE"] = data["AE"][: int(min_seconds * 62)]
-    if final_ve_second > min_seconds:
-        data["VE"] = data["VE"][: int(min_seconds * 241)]
-    if final_kw_second > min_seconds:
-        pass
-
-    smallest_kw_length = data_kw["BL"].shape[1]
-    for pos in ["BL", "BR", "FL", "FR"]:
-        data[pos] = data[pos][:smallest_length]
-
-    data.update(klk_wav_data)
-    return data
-
-
-def load_embeddings_data(
-    embeddings_dir: Path,
-    embeddings_type: An[str, one_of("audio", "video")],
-    content_id: int,
-) -> tuple[Float32[Tensor, " ..."], int]:
-    """Loads the embeddings for :paramref:`content_id`.
-
-    Args:
-        embeddings_dir: See\
-            :paramref:`~.get_embeddings_data.embeddings_dir`.
-        embeddings_type: Either "audio" or "video", used to deal with\
-            the different file naming conventions.
-        content_id: The ID for the content that is being validated.
-
-    Returns:
-        The embeddings for the :paramref:`content_id` and its length in\
-            seconds.
+        The path to the transformed data for the :paramref:`content_id`\
+            from :paramref:`starting_second` to\
+            :paramref:`starting_second` + 10.
     """
     # Naming convention detail
-    ms_format = "00" if embeddings_type == "audio" else "0"
+    if transformed_data_type == "AE":
+        ms_format = ".00"
+    elif transformed_data_type == "AF":
+        ms_format = ""
+    else:  # transformed_data_type == "VE"
+        ms_format = ".0"
 
-    # Helper function to get the file path
-    def get_data_file(starting_second: int) -> Path:
-        return (
-            embeddings_dir / f"ID{content_id}_{starting_second}.{ms_format}_"
-            f"{starting_second+10}.{ms_format}.pt"
-        )
-
-    # Figure out the total number of files
-    max_second = 0
-    while get_data_file(starting_second=max_second).exists():
-        max_second += 10
-    num_files = max_second // 10
-    # Initialize the data tensor
-    if embeddings_type == "audio":
-        data = torch.empty((62 * num_files // 10, 8, 768), dtype=torch.float32)
-    else:  # embeddings_type == "video"
-        data = torch.empty((241 * num_files // 10, 2048), dtype=torch.float32)
-    # Load the data from the files one by one
-    second = 0
-    while second < max_second:
-        if embeddings_type == "audio":
-            data_chunk: Float32[Tensor, " 62 8 768"] = torch.load(
-                get_data_file(second),
-            )
-            data[62 * second // 10 : 62 * (second + 10) // 10] = data_chunk
-        else:  # embeddings_type == "video"
-            data_chunk: Float32[Tensor, " 241 2048"] = torch.load(  # type: ignore[no-redef]
-                get_data_file(second),
-            )
-            data[241 * second // 10 : 241 * (second + 10) // 10] = data_chunk
-        second += 10
-    return data, max_second
+    return transformed_data_dir / (
+        f"ID{content_id}_{starting_second}.{ms_format}_"
+        f"{starting_second+10}.{ms_format}.pt"
+    )
 
 
-def load_klk_wav_data(
-    klk_wavs_dir: Path,
+def load_transformed_data(
+    transformed_data_dir: Path,
+    transformed_data_type: str,
     content_id: int,
-) -> tuple[dict[str, Float32[Tensor, " 1 num_samples"]], int]:
-    """Loads the KLK WAV files for :paramref:`content_id`.
+    starting_second: int,
+) -> Float32[Tensor, " num_samples"]:
+    """Loads 10 seconds of transformed data.
 
     Args:
-        klk_wavs_dir: See\
-            :paramref:`~.get_klk_wav_data.klk_wav_id_folder`.
-        content_id: See :paramref:`~.get_embeddings_data.content_id`.
+        transformed_data_dir: See\
+            :paramref:`~.get_transformed_data_content_ids.transformed_data_dir`.
+        transformed_data_type: Used to deal with the different file\
+            naming conventions.
+        content_id: See :mod:`.kw_pred` terminology.
+        starting_second: See :paramref:`~load_data.starting_second`.
 
     Returns:
-        The KLK WAV data for the :paramref:`content_id` and its length\
-            in seconds.
+        The transformed data for the :paramref:`content_id` from\
+            :paramref:`starting_second` to :paramref:`starting_second`\
+            + 10.
     """
-    data: dict[str, Float32[Tensor, " ?num_samples"]] = {}
-    klk_wavs_content_id_dir = klk_wavs_dir / f"ID{content_id}/"
+    return torch.load(
+        get_transformed_data_path(
+            transformed_data_dir=transformed_data_dir,
+            transformed_data_type=transformed_data_type,
+            content_id=content_id,
+            starting_second=starting_second,
+        ),
+    )
+
+
+def load_kw_data(
+    kw_dir: Path,
+    content_id: int,
+    starting_second: int,
+) -> dict[str, Float32[Tensor, " num_samples"]]:
+    """Loads 10 seconds of ``.klk`` ``.wav`` data.
+
+    Args:
+        kw_dir: See :paramref:`~.KWPredDatasetPaths.kw_dir`.
+        content_id: See :mod:`.kw_pred` terminology.
+        starting_second: See :paramref:`~load_data.starting_second`.
+
+    Returns:
+        The ``.klk`` ``.wav`` data for the :paramref:`content_id` from\
+            :paramref:`starting_second` to :paramref:`starting_second`\
+            + 10.
+    """
+    data: dict[str, Float32[Tensor, " num_samples"]] = {}
+    kw_content_id_dir = kw_dir / f"ID{content_id}/"
     # Load data
     for pos in ["BL", "BR", "FL", "FR"]:
-        data_file = klk_wavs_content_id_dir / f"/ID{content_id}_{pos}.wav"
-        pos_data_and_sample_rate = torchaudio.load(data_file)
-        pos_data: Float32[Tensor, " 1 ?num_samples"] = (
-            pos_data_and_sample_rate[0]
-        )
-        sample_rate = pos_data_and_sample_rate[1]
-        pos_data: Float32[Tensor, " ?num_samples"] = pos_data.squeeze(0)
-        data[pos] = pos_data
-    # Trim the data to the smallest length
-    smallest_length = min(
-        data["KW BL"].shape[1],
-        data["KW BR"].shape[1],
-        data["KW FL"].shape[1],
-        data["KW FR"].shape[1],
-    )
+        data_file = kw_content_id_dir / f"/ID{content_id}_{pos}.wav"
+        pos_data, _ = torchaudio.load(data_file)
+        pos_data: Float32[Tensor, " total_num_samples"] = pos_data.squeeze(0)
+        data[f"KW {pos}"] = pos_data
+    # Truncate data
+    starting_sample = starting_second * 400
+    ending_sample = (starting_second * 10) * 400
     for pos in ["BL", "BR", "FL", "FR"]:
-        data[pos] = data[pos][:smallest_length]
-    return data, smallest_length / sample_rate
+        data[f"KW {pos}"] = data[f"KW {pos}"][starting_sample:ending_sample]
+    return data

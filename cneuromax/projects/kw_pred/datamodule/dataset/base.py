@@ -1,4 +1,4 @@
-""":class:`KWPredDataset` & its config/paths dataclasses."""
+""":class:`KWPredDataset` & its config."""
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -6,7 +6,7 @@ from pathlib import Path
 from torch import Tensor
 from torch.utils.data import Dataset
 
-from .utils import create_load_data_fn
+from .utils import KWPredDatasetPaths, create_load_function
 
 
 @dataclass
@@ -57,6 +57,9 @@ class KWPredDatasetConfig:
                         ├── ID2368_0.0_10.0.pt
                         └── ...
 
+    TODO: Allow sequence lengths to be different from 10 seconds and\
+        allow batches to overlap.
+
     Args:
         root_data_dir: Path to the high-level data directory.
         audio_embeddings_rel_dir: Relative path with respect to\
@@ -67,7 +70,7 @@ class KWPredDatasetConfig:
             :paramref:`root_data_dir` to the directory containing\
             precomputed transformed audio data through Short-Time\
             Fourier Transform (STFT). See :mod:`.kw_pred` for more\
-            details on audio STFTs (AS).
+            details on audio STFTs (AF).
         video_embeddings_rel_dir: Relative path with respect to\
             :paramref:`root_data_dir` to the directory containing\
             precomputed video embeddings. See :mod:`.kw_pred` for more\
@@ -77,8 +80,6 @@ class KWPredDatasetConfig:
             ``.wav`` files extracted from ``.klk`` files. See\
             :mod:`.kw_pred` for more details on ``.klk`` ``.wav``\
             predictions (KW).
-        seq_len_second: Length (in seconds) of the sequence for each\
-            data point.
     """
 
     root_data_dir: str = "/media/DATA/"
@@ -92,32 +93,6 @@ class KWPredDatasetConfig:
         "transformed_data/video_embeddings/dinov2/dinov2_vitl14/"
     )
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
-    seq_len_second: int = 10
-
-
-@dataclass
-class KWPredDatasetPaths:
-    """:class:`KWPredDataset` paths.
-
-    Args:
-        audio_embeddings_dir: Concatenation of\
-            :paramref:`~.KWPredDatasetConfig.root_data_dir` and\
-            :paramref:`~.KWPredDatasetConfig.audio_embeddings_rel_dir`.
-        audio_stft_dir: Concatenation of\
-            :paramref:`~.KWPredDatasetConfig.root_data_dir` and\
-            :paramref:`~.KWPredDatasetConfig.audio_stft_rel_dir`.
-        video_embeddings_dir: Concatenation of\
-            :paramref:`~.KWPredDatasetConfig.root_data_dir` and\
-            :paramref:`~.KWPredDatasetConfig.video_embeddings_rel_dir`.
-        klk_wavs_dir: Concatenation of\
-            :paramref:`~.KWPredDatasetConfig.root_data_dir` and\
-            :paramref:`~.KWPredDatasetConfig.klk_wavs_rel_dir`.
-    """
-
-    audio_embeddings_dir: Path
-    audio_stft_dir: Path
-    video_embeddings_dir: Path
-    klk_wavs_dir: Path
 
 
 class KWPredDataset(Dataset[dict[str, Tensor]]):
@@ -134,7 +109,7 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     def __init__(self: "KWPredDataset", config: KWPredDatasetConfig) -> None:
         self.config = config
-        self.paths = KWPredPaths(
+        paths = KWPredDatasetPaths(
             audio_embeddings_dir=Path(
                 config.root_data_dir + config.audio_embeddings_rel_dir,
             ),
@@ -146,9 +121,8 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
             ),
             klk_wavs_dir=Path(config.root_data_dir + config.klk_wavs_rel_dir),
         )
-        self.load_data, self.num_data_points = create_load_data_fn(
+        self.load_data, self.num_data_points = create_load_function(
             paths=paths,
-            num_10s_segments=config.num_10s_segments,
         )
 
     def __len__(self: "KWPredDataset") -> int:
@@ -157,4 +131,8 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
-        return self.load_data(idx=idx)
+        while True:  # spooky (~'o')~ ...
+            try:
+                return self.load_data(idx=idx)
+            except Exception:  # noqa: PERF203, BLE001
+                idx = (idx + 1) % len(self.num_data_points)
