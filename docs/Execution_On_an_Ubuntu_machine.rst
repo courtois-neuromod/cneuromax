@@ -19,6 +19,11 @@ On an Ubuntu machine
 
     Make sure to remove the above flags if you are not using a GPU.
 
+.. note::
+    By default, the Podman containers are either built with the local timezone
+    or to the UTC. To change the timezone of the container, add ``--tz=local``
+    flag to the execution command above.
+
 Run a python script
 -------------------
 
@@ -27,6 +32,7 @@ Run a python script
 
     Run ``cd ${CNEUROMAX_PATH}/cneuromax`` before the following command to get
     tab completion for the ``task`` argument.
+
 
 .. code-block:: bash
 
