@@ -20,7 +20,7 @@ __all__ = [
 
 
 class TaskRunner(DeepLearningTaskRunner):
-    """``project`` ``task`` runner."""
+    """:mod:`.classify_mnist` ``project`` ``task`` runner."""
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:

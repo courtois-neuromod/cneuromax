@@ -1,5 +1,6 @@
 """:mod:`lightning` utilities."""
 
+import contextlib
 import copy
 import logging
 import os
@@ -14,11 +15,11 @@ from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
     SlurmLauncher,
 )
 from lightning.pytorch import Trainer
+from lightning.pytorch.callbacks.batch_size_finder import BatchSizeFinder
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
 )
-from lightning.pytorch.tuner.tuning import Tuner
 from torch.distributed import ReduceOp
 from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
@@ -160,20 +161,25 @@ def find_good_per_device_batch_size(
     datamodule_copy = copy.deepcopy(datamodule)
     launcher_config = get_launcher_config()
     datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task or 1
+    batch_size_finder = BatchSizeFinder(
+        mode="binsearch",
+        batch_arg_name="per_device_batch_size",
+    )
+    # Stops the `fit` method after the batch size has been found.
+    batch_size_finder._early_exit = True  # noqa: SLF001
     trainer = Trainer(
         accelerator=device,
         devices=1,
         max_epochs=-1,
         default_root_dir=output_dir + "/lightning/tuner/",
+        callbacks=[batch_size_finder],
     )
-    tuner = Tuner(trainer=trainer)
     logging.info("Finding good `batch_size` parameter...")
-    per_device_batch_size = tuner.scale_batch_size(
-        model=litmodule_copy,
-        datamodule=datamodule_copy,
-        mode="binsearch",
-        batch_arg_name="per_device_batch_size",
-    )
+    # Prevents the `fit` method from raising a `KeyError`, see:
+    # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
+    with contextlib.suppress(KeyError):
+        trainer.fit(litmodule_copy, datamodule_copy)
+    per_device_batch_size = batch_size_finder.optimal_batch_size
     if per_device_batch_size is None:
         error_msg = (
             "Lightning's `scale_batch_size` method returned `None`. "

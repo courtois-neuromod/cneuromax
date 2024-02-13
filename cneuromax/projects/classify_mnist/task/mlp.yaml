@@ -3,6 +3,11 @@ defaults:
   - /datamodule: classify_mnist
   - /litmodule: classify_mnist
   - _self_
+hydra:
+  launcher:
+    gpus_per_node: 1
+config:
+  device: gpu
 litmodule:
   optimizer:
     lr: 0.002
@@ -13,4 +18,3 @@ litmodule:
       _target_: torch.nn.ReLU
 trainer:
   max_epochs: 3
-device: gpu

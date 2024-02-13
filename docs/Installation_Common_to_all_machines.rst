@@ -6,6 +6,11 @@ The following commands are meant to set-up the repository.
 1. Move to the desired containing folder
 ----------------------------------------
 
+.. note::
+
+    We recommend, in the ``Contribution`` section, to make use of
+    Dropbox/Maestral if you plan to alter the code on different machines.
+
 .. code-block:: bash
 
     # Examples
