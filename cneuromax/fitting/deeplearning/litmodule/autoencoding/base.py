@@ -1,76 +1,50 @@
-""":class:`BaseAutoencodingLitModule` & its config."""
+""":class:`BaseAutoencodingLitModule`."""
 
-import torch
+from typing import Annotated as An
+
 import torch.nn.functional as f
 from jaxtyping import Float
-from torch import nn
-from typeguard import typechecked
+from torch import Tensor
 
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule.nnmodule.autoencoder import (
+    BaseAutoEncoder,
+)
+from cneuromax.utils.beartype import one_of
 
 
 class BaseAutoencodingLitModule(BaseLitModule):
-    """Autoencoder model."""
+    """Base Autoencoding :class:`.BaseLitModule`.
+
+    Args:
+        nnmodule: See :class:`.BaseAutoEncoder`.
+    """
 
     def __init__(
         self: "BaseAutoencodingLitModule",
-        optimizer: torch.optim.Optimizer,
-        encoder: nn.Module,
-        decoder: nn.Module,
+        nnmodule: BaseAutoEncoder,
+        *args,  # noqa: ANN002
+        **kwargs,  # noqa: ANN003
     ) -> None:
-        """Constructor.
-        Args:
-            encoder: Encoder model.
-            decoder: Decoder model.
-        """
-        super().__init__(optimizer)
+        super().__init__(nnmodule, *args, **kwargs)
 
-        self.encoder, self.decoder = encoder, decoder
-
-    @typechecked
-    def forward(
-        self: "BaseAutoencodingLitModule",
-        x: Float[torch.Tensor, "batch_size *x_shape"],
-    ) -> Float[torch.Tensor, "batch_size *x_shape"]:
-        """Forward method.
-        Args:
-            x: The input batch.
-        Returns:
-            The reconstructed input batch.
-        """
-        latent = self.encoder(x)
-        recon_x = self.decoder(latent)
-
-        return recon_x
-
-    @typechecked
     def step(
         self: "BaseAutoencodingLitModule",
-        batch: Float[torch.Tensor, " batch_size *x_shape"],
-    ) -> Float[torch.Tensor, ""]:
-        """
+        batch: Float[Tensor, " batch_size *data_dim"],
+        stage: An[str, one_of("train", "val", "test")],
+    ) -> Float[Tensor, ""]:
+        """Computes the mean squared error loss for the autoencoder.
+
         Args:
-            batch: The input batch.
+            batch: The input data batch.
+            stage: See\
+                :paramref:`~.BaseLitModule.stage_step.stage`.
+
         Returns:
-            The loss (reconstruction loss).
+            The mean squared error loss.
         """
         x = batch
-        recon_x = self(x)
+        recon_x = self.nnmodule(x)
         recon_loss = f.mse_loss(x, recon_x)
-
+        self.log(name=f"{stage}/mse", value=recon_loss)
         return recon_loss
-
-    @typechecked
-    def encode(
-        self: "BaseAutoencodingLitModule",
-        x: Float[torch.Tensor, "batch_size *x_shape"],
-    ) -> Float[torch.Tensor, "batch_size *latent_shape"]:
-
-        return self.encoder(x)
-
-    def decode(
-        self: "BaseAutoencodingLitModule",
-        x: Float[torch.Tensor, " batch_size *latent_shape"],
-    ) -> Float[torch.Tensor, " batch_size *x_shape"]:
-
-        return self.decoder(x)
