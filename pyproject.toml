@@ -41,9 +41,12 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.2.0.post0",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "diffusers==0.26.3", # Diffusion models
-    "transformers==4.37.2", # HuggingFace models & utils
-    "datasets==2.17.0", # HuggingFace datasets
+    "transformers==4.37.2", # Models published on Hugging Face
+    "diffusers==0.26.3", # Diffusion models published on Hugging Face
+    "datasets==2.17.0", # Datasets published on Hugging Face
+    "x-transformers==1.27.16", # Phil Wang (Lucidrain)'s Transformer library
+    # Phil Wang (Lucidrain)'s Diffusion model library
+    "denoising-diffusion-pytorch==1.10.9",
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.3.0", # For reinforcement/imitation Learning tasks
