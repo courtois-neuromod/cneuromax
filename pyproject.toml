@@ -75,6 +75,8 @@ line-length = 79
 
 [tool.ruff]
 line-length = 79
+
+[tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "D107", # `undocumented-public-init`
@@ -114,18 +116,14 @@ ignore = [
               # Disabled as we use Beartype for dynamic type checking.
 ]
 
-[tool.mypy]
-strict = true
-allow_redefinition = true
-ignore_missing_imports = true
 
-[tool.ruff.pycodestyle]
+[tool.ruff.lint.pycodestyle]
 max-doc-length = 72
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "*_test.py" = [
     "S101",  # `assert`
              # Use of assert detected.
@@ -144,3 +142,8 @@ max-line-length = 79
 # invalid option value: (option: "parser"; value: 'myst_parser.sphinx_')
 # Parser "myst_parser.sphinx_" not found. No module named 'myst_parser'.
 ignore-path-errors = ["docs/index.rst;D000"]
+
+[tool.mypy]
+strict = true
+allow_redefinition = true
+ignore_missing_imports = true
