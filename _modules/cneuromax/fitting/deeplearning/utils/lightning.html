@@ -308,6 +308,7 @@
           <h1>Source code for cneuromax.fitting.deeplearning.utils.lightning</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:mod:`lightning` utilities.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -322,11 +323,11 @@
     <span class="n">SlurmLauncher</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">lightning.pytorch</span> <span class="kn">import</span> <span class="n">Trainer</span>
+<span class="kn">from</span> <span class="nn">lightning.pytorch.callbacks.batch_size_finder</span> <span class="kn">import</span> <span class="n">BatchSizeFinder</span>
 <span class="kn">from</span> <span class="nn">lightning.pytorch.loggers.wandb</span> <span class="kn">import</span> <span class="n">WandbLogger</span>
 <span class="kn">from</span> <span class="nn">lightning.pytorch.trainer.connectors.checkpoint_connector</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_CheckpointConnector</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">lightning.pytorch.tuner.tuning</span> <span class="kn">import</span> <span class="n">Tuner</span>
 <span class="kn">from</span> <span class="nn">torch.distributed</span> <span class="kn">import</span> <span class="n">ReduceOp</span>
 <span class="kn">from</span> <span class="nn">wandb_osh.lightning_hooks</span> <span class="kn">import</span> <span class="n">TriggerWandbSyncLightningCallback</span>
 
@@ -476,20 +477,25 @@
     <span class="n">datamodule_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">datamodule</span><span class="p">)</span>
     <span class="n">launcher_config</span> <span class="o">=</span> <span class="n">get_launcher_config</span><span class="p">()</span>
     <span class="n">datamodule_copy</span><span class="o">.</span><span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span> <span class="ow">or</span> <span class="mi">1</span>
+    <span class="n">batch_size_finder</span> <span class="o">=</span> <span class="n">BatchSizeFinder</span><span class="p">(</span>
+        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;binsearch&quot;</span><span class="p">,</span>
+        <span class="n">batch_arg_name</span><span class="o">=</span><span class="s2">&quot;per_device_batch_size&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Stops the `fit` method after the batch size has been found.</span>
+    <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">_early_exit</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># noqa: SLF001</span>
     <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
         <span class="n">accelerator</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
         <span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">max_epochs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">default_root_dir</span><span class="o">=</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;/lightning/tuner/&quot;</span><span class="p">,</span>
+        <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">batch_size_finder</span><span class="p">],</span>
     <span class="p">)</span>
-    <span class="n">tuner</span> <span class="o">=</span> <span class="n">Tuner</span><span class="p">(</span><span class="n">trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">)</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finding good `batch_size` parameter...&quot;</span><span class="p">)</span>
-    <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">tuner</span><span class="o">.</span><span class="n">scale_batch_size</span><span class="p">(</span>
-        <span class="n">model</span><span class="o">=</span><span class="n">litmodule_copy</span><span class="p">,</span>
-        <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule_copy</span><span class="p">,</span>
-        <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;binsearch&quot;</span><span class="p">,</span>
-        <span class="n">batch_arg_name</span><span class="o">=</span><span class="s2">&quot;per_device_batch_size&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="c1"># Prevents the `fit` method from raising a `KeyError`, see:</span>
+    <span class="c1"># https://github.com/Lightning-AI/pytorch-lightning/issues/18114</span>
+    <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
+        <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">litmodule_copy</span><span class="p">,</span> <span class="n">datamodule_copy</span><span class="p">)</span>
+    <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">optimal_batch_size</span>
     <span class="k">if</span> <span class="n">per_device_batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s2">&quot;Lightning&#39;s `scale_batch_size` method returned `None`. &quot;</span>
