@@ -25,7 +25,7 @@ repos:
       - id: doc8
         args: [--config=pyproject.toml]
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.34.0
+    rev: v1.35.0
     hooks:
       # Linting for YAML
       - id: yamllint
