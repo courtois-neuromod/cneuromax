@@ -1,11 +1,12 @@
 # @package _global_
 defaults:
-  - /datamodule: classify_mnist
+  - /datamodule: mnist
   - /litmodule: classify_mnist
   - _self_
 hydra:
   launcher:
     gpus_per_node: 1
+    cpus_per_task: 4
 config:
   device: gpu
 litmodule:

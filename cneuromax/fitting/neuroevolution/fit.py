@@ -90,6 +90,7 @@ def evolve(
         logger: See :func:`~.utils.wandb.setup_wandb`.
         config: See :class:`.NeuroevolutionSubtaskConfig`.
     """
+    seed_all(config.seed)
     comm, _, _ = get_mpi_variables()
     validate_space(space=space, pop_merge=config.pop_merge)
     save_points = compute_save_points(
