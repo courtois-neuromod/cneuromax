@@ -347,6 +347,18 @@
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">wandb_input_data_wrapper</span> <span class="pre">(</span></span></dt>
+<dd><p><cite>callable</cite>): A wrapper to be used            around the input datapoint when logging to W&amp;B.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.wandb_table">
+<span class="sig-name descname"><span class="pre">wandb_table</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.wandb_table" title="Link to this definition">#</a></dt>
+<dd><p>A W&amp;B table to store validation data.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step" title="Link to this definition">#</a></dt>
@@ -363,6 +375,36 @@
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The cross entropy loss.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data">
+<span class="sig-name descname"><span class="pre">save_val_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.save_val_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data" title="Link to this definition">#</a></dt>
+<dd><p>Saves data computed during validation for later use.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.x"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.x"><strong>x</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Float[Tensor,</span> <span class="pre">'batch_size</span> <span class="pre">*x_shape']</span></code></span>) – The input data.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.y"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.y"><strong>y</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Int[Tensor,</span> <span class="pre">'batch_size']</span></code></span>) – The target data.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.logits"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.logits"><strong>logits</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Float[Tensor,</span> <span class="pre">'batch_size</span> <span class="pre">num_classes']</span></code></span>) – The network’s raw output.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.preds"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data.params.preds"><strong>preds</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Int[Tensor,</span> <span class="pre">'batch_size']</span></code></span>) – The model’s predictions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.on_validation_epoch_end">
+<span class="sig-name descname"><span class="pre">on_validation_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.on_validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.on_validation_epoch_end" title="Link to this definition">#</a></dt>
+<dd><p>Called at the end of the validation epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -440,7 +482,10 @@
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModuleConfig"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModuleConfig</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule</span></code></a><ul>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.accuracy"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule.accuracy</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.wandb_table"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule.wandb_table</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule.step()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule.save_val_data()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">BaseClassificationLitModule.on_validation_epoch_end()</span></code></a></li>
 </ul>
 </li>
 </ul>

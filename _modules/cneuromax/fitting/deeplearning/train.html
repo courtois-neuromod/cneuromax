@@ -323,6 +323,7 @@
     <span class="n">set_batch_size_and_num_workers</span><span class="p">,</span>
     <span class="n">set_checkpoint_path</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">cneuromax.utils.misc</span> <span class="kn">import</span> <span class="n">seed_all</span>
 
 
 <div class="viewcode-block" id="train">
@@ -354,6 +355,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The final validation loss.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seed_all</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">full_trainer</span><span class="p">,</span> <span class="n">full_logger</span> <span class="o">=</span> <span class="n">instantiate_trainer_and_logger</span><span class="p">(</span>
         <span class="n">partial_trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">,</span>
         <span class="n">partial_logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>

@@ -315,26 +315,25 @@
 <span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">MNIST</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">MNISTClassificationDataModule</span><span class="p">,</span>
-    <span class="n">MNISTClassificationDataModuleConfig</span><span class="p">,</span>
+    <span class="n">MNISTDataModule</span><span class="p">,</span>
+    <span class="n">MNISTDataModuleConfig</span><span class="p">,</span>
 <span class="p">)</span>
 
 
 <div class="viewcode-block" id="datamodule">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule_test.html#cneuromax.projects.classify_mnist.datamodule_test.datamodule">[docs]</a>
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span><span class="p">()</span>
-<span class="k">def</span> <span class="nf">datamodule</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MNISTClassificationDataModule</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~.MNISTClassificationDataModule` fixture.</span>
+<span class="k">def</span> <span class="nf">datamodule</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MNISTDataModule</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`~.MNISTDataModule` fixture.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        tmp_path: The temporary path for the\</span>
-<span class="sd">            :class:`~.MNISTClassificationDataModule`.</span>
+<span class="sd">        tmp_path: The temporary path for the :class:`~.MNISTDataModule`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A generic :class:`~.MNISTClassificationDataModule` instance.</span>
+<span class="sd">        A generic :class:`~.MNISTDataModule` instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">MNISTClassificationDataModule</span><span class="p">(</span>
-        <span class="n">MNISTClassificationDataModuleConfig</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">MNISTDataModule</span><span class="p">(</span>
+        <span class="n">MNISTDataModuleConfig</span><span class="p">(</span>
             <span class="n">data_dir</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
             <span class="n">device</span><span class="o">=</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span>
             <span class="n">val_percentage</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
@@ -345,16 +344,15 @@
 
 <div class="viewcode-block" id="test_setup_fit">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule_test.html#cneuromax.projects.classify_mnist.datamodule_test.test_setup_fit">[docs]</a>
-<span class="k">def</span> <span class="nf">test_setup_fit</span><span class="p">(</span><span class="n">datamodule</span><span class="p">:</span> <span class="n">MNISTClassificationDataModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests :meth:`~.MNISTClassificationDataModule.setup` #1.</span>
+<span class="k">def</span> <span class="nf">test_setup_fit</span><span class="p">(</span><span class="n">datamodule</span><span class="p">:</span> <span class="n">MNISTDataModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests :meth:`~.MNISTDataModule.setup` #1.</span>
 
-<span class="sd">    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves</span>
-<span class="sd">    correctly when</span>
-<span class="sd">    :paramref:`~.MNISTClassificationDataModule.setup.stage` is</span>
+<span class="sd">    Verifies that :func:`~.MNISTDataModule.setup` behaves</span>
+<span class="sd">    correctly when :paramref:`~.MNISTDataModule.setup.stage` is</span>
 <span class="sd">    ``&quot;fit&quot;``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        datamodule: A generic :class:`~.MNISTClassificationDataModule`\</span>
+<span class="sd">        datamodule: A generic :class:`~.MNISTDataModule`\</span>
 <span class="sd">            instance, see :func:`datamodule`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">datamodule</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">()</span>
@@ -370,16 +368,15 @@
 
 <div class="viewcode-block" id="test_setup_test">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule_test.html#cneuromax.projects.classify_mnist.datamodule_test.test_setup_test">[docs]</a>
-<span class="k">def</span> <span class="nf">test_setup_test</span><span class="p">(</span><span class="n">datamodule</span><span class="p">:</span> <span class="n">MNISTClassificationDataModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests :meth:`~.MNISTClassificationDataModule.setup` #2.</span>
+<span class="k">def</span> <span class="nf">test_setup_test</span><span class="p">(</span><span class="n">datamodule</span><span class="p">:</span> <span class="n">MNISTDataModule</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tests :meth:`~.MNISTDataModule.setup` #2.</span>
 
-<span class="sd">    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves</span>
-<span class="sd">    correctly when</span>
-<span class="sd">    :paramref:`~.MNISTClassificationDataModule.setup.stage` is</span>
+<span class="sd">    Verifies that :func:`~.MNISTDataModule.setup` behaves</span>
+<span class="sd">    correctly when :paramref:`~.MNISTDataModule.setup.stage` is</span>
 <span class="sd">    ``&quot;test&quot;``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        datamodule: A generic :class:`~.MNISTClassificationDataModule`\</span>
+<span class="sd">        datamodule: A generic :class:`~.MNISTDataModule`\</span>
 <span class="sd">            instance, see :func:`datamodule`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">datamodule</span><span class="o">.</span><span class="n">prepare_data</span><span class="p">()</span>

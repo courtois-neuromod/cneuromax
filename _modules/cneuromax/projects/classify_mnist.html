@@ -313,16 +313,13 @@
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.runner</span> <span class="kn">import</span> <span class="n">DeepLearningTaskRunner</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.hydra_zen</span> <span class="kn">import</span> <span class="n">fs_builds</span>
 
-<span class="kn">from</span> <span class="nn">.datamodule</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">MNISTClassificationDataModule</span><span class="p">,</span>
-    <span class="n">MNISTClassificationDataModuleConfig</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.datamodule</span> <span class="kn">import</span> <span class="n">MNISTDataModule</span><span class="p">,</span> <span class="n">MNISTDataModuleConfig</span>
 <span class="kn">from</span> <span class="nn">.litmodule</span> <span class="kn">import</span> <span class="n">MNISTClassificationLitModule</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;TaskRunner&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MNISTClassificationDataModuleConfig&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;MNISTClassificationDataModule&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MNISTDataModuleConfig&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">,</span>
     <span class="s2">&quot;MNISTClassificationLitModule&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -343,11 +340,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">store_configs</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
         <span class="n">store</span><span class="p">(</span>
-            <span class="n">fs_builds</span><span class="p">(</span>
-                <span class="n">MNISTClassificationDataModule</span><span class="p">,</span>
-                <span class="n">config</span><span class="o">=</span><span class="n">MNISTClassificationDataModuleConfig</span><span class="p">(),</span>
-            <span class="p">),</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;classify_mnist&quot;</span><span class="p">,</span>
+            <span class="n">fs_builds</span><span class="p">(</span><span class="n">MNISTDataModule</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">MNISTDataModuleConfig</span><span class="p">()),</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;mnist&quot;</span><span class="p">,</span>
             <span class="n">group</span><span class="o">=</span><span class="s2">&quot;datamodule&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">store</span><span class="p">(</span>

@@ -373,6 +373,8 @@
 <span class="sd">            :paramref:`~BaseLitModule.optimizer`.</span>
 <span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\</span>
 <span class="sd">            :paramref:`~BaseLitModule.scheduler`.</span>
+<span class="sd">        val_data (list): A list to store validation data.</span>
+<span class="sd">        curr_val_epoch (int): The current validation epoch.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the :meth:`step` method is not\</span>
@@ -386,9 +388,14 @@
         <span class="n">scheduler</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">LRScheduler</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># Initialize PyTorch instance attributes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">nnmodule</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>
+        <span class="c1"># Initialize validation logging attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="c1"># Verify `step` method.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s2">&quot;The `BaseLitModule.step` method is not defined/not callable.&quot;</span>
@@ -464,6 +471,20 @@
 <span class="sd">            The loss value(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BaseLitModule.on_validation_start">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_start">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_validation_start</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets :attr:`val_data`.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="BaseLitModule.on_validation_epoch_end">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_epoch_end">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increments :attr:`curr_val_epoch`.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 
 <div class="viewcode-block" id="BaseLitModule.test_step">

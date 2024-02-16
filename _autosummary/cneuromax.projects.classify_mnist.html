@@ -332,30 +332,30 @@
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.</span></span><span class="sig-name descname"><span class="pre">MNISTClassificationDataModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.data_dir}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.device}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTClassificationDataModuleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModuleConfig">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.</span></span><span class="sig-name descname"><span class="pre">MNISTDataModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.data_dir}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.device}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.005</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTDataModuleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModuleConfig" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a></p>
-<p>Holds <a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule" title="cneuromax.projects.classify_mnist.MNISTClassificationDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTClassificationDataModule</span></code></a> config values.</p>
+<p>Holds <a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule" title="cneuromax.projects.classify_mnist.MNISTDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModule</span></code></a> config values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0.1</span></code>) – Percentage of the training dataset to use for            validation.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0.005</span></code>) – Percentage of the training dataset to use for            validation.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.</span></span><span class="sig-name descname"><span class="pre">MNISTClassificationDataModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTClassificationDataModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.</span></span><span class="sig-name descname"><span class="pre">MNISTDataModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTDataModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModule" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a></p>
 <p><code class="docutils literal notranslate"><span class="pre">project</span></code> <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTClassificationDataModuleConfig" title="cneuromax.projects.classify_mnist.datamodule.MNISTClassificationDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTClassificationDataModuleConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig" title="cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTClassificationDataModuleConfig</span></code></a>.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTDataModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig" title="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModuleConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModuleConfig" title="cneuromax.projects.classify_mnist.MNISTDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModuleConfig</span></code></a>.</p>
 </dd>
 </dl>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.train_val_split">
-<span class="sig-name descname"><span class="pre">train_val_split</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.train_val_split" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModule.train_val_split">
+<span class="sig-name descname"><span class="pre">train_val_split</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModule.train_val_split" title="Link to this definition">#</a></dt>
 <dd><p>The train/validation            split (sums to <cite>1</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -365,8 +365,8 @@
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.transform">
-<span class="sig-name descname"><span class="pre">transform</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.transform" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModule.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModule.transform" title="Link to this definition">#</a></dt>
 <dd><p>The            <code class="xref py py-mod docutils literal notranslate"><span class="pre">torchvision</span></code> dataset transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -376,8 +376,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.prepare_data">
-<span class="sig-name descname"><span class="pre">prepare_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTClassificationDataModule.prepare_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.prepare_data" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModule.prepare_data">
+<span class="sig-name descname"><span class="pre">prepare_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTDataModule.prepare_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModule.prepare_data" title="Link to this definition">#</a></dt>
 <dd><p>Downloads the MNIST dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -387,12 +387,12 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup">
-<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTClassificationDataModule.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.MNISTDataModule.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTDataModule.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.MNISTDataModule.setup" title="Link to this definition">#</a></dt>
 <dd><p>Creates the train/val/test datasets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup.params.stage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Current stage type.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.MNISTDataModule.setup.params.stage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.setup.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Current stage type.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
@@ -423,7 +423,7 @@
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html#module-cneuromax.projects.classify_mnist.datamodule" title="cneuromax.projects.classify_mnist.datamodule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cneuromax.projects.classify_mnist.datamodule</span></code></a></p></td>
-<td><p><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule" title="cneuromax.projects.classify_mnist.MNISTClassificationDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTClassificationDataModule</span></code></a> &amp; its config.</p></td>
+<td><p><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule" title="cneuromax.projects.classify_mnist.MNISTDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModule</span></code></a> &amp; its config.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule_test.html#module-cneuromax.projects.classify_mnist.datamodule_test" title="cneuromax.projects.classify_mnist.datamodule_test"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cneuromax.projects.classify_mnist.datamodule_test</span></code></a></p></td>
 <td><p><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html#module-cneuromax.projects.classify_mnist.datamodule" title="cneuromax.projects.classify_mnist.datamodule"><code class="xref py py-mod docutils literal notranslate"><span class="pre">datamodule</span></code></a> tests.</p></td>
@@ -496,12 +496,12 @@
 <li><a class="reference internal" href="#cneuromax.projects.classify_mnist.TaskRunner.store_configs"><code class="docutils literal notranslate"><span class="pre">TaskRunner.store_configs()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModuleConfig</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModule</span></code></a><ul>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.train_val_split"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModule.train_val_split</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.transform"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModule.transform</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.prepare_data"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModule.prepare_data()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationDataModule.setup()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModuleConfig"><code class="docutils literal notranslate"><span class="pre">MNISTDataModuleConfig</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule"><code class="docutils literal notranslate"><span class="pre">MNISTDataModule</span></code></a><ul>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.train_val_split"><code class="docutils literal notranslate"><span class="pre">MNISTDataModule.train_val_split</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.transform"><code class="docutils literal notranslate"><span class="pre">MNISTDataModule.transform</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.prepare_data"><code class="docutils literal notranslate"><span class="pre">MNISTDataModule.prepare_data()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTDataModule.setup"><code class="docutils literal notranslate"><span class="pre">MNISTDataModule.setup()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#cneuromax.projects.classify_mnist.MNISTClassificationLitModule"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationLitModule</span></code></a></li>

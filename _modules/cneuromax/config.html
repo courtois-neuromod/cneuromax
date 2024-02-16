@@ -329,7 +329,7 @@
 <span class="kn">from</span> <span class="nn">hydra.experimental.callbacks</span> <span class="kn">import</span> <span class="n">LogJobReturnCallback</span>
 <span class="kn">from</span> <span class="nn">hydra_zen</span> <span class="kn">import</span> <span class="n">make_config</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">not_empty</span>
+<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.hydra_zen</span> <span class="kn">import</span> <span class="n">fs_builds</span>
 
 
@@ -346,10 +346,12 @@
 <span class="sd">        data_dir: Path to the data directory. This directory is\</span>
 <span class="sd">            shared between ``task`` runs. It is used to store\</span>
 <span class="sd">            datasets, pre-trained models, etc.</span>
+<span class="sd">        seed: Random seed to use for reproducibility.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">output_dir</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">&quot;${hydra:runtime.output_dir}&quot;</span>
-    <span class="n">data_dir</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">&quot;${oc.env:CNEUROMAX_PATH}/data/&quot;</span></div>
+    <span class="n">data_dir</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">&quot;${oc.env:CNEUROMAX_PATH}/data/&quot;</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span></div>
 
 
 

@@ -403,6 +403,7 @@
 <span class="sd">        logger: See :func:`~.utils.wandb.setup_wandb`.</span>
 <span class="sd">        config: See :class:`.NeuroevolutionSubtaskConfig`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">seed_all</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="n">validate_space</span><span class="p">(</span><span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">pop_merge</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">pop_merge</span><span class="p">)</span>
     <span class="n">save_points</span> <span class="o">=</span> <span class="n">compute_save_points</span><span class="p">(</span>

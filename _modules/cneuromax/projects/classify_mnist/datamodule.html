@@ -306,7 +306,7 @@
         </div>
         <article role="main">
           <h1>Source code for cneuromax.projects.classify_mnist.datamodule</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:class:`MNISTClassificationDataModule` &amp; its config.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;:class:`MNISTDataModule` &amp; its config.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
@@ -322,28 +322,28 @@
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">lt</span><span class="p">,</span> <span class="n">one_of</span>
 
 
-<div class="viewcode-block" id="MNISTClassificationDataModuleConfig">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModuleConfig">[docs]</a>
+<div class="viewcode-block" id="MNISTDataModuleConfig">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">MNISTClassificationDataModuleConfig</span><span class="p">(</span><span class="n">BaseDataModuleConfig</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`MNISTClassificationDataModule` config values.</span>
+<span class="k">class</span> <span class="nc">MNISTDataModuleConfig</span><span class="p">(</span><span class="n">BaseDataModuleConfig</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`MNISTDataModule` config values.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        val_percentage: Percentage of the training dataset to use for\</span>
 <span class="sd">            validation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">val_percentage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">lt</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.1</span></div>
+    <span class="n">val_percentage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">lt</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.005</span></div>
 
 
 
-<div class="viewcode-block" id="MNISTClassificationDataModule">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModule">[docs]</a>
-<span class="k">class</span> <span class="nc">MNISTClassificationDataModule</span><span class="p">(</span><span class="n">BaseDataModule</span><span class="p">):</span>
+<div class="viewcode-block" id="MNISTDataModule">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule">[docs]</a>
+<span class="k">class</span> <span class="nc">MNISTDataModule</span><span class="p">(</span><span class="n">BaseDataModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``project`` :class:`.BaseDataModule`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`MNISTClassificationDataModuleConfig`.</span>
+<span class="sd">        config: See :class:`MNISTDataModuleConfig`.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        train_val_split (`tuple[float, float]`): The train/validation\</span>
@@ -353,8 +353,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTClassificationDataModule&quot;</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">MNISTClassificationDataModuleConfig</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">MNISTDataModuleConfig</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_val_split</span> <span class="o">=</span> <span class="p">(</span>
@@ -364,21 +364,22 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span>
             <span class="p">[</span>
                 <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+                <span class="c1"># Pre-computer mean and std for the MNIST dataset.</span>
                 <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1307</span><span class="p">,),</span> <span class="n">std</span><span class="o">=</span><span class="p">(</span><span class="mf">0.3081</span><span class="p">,)),</span>
             <span class="p">],</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="MNISTClassificationDataModule.prepare_data">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.prepare_data">[docs]</a>
-    <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTClassificationDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="MNISTDataModule.prepare_data">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule.prepare_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads the MNIST dataset.&quot;&quot;&quot;</span>
         <span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="MNISTClassificationDataModule.setup">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTClassificationDataModule.setup">[docs]</a>
+<div class="viewcode-block" id="MNISTDataModule.setup">
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule.setup">[docs]</a>
     <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTClassificationDataModule&quot;</span><span class="p">,</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">,</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;fit&quot;</span><span class="p">,</span> <span class="s2">&quot;validate&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Creates the train/val/test datasets.</span>

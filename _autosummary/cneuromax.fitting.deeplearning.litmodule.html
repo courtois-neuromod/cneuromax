@@ -378,6 +378,28 @@ rendered properly in the documentation due to an        incompatibility between 
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.val_data">
+<span class="sig-name descname"><span class="pre">val_data</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.val_data" title="Link to this definition">#</a></dt>
+<dd><p>A list to store validation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.curr_val_epoch">
+<span class="sig-name descname"><span class="pre">curr_val_epoch</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.curr_val_epoch" title="Link to this definition">#</a></dt>
+<dd><p>The current validation epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>NotImplementedError</strong> – If the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method is not            defined or not callable.</p>
@@ -439,6 +461,28 @@ calls it and logs the loss value(s).</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The loss value(s).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_start">
+<span class="sig-name descname"><span class="pre">on_validation_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_start" title="Link to this definition">#</a></dt>
+<dd><p>Resets <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.val_data" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.val_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_data</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_epoch_end">
+<span class="sig-name descname"><span class="pre">on_validation_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_epoch_end" title="Link to this definition">#</a></dt>
+<dd><p>Increments <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.curr_val_epoch" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule.curr_val_epoch"><code class="xref py py-attr docutils literal notranslate"><span class="pre">curr_val_epoch</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -557,9 +601,13 @@ calls it and logs the loss value(s).</p>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.nnmodule"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.nnmodule</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.optimizer"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.scheduler"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.scheduler</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.val_data"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.val_data</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.curr_val_epoch"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.curr_val_epoch</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.stage_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.stage_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.training_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.training_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.validation_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.validation_step()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_start()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_epoch_end()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.test_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.test_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.configure_optimizers()</span></code></a></li>
 </ul>

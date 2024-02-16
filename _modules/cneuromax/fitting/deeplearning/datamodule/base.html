@@ -494,7 +494,7 @@
 <span class="sd">            A new validation :class:`~torch.utils.data.DataLoader`\</span>
 <span class="sd">                instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">val</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseDataModule.test_dataloader">
@@ -507,7 +507,7 @@
 <span class="sd">            A new testing :class:`~torch.utils.data.DataLoader`\</span>
 <span class="sd">                instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">test</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseDataModule.predict_dataloader">
