@@ -21,7 +21,7 @@ from hydra import types as ht
 from hydra.experimental.callbacks import LogJobReturnCallback
 from hydra_zen import make_config
 
-from cneuromax.utils.beartype import not_empty
+from cneuromax.utils.beartype import ge, not_empty
 from cneuromax.utils.hydra_zen import fs_builds
 
 
@@ -36,10 +36,12 @@ class BaseSubtaskConfig:
         data_dir: Path to the data directory. This directory is\
             shared between ``task`` runs. It is used to store\
             datasets, pre-trained models, etc.
+        seed: Random seed to use for reproducibility.
     """
 
     output_dir: An[str, not_empty()] = "${hydra:runtime.output_dir}"
     data_dir: An[str, not_empty()] = "${oc.env:CNEUROMAX_PATH}/data/"
+    seed: An[int, ge(0)] = 0
 
 
 @dataclass

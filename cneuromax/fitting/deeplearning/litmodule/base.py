@@ -63,6 +63,8 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             :paramref:`~BaseLitModule.optimizer`.
         scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\
             :paramref:`~BaseLitModule.scheduler`.
+        val_data (list): A list to store validation data.
+        curr_val_epoch (int): The current validation epoch.
 
     Raises:
         NotImplementedError: If the :meth:`step` method is not\
@@ -76,9 +78,14 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         scheduler: partial[LRScheduler],
     ) -> None:
         super().__init__()
+        # Initialize PyTorch instance attributes
         self.nnmodule = nnmodule
         self.optimizer = optimizer(params=self.parameters())
         self.scheduler = scheduler(optimizer=self.optimizer)
+        # Initialize validation logging attributes
+        self.val_data: list[list[Tensor]] = []
+        self.curr_val_epoch = 0
+        # Verify `step` method.
         if not callable(getattr(self, "step", None)):
             error_msg = (
                 "The `BaseLitModule.step` method is not defined/not callable."
@@ -146,6 +153,14 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             The loss value(s).
         """
         return self.stage_step(batch=batch, stage="val")
+
+    def on_validation_start(self: "BaseLitModule") -> None:
+        """Resets :attr:`val_data`."""
+        self.val_data = []
+
+    def on_validation_epoch_end(self: "BaseLitModule") -> None:
+        """Increments :attr:`curr_val_epoch`."""
+        self.curr_val_epoch += 1
 
     @final
     def test_step(
