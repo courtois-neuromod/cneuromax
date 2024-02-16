@@ -1,4 +1,4 @@
-""":class:`MNISTClassificationDataModule` & its config."""
+""":class:`MNISTDataModule` & its config."""
 
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -15,22 +15,22 @@ from cneuromax.utils.beartype import ge, lt, one_of
 
 
 @dataclass
-class MNISTClassificationDataModuleConfig(BaseDataModuleConfig):
-    """Holds :class:`MNISTClassificationDataModule` config values.
+class MNISTDataModuleConfig(BaseDataModuleConfig):
+    """Holds :class:`MNISTDataModule` config values.
 
     Args:
         val_percentage: Percentage of the training dataset to use for\
             validation.
     """
 
-    val_percentage: An[float, ge(0), lt(1)] = 0.1
+    val_percentage: An[float, ge(0), lt(1)] = 0.005
 
 
-class MNISTClassificationDataModule(BaseDataModule):
+class MNISTDataModule(BaseDataModule):
     """``project`` :class:`.BaseDataModule`.
 
     Args:
-        config: See :class:`MNISTClassificationDataModuleConfig`.
+        config: See :class:`MNISTDataModuleConfig`.
 
     Attributes:
         train_val_split (`tuple[float, float]`): The train/validation\
@@ -40,8 +40,8 @@ class MNISTClassificationDataModule(BaseDataModule):
     """
 
     def __init__(
-        self: "MNISTClassificationDataModule",
-        config: MNISTClassificationDataModuleConfig,
+        self: "MNISTDataModule",
+        config: MNISTDataModuleConfig,
     ) -> None:
         super().__init__(config=config)
         self.train_val_split = (
@@ -51,16 +51,17 @@ class MNISTClassificationDataModule(BaseDataModule):
         self.transform = transforms.Compose(
             [
                 transforms.ToTensor(),
+                # Pre-computer mean and std for the MNIST dataset.
                 transforms.Normalize(mean=(0.1307,), std=(0.3081,)),
             ],
         )
 
-    def prepare_data(self: "MNISTClassificationDataModule") -> None:
+    def prepare_data(self: "MNISTDataModule") -> None:
         """Downloads the MNIST dataset."""
         MNIST(root=self.config.data_dir, download=True)
 
     def setup(
-        self: "MNISTClassificationDataModule",
+        self: "MNISTDataModule",
         stage: An[str, one_of("fit", "validate", "test")],
     ) -> None:
         """Creates the train/val/test datasets.

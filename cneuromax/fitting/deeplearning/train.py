@@ -15,6 +15,7 @@ from cneuromax.fitting.deeplearning.utils.lightning import (
     set_batch_size_and_num_workers,
     set_checkpoint_path,
 )
+from cneuromax.utils.misc import seed_all
 
 
 def train(
@@ -44,6 +45,7 @@ def train(
     Returns:
         The final validation loss.
     """
+    seed_all(config.seed)
     full_trainer, full_logger = instantiate_trainer_and_logger(
         partial_trainer=trainer,
         partial_logger=logger,

@@ -231,7 +231,7 @@ def find_good_per_device_num_workers(
         logging.info("Only 1 worker available/provided. Returning 0.")
         return 0
     times = []
-    for num_workers in range(launcher_config.cpus_per_task or 1 + 1):
+    for num_workers in range((launcher_config.cpus_per_task or 1) + 1):
         datamodule_copy = copy.deepcopy(datamodule)
         datamodule_copy.per_device_batch_size = per_device_batch_size
         datamodule_copy.per_device_num_workers = num_workers
