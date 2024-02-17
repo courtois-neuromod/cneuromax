@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - /datamodule: mnist
+  - /litmodule: gen_mnist
+  - override /litmodule/nnmodule: unet
+  - _self_
+hydra:
+  launcher:
+    gpus_per_node: 1
+    cpus_per_task: 4
+config:
+  device: gpu
+trainer:
+  max_epochs: 10
+  val_check_interval: 0.25

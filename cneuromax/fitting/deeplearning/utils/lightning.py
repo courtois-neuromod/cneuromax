@@ -157,6 +157,7 @@ def find_good_per_device_batch_size(
     Returns:
         A roughly optimal ``per_device_batch_size`` value.
     """
+    return 100
     litmodule_copy = copy.deepcopy(litmodule)
     datamodule_copy = copy.deepcopy(datamodule)
     launcher_config = get_launcher_config()
