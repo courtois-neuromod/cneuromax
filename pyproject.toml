@@ -49,7 +49,7 @@ dependencies = [
     # `ema-pytorch` is a dependency
     "denoising-diffusion-pytorch==1.10.10",
      # Phil Wang (Lucidrain)'s Vector Quantization library
-    "vector-quantize-pytorch==1.14.0",
+    "vector-quantize-pytorch==1.14.1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.3.0", # For reinforcement/imitation Learning tasks
