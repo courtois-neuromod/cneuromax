@@ -43,7 +43,7 @@ dependencies = [
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "transformers==4.37.2", # Models published on Hugging Face
     "diffusers==0.26.3", # Diffusion models published on Hugging Face
-    "datasets==2.17.0", # Datasets published on Hugging Face
+    "datasets==2.17.1", # Datasets published on Hugging Face
     "x-transformers==1.27.16", # Phil Wang (Lucidrain)'s Transformer library
     # Phil Wang (Lucidrain)'s Diffusion model library
     # `ema-pytorch` is a dependency
