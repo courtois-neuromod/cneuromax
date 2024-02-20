@@ -22,13 +22,25 @@ from cneuromax.utils.hydra_zen import (
 
 
 @dataclass
+class DeepLearningSubtaskConfig(FittingSubtaskConfig):
+    """Deep Learning ``subtask`` config.
+
+    Args:
+        try_compile: Whether to try compiling the\
+            :class:`.BaseLitModule`.
+    """
+
+    try_compile: bool = False
+
+
+@dataclass
 class DeepLearningTaskConfig(
     make_config(  # type: ignore[misc]
         trainer=pfs_builds(Trainer),
         datamodule=fs_builds(BaseDataModule, config=BaseDataModuleConfig()),
         litmodule=fs_builds(BaseLitModule),
         logger=pfs_builds(WandbLogger),
-        config=fs_builds(FittingSubtaskConfig),
+        config=fs_builds(DeepLearningSubtaskConfig),
     ),
 ):
     """Deep Learning ``task`` config.
@@ -40,7 +52,7 @@ class DeepLearningTaskConfig(
         litmodule: See :class:`.BaseLitModule`.
         logger: See\
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
-        config: See :class:`.FittingSubtaskConfig`.
+        config: See :class:`DeepLearningSubtaskConfig`.
     """
 
     defaults: list[Any] = field(
