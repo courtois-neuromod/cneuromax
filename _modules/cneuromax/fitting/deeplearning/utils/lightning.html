@@ -329,8 +329,8 @@
 <span class="kn">from</span> <span class="nn">torch.distributed</span> <span class="kn">import</span> <span class="n">ReduceOp</span>
 <span class="kn">from</span> <span class="nn">wandb_osh.lightning_hooks</span> <span class="kn">import</span> <span class="n">TriggerWandbSyncLightningCallback</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.config</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">FittingSubtaskConfig</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.config</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DeepLearningSubtaskConfig</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.datamodule</span> <span class="kn">import</span> <span class="n">BaseDataModule</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="n">BaseLitModule</span>
@@ -568,14 +568,14 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path">[docs]</a>
 <span class="k">def</span> <span class="nf">set_checkpoint_path</span><span class="p">(</span>
     <span class="n">trainer</span><span class="p">:</span> <span class="n">Trainer</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
-    <span class="n">config</span><span class="p">:</span> <span class="n">FittingSubtaskConfig</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">DeepLearningSubtaskConfig</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets the path to the checkpoint to resume training from.</span>
 
 <span class="sd">    TODO: Implement.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :paramref:`~.FittingSubtaskConfig`.</span>
+<span class="sd">        config: See :paramref:`.DeepLearningSubtaskConfig`.</span>
 <span class="sd">        trainer: See :class:`~lightning.pytorch.Trainer`.</span>
 
 <span class="sd">    Returns:</span>
