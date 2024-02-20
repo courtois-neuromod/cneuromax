@@ -2,11 +2,12 @@
 
 from functools import partial
 
+import torch
 from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
-from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
+from cneuromax.fitting.deeplearning.config import (
+    DeepLearningSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
@@ -17,13 +18,15 @@ from cneuromax.fitting.deeplearning.utils.lightning import (
 )
 from cneuromax.utils.misc import seed_all
 
+TORCH_COMPILE_MINIMUM_CUDA_VERSION = 7
+
 
 def train(
     trainer: partial[Trainer],
     datamodule: BaseDataModule,
     litmodule: BaseLitModule,
     logger: partial[WandbLogger],
-    config: FittingSubtaskConfig,
+    config: DeepLearningSubtaskConfig,
 ) -> float:
     """Trains a Deep Neural Network.
 
@@ -40,7 +43,7 @@ def train(
         litmodule: See :class:`.BaseLitModule`.
         logger: See\
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
-        config: See :paramref:`~.FittingSubtaskConfig`.
+        config: See :paramref:`.DeepLearningSubtaskConfig`.
 
     Returns:
         The final validation loss.
@@ -60,6 +63,15 @@ def train(
         output_dir=config.output_dir,
     )
     ckpt_path = set_checkpoint_path(trainer=full_trainer, config=config)
+    if (
+        config.try_compile
+        and config.device == "gpu"
+        and torch.cuda.get_device_capability()[0]
+        >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
+    ):
+        litmodule = torch.compile(  # type: ignore [assignment]
+            litmodule,  # mypy: `torch.compile`` not typed for `BaseLitModule`.
+        )
     full_trainer.fit(
         model=litmodule,
         datamodule=datamodule,

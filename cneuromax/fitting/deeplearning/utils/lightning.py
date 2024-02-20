@@ -21,8 +21,8 @@ from lightning.pytorch.trainer.connectors.checkpoint_connector import (
 from torch.distributed import ReduceOp
 from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
-from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
+from cneuromax.fitting.deeplearning.config import (
+    DeepLearningSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
@@ -246,14 +246,14 @@ def find_good_per_device_num_workers(
 
 def set_checkpoint_path(
     trainer: Trainer,  # noqa: ARG001
-    config: FittingSubtaskConfig,  # noqa: ARG001
+    config: DeepLearningSubtaskConfig,  # noqa: ARG001
 ) -> str | None:
     """Sets the path to the checkpoint to resume training from.
 
     TODO: Implement.
 
     Args:
-        config: See :paramref:`~.FittingSubtaskConfig`.
+        config: See :paramref:`.DeepLearningSubtaskConfig`.
         trainer: See :class:`~lightning.pytorch.Trainer`.
 
     Returns:
