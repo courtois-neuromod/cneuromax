@@ -3,10 +3,8 @@
 import contextlib
 import copy
 import logging
-import os
 import time
 from functools import partial
-from pathlib import Path
 from typing import Annotated as An
 
 import numpy as np
@@ -52,17 +50,10 @@ def instantiate_trainer_and_logger(
             instance or ``None``.
     """
     launcher_config = get_launcher_config()
-    wandb_key_path = Path(
-        str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
+    offline = launcher_config._target_ == get_path(  # noqa: SLF001
+        SlurmLauncher,
     )
-    if wandb_key_path.exists():
-        offline = launcher_config._target_ == get_path(  # noqa: SLF001
-            SlurmLauncher,
-        )
-        logger = partial_logger(offline=offline)
-    else:
-        logging.info("W&B key not found. Logging disabled.")
-        logger = None
+    logger = partial_logger(offline=offline)
     callbacks = None
     if launcher_config._target_ == get_path(SlurmLauncher):  # noqa: SLF001
         callbacks = [TriggerWandbSyncLightningCallback()]

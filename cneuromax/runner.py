@@ -39,7 +39,10 @@ class BaseTaskRunner(ABC):
         project_name, task_name = get_project_and_task_names()
         store({"project": project_name}, name="project")
         store({"task": task_name}, name="task")
-        # See https://github.com/mit-ll-responsible-ai/hydra-zen/discussions/621
+        # Hydra runtime type checking issues with structured configs:
+        # https://github.com/mit-ll-responsible-ai/hydra-zen/discussions/621#discussioncomment-7938326
+        # `destructure` disables Hydra's runtime type checking, which is
+        # fine since we use Beartype throughout the codebase.
         store = store(to_config=destructure)
         cls.store_configs(store=store)
         store.add_to_hydra_store(overwrite_ok=True)
@@ -53,8 +56,6 @@ class BaseTaskRunner(ABC):
     @abstractmethod
     def store_configs(cls: type["BaseTaskRunner"], store: ZenStore) -> None:
         """Stores structured configs.
-
-        Stores the :class:`hydra.HydraConf` config.
 
         Args:
             cls: See :paramref:`~store_configs_and_run_task.cls`.
