@@ -351,7 +351,10 @@
         <span class="n">project_name</span><span class="p">,</span> <span class="n">task_name</span> <span class="o">=</span> <span class="n">get_project_and_task_names</span><span class="p">()</span>
         <span class="n">store</span><span class="p">({</span><span class="s2">&quot;project&quot;</span><span class="p">:</span> <span class="n">project_name</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;project&quot;</span><span class="p">)</span>
         <span class="n">store</span><span class="p">({</span><span class="s2">&quot;task&quot;</span><span class="p">:</span> <span class="n">task_name</span><span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;task&quot;</span><span class="p">)</span>
-        <span class="c1"># See https://github.com/mit-ll-responsible-ai/hydra-zen/discussions/621</span>
+        <span class="c1"># Hydra runtime type checking issues with structured configs:</span>
+        <span class="c1"># https://github.com/mit-ll-responsible-ai/hydra-zen/discussions/621#discussioncomment-7938326</span>
+        <span class="c1"># `destructure` disables Hydra&#39;s runtime type checking, which is</span>
+        <span class="c1"># fine since we use Beartype throughout the codebase.</span>
         <span class="n">store</span> <span class="o">=</span> <span class="n">store</span><span class="p">(</span><span class="n">to_config</span><span class="o">=</span><span class="n">destructure</span><span class="p">)</span>
         <span class="bp">cls</span><span class="o">.</span><span class="n">store_configs</span><span class="p">(</span><span class="n">store</span><span class="o">=</span><span class="n">store</span><span class="p">)</span>
         <span class="n">store</span><span class="o">.</span><span class="n">add_to_hydra_store</span><span class="p">(</span><span class="n">overwrite_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -368,8 +371,6 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">store_configs</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="s2">&quot;BaseTaskRunner&quot;</span><span class="p">],</span> <span class="n">store</span><span class="p">:</span> <span class="n">ZenStore</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Stores structured configs.</span>
-
-<span class="sd">        Stores the :class:`hydra.HydraConf` config.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            cls: See :paramref:`~store_configs_and_run_task.cls`.</span>
