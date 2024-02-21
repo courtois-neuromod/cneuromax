@@ -9,6 +9,7 @@ from typing import Any
 
 import wandb
 from denoising_diffusion_pytorch import GaussianDiffusion
+from ema_pytorch import EMA
 from jaxtyping import Float, Int
 from torch import Tensor, nn
 from torch.optim import Optimizer
@@ -55,6 +56,7 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             model=self.nnmodule,
             image_size=28,
         )
+        self.ema = EMA(model=self.nnmodule)
 
     def step(
         self: "MNISTGenerationLitModule",
@@ -98,9 +100,14 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         for x_i in x:
             self.val_data.append(x_i)
 
+    def on_after_backward(self) -> None:
+        """Called after loss computation and backward pass."""
+        self.ema_nnmodule.update()
+
     def on_validation_epoch_end(self: "MNISTGenerationLitModule") -> None:
         """Called at the end of the validation epoch."""
 
+        self.diffusion_module.model = self.ema.ema_model
         preds = self.diffusion_module.sample(
             batch_size=len(self.val_data),
         )
@@ -120,4 +127,5 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         # 2) Cannot log the same table twice:
         # https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291
         self.logger.experiment.log({"val_data": copy(self.wandb_table)})  # type: ignore[union-attr]
+        self.diffusion_module.model = self.nnmodule
         super().on_validation_epoch_end()
