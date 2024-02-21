@@ -7,10 +7,10 @@ from hydra_zen import ZenStore
 from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
-from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
+from cneuromax.fitting.deeplearning.config import (
+    DeepLearningSubtaskConfig,
+    DeepLearningTaskConfig,
 )
-from cneuromax.fitting.deeplearning.config import DeepLearningTaskConfig
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
 )
@@ -64,7 +64,7 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         datamodule: BaseDataModule,
         litmodule: BaseLitModule,
         logger: partial[WandbLogger],
-        config: FittingSubtaskConfig,
+        config: DeepLearningSubtaskConfig,
     ) -> Any:  # noqa: ANN401
         """Runs the ``subtask``."""
         return train(
