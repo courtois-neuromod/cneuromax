@@ -93,6 +93,7 @@ def set_batch_size_and_num_workers(
         litmodule=litmodule,
         datamodule=datamodule,
         device=device,
+        device_ids=trainer.device_ids,
         output_dir=output_dir,
     )
     proposed_per_device_num_workers = find_good_per_device_num_workers(
@@ -119,6 +120,7 @@ def find_good_per_device_batch_size(
     litmodule: BaseLitModule,
     datamodule: BaseDataModule,
     device: str,
+    device_ids: list[int],
     output_dir: str,
 ) -> int:
     """Probes a :attr:`~.BaseDataModule.per_device_batch_size` value.
@@ -143,15 +145,22 @@ def find_good_per_device_batch_size(
         litmodule: See :class:`.BaseLitModule`.
         datamodule: See :class:`.BaseDataModule`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
+        device_ids: See :class:`~lightning.pytorch.Trainer.device_ids`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
         A roughly optimal ``per_device_batch_size`` value.
     """
-    litmodule_copy = copy.deepcopy(litmodule)
-    datamodule_copy = copy.deepcopy(datamodule)
     launcher_config = get_launcher_config()
-    datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task or 1
+    litmodule_copy = copy.deepcopy(litmodule)
+    # Speeds up the batch size search by removing the validation epoch
+    # end method, which is independent of the batch size.
+    litmodule_copy.on_validation_epoch_end = None  # type: ignore[assignment,method-assign]
+    datamodule_copy = copy.deepcopy(datamodule)
+    # Speeds up the batch size search by using a reasonable number of
+    # workers for the search.
+    if launcher_config.cpus_per_task:
+        datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task
     batch_size_finder = BatchSizeFinder(
         mode="binsearch",
         batch_arg_name="per_device_batch_size",
@@ -160,8 +169,7 @@ def find_good_per_device_batch_size(
     batch_size_finder._early_exit = True  # noqa: SLF001
     trainer = Trainer(
         accelerator=device,
-        devices=1,
-        max_epochs=-1,
+        devices=[device_ids[0]],  # The first available device.
         default_root_dir=output_dir + "/lightning/tuner/",
         callbacks=[batch_size_finder],
     )
@@ -169,14 +177,10 @@ def find_good_per_device_batch_size(
     # Prevents the `fit` method from raising a `KeyError`, see:
     # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
     with contextlib.suppress(KeyError):
-        trainer.fit(litmodule_copy, datamodule_copy)
+        trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
     per_device_batch_size = batch_size_finder.optimal_batch_size
-    if per_device_batch_size is None:
-        error_msg = (
-            "Lightning's `scale_batch_size` method returned `None`. "
-            "This is outside of the user's control, please try again."
-        )
-        raise ValueError(error_msg)
+    # Should never happen.
+    assert per_device_batch_size is not None  # noqa: S101
     num_computing_devices = launcher_config.nodes * (
         launcher_config.gpus_per_node or 1
         if device == "gpu"
