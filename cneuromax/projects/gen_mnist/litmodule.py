@@ -101,15 +101,19 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     def on_validation_epoch_end(self: "MNISTGenerationLitModule") -> None:
         """Called at the end of the validation epoch."""
 
-        for i, x_i in enumerate(self.val_data):
-            pred_i = self.diffusion_module.sample(batch_size=1)
+        preds = self.diffusion_module.sample(
+            batch_size=len(self.val_data),
+        )
+        for i, (x_i, pred_i) in enumerate(
+            zip(self.val_data, preds, strict=True),
+        ):
             self.wandb_table.add_data(  # type: ignore[no-untyped-call]
                 i,
                 self.curr_val_epoch,
                 self.wandb_input_data_wrapper(x_i),
                 self.wandb_input_data_wrapper(pred_i),
             )
-            if i >= 2:
+            if i == 2:
                 break
         # 1) Static type checking discrepancy:
         # `logger.experiment` is a `wandb.wandb_run.Run` instance.
