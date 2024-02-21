@@ -7,9 +7,12 @@ defaults:
 hydra:
   launcher:
     gpus_per_node: 1
-    cpus_per_task: 4
+    cpus_per_task: 8
 config:
   device: gpu
 trainer:
-  max_epochs: 10
+  max_epochs: 50
   val_check_interval: 0.25
+litmodule:
+  optimizer:
+    lr: 3e-4

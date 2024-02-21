@@ -55,6 +55,7 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         self.diffusion_module = GaussianDiffusion(
             model=self.nnmodule,
             image_size=28,
+            sampling_timesteps=100,
         )
         self.ema = EMA(model=self.nnmodule)
 
@@ -102,7 +103,7 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def on_after_backward(self) -> None:
         """Called after loss computation and backward pass."""
-        self.ema_nnmodule.update()
+        self.ema.update()
 
     def on_validation_epoch_end(self: "MNISTGenerationLitModule") -> None:
         """Called at the end of the validation epoch."""
