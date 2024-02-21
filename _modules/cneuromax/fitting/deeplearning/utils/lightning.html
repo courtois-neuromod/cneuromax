@@ -406,6 +406,7 @@
         <span class="n">litmodule</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
         <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">device_ids</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">device_ids</span><span class="p">,</span>
         <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="n">proposed_per_device_num_workers</span> <span class="o">=</span> <span class="n">find_good_per_device_num_workers</span><span class="p">(</span>
@@ -435,6 +436,7 @@
     <span class="n">litmodule</span><span class="p">:</span> <span class="n">BaseLitModule</span><span class="p">,</span>
     <span class="n">datamodule</span><span class="p">:</span> <span class="n">BaseDataModule</span><span class="p">,</span>
     <span class="n">device</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">device_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Probes a :attr:`~.BaseDataModule.per_device_batch_size` value.</span>
@@ -459,15 +461,22 @@
 <span class="sd">        litmodule: See :class:`.BaseLitModule`.</span>
 <span class="sd">        datamodule: See :class:`.BaseDataModule`.</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
+<span class="sd">        device_ids: See :class:`~lightning.pytorch.Trainer.device_ids`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A roughly optimal ``per_device_batch_size`` value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">litmodule_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">litmodule</span><span class="p">)</span>
-    <span class="n">datamodule_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">datamodule</span><span class="p">)</span>
     <span class="n">launcher_config</span> <span class="o">=</span> <span class="n">get_launcher_config</span><span class="p">()</span>
-    <span class="n">datamodule_copy</span><span class="o">.</span><span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span> <span class="ow">or</span> <span class="mi">1</span>
+    <span class="n">litmodule_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">litmodule</span><span class="p">)</span>
+    <span class="c1"># Speeds up the batch size search by removing the validation epoch</span>
+    <span class="c1"># end method, which is independent of the batch size.</span>
+    <span class="n">litmodule_copy</span><span class="o">.</span><span class="n">on_validation_epoch_end</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># type: ignore[assignment,method-assign]</span>
+    <span class="n">datamodule_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">datamodule</span><span class="p">)</span>
+    <span class="c1"># Speeds up the batch size search by using a reasonable number of</span>
+    <span class="c1"># workers for the search.</span>
+    <span class="k">if</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span><span class="p">:</span>
+        <span class="n">datamodule_copy</span><span class="o">.</span><span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span>
     <span class="n">batch_size_finder</span> <span class="o">=</span> <span class="n">BatchSizeFinder</span><span class="p">(</span>
         <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;binsearch&quot;</span><span class="p">,</span>
         <span class="n">batch_arg_name</span><span class="o">=</span><span class="s2">&quot;per_device_batch_size&quot;</span><span class="p">,</span>
@@ -476,8 +485,7 @@
     <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">_early_exit</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># noqa: SLF001</span>
     <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
         <span class="n">accelerator</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
-        <span class="n">devices</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">max_epochs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">devices</span><span class="o">=</span><span class="p">[</span><span class="n">device_ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>  <span class="c1"># The first available device.</span>
         <span class="n">default_root_dir</span><span class="o">=</span><span class="n">output_dir</span> <span class="o">+</span> <span class="s2">&quot;/lightning/tuner/&quot;</span><span class="p">,</span>
         <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">batch_size_finder</span><span class="p">],</span>
     <span class="p">)</span>
@@ -485,14 +493,10 @@
     <span class="c1"># Prevents the `fit` method from raising a `KeyError`, see:</span>
     <span class="c1"># https://github.com/Lightning-AI/pytorch-lightning/issues/18114</span>
     <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
-        <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">litmodule_copy</span><span class="p">,</span> <span class="n">datamodule_copy</span><span class="p">)</span>
+        <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule_copy</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule_copy</span><span class="p">)</span>
     <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">optimal_batch_size</span>
-    <span class="k">if</span> <span class="n">per_device_batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Lightning&#39;s `scale_batch_size` method returned `None`. &quot;</span>
-            <span class="s2">&quot;This is outside of the user&#39;s control, please try again.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+    <span class="c1"># Should never happen.</span>
+    <span class="k">assert</span> <span class="n">per_device_batch_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>  <span class="c1"># noqa: S101</span>
     <span class="n">num_computing_devices</span> <span class="o">=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">nodes</span> <span class="o">*</span> <span class="p">(</span>
         <span class="n">launcher_config</span><span class="o">.</span><span class="n">gpus_per_node</span> <span class="ow">or</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;gpu&quot;</span>
