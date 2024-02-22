@@ -41,7 +41,7 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.2.0.post0",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "transformers==4.38.0", # Models published on Hugging Face
+    "transformers==4.38.1", # Models published on Hugging Face
     "diffusers==0.26.3", # Diffusion models published on Hugging Face
     "datasets==2.17.1", # Datasets published on Hugging Face
     "x-transformers==1.27.16", # Phil Wang (Lucidrain)'s Transformer library
