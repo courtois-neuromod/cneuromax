@@ -47,7 +47,7 @@ dependencies = [
     "x-transformers==1.27.16", # Phil Wang (Lucidrain)'s Transformer library
     # Phil Wang (Lucidrain)'s Diffusion model library
     # `ema-pytorch` is a dependency
-    "denoising-diffusion-pytorch==1.10.12",
+    "denoising-diffusion-pytorch==1.10.14",
      # Phil Wang (Lucidrain)'s Vector Quantization library
     "vector-quantize-pytorch==1.14.1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
