@@ -131,7 +131,7 @@ def evolve(
             num_pops=space.num_pops,
             pop_merge=config.pop_merge,
         )
-    setup_wandb(logger=logger)
+    setup_wandb(logger=logger, output_dir=config.output_dir)
     for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
             generation_results=generation_results,
