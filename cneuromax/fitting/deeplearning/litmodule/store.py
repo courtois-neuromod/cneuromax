@@ -1,4 +1,4 @@
-""":class:`.BaseLitModule` :mod:`hydra-core` config store."""
+""":class:`.BaseLitModule` :mod:`hydra` config store."""
 
 from hydra_zen import ZenStore
 from torch.optim import SGD, Adam, AdamW
@@ -18,7 +18,7 @@ from cneuromax.utils.hydra_zen import (
 
 
 def store_mlp_config(store: ZenStore) -> None:
-    """Stores :mod:`hydra-core` ``litmodule/nnmodule`` group config.
+    """Stores :mod:`hydra` ``litmodule/nnmodule`` group config.
 
     Config name: ``mlp``.
 
@@ -33,7 +33,7 @@ def store_mlp_config(store: ZenStore) -> None:
 
 
 def store_basic_optimizer_configs(store: ZenStore) -> None:
-    """Stores :mod:`hydra-core` ``litmodule/optimizer`` group configs.
+    """Stores :mod:`hydra` ``litmodule/optimizer`` group configs.
 
     Config names: ``adam``, ``adamw``, ``sgd``.
 
@@ -46,7 +46,7 @@ def store_basic_optimizer_configs(store: ZenStore) -> None:
 
 
 def store_basic_scheduler_configs(store: ZenStore) -> None:
-    """Stores :mod:`hydra-core` ``litmodule/scheduler`` group configs.
+    """Stores :mod:`hydra` ``litmodule/scheduler`` group configs.
 
     Config names: ``constant``, ``linear_warmup``.
 

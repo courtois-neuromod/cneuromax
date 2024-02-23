@@ -1,4 +1,4 @@
-""":mod:`hydra-core` utilities."""
+""":mod:`hydra` utilities."""
 
 from hydra._internal.core_plugins.basic_launcher import (
     BasicLauncher,
@@ -18,10 +18,10 @@ from cneuromax.utils.misc import get_path
 
 
 def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
-    """Retrieves/validates this job's :mod:`hydra-core` launcher config.
+    """Retrieves/validates this job's :mod:`hydra` launcher config.
 
     Returns:
-        The :mod:`hydra-core` launcher config.
+        The :mod:`hydra` launcher config.
 
     Raises:
         TypeError: If the launcher config is not a dict or if the\

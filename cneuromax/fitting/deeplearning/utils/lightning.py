@@ -50,19 +50,24 @@ def instantiate_trainer(
     callbacks: list[Any] = trainer_partial.keywords["callbacks"] or []
     # Check internet connection
     offline = not can_connect_to_internet()
-    # Add the `TriggerWandbSyncLightningCallback` if offline
+    # Adds the :mod:`wandb_osh` callback if offline, which signals the
+    # head node with internet access to sync the latest logs on
+    # validation epoch end.
     if offline:
         callbacks.append([TriggerWandbSyncLightningCallback()])
+    # Adds a callback to save the state of training (not just the model
+    # despite the name) at the end of every validation epoch.
     callbacks.append(
         ModelCheckpoint(
             dirpath=trainer_partial.keywords["default_root_dir"],
             every_n_epochs=1,
             save_last=True,
+            save_top_k=-1,
         ),
     )
-
-    # Instantiate
+    # Instantiate the :class:`WandbLogger`.`
     logger = logger_partial(offline=offline)
+    # Feed the :mod:`hydra` config to :mod:`wandb`.
     logger.experiment.config.update(
         OmegaConf.to_container(
             OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
@@ -70,6 +75,7 @@ def instantiate_trainer(
             throw_on_missing=True,
         ),
     )
+    # Instantiate the :class:`~lightning.pytorch.Trainer`.
     return trainer_partial(
         devices=(
             launcher_config.gpus_per_node or 1
@@ -266,7 +272,7 @@ class InitOptimParamsCheckpointConnector(_CheckpointConnector):
     Allows to make use of the instantiated optimizers'
     hyper-parameters rather than the checkpointed hyper-parameters.
     For use when resuming training with different optimizer
-    hyper-parameters (e.g. with a PBT :mod:`hydra-core` Sweeper).
+    hyper-parameters (e.g. with a PBT :mod:`hydra` Sweeper).
     """
 
     def restore_optimizers(self: "InitOptimParamsCheckpointConnector") -> None:

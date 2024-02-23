@@ -1,4 +1,4 @@
-r"""Fitting :mod:`hydra-core` config storing."""
+r"""Fitting :mod:`hydra` config storing."""
 
 from typing import Any
 

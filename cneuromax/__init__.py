@@ -14,7 +14,7 @@ Terminology
 ``subtask``: Sub-work unit of a ``task`` (ex: a model training run
 with a specific set of hyper-parameters).
 
-``task``: Some work unit specified by a :mod:`hydra-core` config
+``task``: Some work unit specified by a :mod:`hydra` config
 ``.yaml`` file or a :mod:`hydra-zen` Python config that specifies
 its execution (ex: the training of the same type of model with various
 hyper-parameters).
@@ -26,7 +26,7 @@ functionality (ex: a custom :mod:`lightning` ``datamodule``).
 :mod:`lightning` sub-classes).
 
 ``interface``: Contains cross-``service`` functionality (ex:
-:mod:`hydra-core` base configs).
+:mod:`hydra` base configs).
 
 2. Interface
 ~~~~~~~~~~~~
@@ -132,7 +132,7 @@ the above class in the ``__init__.py`` file of your ``project``.
 a. Task overview
 ----------------
 
-A ``task`` is a work unit specified by a :mod:`hydra-core` configuration
+A ``task`` is a work unit specified by a :mod:`hydra` configuration
 ``.yaml`` file located in
 ``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` or a
 :mod:`hydra-zen` Python config implemented in your overwritten
