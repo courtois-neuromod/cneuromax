@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -320,9 +319,8 @@
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.datamodule</span> <span class="kn">import</span> <span class="n">BaseDataModule</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="n">BaseLitModule</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.utils.lightning</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">instantiate_trainer_and_logger</span><span class="p">,</span>
+    <span class="n">instantiate_trainer</span><span class="p">,</span>
     <span class="n">set_batch_size_and_num_workers</span><span class="p">,</span>
-    <span class="n">set_checkpoint_path</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.misc</span> <span class="kn">import</span> <span class="n">seed_all</span>
 
@@ -359,20 +357,20 @@
 <span class="sd">        The final validation loss.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">seed_all</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
-    <span class="n">full_trainer</span><span class="p">,</span> <span class="n">full_logger</span> <span class="o">=</span> <span class="n">instantiate_trainer_and_logger</span><span class="p">(</span>
-        <span class="n">partial_trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">,</span>
-        <span class="n">partial_logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
+    <span class="n">trainer</span><span class="p">:</span> <span class="n">Trainer</span> <span class="o">=</span> <span class="n">instantiate_trainer</span><span class="p">(</span>
+        <span class="n">trainer_partial</span><span class="o">=</span><span class="n">trainer</span><span class="p">,</span>
+        <span class="n">logger_partial</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TODO: Add logic for HPO&quot;&quot;&quot;</span>
     <span class="n">set_batch_size_and_num_workers</span><span class="p">(</span>
-        <span class="n">trainer</span><span class="o">=</span><span class="n">full_trainer</span><span class="p">,</span>
+        <span class="n">trainer</span><span class="o">=</span><span class="n">trainer</span><span class="p">,</span>
         <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
         <span class="n">litmodule</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">ckpt_path</span> <span class="o">=</span> <span class="n">set_checkpoint_path</span><span class="p">(</span><span class="n">trainer</span><span class="o">=</span><span class="n">full_trainer</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span>
         <span class="n">config</span><span class="o">.</span><span class="n">try_compile</span>
         <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;gpu&quot;</span>
@@ -382,15 +380,9 @@
         <span class="n">litmodule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>  <span class="c1"># type: ignore [assignment]</span>
             <span class="n">litmodule</span><span class="p">,</span>  <span class="c1"># mypy: `torch.compile`` not typed for `BaseLitModule`.</span>
         <span class="p">)</span>
-    <span class="n">full_trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
-        <span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
-        <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
-        <span class="n">ckpt_path</span><span class="o">=</span><span class="n">ckpt_path</span><span class="p">,</span>
-    <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;TODO: Add logic for HPO</span>
-<span class="sd">    trainer.save_checkpoint(filepath=config.model_load_path)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">full_trainer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span> <span class="n">ckpt_path</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;TODO: Add logic for HPO&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">trainer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span>
         <span class="s2">&quot;val/loss&quot;</span>
     <span class="p">]</span></div>
 

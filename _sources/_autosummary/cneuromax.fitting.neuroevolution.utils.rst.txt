@@ -15,7 +15,6 @@ utils
    :recursive:
    
       cneuromax.fitting.neuroevolution.utils.compute
-      cneuromax.fitting.neuroevolution.utils.compute_test
       cneuromax.fitting.neuroevolution.utils.evolve
       cneuromax.fitting.neuroevolution.utils.exchange
       cneuromax.fitting.neuroevolution.utils.initialize

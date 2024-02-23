@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -316,11 +315,34 @@
     <span class="n">BaseAgent</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.type</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Generation_results_batch_type</span><span class="p">,</span>
     <span class="n">Generation_results_type</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
+
+
+<div class="viewcode-block" id="find_existing_save_points">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.readwrite.html#cneuromax.fitting.neuroevolution.utils.readwrite.find_existing_save_points">[docs]</a>
+<span class="k">def</span> <span class="nf">find_existing_save_points</span><span class="p">(</span><span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns a list of existing save points.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        output_dir: See\</span>
+<span class="sd">            :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The list of existing save points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="nb">int</span><span class="p">(</span><span class="n">save_path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">save_path</span> <span class="ow">in</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_dir</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">save_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="p">(</span><span class="n">save_path</span> <span class="o">/</span> <span class="s2">&quot;state.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span>
+            <span class="ow">and</span> <span class="n">save_path</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="p">]</span></div>
+
 
 
 <div class="viewcode-block" id="load_state">
@@ -382,7 +404,7 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.readwrite.html#cneuromax.fitting.neuroevolution.utils.readwrite.save_state">[docs]</a>
 <span class="k">def</span> <span class="nf">save_state</span><span class="p">(</span>
     <span class="n">agents_batch</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">]],</span>
-    <span class="n">generation_results</span><span class="p">:</span> <span class="n">Generation_results_batch_type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">generation_results</span><span class="p">:</span> <span class="n">Generation_results_type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">total_num_env_steps</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">curr_gen</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span>
     <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

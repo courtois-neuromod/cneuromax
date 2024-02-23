@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -371,14 +370,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">eval_num_steps</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">env_transfer</span><span class="p">:</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;`env_transfer = True` requires `eval_num_steps &gt; 0`.&quot;</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span> <span class="o">-</span> <span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span>
-        <span class="p">)</span> <span class="o">%</span> <span class="n">config</span><span class="o">.</span><span class="n">save_interval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">&quot;`save_interval` must be a multiple of &quot;</span>
-                <span class="s2">&quot;`total_num_gens - prev_num_gens`.&quot;</span>
-            <span class="p">)</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span></div>
 
 

@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -331,8 +330,6 @@
 <span class="sd">    Args:</span>
 <span class="sd">        agents_per_task: Number of agents per task (``num_tasks`` =\</span>
 <span class="sd">            ``num_nodes`` x ``tasks_per_node``).</span>
-<span class="sd">        prev_num_gens: Number of generations from a previous experiment\</span>
-<span class="sd">            to load.</span>
 <span class="sd">        total_num_gens: Number of generations to run the experiment for\</span>
 <span class="sd">            (including the previous number of generations).</span>
 <span class="sd">        save_interval: Number of generations between each save point.\</span>
@@ -359,7 +356,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">agents_per_task</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">prev_num_gens</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">total_num_gens</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">10</span>
     <span class="n">save_interval</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">save_first_gen</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
@@ -368,12 +364,7 @@
     <span class="n">fit_transfer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">mem_transfer</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">eval_num_steps</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;NeuroevolutionSubtaskConfig&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Post-initialization updates.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save_interval</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_num_gens</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">prev_num_gens</span></div>
+    <span class="n">logging</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 
 

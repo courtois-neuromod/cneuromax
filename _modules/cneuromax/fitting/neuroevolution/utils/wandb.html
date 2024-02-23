@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -313,22 +312,30 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">wandb</span>
+<span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">OmegaConf</span>
 
 <span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
 
 
 <div class="viewcode-block" id="setup_wandb">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html#cneuromax.fitting.neuroevolution.utils.wandb.setup_wandb">[docs]</a>
-<span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">setup_wandb</span><span class="p">(</span><span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Sets up :mod:`wandb` logging for all MPI processes.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        logger: See :func:`~.wandb.init`.</span>
+<span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">rank</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span>
-    <span class="n">logger</span><span class="p">()</span></div>
+    <span class="n">logger</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_container</span><span class="p">(</span>
+            <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/.hydra/config.yaml&quot;</span><span class="p">),</span>
+            <span class="n">resolve</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">throw_on_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span></div>
 
 
 

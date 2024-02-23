@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -365,16 +364,22 @@
         <span class="n">job</span><span class="o">=</span><span class="n">hc</span><span class="o">.</span><span class="n">JobConf</span><span class="p">(</span>
             <span class="n">config</span><span class="o">=</span><span class="n">hc</span><span class="o">.</span><span class="n">JobConf</span><span class="o">.</span><span class="n">JobConfig</span><span class="p">(</span>
                 <span class="n">override_dirname</span><span class="o">=</span><span class="n">hc</span><span class="o">.</span><span class="n">JobConf</span><span class="o">.</span><span class="n">JobConfig</span><span class="o">.</span><span class="n">OverrideDirname</span><span class="p">(</span>
-                    <span class="n">kv_sep</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">,</span>
-                    <span class="n">item_sep</span><span class="o">=</span><span class="s2">&quot;~&quot;</span><span class="p">,</span>
-                    <span class="n">exclude_keys</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;task&quot;</span><span class="p">,</span> <span class="s2">&quot;project&quot;</span><span class="p">],</span>
+                    <span class="n">kv_sep</span><span class="o">=</span><span class="s2">&quot;~&quot;</span><span class="p">,</span>
+                    <span class="n">item_sep</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="p">,</span>
+                    <span class="n">exclude_keys</span><span class="o">=</span><span class="p">[</span>
+                        <span class="s2">&quot;task&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;project&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;trainer.max_epochs&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;trainer.max_steps&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;config.total_num_gens&quot;</span><span class="p">,</span>
+                    <span class="p">],</span>
                 <span class="p">),</span>
             <span class="p">),</span>
         <span class="p">),</span>
         <span class="n">mode</span><span class="o">=</span><span class="n">ht</span><span class="o">.</span><span class="n">RunMode</span><span class="o">.</span><span class="n">MULTIRUN</span><span class="p">,</span>
         <span class="n">sweep</span><span class="o">=</span><span class="n">hc</span><span class="o">.</span><span class="n">SweepDir</span><span class="p">(</span>
             <span class="nb">dir</span><span class="o">=</span><span class="s2">&quot;${oc.env:CNEUROMAX_PATH}/data/$</span><span class="si">{project}</span><span class="s2">/$</span><span class="si">{task}</span><span class="s2">/&quot;</span><span class="p">,</span>
-            <span class="n">subdir</span><span class="o">=</span><span class="s2">&quot;${hydra:job.override_dirname}&quot;</span><span class="p">,</span>
+            <span class="n">subdir</span><span class="o">=</span><span class="s2">&quot;overrides#${hydra:job.override_dirname}/&quot;</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">),</span>
 <span class="p">):</span>

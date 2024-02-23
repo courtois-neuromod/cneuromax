@@ -221,7 +221,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -340,6 +339,7 @@
     <span class="n">initialize_gpu_comm</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.readwrite</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">find_existing_save_points</span><span class="p">,</span>
     <span class="n">load_state</span><span class="p">,</span>
     <span class="n">save_state</span><span class="p">,</span>
 <span class="p">)</span>
@@ -406,8 +406,8 @@
     <span class="n">seed_all</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="n">validate_space</span><span class="p">(</span><span class="n">space</span><span class="o">=</span><span class="n">space</span><span class="p">,</span> <span class="n">pop_merge</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">pop_merge</span><span class="p">)</span>
-    <span class="n">save_points</span> <span class="o">=</span> <span class="n">compute_save_points</span><span class="p">(</span>
-        <span class="n">prev_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span><span class="p">,</span>
+    <span class="n">prev_num_gens</span><span class="p">,</span> <span class="n">save_points</span> <span class="o">=</span> <span class="n">compute_save_points</span><span class="p">(</span>
+        <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
         <span class="n">total_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span><span class="p">,</span>
         <span class="n">save_interval</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_interval</span><span class="p">,</span>
         <span class="n">save_first_gen</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_first_gen</span><span class="p">,</span>
@@ -427,13 +427,13 @@
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">space</span><span class="o">.</span><span class="n">evaluates_on_gpu</span><span class="p">:</span>
         <span class="n">ith_gpu_comm</span> <span class="o">=</span> <span class="n">initialize_gpu_comm</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">prev_num_gens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="p">(</span>
             <span class="n">agents_batch</span><span class="p">,</span>
             <span class="n">generation_results</span><span class="p">,</span>
             <span class="n">total_num_env_steps</span><span class="p">,</span>
         <span class="p">)</span> <span class="o">=</span> <span class="n">load_state</span><span class="p">(</span>
-            <span class="n">prev_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span><span class="p">,</span>
+            <span class="n">prev_num_gens</span><span class="o">=</span><span class="n">prev_num_gens</span><span class="p">,</span>
             <span class="n">len_agents_batch</span><span class="o">=</span><span class="n">len_agents_batch</span><span class="p">,</span>
             <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
         <span class="p">)</span>
@@ -444,8 +444,8 @@
             <span class="n">num_pops</span><span class="o">=</span><span class="n">space</span><span class="o">.</span><span class="n">num_pops</span><span class="p">,</span>
             <span class="n">pop_merge</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">pop_merge</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="n">setup_wandb</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">curr_gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">setup_wandb</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span> <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">curr_gen</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">prev_num_gens</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">start_time</span><span class="p">,</span> <span class="n">seeds</span> <span class="o">=</span> <span class="n">compute_start_time_and_seeds</span><span class="p">(</span>
             <span class="n">generation_results</span><span class="o">=</span><span class="n">generation_results</span><span class="p">,</span>
             <span class="n">curr_gen</span><span class="o">=</span><span class="n">curr_gen</span><span class="p">,</span>
@@ -557,12 +557,7 @@
     <span class="c1"># Get MPI info</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
     <span class="c1"># Setup work distribution across MPI processes</span>
-    <span class="n">save_points</span> <span class="o">=</span> <span class="n">compute_save_points</span><span class="p">(</span>
-        <span class="n">prev_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">prev_num_gens</span><span class="p">,</span>
-        <span class="n">total_num_gens</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">total_num_gens</span><span class="p">,</span>
-        <span class="n">save_interval</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_interval</span><span class="p">,</span>
-        <span class="n">save_first_gen</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_first_gen</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">save_points</span> <span class="o">=</span> <span class="n">find_existing_save_points</span><span class="p">(</span><span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">)</span>
     <span class="n">assigned_save_points</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">save_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">save_points</span><span class="p">))</span> <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="n">size</span> <span class="o">==</span> <span class="n">rank</span>
     <span class="p">]</span>

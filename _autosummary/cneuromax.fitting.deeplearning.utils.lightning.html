@@ -222,7 +222,6 @@
 </li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.evolve.html">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -311,26 +310,23 @@
 <span id="lightning"></span><h1>lightning<a class="headerlink" href="#module-cneuromax.fitting.deeplearning.utils.lightning" title="Link to this heading">#</a></h1>
 <p><code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> utilities.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">instantiate_trainer_and_logger</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partial_trainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">partial_logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#instantiate_trainer_and_logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger" title="Link to this definition">#</a></dt>
-<dd><p>Creates <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> instances.</p>
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer">
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">instantiate_trainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer_partial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger_partial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_dir</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#instantiate_trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer" title="Link to this definition">#</a></dt>
+<dd><p>Instantiates a <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_trainer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_trainer"><strong>partial_trainer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>]</span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_logger"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.partial_logger"><strong>partial_logger</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>]</span>) – See            <code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.trainer_partial"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.trainer_partial"><strong>trainer_partial</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>]</span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.logger_partial"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.logger_partial"><strong>logger_partial</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>]</span>) – See            <code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.output_dir"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer.params.output_dir"><strong>output_dir</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – See <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.output_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">output_dir</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>]]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><ul class="simple">
-<li><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code> instance.</p></li>
-<li><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">WandbLogger</span></code>            instance or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
-</ul>
-</p>
+<dd class="field-odd"><p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code> instance.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -408,27 +404,6 @@ returning the value that yields the shortest time.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A roughly optimal <code class="docutils literal notranslate"><span class="pre">per_device_num_workers</span></code> value.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.utils.lightning.</span></span><span class="sig-name descname"><span class="pre">set_checkpoint_path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trainer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/utils/lightning.html#set_checkpoint_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path" title="Link to this definition">#</a></dt>
-<dd><p>Sets the path to the checkpoint to resume training from.</p>
-<p>TODO: Implement.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.config.html#cneuromax.fitting.deeplearning.config.DeepLearningSubtaskConfig" title="cneuromax.fitting.deeplearning.config.DeepLearningSubtaskConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeepLearningSubtaskConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.DeepLearningSubtaskConfig" title="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">DeepLearningSubtaskConfig</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.trainer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path.params.trainer"><strong>trainer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></span>) – See <code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code>.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The path to the checkpoint to resume training from.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,11 +488,10 @@ hyper-parameters (e.g. with a PBT <code class="xref py py-mod docutils literal n
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">lightning</a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer_and_logger"><code class="docutils literal notranslate"><span class="pre">instantiate_trainer_and_logger()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.instantiate_trainer"><code class="docutils literal notranslate"><span class="pre">instantiate_trainer()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.set_checkpoint_path"><code class="docutils literal notranslate"><span class="pre">set_checkpoint_path()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector"><code class="docutils literal notranslate"><span class="pre">InitOptimParamsCheckpointConnector</span></code></a><ul>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector.restore_optimizers"><code class="docutils literal notranslate"><span class="pre">InitOptimParamsCheckpointConnector.restore_optimizers()</span></code></a></li>
 </ul>

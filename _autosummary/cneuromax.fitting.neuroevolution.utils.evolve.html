@@ -3,7 +3,7 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="exchange" href="cneuromax.fitting.neuroevolution.utils.exchange.html" /><link rel="prev" title="compute_test" href="cneuromax.fitting.neuroevolution.utils.compute_test.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="exchange" href="cneuromax.fitting.neuroevolution.utils.exchange.html" /><link rel="prev" title="compute" href="cneuromax.fitting.neuroevolution.utils.compute.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2023.09.10 -->
         <title>evolve - CNeuroMax</title>
@@ -222,7 +222,6 @@
 </li>
 <li class="toctree-l4 current has-children"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.html">utils</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-15" name="toctree-checkbox-15" role="switch" type="checkbox"/><label for="toctree-checkbox-15"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute.html">compute</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute_test.html">compute_test</a></li>
 <li class="toctree-l5 current current-page"><a class="current reference internal" href="#">evolve</a></li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html">exchange</a></li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.initialize.html">initialize</a></li>
@@ -320,7 +319,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.agents_batch"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.agents_batch"><strong>agents_batch</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<a class="reference internal" href="cneuromax.fitting.neuroevolution.agent.base.html#cneuromax.fitting.neuroevolution.agent.base.BaseAgent" title="cneuromax.fitting.neuroevolution.agent.base.BaseAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAgent</span></code></a>]]</span>) – See            <a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.compute.html#cneuromax.fitting.neuroevolution.utils.compute.compute_generation_results.params.agents_batch" title="cneuromax.fitting.neuroevolution.utils.compute.compute_generation_results"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">agents_batch</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.exchange_and_mutate_info_batch"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.exchange_and_mutate_info_batch"><strong>exchange_and_mutate_info_batch</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [mpi_buffer_size, agent_pair_position, sending, seeds]], <code class="xref py py-class docutils literal notranslate"><span class="pre">uint32</span></code>]</span>) – A sub-array of            <a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info.params.exchange_and_mutate_info" title="cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">exchange_and_mutate_info</span></code></a>
+<li><p><span class="target" id="cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.exchange_and_mutate_info_batch"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.exchange_and_mutate_info_batch"><strong>exchange_and_mutate_info_batch</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [mpi_buffer_size, agent_pair_position, sending, seeds]], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">uint32</span></code>]]</span>) – A sub-array of            <a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info.params.exchange_and_mutate_info" title="cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">exchange_and_mutate_info</span></code></a>
 maintained by this process.</p></li>
 <li><p><span class="target" id="cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.num_pops"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.num_pops"><strong>num_pops</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – See <code class="xref py py-meth docutils literal notranslate"><span class="pre">num_pops()</span></code>.</p></li>
 </ul>
@@ -344,7 +343,7 @@ maintained by this process.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [fitness, num_env_steps]], <code class="xref py py-class docutils literal notranslate"><span class="pre">float32</span></code>]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [fitness, num_env_steps]], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float32</span></code>]]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The output of agent evaluation performed by the process calling            this function on the agents it maintains            (<a class="reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu.params.agents_batch" title="cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">agents_batch</span></code></a>). See            <a class="reference internal" href="cneuromax.fitting.neuroevolution.space.html#cneuromax.fitting.neuroevolution.space.BaseSpace.evaluate" title="cneuromax.fitting.neuroevolution.space.BaseSpace.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a>.</p>
@@ -367,7 +366,7 @@ maintained by this process.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [fitness, num_env_steps]], <code class="xref py py-class docutils literal notranslate"><span class="pre">float32</span></code>]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code>[Len_agents_batch, Num_pops, [fitness, num_env_steps]], <code class="xref py py-class docutils literal notranslate"><span class="pre">dtype</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">float32</span></code>]]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The output of agent evaluation by this process. See            <a class="reference internal" href="cneuromax.fitting.neuroevolution.space.html#cneuromax.fitting.neuroevolution.space.BaseSpace.evaluate" title="cneuromax.fitting.neuroevolution.space.BaseSpace.evaluate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate()</span></code></a>.</p>
@@ -391,14 +390,14 @@ maintained by this process.</p></li>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="cneuromax.fitting.neuroevolution.utils.compute_test.html">
+          <a class="prev-page" href="cneuromax.fitting.neuroevolution.utils.compute.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">compute_test</div>
+                <div class="title">compute</div>
                 
               </div>
             </a>
