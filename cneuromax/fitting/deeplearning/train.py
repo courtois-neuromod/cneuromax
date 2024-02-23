@@ -12,9 +12,8 @@ from cneuromax.fitting.deeplearning.config import (
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.deeplearning.utils.lightning import (
-    instantiate_trainer_and_logger,
+    instantiate_trainer,
     set_batch_size_and_num_workers,
-    set_checkpoint_path,
 )
 from cneuromax.utils.misc import seed_all
 
@@ -49,20 +48,20 @@ def train(
         The final validation loss.
     """
     seed_all(config.seed)
-    full_trainer, full_logger = instantiate_trainer_and_logger(
-        partial_trainer=trainer,
-        partial_logger=logger,
+    trainer: Trainer = instantiate_trainer(
+        trainer_partial=trainer,
+        logger_partial=logger,
         device=config.device,
+        output_dir=config.output_dir,
     )
     """TODO: Add logic for HPO"""
     set_batch_size_and_num_workers(
-        trainer=full_trainer,
+        trainer=trainer,
         datamodule=datamodule,
         litmodule=litmodule,
         device=config.device,
         output_dir=config.output_dir,
     )
-    ckpt_path = set_checkpoint_path(trainer=full_trainer, config=config)
     if (
         config.try_compile
         and config.device == "gpu"
@@ -72,14 +71,8 @@ def train(
         litmodule = torch.compile(  # type: ignore [assignment]
             litmodule,  # mypy: `torch.compile`` not typed for `BaseLitModule`.
         )
-    full_trainer.fit(
-        model=litmodule,
-        datamodule=datamodule,
-        ckpt_path=ckpt_path,
-    )
-    """TODO: Add logic for HPO
-    trainer.save_checkpoint(filepath=config.model_load_path)
-    """
-    return full_trainer.validate(model=litmodule, datamodule=datamodule)[0][
+    trainer.fit(model=litmodule, datamodule=datamodule, ckpt_path="last")
+    """TODO: Add logic for HPO"""
+    return trainer.validate(model=litmodule, datamodule=datamodule)[0][
         "val/loss"
     ]

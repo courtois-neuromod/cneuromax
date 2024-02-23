@@ -8,11 +8,31 @@ from cneuromax.fitting.neuroevolution.agent import (
     BaseAgent,
 )
 from cneuromax.fitting.neuroevolution.utils.type import (
-    Generation_results_batch_type,
     Generation_results_type,
 )
 from cneuromax.utils.beartype import ge
 from cneuromax.utils.mpi4py import get_mpi_variables
+
+
+def find_existing_save_points(output_dir: str) -> list[int]:
+    """Returns a list of existing save points.
+
+    Args:
+        output_dir: See\
+            :paramref:`~.BaseSubtaskConfig.output_dir`.
+
+    Returns:
+        The list of existing save points.
+    """
+    return [
+        int(save_path.name)
+        for save_path in Path(output_dir).glob(pattern="*")
+        if (
+            save_path.is_dir()
+            and (save_path / "state.pkl").exists()
+            and save_path.name.isdigit()
+        )
+    ]
 
 
 def load_state(
@@ -69,7 +89,7 @@ def load_state(
 
 def save_state(
     agents_batch: list[list[BaseAgent]],
-    generation_results: Generation_results_batch_type | None,
+    generation_results: Generation_results_type | None,
     total_num_env_steps: An[int, ge(0)] | None,
     curr_gen: An[int, ge(1)],
     output_dir: str,
