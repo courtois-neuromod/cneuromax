@@ -25,13 +25,7 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:test pytest --cov cneuromax
       - name: Create WANDB_KEY.txt file
-        run: echo ${{ secrets.WANDB_KEY }} > ${PWD}/WANDB_KEY.txt
-      - name: Try Deep Learning on CPU
-        run: >
-          docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
-          -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
-          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
-          ls -l
+        run: echo ${{ secrets.WANDB_KEY_MLC }} > ${PWD}/WANDB_KEY.txt
       - name: Try Deep Learning on CPU
         run: >
           docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
