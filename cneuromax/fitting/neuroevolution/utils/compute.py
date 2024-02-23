@@ -9,6 +9,9 @@ import numpy as np
 import wandb
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
+from cneuromax.fitting.neuroevolution.utils.readwrite import (
+    find_existing_save_points,
+)
 from cneuromax.fitting.neuroevolution.utils.type import (
     Fitnesses_and_num_env_steps_batch_type,
     Generation_results_batch_type,
@@ -72,17 +75,16 @@ def compute_generation_results(
 
 
 def compute_save_points(
-    prev_num_gens: An[int, ge(0)],
+    output_dir: str,
     total_num_gens: An[int, ge(0)],
     save_interval: An[int, ge(0)],
     *,
     save_first_gen: bool,
-) -> list[int]:  # save_points
+) -> tuple[int, list[int]]:  # largest_prev_num_gens, save_points
     """Compute generations at which to save the state.
 
     Args:
-        prev_num_gens: See\
-            :paramref:`~.NeuroevolutionSubtaskConfig.prev_num_gens`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
         total_num_gens: See\
             :paramref:`~.NeuroevolutionSubtaskConfig.total_num_gens`.
         save_interval: See\
@@ -91,18 +93,25 @@ def compute_save_points(
             :paramref:`~.NeuroevolutionSubtaskConfig.save_first_gen`.
 
     Returns:
-        A list of generations at which to save the state.
+        The largest previous number of generations and\
+            a list of generations at which to save the state.
     """
+    existing_save_points = find_existing_save_points(output_dir=output_dir)
+    largest_prev_num_gens = max(existing_save_points, default=0)
+    # If `save_interval` is 0, only the last generation is saved.
+    real_save_interval = (
+        save_interval or total_num_gens - largest_prev_num_gens
+    )
     save_points: list[int] = list(
         range(
-            prev_num_gens + save_interval,
+            largest_prev_num_gens + save_interval,
             total_num_gens + 1,
-            save_interval,
+            real_save_interval,
         ),
     )
     if save_first_gen and save_interval != 1:
-        save_points = [prev_num_gens + 1, *save_points]
-    return save_points
+        save_points = [largest_prev_num_gens + 1, *save_points]
+    return largest_prev_num_gens, save_points
 
 
 def compute_start_time_and_seeds(
