@@ -17,4 +17,4 @@ litmodule:
     activation_fn:
       _target_: torch.nn.ReLU
 trainer:
-  max_epochs: 2
+  max_epochs: 3
