@@ -21,8 +21,6 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     Args:
         agents_per_task: Number of agents per task (``num_tasks`` =\
             ``num_nodes`` x ``tasks_per_node``).
-        prev_num_gens: Number of generations from a previous experiment\
-            to load.
         total_num_gens: Number of generations to run the experiment for\
             (including the previous number of generations).
         save_interval: Number of generations between each save point.\
@@ -49,7 +47,6 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     """
 
     agents_per_task: An[int, ge(1)] = 1
-    prev_num_gens: An[int, ge(0)] = 0
     total_num_gens: An[int, ge(1)] = 10
     save_interval: An[int, ge(0)] = 0
     save_first_gen: bool = False
@@ -59,11 +56,6 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     mem_transfer: bool = False
     eval_num_steps: An[int, ge(0)] = 0
     logging: bool = True
-
-    def __post_init__(self: "NeuroevolutionSubtaskConfig") -> None:
-        """Post-initialization updates."""
-        if self.save_interval == 0:
-            self.save_interval = self.total_num_gens - self.prev_num_gens
 
 
 @dataclass

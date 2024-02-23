@@ -52,16 +52,22 @@ class BaseHydraConfig(
         job=hc.JobConf(
             config=hc.JobConf.JobConfig(
                 override_dirname=hc.JobConf.JobConfig.OverrideDirname(
-                    kv_sep=".",
-                    item_sep="~",
-                    exclude_keys=["task", "project"],
+                    kv_sep="~",
+                    item_sep="#",
+                    exclude_keys=[
+                        "task",
+                        "project",
+                        "trainer.max_epochs",
+                        "trainer.max_steps",
+                        "config.total_num_gens",
+                    ],
                 ),
             ),
         ),
         mode=ht.RunMode.MULTIRUN,
         sweep=hc.SweepDir(
             dir="${oc.env:CNEUROMAX_PATH}/data/${project}/${task}/",
-            subdir="${hydra:job.override_dirname}",
+            subdir="overrides#${hydra:job.override_dirname}/",
         ),
     ),
 ):

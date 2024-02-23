@@ -6,58 +6,71 @@ import logging
 import time
 from functools import partial
 from typing import Annotated as An
+from typing import Any
 
 import numpy as np
 import torch
-from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
-    SlurmLauncher,
-)
 from lightning.pytorch import Trainer
-from lightning.pytorch.callbacks.batch_size_finder import BatchSizeFinder
+from lightning.pytorch.callbacks import BatchSizeFinder, ModelCheckpoint
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
 )
+from omegaconf import OmegaConf
 from torch.distributed import ReduceOp
 from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
-from cneuromax.fitting.deeplearning.config import (
-    DeepLearningSubtaskConfig,
-)
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import one_of
-from cneuromax.utils.misc import get_path
+from cneuromax.utils.misc import can_connect_to_internet
 
 
-def instantiate_trainer_and_logger(
-    partial_trainer: partial[Trainer],
-    partial_logger: partial[WandbLogger],
+def instantiate_trainer(
+    trainer_partial: partial[Trainer],
+    logger_partial: partial[WandbLogger],
     device: An[str, one_of("cpu", "gpu")],
-) -> tuple[Trainer, WandbLogger | None]:
-    """Creates :mod:`lightning` instances.
+    output_dir: str,
+) -> Trainer:
+    """Instantiates a :class:`~lightning.pytorch.Trainer`.
 
     Args:
-        partial_trainer: See :class:`~lightning.pytorch.Trainer`.
-        partial_logger: See\
+        trainer_partial: See :class:`~lightning.pytorch.Trainer`.
+        logger_partial: See\
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
-        * A :class:`~lightning.pytorch.Trainer` instance.
-        * A :class:`~lightning.pytorch.loggers.wandb.WandbLogger`\
-            instance or ``None``.
+        A :class:`~lightning.pytorch.Trainer` instance.
     """
     launcher_config = get_launcher_config()
-    offline = launcher_config._target_ == get_path(  # noqa: SLF001
-        SlurmLauncher,
+    # Retrieve the `Trainer` callbacks specified in the config
+    callbacks: list[Any] = trainer_partial.keywords["callbacks"] or []
+    # Check internet connection
+    offline = not can_connect_to_internet()
+    # Add the `TriggerWandbSyncLightningCallback` if offline
+    if offline:
+        callbacks.append([TriggerWandbSyncLightningCallback()])
+    callbacks.append(
+        ModelCheckpoint(
+            dirpath=trainer_partial.keywords["default_root_dir"],
+            every_n_epochs=1,
+            save_last=True,
+        ),
     )
-    logger = partial_logger(offline=offline)
-    callbacks = None
-    if launcher_config._target_ == get_path(SlurmLauncher):  # noqa: SLF001
-        callbacks = [TriggerWandbSyncLightningCallback()]
-    trainer = partial_trainer(
+
+    # Instantiate
+    logger = logger_partial(offline=offline)
+    logger.experiment.config.update(
+        OmegaConf.to_container(
+            OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
+            resolve=True,
+            throw_on_missing=True,
+        ),
+    )
+    return trainer_partial(
         devices=(
             launcher_config.gpus_per_node or 1
             if device == "gpu"
@@ -66,7 +79,6 @@ def instantiate_trainer_and_logger(
         logger=logger,
         callbacks=callbacks,
     )
-    return trainer, logger
 
 
 def set_batch_size_and_num_workers(
@@ -246,24 +258,6 @@ def find_good_per_device_num_workers(
     best_time = int(np.argmin(times))
     logging.info(f"Best `num_workers` parameter: {best_time}.")
     return best_time
-
-
-def set_checkpoint_path(
-    trainer: Trainer,  # noqa: ARG001
-    config: DeepLearningSubtaskConfig,  # noqa: ARG001
-) -> str | None:
-    """Sets the path to the checkpoint to resume training from.
-
-    TODO: Implement.
-
-    Args:
-        config: See :paramref:`.DeepLearningSubtaskConfig`.
-        trainer: See :class:`~lightning.pytorch.Trainer`.
-
-    Returns:
-        The path to the checkpoint to resume training from.
-    """
-    return None
 
 
 class InitOptimParamsCheckpointConnector(_CheckpointConnector):
