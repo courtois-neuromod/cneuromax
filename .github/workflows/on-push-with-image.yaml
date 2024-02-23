@@ -5,28 +5,28 @@ on:
     branches: [main]
 
 jobs:
-  docker-build:
+  podman-build:
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
-      - name: Build the tentative CNeuroMax Docker image
-        run: docker build -t cneuromod/cneuromax:latest .
-  docker-push:
-    needs: docker-build
+      - name: Build the tentative CNeuroMax Podman image
+        run: podman build -t cneuromod/cneuromax:latest -f Dockerfile .
+  podman-push:
+    needs: podman-build
     runs-on: self-hosted
     steps:
-      - name: Push the tentative CNeuroMax Docker image
-        run: docker push cneuromod/cneuromax:latest
+      - name: Push the tentative CNeuroMax Podman image
+        run: podman push docker.io/cneuromod/cneuromax:latest
   sphinx-build:
-    needs: docker-build
+    needs: podman-build
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
       - name: Build the documentation with Sphinx
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          podman run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
           sphinx-build -b html ./docs/ ./docs/build/
       - name: Deploy the documentation
         uses: peaceiris/actions-gh-pages@v3
@@ -34,22 +34,22 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs/build/
   mypy:
-    needs: docker-build
+    needs: podman-build
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
       - name: Static type checking with Mypy
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          podman run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
           mypy --config-file=pyproject.toml cneuromax
   pytest:
-    needs: docker-build
+    needs: podman-build
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
       - name: Unit testing with pytest
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          podman run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
           pytest --cov cneuromax
