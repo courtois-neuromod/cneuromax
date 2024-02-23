@@ -358,7 +358,9 @@
     <span class="c1"># Retrieve the `Trainer` callbacks specified in the config</span>
     <span class="n">callbacks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">trainer_partial</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;callbacks&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[]</span>
     <span class="c1"># Check internet connection</span>
-    <span class="n">offline</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">can_connect_to_internet</span><span class="p">()</span>
+    <span class="n">offline</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">logger_partial</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;offline&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">can_connect_to_internet</span><span class="p">()</span>
+    <span class="p">)</span>
     <span class="c1"># Adds the :mod:`wandb_osh` callback if offline, which signals the</span>
     <span class="c1"># head node with internet access to sync the latest logs on</span>
     <span class="c1"># validation epoch end.</span>

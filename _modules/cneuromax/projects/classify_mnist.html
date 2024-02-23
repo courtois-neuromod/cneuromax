@@ -309,6 +309,9 @@
 
 <span class="kn">from</span> <span class="nn">hydra_zen</span> <span class="kn">import</span> <span class="n">ZenStore</span>
 
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule.classification</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseClassificationLitModuleConfig</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.runner</span> <span class="kn">import</span> <span class="n">DeepLearningTaskRunner</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.hydra_zen</span> <span class="kn">import</span> <span class="n">fs_builds</span>
 
@@ -344,7 +347,10 @@
             <span class="n">group</span><span class="o">=</span><span class="s2">&quot;datamodule&quot;</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">store</span><span class="p">(</span>
-            <span class="n">fs_builds</span><span class="p">(</span><span class="n">MNISTClassificationLitModule</span><span class="p">),</span>
+            <span class="n">fs_builds</span><span class="p">(</span>
+                <span class="n">MNISTClassificationLitModule</span><span class="p">,</span>
+                <span class="n">config</span><span class="o">=</span><span class="n">BaseClassificationLitModuleConfig</span><span class="p">(</span><span class="n">num_classes</span><span class="o">=</span><span class="mi">10</span><span class="p">),</span>
+            <span class="p">),</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;classify_mnist&quot;</span><span class="p">,</span>
             <span class="n">group</span><span class="o">=</span><span class="s2">&quot;litmodule&quot;</span><span class="p">,</span>
         <span class="p">)</span></div>
