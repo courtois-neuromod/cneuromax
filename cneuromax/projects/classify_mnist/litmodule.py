@@ -1,15 +1,11 @@
 """:class:`MNISTClassificationLitModule`."""
 
-from functools import partial
+from typing import Any
 
 import wandb
-from torch import nn
-from torch.optim import Optimizer
-from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.fitting.deeplearning.litmodule.classification import (
     BaseClassificationLitModule,
-    BaseClassificationLitModuleConfig,
 )
 
 
@@ -24,14 +20,8 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
 
     def __init__(
         self: "MNISTClassificationLitModule",
-        nnmodule: nn.Module,
-        optimizer: partial[Optimizer],
-        scheduler: partial[LRScheduler],
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
     ) -> None:
-        super().__init__(
-            config=BaseClassificationLitModuleConfig(num_classes=10),
-            nnmodule=nnmodule,
-            optimizer=optimizer,
-            scheduler=scheduler,
-        )
+        super().__init__(*args, **kwargs)
         self.wandb_input_data_wrapper = wandb.Image
