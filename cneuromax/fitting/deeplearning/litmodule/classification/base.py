@@ -27,9 +27,11 @@ class BaseClassificationLitModuleConfig:
 
     Args:
         num_classes: Number of classes to classify between.
+        log_val_preds: Whether to log validation predictions to W&B.
     """
 
     num_classes: An[int, ge(2)]
+    log_val_preds: bool = False
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -61,6 +63,7 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
             optimizer=optimizer,
             scheduler=scheduler,
         )
+        self.config = config
         # Accuracy metric.
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
             num_classes=config.num_classes,
@@ -96,7 +99,7 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         preds: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
         accuracy: Float[Tensor, " "] = self.accuracy(preds=preds, target=y)
         self.log(name=f"{stage}/acc", value=accuracy)
-        if stage == "val":
+        if stage == "val" and self.config.log_val_preds:
             self.save_val_data(x=x, y=y, logits=logits, preds=preds)
         return f.cross_entropy(input=logits, target=y)
 
@@ -130,6 +133,8 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def on_validation_epoch_end(self: "BaseClassificationLitModule") -> None:
         """Called at the end of the validation epoch."""
+        if not self.config.log_val_preds:
+            return
         for i, val_data in enumerate(self.val_data):
             x_i, y_i, probs_i, preds_i = val_data
             self.wandb_table.add_data(  # type: ignore[no-untyped-call]
