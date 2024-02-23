@@ -2,6 +2,9 @@
 
 from hydra_zen import ZenStore
 
+from cneuromax.fitting.deeplearning.litmodule.classification import (
+    BaseClassificationLitModuleConfig,
+)
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
 from cneuromax.utils.hydra_zen import fs_builds
 
@@ -33,7 +36,10 @@ class TaskRunner(DeepLearningTaskRunner):
             group="datamodule",
         )
         store(
-            fs_builds(MNISTClassificationLitModule),
+            fs_builds(
+                MNISTClassificationLitModule,
+                config=BaseClassificationLitModuleConfig(num_classes=10),
+            ),
             name="classify_mnist",
             group="litmodule",
         )

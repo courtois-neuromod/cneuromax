@@ -106,7 +106,7 @@ def compute_save_points(
         range(
             largest_prev_num_gens + save_interval,
             total_num_gens + 1,
-            real_save_interval,
+            real_save_interval or 1,  # Avoids step=0
         ),
     )
     if save_first_gen and save_interval != 1:

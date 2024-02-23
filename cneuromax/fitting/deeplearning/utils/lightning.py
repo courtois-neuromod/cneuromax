@@ -49,7 +49,9 @@ def instantiate_trainer(
     # Retrieve the `Trainer` callbacks specified in the config
     callbacks: list[Any] = trainer_partial.keywords["callbacks"] or []
     # Check internet connection
-    offline = not can_connect_to_internet()
+    offline = (
+        logger_partial.keywords["offline"] or not can_connect_to_internet()
+    )
     # Adds the :mod:`wandb_osh` callback if offline, which signals the
     # head node with internet access to sync the latest logs on
     # validation epoch end.
