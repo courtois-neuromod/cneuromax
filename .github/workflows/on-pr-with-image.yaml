@@ -27,31 +27,30 @@ jobs:
           podman run --rm -v $PWD:/cneuromax -w /cneuromax
           cneuromod/cneuromax:test
           pytest --cov cneuromax
+      - name: Create WANDB_KEY.txt file
+        run: echo ${{ secrets.WANDB_KEY }} > WANDB_KEY.txt
       - name: Try Deep Learning on CPU
         run: >
-          podman run --privileged --security-opt=label=disable
-          --tls-verify=false  --ipc=host --device=nvidia.com/gpu=all
-          --net=host --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
+          docker run --privileged --rm
+          -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
           -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH}
-          -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm
-          -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest python -m
-          cneuromax project=classify_mnist task=mlp_cpu
+          -e HYDRA_FULL_ERROR=1 -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH}
+          -v /dev/shm:/dev/shm -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest
+          python3 -m cneuromax project=classify_mnist task=mlp_cpu
       - name: Try Deep Learning on GPU
         run: >
-          podman run --privileged --security-opt=label=disable
-          --tls-verify=false  --ipc=host --device=nvidia.com/gpu=all
-          --net=host --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
+          docker run --privileged --gpus all --rm
+          -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
           -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH}
-          -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm
-          -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest python -m
-          cneuromax project=classify_mnist task=mlp
+          -e HYDRA_FULL_ERROR=1 -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH}
+          -v /dev/shm:/dev/shm -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest
+          python3 -m cneuromax project=classify_mnist task=mlp
       - name: Try Neuroevolution on CPU
         run: >
-          podman run --privileged --security-opt=label=disable
-          --tls-verify=false  --ipc=host --device=nvidia.com/gpu=all
-          --net=host --rm -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
+          docker run --privileged --gpus all --rm
+          -e CNEUROMAX_PATH=${CNEUROMAX_PATH}
           -e PYTHONPATH=${PYTHONPATH}:${CNEUROMAX_PATH}
-          -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH} -v /dev/shm:/dev/shm
-          -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest python -m
-          cneuromax project=neuroevorl_control task=acrobot
+          -e HYDRA_FULL_ERROR=1 -v ${CNEUROMAX_PATH}:${CNEUROMAX_PATH}
+          -v /dev/shm:/dev/shm -w ${CNEUROMAX_PATH} cneuromod/cneuromax:latest
+          python3 -m cneuromax project=neuroevorl_control task=acrobot
           config.total_num_gens=10
