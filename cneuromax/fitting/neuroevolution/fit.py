@@ -32,6 +32,7 @@ from cneuromax.fitting.neuroevolution.utils.initialize import (
     initialize_gpu_comm,
 )
 from cneuromax.fitting.neuroevolution.utils.readwrite import (
+    find_existing_save_points,
     load_state,
     save_state,
 )
@@ -93,8 +94,8 @@ def evolve(
     seed_all(config.seed)
     comm, _, _ = get_mpi_variables()
     validate_space(space=space, pop_merge=config.pop_merge)
-    save_points = compute_save_points(
-        prev_num_gens=config.prev_num_gens,
+    prev_num_gens, save_points = compute_save_points(
+        output_dir=config.output_dir,
         total_num_gens=config.total_num_gens,
         save_interval=config.save_interval,
         save_first_gen=config.save_first_gen,
@@ -114,13 +115,13 @@ def evolve(
     )
     if space.evaluates_on_gpu:
         ith_gpu_comm = initialize_gpu_comm()
-    if config.prev_num_gens > 0:
+    if prev_num_gens > 0:
         (
             agents_batch,
             generation_results,
             total_num_env_steps,
         ) = load_state(
-            prev_num_gens=config.prev_num_gens,
+            prev_num_gens=prev_num_gens,
             len_agents_batch=len_agents_batch,
             output_dir=config.output_dir,
         )
@@ -132,7 +133,7 @@ def evolve(
             pop_merge=config.pop_merge,
         )
     setup_wandb(logger=logger, output_dir=config.output_dir)
-    for curr_gen in range(config.prev_num_gens + 1, config.total_num_gens + 1):
+    for curr_gen in range(prev_num_gens + 1, config.total_num_gens + 1):
         start_time, seeds = compute_start_time_and_seeds(
             generation_results=generation_results,
             curr_gen=curr_gen,
@@ -241,12 +242,7 @@ def test(
     # Get MPI info
     comm, rank, size = get_mpi_variables()
     # Setup work distribution across MPI processes
-    save_points = compute_save_points(
-        prev_num_gens=config.prev_num_gens,
-        total_num_gens=config.total_num_gens,
-        save_interval=config.save_interval,
-        save_first_gen=config.save_first_gen,
-    )
+    save_points = find_existing_save_points(output_dir=config.output_dir)
     assigned_save_points = [
         save_points[i] for i in range(len(save_points)) if i % size == rank
     ]
