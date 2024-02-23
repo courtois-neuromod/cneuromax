@@ -101,13 +101,12 @@ class MNISTGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         for x_i in x:
             self.val_data.append(x_i)
 
-    def on_after_backward(self) -> None:
+    def on_after_backward(self: "MNISTGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
         self.ema.update()
 
     def on_validation_epoch_end(self: "MNISTGenerationLitModule") -> None:
         """Called at the end of the validation epoch."""
-
         self.diffusion_module.model = self.ema.ema_model
         preds = self.diffusion_module.sample(
             batch_size=len(self.val_data),
