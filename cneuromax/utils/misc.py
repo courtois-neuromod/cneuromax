@@ -5,7 +5,7 @@ from collections.abc import Callable
 from typing import Any
 
 import numpy as np
-import requests
+import requests  # type: ignore[import-untyped]
 import torch
 
 
