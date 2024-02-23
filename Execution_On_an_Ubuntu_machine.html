@@ -329,11 +329,6 @@ flag to the execution command above.</p>
 </div>
 <section id="run-a-python-script">
 <h2>Run a python script<a class="headerlink" href="#run-a-python-script" title="Link to this heading">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Run <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">${CNEUROMAX_PATH}/cneuromax</span></code> before the following command to get
-tab completion for the <code class="docutils literal notranslate"><span class="pre">task</span></code> argument.</p>
-</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of a simple MNIST training run</span>
 docker<span class="w"> </span>run<span class="w"> </span>--privileged<span class="w"> </span>--gpus<span class="w"> </span>all<span class="w"> </span>--rm<span class="w"> </span>-e<span class="w"> </span><span class="nv">CNEUROMAX_PATH</span><span class="o">=</span><span class="si">${</span><span class="nv">CNEUROMAX_PATH</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">           </span>-e<span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="si">${</span><span class="nv">PYTHONPATH</span><span class="si">}</span>:<span class="si">${</span><span class="nv">CNEUROMAX_PATH</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>

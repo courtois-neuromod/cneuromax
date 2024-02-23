@@ -27,13 +27,6 @@ On an Ubuntu machine
 Run a python script
 -------------------
 
-
-.. note::
-
-    Run ``cd ${CNEUROMAX_PATH}/cneuromax`` before the following command to get
-    tab completion for the ``task`` argument.
-
-
 .. code-block:: bash
 
     # Example of a simple MNIST training run
