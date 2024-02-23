@@ -31,6 +31,12 @@ jobs:
           docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
           -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
+          ls -l
+      - name: Try Deep Learning on CPU
+        run: >
+          docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
+          -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
+          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
           python3 -m cneuromax project=classify_mnist task=mlp_cpu
           logger.entity=maximilienlc
       - name: Try Deep Learning on GPU
