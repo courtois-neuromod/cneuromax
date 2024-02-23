@@ -3,70 +3,74 @@
 import contextlib
 import copy
 import logging
-import os
 import time
 from functools import partial
-from pathlib import Path
 from typing import Annotated as An
+from typing import Any
 
 import numpy as np
 import torch
-from hydra_plugins.hydra_submitit_launcher.submitit_launcher import (
-    SlurmLauncher,
-)
 from lightning.pytorch import Trainer
-from lightning.pytorch.callbacks.batch_size_finder import BatchSizeFinder
+from lightning.pytorch.callbacks import BatchSizeFinder, ModelCheckpoint
 from lightning.pytorch.loggers.wandb import WandbLogger
 from lightning.pytorch.trainer.connectors.checkpoint_connector import (
     _CheckpointConnector,
 )
+from omegaconf import OmegaConf
 from torch.distributed import ReduceOp
 from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
-from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
-)
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import one_of
-from cneuromax.utils.misc import get_path
+from cneuromax.utils.misc import can_connect_to_internet
 
 
-def instantiate_trainer_and_logger(
-    partial_trainer: partial[Trainer],
-    partial_logger: partial[WandbLogger],
+def instantiate_trainer(
+    trainer_partial: partial[Trainer],
+    logger_partial: partial[WandbLogger],
     device: An[str, one_of("cpu", "gpu")],
-) -> tuple[Trainer, WandbLogger | None]:
-    """Creates :mod:`lightning` instances.
+    output_dir: str,
+) -> Trainer:
+    """Instantiates a :class:`~lightning.pytorch.Trainer`.
 
     Args:
-        partial_trainer: See :class:`~lightning.pytorch.Trainer`.
-        partial_logger: See\
+        trainer_partial: See :class:`~lightning.pytorch.Trainer`.
+        logger_partial: See\
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
-        * A :class:`~lightning.pytorch.Trainer` instance.
-        * A :class:`~lightning.pytorch.loggers.wandb.WandbLogger`\
-            instance or ``None``.
+        A :class:`~lightning.pytorch.Trainer` instance.
     """
     launcher_config = get_launcher_config()
-    wandb_key_path = Path(
-        str(os.environ.get("CNEUROMAX_PATH")) + "/WANDB_KEY.txt",
+    # Retrieve the `Trainer` callbacks specified in the config
+    callbacks: list[Any] = trainer_partial.keywords["callbacks"] or []
+    # Check internet connection
+    offline = not can_connect_to_internet()
+    # Add the `TriggerWandbSyncLightningCallback` if offline
+    if offline:
+        callbacks.append([TriggerWandbSyncLightningCallback()])
+    callbacks.append(
+        ModelCheckpoint(
+            dirpath=trainer_partial.keywords["default_root_dir"],
+            every_n_epochs=1,
+            save_last=True,
+        ),
     )
-    if wandb_key_path.exists():
-        offline = launcher_config._target_ == get_path(  # noqa: SLF001
-            SlurmLauncher,
-        )
-        logger = partial_logger(offline=offline)
-    else:
-        logging.info("W&B key not found. Logging disabled.")
-        logger = None
-    callbacks = None
-    if launcher_config._target_ == get_path(SlurmLauncher):  # noqa: SLF001
-        callbacks = [TriggerWandbSyncLightningCallback()]
-    trainer = partial_trainer(
+
+    # Instantiate
+    logger = logger_partial(offline=offline)
+    logger.experiment.config.update(
+        OmegaConf.to_container(
+            OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
+            resolve=True,
+            throw_on_missing=True,
+        ),
+    )
+    return trainer_partial(
         devices=(
             launcher_config.gpus_per_node or 1
             if device == "gpu"
@@ -75,7 +79,6 @@ def instantiate_trainer_and_logger(
         logger=logger,
         callbacks=callbacks,
     )
-    return trainer, logger
 
 
 def set_batch_size_and_num_workers(
@@ -102,6 +105,7 @@ def set_batch_size_and_num_workers(
         litmodule=litmodule,
         datamodule=datamodule,
         device=device,
+        device_ids=trainer.device_ids,
         output_dir=output_dir,
     )
     proposed_per_device_num_workers = find_good_per_device_num_workers(
@@ -128,6 +132,7 @@ def find_good_per_device_batch_size(
     litmodule: BaseLitModule,
     datamodule: BaseDataModule,
     device: str,
+    device_ids: list[int],
     output_dir: str,
 ) -> int:
     """Probes a :attr:`~.BaseDataModule.per_device_batch_size` value.
@@ -152,15 +157,22 @@ def find_good_per_device_batch_size(
         litmodule: See :class:`.BaseLitModule`.
         datamodule: See :class:`.BaseDataModule`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
+        device_ids: See :class:`~lightning.pytorch.Trainer.device_ids`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
         A roughly optimal ``per_device_batch_size`` value.
     """
-    litmodule_copy = copy.deepcopy(litmodule)
-    datamodule_copy = copy.deepcopy(datamodule)
     launcher_config = get_launcher_config()
-    datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task or 1
+    litmodule_copy = copy.deepcopy(litmodule)
+    # Speeds up the batch size search by removing the validation epoch
+    # end method, which is independent of the batch size.
+    litmodule_copy.on_validation_epoch_end = None  # type: ignore[assignment,method-assign]
+    datamodule_copy = copy.deepcopy(datamodule)
+    # Speeds up the batch size search by using a reasonable number of
+    # workers for the search.
+    if launcher_config.cpus_per_task:
+        datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task
     batch_size_finder = BatchSizeFinder(
         mode="binsearch",
         batch_arg_name="per_device_batch_size",
@@ -169,8 +181,7 @@ def find_good_per_device_batch_size(
     batch_size_finder._early_exit = True  # noqa: SLF001
     trainer = Trainer(
         accelerator=device,
-        devices=1,
-        max_epochs=-1,
+        devices=[device_ids[0]],  # The first available device.
         default_root_dir=output_dir + "/lightning/tuner/",
         callbacks=[batch_size_finder],
     )
@@ -178,14 +189,10 @@ def find_good_per_device_batch_size(
     # Prevents the `fit` method from raising a `KeyError`, see:
     # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
     with contextlib.suppress(KeyError):
-        trainer.fit(litmodule_copy, datamodule_copy)
+        trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
     per_device_batch_size = batch_size_finder.optimal_batch_size
-    if per_device_batch_size is None:
-        error_msg = (
-            "Lightning's `scale_batch_size` method returned `None`. "
-            "This is outside of the user's control, please try again."
-        )
-        raise ValueError(error_msg)
+    # Should never happen.
+    assert per_device_batch_size is not None  # noqa: S101
     num_computing_devices = launcher_config.nodes * (
         launcher_config.gpus_per_node or 1
         if device == "gpu"
@@ -231,7 +238,7 @@ def find_good_per_device_num_workers(
         logging.info("Only 1 worker available/provided. Returning 0.")
         return 0
     times = []
-    for num_workers in range(launcher_config.cpus_per_task or 1 + 1):
+    for num_workers in range((launcher_config.cpus_per_task or 1) + 1):
         datamodule_copy = copy.deepcopy(datamodule)
         datamodule_copy.per_device_batch_size = per_device_batch_size
         datamodule_copy.per_device_num_workers = num_workers
@@ -251,24 +258,6 @@ def find_good_per_device_num_workers(
     best_time = int(np.argmin(times))
     logging.info(f"Best `num_workers` parameter: {best_time}.")
     return best_time
-
-
-def set_checkpoint_path(
-    trainer: Trainer,  # noqa: ARG001
-    config: FittingSubtaskConfig,  # noqa: ARG001
-) -> str | None:
-    """Sets the path to the checkpoint to resume training from.
-
-    TODO: Implement.
-
-    Args:
-        config: See :paramref:`~.FittingSubtaskConfig`.
-        trainer: See :class:`~lightning.pytorch.Trainer`.
-
-    Returns:
-        The path to the checkpoint to resume training from.
-    """
-    return None
 
 
 class InitOptimParamsCheckpointConnector(_CheckpointConnector):

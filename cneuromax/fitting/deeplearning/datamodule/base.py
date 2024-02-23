@@ -164,7 +164,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             A new validation :class:`~torch.utils.data.DataLoader`\
                 instance.
         """
-        return self.x_dataloader(dataset=self.datasets.val)
+        return self.x_dataloader(dataset=self.datasets.val, shuffle=False)
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
@@ -174,7 +174,7 @@ class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
             A new testing :class:`~torch.utils.data.DataLoader`\
                 instance.
         """
-        return self.x_dataloader(dataset=self.datasets.test)
+        return self.x_dataloader(dataset=self.datasets.test, shuffle=False)
 
     @final
     def predict_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:

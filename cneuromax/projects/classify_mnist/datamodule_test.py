@@ -7,24 +7,23 @@ from torch.utils.data import Subset
 from torchvision.datasets import MNIST
 
 from . import (
-    MNISTClassificationDataModule,
-    MNISTClassificationDataModuleConfig,
+    MNISTDataModule,
+    MNISTDataModuleConfig,
 )
 
 
 @pytest.fixture()
-def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
-    """:class:`~.MNISTClassificationDataModule` fixture.
+def datamodule(tmp_path: Path) -> MNISTDataModule:
+    """:class:`~.MNISTDataModule` fixture.
 
     Args:
-        tmp_path: The temporary path for the\
-            :class:`~.MNISTClassificationDataModule`.
+        tmp_path: The temporary path for the :class:`~.MNISTDataModule`.
 
     Returns:
-        A generic :class:`~.MNISTClassificationDataModule` instance.
+        A generic :class:`~.MNISTDataModule` instance.
     """
-    return MNISTClassificationDataModule(
-        MNISTClassificationDataModuleConfig(
+    return MNISTDataModule(
+        MNISTDataModuleConfig(
             data_dir=str(tmp_path) + "/",
             device="cpu",
             val_percentage=0.1,
@@ -32,16 +31,15 @@ def datamodule(tmp_path: Path) -> MNISTClassificationDataModule:
     )
 
 
-def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
-    """Tests :meth:`~.MNISTClassificationDataModule.setup` #1.
+def test_setup_fit(datamodule: MNISTDataModule) -> None:
+    """Tests :meth:`~.MNISTDataModule.setup` #1.
 
-    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves
-    correctly when
-    :paramref:`~.MNISTClassificationDataModule.setup.stage` is
+    Verifies that :func:`~.MNISTDataModule.setup` behaves
+    correctly when :paramref:`~.MNISTDataModule.setup.stage` is
     ``"fit"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTClassificationDataModule`\
+        datamodule: A generic :class:`~.MNISTDataModule`\
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()
@@ -54,16 +52,15 @@ def test_setup_fit(datamodule: MNISTClassificationDataModule) -> None:
     assert len(datamodule.datasets.val) == 6000
 
 
-def test_setup_test(datamodule: MNISTClassificationDataModule) -> None:
-    """Tests :meth:`~.MNISTClassificationDataModule.setup` #2.
+def test_setup_test(datamodule: MNISTDataModule) -> None:
+    """Tests :meth:`~.MNISTDataModule.setup` #2.
 
-    Verifies that :func:`~.MNISTClassificationDataModule.setup` behaves
-    correctly when
-    :paramref:`~.MNISTClassificationDataModule.setup.stage` is
+    Verifies that :func:`~.MNISTDataModule.setup` behaves
+    correctly when :paramref:`~.MNISTDataModule.setup.stage` is
     ``"test"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTClassificationDataModule`\
+        datamodule: A generic :class:`~.MNISTDataModule`\
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()

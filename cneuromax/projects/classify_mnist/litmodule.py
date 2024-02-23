@@ -2,6 +2,7 @@
 
 from functools import partial
 
+import wandb
 from torch import nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
@@ -33,3 +34,4 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
             optimizer=optimizer,
             scheduler=scheduler,
         )
+        self.wandb_input_data_wrapper = wandb.Image

@@ -21,6 +21,7 @@ def store_basic_trainer_config(store: ZenStore) -> None:
             Trainer,
             accelerator="${config.device}",
             default_root_dir="${config.output_dir}/lightning/",
+            gradient_clip_val=1.0,
         ),
         name="base",
         group="trainer",

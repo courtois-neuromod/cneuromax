@@ -5,16 +5,13 @@ from hydra_zen import ZenStore
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
 from cneuromax.utils.hydra_zen import fs_builds
 
-from .datamodule import (
-    MNISTClassificationDataModule,
-    MNISTClassificationDataModuleConfig,
-)
+from .datamodule import MNISTDataModule, MNISTDataModuleConfig
 from .litmodule import MNISTClassificationLitModule
 
 __all__ = [
     "TaskRunner",
-    "MNISTClassificationDataModuleConfig",
-    "MNISTClassificationDataModule",
+    "MNISTDataModuleConfig",
+    "MNISTDataModule",
     "MNISTClassificationLitModule",
 ]
 
@@ -31,11 +28,8 @@ class TaskRunner(DeepLearningTaskRunner):
         """
         super().store_configs(store=store)
         store(
-            fs_builds(
-                MNISTClassificationDataModule,
-                config=MNISTClassificationDataModuleConfig(),
-            ),
-            name="classify_mnist",
+            fs_builds(MNISTDataModule, config=MNISTDataModuleConfig()),
+            name="mnist",
             group="datamodule",
         )
         store(

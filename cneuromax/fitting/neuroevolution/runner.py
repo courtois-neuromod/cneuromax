@@ -57,14 +57,6 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         if config.eval_num_steps == 0 and config.env_transfer:
             error_msg = "`env_transfer = True` requires `eval_num_steps > 0`."
             raise ValueError(error_msg)
-        if (
-            config.total_num_gens - config.prev_num_gens
-        ) % config.save_interval != 0:
-            error_msg = (
-                "`save_interval` must be a multiple of "
-                "`total_num_gens - prev_num_gens`."
-            )
-            raise ValueError(error_msg)
 
     @classmethod
     def run_subtask(

@@ -5,20 +5,28 @@ from typing import Any
 
 import numpy as np
 import wandb
+from omegaconf import OmegaConf
 
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 
-def setup_wandb(logger: Callable[..., Any]) -> None:
+def setup_wandb(logger: Callable[..., Any], output_dir: str) -> None:
     """Sets up :mod:`wandb` logging for all MPI processes.
 
     Args:
         logger: See :func:`~.wandb.init`.
+        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
     comm, rank, _ = get_mpi_variables()
     if rank != 0:
         return
-    logger()
+    logger(
+        config=OmegaConf.to_container(
+            OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
+            resolve=True,
+            throw_on_missing=True,
+        ),
+    )
 
 
 def terminate_wandb() -> None:
