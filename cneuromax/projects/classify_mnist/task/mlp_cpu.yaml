@@ -1,0 +1,20 @@
+# @package _global_
+defaults:
+  - /datamodule: mnist
+  - /litmodule: classify_mnist
+  - _self_
+hydra:
+  launcher:
+    cpus_per_task: 4
+config:
+  device: cpu
+litmodule:
+  optimizer:
+    lr: 0.002
+  nnmodule:
+    config:
+      dims: [784, 128, 10]
+    activation_fn:
+      _target_: torch.nn.ReLU
+trainer:
+  max_epochs: 2
