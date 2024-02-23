@@ -336,9 +336,11 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_classes: Number of classes to classify between.</span>
+<span class="sd">        log_val_preds: Whether to log validation predictions to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">num_classes</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span></div>
+    <span class="n">num_classes</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">log_val_preds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
 
 
 
@@ -373,6 +375,7 @@
             <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
             <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="c1"># Accuracy metric.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">:</span> <span class="n">MulticlassAccuracy</span> <span class="o">=</span> <span class="n">MulticlassAccuracy</span><span class="p">(</span>
             <span class="n">num_classes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
@@ -410,7 +413,7 @@
         <span class="n">preds</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">accuracy</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/acc&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">stage</span> <span class="o">==</span> <span class="s2">&quot;val&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">stage</span> <span class="o">==</span> <span class="s2">&quot;val&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_preds</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">save_val_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
@@ -450,6 +453,8 @@
 <a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.on_validation_epoch_end">[docs]</a>
     <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Called at the end of the validation epoch.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_preds</span><span class="p">:</span>
+            <span class="k">return</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="p">):</span>
             <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">,</span> <span class="n">probs_i</span><span class="p">,</span> <span class="n">preds_i</span> <span class="o">=</span> <span class="n">val_data</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
