@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Build the documentation with Sphinx
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:latest
           sphinx-build -b html ./docs/ ./docs/build/
       - name: Deploy the documentation
         uses: peaceiris/actions-gh-pages@v3
@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Static type checking with Mypy
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:latest
           mypy --config-file=pyproject.toml cneuromax
   pytest:
     needs: docker-build
@@ -51,5 +51,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Unit testing with pytest
         run: >
-          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:latest
           pytest --cov cneuromax
