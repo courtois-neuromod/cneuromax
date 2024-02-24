@@ -5,45 +5,85 @@ on:
     branches: [main]
 
 jobs:
-  on-pr-with-image:
+  docker-build:
     runs-on: self-hosted
     steps:
       - name: Checkout the GitHub repo
         uses: actions/checkout@v4
-      - name: Build the tentative CNeuroMax image
-        run: podman build -t cneuromod/cneuromax:test -f Dockerfile .
-      - name: Build the documentation
+      - name: Build the tentative CNeuroMax Docker image
+        run: docker build -t cneuromod/cneuromax:test .
+  sphinx-build:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Build the documentation with Sphinx
         run: >
-          podman run --rm -v $PWD:/cneuromax -w /cneuromax
-          cneuromod/cneuromax:test sphinx-build -b html ./docs/ ./docs/build/
-      - name: Run mypy
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          sphinx-build -b html ./docs/ ./docs/build/
+  mypy:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Static type checking with Mypy
         run: >
-          podman run --rm -v $PWD:/cneuromax -w /cneuromax
-          cneuromod/cneuromax:test mypy --config-file=pyproject.toml cneuromax
-      - name: Run pytest
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          mypy --config-file=pyproject.toml cneuromax
+  pytest:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Unit testing with pytest
         run: >
-          podman run --rm -v $PWD:/cneuromax -w /cneuromax
-          cneuromod/cneuromax:test pytest --cov cneuromax
+          docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:test
+          pytest --cov cneuromax
+  classify_mnist-mlp_cpu:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
       - name: Create WANDB_KEY.txt file
         run: echo ${{ secrets.WANDB_KEY_MLC }} > ${PWD}/WANDB_KEY.txt
-      - name: Try Deep Learning on CPU
+      - name: Runs project=classify_mnist task=mlp_cpu
         run: >
-          docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
-          -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
+          docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
+          -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
           python3 -m cneuromax project=classify_mnist task=mlp_cpu
           logger.entity=maximilienlc
-      - name: Try Deep Learning on GPU
+  classify_mnist-mlp:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Create WANDB_KEY.txt file
+        run: echo ${{ secrets.WANDB_KEY_MLC }} > ${PWD}/WANDB_KEY.txt
+      - name: Runs project=classify_mnist task=mlp
         run: >
           docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
-          -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
+          -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
           python3 -m cneuromax project=classify_mnist task=mlp
           logger.entity=maximilienlc
-      - name: Try Neuroevolution on CPU
+  neuroevorl_control-acrobot:
+    needs: docker-build
+    runs-on: self-hosted
+    steps:
+      - name: Checkout the GitHub repo
+        uses: actions/checkout@v4
+      - name: Create WANDB_KEY.txt file
+        run: echo ${{ secrets.WANDB_KEY_MLC }} > ${PWD}/WANDB_KEY.txt
+      - name: Runs project=neuroevorl_control task=acrobot
         run: >
-          docker run --privileged --rm -e CNEUROMAX_PATH=${PWD}
-          -e PYTHONPATH=${PYTHONPATH}:${PWD} -v ${PWD}:${PWD}
+          docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
+          -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
           python3 -m cneuromax project=neuroevorl_control task=acrobot
-          config.total_num_gens=10 logger.entity=maximilienlc
+          logger.entity=maximilienlc config.total_num_gens=10

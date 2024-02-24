@@ -3,6 +3,7 @@
 import contextlib
 import copy
 import logging
+import math
 import time
 from functools import partial
 from typing import Annotated as An
@@ -173,11 +174,20 @@ def find_good_per_device_batch_size(
     """
     launcher_config = get_launcher_config()
     datamodule_copy = copy.deepcopy(datamodule)
+    datamodule_copy.prepare_data()
+    datamodule_copy.setup("fit")
+    # (since the default `datamodule` `batch_size` is 1)
+    dataset_len = len(datamodule_copy.train_dataloader())
+    num_computing_devices = launcher_config.nodes * (
+        launcher_config.gpus_per_node or 1
+        if device == "gpu"
+        else launcher_config.tasks_per_node
+    )
     per_device_batch_size: int | None
+    # Ensures total batch_size is < 1% of the train dataloader size.
+    max_per_device_batch_size = dataset_len // (100 * num_computing_devices)
     if device == "cpu":
-        datamodule_copy.prepare_data()
-        datamodule_copy.setup("fit")
-        per_device_batch_size = len(datamodule_copy.train_dataloader())
+        per_device_batch_size = max_per_device_batch_size
     else:
         litmodule_copy = copy.deepcopy(litmodule)
         # Speeds up the batch size search by removing the validation
@@ -192,6 +202,7 @@ def find_good_per_device_batch_size(
         batch_size_finder = BatchSizeFinder(
             mode="binsearch",
             batch_arg_name="per_device_batch_size",
+            max_trials=int(math.log2(max_per_device_batch_size)),
         )
         # Stops the `fit` method after the batch size has been found.
         batch_size_finder._early_exit = True  # noqa: SLF001
@@ -209,18 +220,11 @@ def find_good_per_device_batch_size(
         per_device_batch_size = batch_size_finder.optimal_batch_size
         # Should never happen.
         assert per_device_batch_size is not None  # noqa: S101
-    num_computing_devices = launcher_config.nodes * (
-        launcher_config.gpus_per_node or 1
-        if device == "gpu"
-        else launcher_config.tasks_per_node
-    )
-    per_device_batch_size = min(
-        # Account for GPU memory discrepancies & ensure total batch
-        # size is < 1% of the train dataloader size.
-        int(per_device_batch_size * 0.9),
-        len(datamodule_copy.train_dataloader())
-        // (100 * num_computing_devices),
-    )
+        # Accounts for potential GPU memory fluctuations.
+        per_device_batch_size = min(
+            int(per_device_batch_size * 0.9),
+            max_per_device_batch_size,
+        )
     if per_device_batch_size == 0:
         per_device_batch_size = 1
     logging.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
