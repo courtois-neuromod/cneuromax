@@ -34,9 +34,9 @@ class FriendsFinetuningModel(BaseLitModule):
     ) -> None:
         super().__init__(*args, **kwargs)
 
-        self.config: FriendsLitModuleConfig
+        config = FriendsLitModuleConfig
         for name, param in self.nnmodule.named_parameters():
-            if self.config.layer_name in name:
+            if config.layer_name in name:
                 param.requires_grad = True
             else:
                 param.requires_grad = False
