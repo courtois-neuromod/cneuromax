@@ -29,12 +29,12 @@ class FriendsFinetuningModel(BaseLitModule):
 
     def __init__(
         self: "FriendsFinetuningModel",
+        config: FriendsLitModuleConfig,
         *args: Any,  # noqa: ANN401
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(*args, **kwargs)
 
-        config = FriendsLitModuleConfig
         for name, param in self.nnmodule.named_parameters():
             if config.layer_name in name:
                 param.requires_grad = True
