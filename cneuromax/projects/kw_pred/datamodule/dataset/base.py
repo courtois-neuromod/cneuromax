@@ -1,10 +1,13 @@
-""":class:`KWPredDataset` & its config."""
+""":class:`KWPredDataset` + its config."""
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Annotated as An
 
 from torch import Tensor
 from torch.utils.data import Dataset
+
+from cneuromax.utils.beartype import ge, le
 
 from .utils import KWPredDatasetPaths, create_load_function
 
@@ -30,6 +33,12 @@ class KWPredDatasetConfig:
         │   │   ├── ID2368_BL.wav
         │   │   └── ...
         │   └── ...
+        ├─ ISD-Sust-006-Engine/
+        │   ├─ ...
+        │   ├─ ID2361__Destroyer__ISD-Sust-006-Engine.csv
+        │   ├─ ...
+        │   ├─ ID2363__Anna__ISD-Sust-006-Engine.csv
+        │   └─ ...
         └─ transformed_data/
             ├── audio_embeddings/
             │   └── beats/
@@ -57,8 +66,9 @@ class KWPredDatasetConfig:
                         ├── ID2368_0.0_10.0.pt
                         └── ...
 
-    TODO: Allow sequence lengths to be different from 10 seconds and\
-        allow batches to overlap.
+    TODO: When inputting `audio_embeddings`, `audio_stft` and/or
+    `video_embeddings`, allow sequence lengths to be different from 10
+    seconds & allow them to overlap.
 
     Args:
         root_data_dir: Path to the high-level data directory.
@@ -75,11 +85,18 @@ class KWPredDatasetConfig:
             :paramref:`root_data_dir` to the directory containing\
             precomputed video embeddings. See :mod:`.kw_pred` for more\
             details on video embeddings (VE).
+        annot_rel_dir: Relative path with respect to\
+            :paramref:`root_data_dir` to the directory containing\
+            ``.csv`` files with annotations of the\
+            ``ISD-Sust-006-Engine`` category for each movie.
         klk_wavs_rel_dir: Relative path with respect to\
             :paramref:`root_data_dir` to the directory containing\
             ``.wav`` files extracted from ``.klk`` files. See\
             :mod:`.kw_pred` for more details on ``.klk`` ``.wav``\
             predictions (KW).
+        num_klk_wavs_corners: Number of corners in the ``.klk``\
+            ``.wav`` files to model.
+        num_seconds: Number of seconds per sequence.
     """
 
     root_data_dir: str = "/media/DATA/"
@@ -92,7 +109,10 @@ class KWPredDatasetConfig:
     video_embeddings_rel_dir: str = (
         "transformed_data/video_embeddings/dinov2/dinov2_vitl14/"
     )
+    annot_rel_dir: str = "ISD-Sust-006-Engine/"
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
+    num_klk_wavs_corners: An[int, ge(1), le(4)]
+    num_seconds: An[int, ge(1)] = 10
 
 
 class KWPredDataset(Dataset[dict[str, Tensor]]):
@@ -103,26 +123,50 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     Attributes:
         config (:class:`KWPredDataConfig`): See :paramref:`config`.
-
-        content_ids (``list[int]``): List of valid content IDs.
+        load_data (``Callable[[int], dict[str, Tensor]]``): Function to\
+            load data given an index.
+        num_data_points (``int``): Number of data points in the dataset.
     """
 
     def __init__(self: "KWPredDataset", config: KWPredDatasetConfig) -> None:
         self.config = config
         paths = KWPredDatasetPaths(
-            audio_embeddings_dir=Path(
-                config.root_data_dir + config.audio_embeddings_rel_dir,
+            ae_dir=(
+                Path(
+                    config.root_data_dir + config.audio_embeddings_rel_dir,
+                )
+                if config.audio_embeddings_rel_dir
+                else None
             ),
-            audio_stft_dir=Path(
-                config.root_data_dir + config.audio_stft_rel_dir,
+            af_dir=(
+                Path(
+                    config.root_data_dir + config.audio_stft_rel_dir,
+                )
+                if config.audio_stft_rel_dir
+                else None
             ),
-            video_embeddings_dir=Path(
-                config.root_data_dir + config.video_embeddings_rel_dir,
+            ve_dir=(
+                Path(
+                    config.root_data_dir + config.video_embeddings_rel_dir,
+                )
+                if config.video_embeddings_rel_dir
+                else None
             ),
-            klk_wavs_dir=Path(config.root_data_dir + config.klk_wavs_rel_dir),
+            kw_dir=(
+                Path(config.root_data_dir + config.klk_wavs_rel_dir)
+                if config.klk_wavs_rel_dir
+                else None
+            ),
+            an_dir=(
+                Path(config.root_data_dir + config.annot_rel_dir)
+                if config.annot_rel_dir
+                else None
+            ),
         )
         self.load_data, self.num_data_points = create_load_function(
             paths=paths,
+            num_klk_wavs_corners=config.num_klk_wavs_corners,
+            duration_second=config.num_seconds,
         )
 
     def __len__(self: "KWPredDataset") -> int:

@@ -1,23 +1,22 @@
-""":class:`KWPredDataset` + :class:`KWPredDataModule` & its config, ."""
+""":class:`KWPredDataModule` + its config."""
 
 from dataclasses import dataclass
-from pathlib import Path
 from typing import Annotated as An
-from functools import partial
-from torch import Tensor
-from torch.utils.data import Dataset, random_split
+
+from torch.utils.data import random_split
 
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from .dataset import KWPredDataset
 from cneuromax.utils.beartype import ge, lt, one_of
+
+from .dataset import KWPredDataset
 
 
 @dataclass
 class KWPredDatamoduleConfig(BaseDataModuleConfig):
-    """:class:`KWPredDataModule` config.
+    """Holds :class:`KWPredDataModule` config values.
 
     Args:
         val_percentage: Percentage of the training dataset to use for\
@@ -46,16 +45,15 @@ class KWPredDataModule(BaseDataModule):
     def __init__(
         self: "KWPredDataModule",
         config: KWPredDatamoduleConfig,
-        dataset: partial[KWPredDataset],
+        dataset: KWPredDataset,
     ) -> None:
         super().__init__(config=config)
         self.config: KWPredDatamoduleConfig
+        self.dataset = dataset
         self.train_val_split = (
             1 - config.val_percentage,
             config.val_percentage,
         )
-        self.dataset_partial = dataset
-
 
     def setup(
         self: "KWPredDataModule",
@@ -67,9 +65,8 @@ class KWPredDataModule(BaseDataModule):
             stage: Current stage type.
         """
         if stage == "fit":
-            dataset = KWPredDataset(paths=self.paths,
             self.datasets.train, self.datasets.val = random_split(
-                dataset=dataset,
+                dataset=self.dataset,
                 lengths=self.train_val_split,
             )
         else:  # stage == "test":
