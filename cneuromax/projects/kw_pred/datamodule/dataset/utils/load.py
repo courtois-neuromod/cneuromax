@@ -12,59 +12,39 @@ from torch import Tensor
 from .paths import KWPredDatasetPaths
 
 
-def interpolate(
-    data: Float32[Tensor, " num_samples num_features"],
-) -> Float32[Tensor, " 4000 data_dim"]:
-    """Interpolates the 10 second data to 400 Hz.
-
-    Args:
-        data: The data to interpolate.
-
-    Returns:
-        The interpolated data.
-    """
-    data = rearrange(
-        tensor=data,
-        pattern="num_samples num_features -> 1 num_features num_samples",
-    )
-    data: Float32[Tensor, " 1 num_features 4000"] = f.interpolate(
-        input=data,
-        size=4000,
-    )
-    return rearrange(
-        tensor=data,
-        pattern="1 num_features 4000 -> 4000 num_features",
-    )
-
-
 def load_data(
     paths: KWPredDatasetPaths,
     content_id: int,
     starting_time: float,
     duration_second: int,
+    num_klk_wav_corners: int,
 ) -> dict[str, Tensor]:
     """Loads :paramref:`duration_second` seconds of data.
 
     Args:
         paths: See :class:`.KWPredDatasetPaths`.
         content_id: See :mod:`.kw_pred` terminology.
-        starting_time: The specific time-point at which to
-        duration_second: The duration of the data.
+        starting_time: Self-explanatory.
+        duration_second: See\
+            :paramref:`~.KWPredDatasetConfig.duration_second`.
+        num_klk_wav_corners: See\
+            :paramref:`~.KWPredDatasetConfig.num_klk_wav_corners`.
 
     Returns:
-        A dictionary with either keys "AE", "AS", "VE", "KW BL", "KW BR",\
-            "KW FL" & "KW FR" + the corresponding :class:`torch.Tensor`\
-            data.
+        A dictionary mapping from strings to :class:`torch.Tensor`\
+            data. For conditional generation, the keys are a subset of\
+            the keys "AE", "AF", "VE" and a subset of "KW BL", "KW BR",\
+            "KW FL" & "KW FR". For unconditional generation, the keys\
+            are a subset of "KW BL", "KW BR", "KW FL" & "KW FR".
     """
-    data_dict = {}
+    transformed_data_dict = {}
     if paths.ae_dir:
         ae_data: Float32[Tensor, " num_ae_samples num_ae_1 num_ae_2"] = (
             load_transformed_data(
                 transformed_data_dir=paths.ae_dir,
                 transformed_data_type="AE",
                 content_id=content_id,
-                starting_time=starting_time,
-                duration_second=duration_second,
+                starting_second=int(starting_time),
             )
         )
         # Average out the second dimension.
@@ -72,50 +52,48 @@ def load_data(
             input=ae_data,
             dim=1,
         )
-        ae_data: Float32[Tensor, " 4000 num_ae"] = interpolate(
-            data=ae_data,
+        ae_data: Float32[Tensor, " 4000 num_ae"] = (
+            interpolate_transformed_data(data=ae_data)
         )
-        data_dict["AE"] = ae_data
+        transformed_data_dict["AE"] = ae_data
     if paths.af_dir:
         af_data: Float32[Tensor, " num_af_samples num_af"] = (
             load_transformed_data(
                 transformed_data_dir=paths.af_dir,
                 transformed_data_type="AF",
                 content_id=content_id,
-                starting_time=starting_time,
-                duration_second=duration_second,
+                starting_second=int(starting_time),
             )
         )
-        af_data: Float32[Tensor, " 4000 num_af"] = interpolate(
-            data=af_data,
+        af_data: Float32[Tensor, " 4000 num_af"] = (
+            interpolate_transformed_data(data=af_data)
         )
-        data_dict["AF"] = af_data
+        transformed_data_dict["AF"] = af_data
     if paths.ve_dir:
         ve_data: Float32[Tensor, " num_ve_samples num_ve"] = (
             load_transformed_data(
                 transformed_data_dir=paths.ve_dir,
                 transformed_data_type="VE",
                 content_id=content_id,
-                starting_time=starting_time,
-                duration_second=duration_second,
+                starting_second=int(starting_time),
             )
         )
-        ve_data: Float32[Tensor, " 4000 num_ve"] = interpolate(
-            data=ve_data,
+        ve_data: Float32[Tensor, " 4000 num_ve"] = (
+            interpolate_transformed_data(data=ve_data)
         )
-        data_dict["VE"] = ve_data
+        transformed_data_dict["VE"] = ve_data
 
-    kw_data: Float32[Tensor, " 4000"] = load_kw_data(
+    kw_data: dict[
+        str,
+        Float32[Tensor, " 4000"] | Float32[Tensor, " dur_sec*400"],
+    ] = load_kw_data(
         kw_dir=paths.kw_dir,
         content_id=content_id,
-        starting_second=starting_second,
+        starting_time=starting_time,
+        duration_second=duration_second,
+        num_klk_wav_corners=num_klk_wav_corners,
     )
-    return {
-        "AE": ae_data,
-        "AF": af_data,
-        "VE": ve_data,
-        **kw_data,
-    }
+    return {**transformed_data_dict, **kw_data}
 
 
 def get_transformed_data_path(
@@ -158,7 +136,10 @@ def load_transformed_data(
     transformed_data_type: str,
     content_id: int,
     starting_second: int,
-) -> Float32[Tensor, " num_samples"]:
+) -> (
+    Float32[Tensor, " num_samples num_features"]
+    | Float32[Tensor, " num_samples num_features_1 num_features_2"]
+):
     """Loads 10 seconds of transformed data.
 
     Args:
@@ -174,13 +155,42 @@ def load_transformed_data(
             :paramref:`starting_second` to :paramref:`starting_second`\
             + 10.
     """
-    return torch.load(
+    data: (
+        Float32[Tensor, " num_samples num_features"]
+        | Float32[Tensor, " num_samples num_features_1 num_features_2"]
+    ) = torch.load(
         get_transformed_data_path(
             transformed_data_dir=transformed_data_dir,
             transformed_data_type=transformed_data_type,
             content_id=content_id,
             starting_second=starting_second,
         ),
+    )
+    return data
+
+
+def interpolate_transformed_data(
+    data: Float32[Tensor, " num_samples num_features"],
+) -> Float32[Tensor, " 4000 data_dim"]:
+    """Interpolates the 10 second data to 400 Hz.
+
+    Args:
+        data: The data to interpolate.
+
+    Returns:
+        The interpolated data.
+    """
+    data: Float32[Tensor, " 1 num_features num_samples"] = rearrange(
+        tensor=data,
+        pattern="num_samples num_features -> 1 num_features num_samples",
+    )
+    data: Float32[Tensor, " 1 num_features 4000"] = f.interpolate(
+        input=data,
+        size=4000,
+    )
+    return rearrange(
+        tensor=data,
+        pattern="1 num_features 4000 -> 4000 num_features",
     )
 
 
@@ -189,6 +199,7 @@ def load_kw_data(
     content_id: int,
     starting_time: float,
     duration_second: int,
+    num_klk_wav_corners: int,
 ) -> dict[str, Float32[Tensor, " num_samples"]]:
     """Loads ``.klk`` ``.wav`` data.
 
@@ -196,7 +207,10 @@ def load_kw_data(
         kw_dir: See :paramref:`~.KWPredDatasetPaths.kw_dir`.
         content_id: See :mod:`.kw_pred` terminology.
         starting_time: See :paramref:`~load_data.starting_time`.
-        duration_second: See :paramref:`~load_data.duration_second`.
+        duration_second: See\
+            :paramref:`~.KWPredDatasetConfig.duration_second`.
+        num_klk_wav_corners: See\
+            :paramref:`~.KWPredDatasetConfig.num_klk_wav_corners`.
 
     Returns:
         The ``.klk`` ``.wav`` data for the :paramref:`content_id` from\
@@ -206,15 +220,15 @@ def load_kw_data(
     data: dict[str, Float32[Tensor, " num_samples"]] = {}
     kw_content_id_dir = kw_dir / f"ID{content_id}/"
     # Load data
-    corners = ["BL", "BR", "FL", "FR"][:]
-    for pos in ["BL", "BR", "FL", "FR"]:
+    corners = ["BL", "BR", "FL", "FR"][:num_klk_wav_corners]
+    for pos in corners:
         data_file = kw_content_id_dir / f"/ID{content_id}_{pos}.wav"
         pos_data, _ = torchaudio.load(data_file)
         pos_data: Float32[Tensor, " total_num_samples"] = pos_data.squeeze(0)
         data[f"KW {pos}"] = pos_data
     # Truncate data
     starting_sample = int(starting_time * 400)
-    ending_sample = int((starting_time + duration_second) * 400)
+    ending_sample = starting_sample + duration_second * 400
     for pos in ["BL", "BR", "FL", "FR"]:
         data[f"KW {pos}"] = data[f"KW {pos}"][starting_sample:ending_sample]
     return data

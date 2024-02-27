@@ -1,4 +1,4 @@
-""":func:`create_load_function`."""
+""":func:`create_load_function` and its helper functions."""
 
 from collections.abc import Callable
 from pathlib import Path
@@ -14,9 +14,8 @@ from .paths import KWPredDatasetPaths
 
 def create_load_function(
     paths: KWPredDatasetPaths,
-    num_klk_wavs_corners: int,
     duration_second: int,
-) -> tuple[Callable[[int], dict[str, Tensor]], int]:
+) -> tuple[Callable[[int, int, int], dict[str, Tensor]], int]:
     """Creates a function to load data given an index.
 
     Args:
@@ -27,62 +26,82 @@ def create_load_function(
             :paramref:`~.KWPredDatasetConfig.duration_second`.
 
     Returns:
-        A function that inputs an index and returns the data for that\
-            index + the number of data points.
+        A function that inputs an index and returns the corresponding\
+            data.
     """
     overlapping_content_ids = get_overlapping_content_ids(
         paths=paths,
     )
-    if paths.ae_dir or paths.af_dir or paths.ve_dir:
-        return create_conditional_generation_load_function(
+    data_map = (
+        create_conditional_generation_data_map(
             paths=paths,
             overlapping_content_ids=overlapping_content_ids,
-            num_klk_wavs_corners=num_klk_wavs_corners,
+            duration_second=duration_second,
         )
-    return create_unconditional_generation_load_function(
-        paths=paths,
-        overlapping_content_ids=overlapping_content_ids,
-        num_klk_wavs_corners=num_klk_wavs_corners,
-        duration_second=duration_second,
+        if paths.ae_dir or paths.af_dir or paths.ve_dir
+        else create_unconditional_generation_data_map(
+            paths=paths,
+            overlapping_content_ids=overlapping_content_ids,
+            duration_second=duration_second,
+        )
     )
 
+    def load_fn(
+        idx: int,
+        duration_second: int,
+        num_klk_wav_corners: int,
+    ) -> dict[str, Tensor]:
 
-def create_unconditional_generation_load_function(
+        content_id, starting_time = data_map[idx]
+        return load_data(
+            paths=paths,
+            content_id=content_id,
+            starting_time=starting_time,
+            duration_second=duration_second,
+            num_klk_wav_corners=num_klk_wav_corners,
+        )
+
+    return load_fn, len(data_map)
+
+
+def create_unconditional_generation_data_map(
     paths: KWPredDatasetPaths,
-    overlapping_content_ids: list[str],
-    num_klk_wavs_corners: int,
+    overlapping_content_ids: list[int],
     duration_second: int,
-) -> tuple[Callable[[int], dict[str, Tensor]], int]:
+) -> list[tuple[int, float]]:
     """:func:`create_load_function` for unconditional generation.
 
     Args:
         paths: See :class:`.KWPredDatasetPaths`.
-        overlapping_content_ids: See :func:`.get_overlapping_content_ids`.
+        overlapping_content_ids: See\
+            :func:`.get_overlapping_content_ids`.
         num_klk_wavs_corners: See\
             :paramref:`~.KWPredDatasetConfig.num_klk_wavs_corners`.
         duration_second: See\
             :paramref:`~.KWPredDatasetConfig.duration_second`.
 
     Returns:
-        A function that inputs an index and returns the data.
+        A list of tuples, each containing a content ID and a starting\
+            second.
     """
     if not isinstance(paths.an_dir, Path):
-        error_msg = "The annotation directory path is missing."
+        error_msg = "`an_dir` is missing."
         raise TypeError(error_msg)
+    data_map: list[tuple[int, float]] = []
     for content_id in overlapping_content_ids:
-        # Find the annotation file, we have the content ID
-        # but the file name is of type
-        # ID1506<...>.csv
+        # Find and load the annotation file
         matching_files = paths.an_dir.glob(f"ID{content_id}*.csv")
         if len(list(matching_files)) != 1:
             continue
         file = next(matching_files)
         data_df = pd.read_csv(file)
-        # Find all segments
+        # Find all annotation blocks
         time_tuples: list[tuple[float, float]] = []
         for row in data_df.iterrows():
             time_on = row[1]["TimeOn"]
             time_off = row[1]["TimeOff"]
+            # If an annotation block is immediately followed by another
+            # annotation block, we merge them
             if len(time_tuples) > 0 and np.allclose(
                 a=time_on,
                 b=time_tuples[-1][1],
@@ -93,80 +112,50 @@ def create_unconditional_generation_load_function(
                 time_tuples[-1] = (time_tuples[-1][0], time_off)
                 continue
             time_tuples.append((time_on, time_off))
-        # Split the segments into chunks
-        chunks: list[tuple[float, float]] = []
         for time_tuple in time_tuples:
             duration = time_tuple[1] - time_tuple[0]
             num_segments = int(duration / duration_second)
             for i in range(num_segments):
                 start = time_tuple[0] + i * duration_second
-                end = start + duration_second
-                chunks.append((start, end))
+                data_map.append((content_id, start))
 
-    def load_fn(idx: int) -> dict[str, Tensor]:
-        corresponding_second = idx * 10
-        # Find the content ID
-        for i, cum_length in enumerate(cumulative_content_ids_lengths):
-            if corresponding_second < cum_length:
-                content_id = overlapping_content_ids[i - 1]
-                break
-        # Find the starting second
-        starting_second = (
-            corresponding_second - cumulative_content_ids_lengths[i]
-        )
-        # Load the data
-        return load_data(
-            paths=paths,
-            content_id=content_id,
-            starting_second=starting_second,
-        )
-
-    return load_fn, num_data_points
+    return data_map
 
 
-def create_conditional_generation_load_function(
+def create_conditional_generation_data_map(
     paths: KWPredDatasetPaths,
-    overlapping_content_ids: list[str],
-) -> tuple[Callable[[int], dict[str, Tensor]], int]:
+    overlapping_content_ids: list[int],
+    duration_second: int,
+) -> list[tuple[int, float]]:
+    """Self-explanatory.
 
-    content_ids_lengths = []
+    Args:
+        paths: See :class:`.KWPredDatasetPaths`.
+        overlapping_content_ids: See\
+            :func:`.get_overlapping_content_ids`.
+        duration_second: See\
+            :paramref:`~.KWPredDatasetConfig.duration_second`.
+
+    Returns:
+        See return value of\
+            :func:`.create_unconditional_generation_data_map`.
+    """
+    data_dir = paths.ae_dir or paths.af_dir or paths.ve_dir
+    if not isinstance(dir, Path):
+        error_msg = "At least one of `ae_dir`, `af_dir`, `ve_dir` is missing."
+        raise TypeError(error_msg)
+    transformed_data_type = (
+        "AE" if paths.ae_dir else "AF" if paths.af_dir else "VE"
+    )
+    data_map: list[tuple[int, float]] = []
     for content_id in overlapping_content_ids:
         starting_second = 0
         while get_transformed_data_path(
-            transformed_data_dir=paths.ae_dir,
-            transformed_data_type="AE",
+            transformed_data_dir=data_dir,
+            transformed_data_type=transformed_data_type,
             content_id=content_id,
             starting_second=starting_second,
         ).exists():
-            starting_second += 10
-        # Since the last one didn't exist, we need to subtract 10
-        content_ids_lengths.append(starting_second - 10)
-    total_length = sum(content_ids_lengths)
-    num_data_points = total_length // 10
-    # Create a list of cumulative content ID lengths
-    cumulative_content_ids_lengths = [0]
-    # 0, INT_1, INT_1 + INT_2, INT_1 + INT_2 + INT_3, ...
-    for length in content_ids_lengths:
-        cumulative_content_ids_lengths.append(
-            cumulative_content_ids_lengths[-1] + length,
-        )
-
-    def load_fn(idx: int) -> dict[str, Tensor]:
-        corresponding_second = idx * 10
-        # Find the content ID
-        for i, cum_length in enumerate(cumulative_content_ids_lengths):
-            if corresponding_second < cum_length:
-                content_id = overlapping_content_ids[i - 1]
-                break
-        # Find the starting second
-        starting_second = (
-            corresponding_second - cumulative_content_ids_lengths[i]
-        )
-        # Load the data
-        return load_data(
-            paths=paths,
-            content_id=content_id,
-            starting_second=starting_second,
-        )
-
-    return load_fn, num_data_points
+            data_map.append((content_id, starting_second))
+            starting_second += duration_second
+    return data_map

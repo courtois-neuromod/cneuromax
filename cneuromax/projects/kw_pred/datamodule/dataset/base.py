@@ -66,10 +66,6 @@ class KWPredDatasetConfig:
                         ├── ID2368_0.0_10.0.pt
                         └── ...
 
-    TODO: When inputting `audio_embeddings`, `audio_stft` and/or
-    `video_embeddings`, allow sequence lengths to be different from 10
-    seconds & allow them to overlap.
-
     Args:
         root_data_dir: Path to the high-level data directory.
         audio_embeddings_rel_dir: Relative path with respect to\
@@ -96,7 +92,7 @@ class KWPredDatasetConfig:
             predictions (KW).
         num_klk_wavs_corners: Number of corners in the ``.klk``\
             ``.wav`` files to model.
-        num_seconds: Number of seconds per sequence.
+        duration_seconds: Length of each data point in seconds.
     """
 
     root_data_dir: str = "/media/DATA/"
@@ -111,8 +107,8 @@ class KWPredDatasetConfig:
     )
     annot_rel_dir: str = "ISD-Sust-006-Engine/"
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
-    num_klk_wavs_corners: An[int, ge(1), le(4)]
-    num_seconds: An[int, ge(1)] = 10
+    num_klk_wavs_corners: An[int, ge(1), le(4)] = 1
+    duration_seconds: An[int, ge(1)] = 10
 
 
 class KWPredDataset(Dataset[dict[str, Tensor]]):
@@ -123,8 +119,8 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     Attributes:
         config (:class:`KWPredDataConfig`): See :paramref:`config`.
-        load_data (``Callable[[int], dict[str, Tensor]]``): Function to\
-            load data given an index.
+        load_data_fn (``Callable[[int], dict[str, Tensor]]``): Function\
+            to load data given an index.
         num_data_points (``int``): Number of data points in the dataset.
     """
 
@@ -152,31 +148,30 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                 if config.video_embeddings_rel_dir
                 else None
             ),
-            kw_dir=(
-                Path(config.root_data_dir + config.klk_wavs_rel_dir)
-                if config.klk_wavs_rel_dir
-                else None
-            ),
+            kw_dir=(Path(config.root_data_dir + config.klk_wavs_rel_dir)),
             an_dir=(
                 Path(config.root_data_dir + config.annot_rel_dir)
                 if config.annot_rel_dir
                 else None
             ),
         )
-        self.load_data, self.num_data_points = create_load_function(
+        self.load_data_fn, self.num_data_points = create_load_function(
             paths=paths,
-            num_klk_wavs_corners=config.num_klk_wavs_corners,
-            duration_second=config.num_seconds,
+            duration_second=config.duration_seconds,
         )
 
     def __len__(self: "KWPredDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
-        return len(self.num_data_points)
+        return self.num_data_points
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
         while True:  # spooky (~'o')~ ...
             try:
-                return self.load_data(idx=idx)
+                return self.load_data_fn(
+                    idx,
+                    self.config.num_klk_wavs_corners,
+                    self.config.duration_seconds,
+                )
             except Exception:  # noqa: PERF203, BLE001
-                idx = (idx + 1) % len(self.num_data_points)
+                idx = (idx + 1) % self.num_data_points

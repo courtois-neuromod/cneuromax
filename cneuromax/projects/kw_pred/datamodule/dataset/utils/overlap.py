@@ -15,10 +15,9 @@ def get_overlapping_content_ids(paths: KWPredDatasetPaths) -> list[int]:
         The complete list of content IDs that are present in all three\
             data directories.
     """
-    ids = list[list[int]]
-    for path in paths:
-        if path:
-            ids.append(get_data_content_ids(path))
+    ids: list[list[int]] = [
+        get_data_content_ids(data_dir=path) for path in paths if path
+    ]
     # Only select the content IDs that are present in all data sources
     overlapping_content_ids = (
         # >>> a = [1,2,3,4,5]

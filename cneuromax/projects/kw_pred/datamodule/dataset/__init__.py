@@ -6,6 +6,8 @@ from cneuromax.utils.hydra_zen import pfs_builds
 
 from .base import KWPredDataset, KWPredDatasetConfig
 
+__all__ = ["KWPredDataset"]
+
 
 def store_configs(store: ZenStore) -> None:
     """Stores :mod:`.kw_pred` ``datamodule/dataset`` group configs.

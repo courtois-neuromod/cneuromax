@@ -1,5 +1,6 @@
 """:class:`KWPredDatasetPaths`."""
 
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -27,15 +28,14 @@ class KWPredDatasetPaths:
             or :obj:`None`.
         kw_dir: Concatenation of\
             :paramref:`~.KWPredDatasetConfig.root_data_dir` and\
-            :paramref:`~.KWPredDatasetConfig.klk_wavs_rel_dir`\
-            or :obj:`None`.
+            :paramref:`~.KWPredDatasetConfig.klk_wavs_rel_dir`.
     """
 
     ae_dir: Path | None
     af_dir: Path | None
     ve_dir: Path | None
     an_dir: Path | None
-    kw_dir: Path | None
+    kw_dir: Path
 
     def __post_init__(self: "KWPredDatasetPaths") -> None:
         """Post-initialization checks.
@@ -56,7 +56,7 @@ class KWPredDatasetPaths:
             )
             raise ValueError(error_msg)
 
-    def __iter__(self: "KWPredDatasetPaths") -> iter[Path | None]:
+    def __iter__(self: "KWPredDatasetPaths") -> Iterator[Path | None]:
         """See return.
 
         Returns:
