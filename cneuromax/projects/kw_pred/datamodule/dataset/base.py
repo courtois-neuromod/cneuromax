@@ -148,12 +148,12 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                 if config.video_embeddings_rel_dir
                 else None
             ),
-            kw_dir=(Path(config.root_data_dir + config.klk_wavs_rel_dir)),
             an_dir=(
                 Path(config.root_data_dir + config.annot_rel_dir)
                 if config.annot_rel_dir
                 else None
             ),
+            kw_dir=(Path(config.root_data_dir + config.klk_wavs_rel_dir)),
         )
         self.load_data_fn, self.num_data_points = create_load_function(
             paths=paths,

@@ -36,10 +36,10 @@ class KWPredDataModule(BaseDataModule):
     Attributes:
         config (:class:`KWPredDatamoduleConfig`): See\
             :paramref:`config`.
+        dataset (:class:`KWPredDataset`): See :paramref:`dataset`.
         train_val_split (``tuple[float, float]``): Percentages of the\
             data to use for training and validation, respectively.\
             Sums to 1.
-        paths (:class:`.KWPredPaths`): See :class:`.KWPredPaths`.
     """
 
     def __init__(

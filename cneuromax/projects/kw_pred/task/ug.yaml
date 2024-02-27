@@ -1,5 +1,6 @@
 # @package _global_
 defaults:
   - /datamodule: kw_pred
+  - /datamodule/dataset: kw_pred
   - /litmodule: kw_pred
   - _self_
