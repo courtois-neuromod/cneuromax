@@ -1,10 +1,9 @@
 """:class:`BaseClassificationLitModule` & its config."""
 
+import logging
 from abc import ABCMeta
 from collections.abc import Callable  # noqa: TCH003
-from copy import copy
 from dataclasses import dataclass
-from functools import partial
 from typing import Annotated as An
 from typing import Any
 
@@ -12,26 +11,26 @@ import torch
 import torch.nn.functional as f
 import wandb
 from jaxtyping import Float, Int
-from torch import Tensor, nn
-from torch.optim import Optimizer
-from torch.optim.lr_scheduler import LRScheduler
+from torch import Tensor
 from torchmetrics.classification import MulticlassAccuracy
+from wandb.sdk.data_types.base_types.wb_value import WBValue
 
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule import (
+    BaseLitModule,
+    BaseLitModuleConfig,
+)
 from cneuromax.utils.beartype import ge, one_of
 
 
 @dataclass
-class BaseClassificationLitModuleConfig:
+class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`BaseClassificationLitModule` config values.
 
     Args:
         num_classes: Number of classes to classify between.
-        log_val_preds: Whether to log validation predictions to W&B.
     """
 
-    num_classes: An[int, ge(2)]
-    log_val_preds: bool = False
+    num_classes: An[int, ge(2)] = 2
 
 
 class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -46,33 +45,36 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
     Attributes:
         accuracy\
             (:class:`~torchmetrics.classification.MulticlassAccuracy`)
+        wandb_table (:class:`~wandb.Table`): A table to upload to W&B\
+            containing validation data.
+
         wandb_input_data_wrapper (:`callable`): A wrapper to be used\
             around the input datapoint when logging to W&B.
-        wandb_table: A W&B table to store validation data.
     """
 
     def __init__(
         self: "BaseClassificationLitModule",
-        config: BaseClassificationLitModuleConfig,
-        nnmodule: nn.Module,
-        optimizer: partial[Optimizer],
-        scheduler: partial[LRScheduler],
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401
     ) -> None:
-        super().__init__(
-            nnmodule=nnmodule,
-            optimizer=optimizer,
-            scheduler=scheduler,
-        )
-        self.config = config
+        super().__init__(*args, **kwargs)
+        self.config: BaseClassificationLitModuleConfig
         # Accuracy metric.
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
-            num_classes=config.num_classes,
+            num_classes=self.config.num_classes,
         )
         # W&B validation attributes.
-        self.wandb_input_data_wrapper: Callable[..., Any] = lambda x: x
-        self.wandb_table: wandb.Table = wandb.Table(  # type: ignore[no-untyped-call]
-            columns=["idx", "epoch", "x", "y", "probs", "pred"],
-        )
+        if self.config.log_val_wandb:
+            self.wandb_columns = ["x", "y", "y_hat_probs", "y_hat"]
+            if not (
+                getattr(self, "wandb_x_wrapper")  # noqa: B009
+                and isinstance(self.wandb_x_wrapper, WBValue)
+            ):
+                logging.warning(
+                    "`wandb_x_wrapper` attribute not set/invalid. "
+                    "Defaulting to no wrapper.",
+                )
+                self.wandb_x_wrapper: Callable[..., Any] = lambda x: x
 
     def step(
         self: "BaseClassificationLitModule",
@@ -96,11 +98,11 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         x: Float[Tensor, " batch_size *x_shape"] = batch[0]
         y: Int[Tensor, " batch_size"] = batch[1]
         logits: Float[Tensor, " batch_size num_classes"] = self.nnmodule(x)
-        preds: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
-        accuracy: Float[Tensor, " "] = self.accuracy(preds=preds, target=y)
+        y_hat: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
+        accuracy: Float[Tensor, " "] = self.accuracy(preds=y_hat, target=y)
         self.log(name=f"{stage}/acc", value=accuracy)
-        if stage == "val" and self.config.log_val_preds:
-            self.save_val_data(x=x, y=y, logits=logits, preds=preds)
+        if stage == "val" and self.config.log_val_wandb:
+            self.save_val_data(x=x, y=y, logits=logits, y_hat=y_hat)
         return f.cross_entropy(input=logits, target=y)
 
     def save_val_data(
@@ -108,46 +110,28 @@ class BaseClassificationLitModule(BaseLitModule, metaclass=ABCMeta):
         x: Float[Tensor, " batch_size *x_shape"],
         y: Int[Tensor, " batch_size"],
         logits: Float[Tensor, " batch_size num_classes"],
-        preds: Int[Tensor, " batch_size"],
+        y_hat: Int[Tensor, " batch_size"],
     ) -> None:
         """Saves data computed during validation for later use.
 
         Args:
             x: The input data.
-            y: The target data.
-            logits: The network's raw output.
-            preds: The model's predictions.
+            y: The target class.
+            logits: The network's raw `num_classes` output.
+            y_hat: The model's predicted class.
         """
-        x = x.cpu().numpy()
-        y = y.cpu().numpy()
-        probs = f.softmax(input=logits, dim=1).cpu().numpy()
-        preds = preds.cpu().numpy()
-        for x_i, y_i, probs_i, preds_i in zip(
-            x,
-            y,
-            probs,
-            preds,
+        for x_i, y_i, y_hat_i, y_hat_probs_i in zip(
+            x.cpu(),
+            y.cpu(),
+            y_hat.cpu(),
+            f.softmax(input=logits, dim=1).cpu(),
             strict=False,
         ):
-            self.val_data.append([x_i, y_i, probs_i, preds_i])
-
-    def on_validation_epoch_end(self: "BaseClassificationLitModule") -> None:
-        """Called at the end of the validation epoch."""
-        if not self.config.log_val_preds:
-            return
-        for i, val_data in enumerate(self.val_data):
-            x_i, y_i, probs_i, preds_i = val_data
-            self.wandb_table.add_data(  # type: ignore[no-untyped-call]
-                i,
-                self.curr_val_epoch,
-                self.wandb_input_data_wrapper(x_i),
-                y_i,
-                probs_i.tolist(),
-                preds_i,
+            self.val_wandb_data.append(
+                [
+                    self.wandb_x_wrapper(x_i),
+                    y_i,
+                    y_hat_i,
+                    y_hat_probs_i.tolist(),
+                ],
             )
-        # 1) Static type checking discrepancy:
-        # `logger.experiment` is a `wandb.wandb_run.Run` instance.
-        # 2) Cannot log the same table twice:
-        # https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291
-        self.logger.experiment.log({"val_data": copy(self.wandb_table)})  # type: ignore[union-attr]
-        super().on_validation_epoch_end()

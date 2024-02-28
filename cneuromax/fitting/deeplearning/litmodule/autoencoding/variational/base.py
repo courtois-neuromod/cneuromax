@@ -4,16 +4,14 @@ from dataclasses import dataclass
 from typing import Annotated as An
 
 import torch
-import torch.nn as nn
-import torch.nn.functional as F
 import torch.nn.functional as f
 from jaxtyping import Float
-from torch import Tensor
+from torch import Tensor, nn
 from typeguard import typechecked
 
 from cneuromax.utils.beartype import one_of
 
-from .base import BaseAutoencodingLitModule
+from ..base import BaseAutoencodingLitModule
 
 
 @dataclass

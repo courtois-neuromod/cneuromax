@@ -1,18 +1,35 @@
-""":class:`BaseLitModule`."""
+""":class:`BaseLitModule` & its config."""
 
+import logging
 from abc import ABCMeta
+from collections.abc import Callable  # noqa: TCH003
+from copy import copy
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 from typing import Any, final
 
+import wandb
 from jaxtyping import Num
 from lightning.pytorch import LightningModule
 from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
+from wandb.sdk.data_types.base_types.wb_value import WBValue
 
 from cneuromax.fitting.deeplearning.utils.type import Batch_type
 from cneuromax.utils.beartype import one_of
+
+
+@dataclass
+class BaseLitModuleConfig:
+    """Holds :class:`BaseLitModule` config values.
+
+    Args:
+        log_val_wandb: Whether to log validation data to :mod:`wandb`.
+    """
+
+    log_val_wandb: bool = False
 
 
 class BaseLitModule(LightningModule, metaclass=ABCMeta):
@@ -46,6 +63,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         signatures to find the correct types.
 
     Args:
+        config: See :class:`BaseLitModuleConfig`.
         nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\
             instance.
         optimizer: A :mod:`torch` ``Optimizer`` to be used by this\
@@ -57,14 +75,18 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             :paramref:`optimizer` is required for its initialization.
 
     Attributes:
+        config (:class:`BaseLitModuleConfig`): See\
+            :paramref:`~BaseLitModule.config`.
         nnmodule (:class:`torch.nn.Module`): See\
             :paramref:`~BaseLitModule.nnmodule`.
         optimizer (:class:`torch.optim.Optimizer`): See\
             :paramref:`~BaseLitModule.optimizer`.
         scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\
             :paramref:`~BaseLitModule.scheduler`.
-        val_data (list): A list to store validation data.
-        curr_val_epoch (int): The current validation epoch.
+        val_wandb_data (`list`): A list of data collected during\
+            validation for logging to :mod:`wandb`.
+        curr_val_epoch (`int`): The current validation epoch.
+
 
     Raises:
         NotImplementedError: If the :meth:`step` method is not\
@@ -73,24 +95,62 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
 
     def __init__(
         self: "BaseLitModule",
+        config: BaseLitModuleConfig,
         nnmodule: nn.Module,
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
         super().__init__()
-        # Initialize PyTorch instance attributes
-        self.nnmodule = nnmodule
-        self.optimizer = optimizer(params=self.parameters())
-        self.scheduler = scheduler(optimizer=self.optimizer)
-        # Initialize validation logging attributes
-        self.val_data: list[list[Tensor]] = []
-        self.curr_val_epoch = 0
+        self.config = config
+        self.instantiate_torch_attributes(
+            nnmodule=nnmodule,
+            optimizer=optimizer,
+            scheduler=scheduler,
+        )
+        # Initialize W&B validation logging attributes
+        if config.log_val_wandb:
+            self.instantiate_wandb_attributes()
         # Verify `step` method.
         if not callable(getattr(self, "step", None)):
             error_msg = (
                 "The `BaseLitModule.step` method is not defined/not callable."
             )
             raise NotImplementedError(error_msg)
+
+    def instantiate_torch_attributes(
+        self: "BaseLitModule",
+        nnmodule: nn.Module,
+        optimizer: partial[Optimizer],
+        scheduler: partial[LRScheduler],
+    ) -> None:
+        """Instantiates :mod:`torch` attributes.
+
+        Args:
+            nnmodule: See :paramref:`~BaseLitModule.nnmodule`.
+            optimizer: See :paramref:`~BaseLitModule.optimizer`.
+            scheduler: See :paramref:`~BaseLitModule.scheduler`.
+        """
+        self.nnmodule = nnmodule
+        self.optimizer = optimizer(params=self.parameters())
+        self.scheduler = scheduler(optimizer=self.optimizer)
+
+    def instantiate_wandb_attributes(self: "BaseLitModule") -> None:
+        """Instantiates W&B attributes."""
+        self.curr_val_epoch = 0
+        self.val_wandb_data: list[Any] = []
+        if not (isinstance(getattr(self, "wandb_columns", None), list)):
+            error_msg = (
+                "The `wandb_columns` attribute is either not defined or "
+                "not a list. Define it or turn off W&B validation logging."
+            )
+            raise TypeError(error_msg)
+        self.wandb_table = wandb.Table(  # type: ignore[no-untyped-call]
+            columns=[
+                "data_idx",
+                "val_epoch",
+                *self.wandb_columns,
+            ],
+        )
 
     @final
     def stage_step(
@@ -155,12 +215,25 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         return self.stage_step(batch=batch, stage="val")
 
     def on_validation_start(self: "BaseLitModule") -> None:
-        """Resets :attr:`val_data`."""
-        self.val_data = []
+        """Resets :attr:`val_wandb_data` if logging w/ :mod:`wandb`."""
+        if self.config.log_val_wandb:
+            self.val_wandb_data = []
 
     def on_validation_epoch_end(self: "BaseLitModule") -> None:
-        """Increments :attr:`curr_val_epoch`."""
-        self.curr_val_epoch += 1
+        """Uploads :attr:`val_wandb_data` if logging w/ :mod:`wandb`."""
+        if self.config.log_val_wandb:
+            for i, val_wandb_data_i in enumerate(self.val_wandb_data):
+                self.wandb_table.add_data(  # type: ignore[no-untyped-call]
+                    i,
+                    self.curr_val_epoch,
+                    *val_wandb_data_i,
+                )
+            # 1) Static type checking discrepancy:
+            # `logger.experiment` is a `wandb.wandb_run.Run` instance.
+            # 2) Cannot log the same table twice:
+            # https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291
+            self.logger.experiment.log({"val_data": copy(self.wandb_table)})  # type: ignore[union-attr]
+            self.curr_val_epoch += 1
 
     @final
     def test_step(
