@@ -4,10 +4,10 @@ from jaxtyping import Num
 from torch import Tensor
 from transformers.tokenization_utils_base import BatchEncoding
 
-Batch_type = (
-    Num[Tensor, " ..."]
-    | tuple[Num[Tensor, " ..."], ...]
-    | list[Num[Tensor, " ..."]]
-    | dict[str, Num[Tensor, " ..."]]
+Batched_data_type = (
+    Num[Tensor, " batch_size ..."]
+    | tuple[Num[Tensor, " batch_size ..."], ...]
+    | list[Num[Tensor, " batch_size ..."]]
+    | dict[str, Num[Tensor, " batch_size ..."]]
     | BatchEncoding
 )
