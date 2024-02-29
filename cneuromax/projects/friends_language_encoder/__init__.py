@@ -1,7 +1,7 @@
 """Friends language finetuning ``project``."""
 
 from hydra_zen import ZenStore
-from transformers import AutoModelForMaskedLM
+from transformers import AutoModelForCausalLM
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
 from cneuromax.utils.hydra_zen import fs_builds
@@ -54,7 +54,7 @@ class TaskRunner(DeepLearningTaskRunner):
         )
         store(
             fs_builds(
-                AutoModelForMaskedLM.from_pretrained,
+                AutoModelForCausalLM.from_pretrained,
                 pretrained_model_name_or_path="${model_name}",
             ),
             name="friends_language_encoder",
