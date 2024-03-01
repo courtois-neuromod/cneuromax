@@ -1,6 +1,6 @@
 """:class:`BaseSpace` and its config."""
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
@@ -25,7 +25,7 @@ class BaseSpaceConfig:
     logging: bool = "${config.logging}"  # type: ignore[assignment]
 
 
-class BaseSpace(metaclass=ABCMeta):
+class BaseSpace(ABC):
     """Space Base class.
 
     A ``Space`` is a :mod:`torchrl` environment wrapper with which
