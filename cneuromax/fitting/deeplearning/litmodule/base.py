@@ -7,7 +7,6 @@ from typing import Annotated as An
 from typing import Any, final
 
 from jaxtyping import Num
-from lightning.pytorch import LightningModule
 from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
@@ -15,7 +14,7 @@ from torch.optim.lr_scheduler import LRScheduler
 from cneuromax.fitting.deeplearning.utils.type import Batched_data_type
 from cneuromax.utils.beartype import one_of
 
-from .mixin import WandbValLoggingMixin
+from .wandb_val_logging import WandbValLoggingLightningModule
 
 
 @dataclass
@@ -29,7 +28,7 @@ class BaseLitModuleConfig:
     log_val_wandb: bool = False
 
 
-class BaseLitModule(WandbValLoggingMixin, LightningModule, ABC):
+class BaseLitModule(WandbValLoggingLightningModule, ABC):
     """Base :mod:`lightning` ``LitModule``.
 
     Subclasses need to implement the :meth:`step` method that inputs
@@ -93,12 +92,7 @@ class BaseLitModule(WandbValLoggingMixin, LightningModule, ABC):
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
-        LightningModule.__init__(self)
-        WandbValLoggingMixin.__init__(
-            self,
-            logger=self.logger,
-            activate=config.log_val_wandb,
-        )
+        super().__init__(logs_val=config.log_val_wandb)
         self.config = config
         self.nnmodule = nnmodule
         self.optimizer = optimizer(params=self.parameters())
