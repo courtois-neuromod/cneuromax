@@ -1,6 +1,6 @@
 """:class:`BaseDataModule` + its datasets/config classes."""
 
-from abc import ABCMeta
+from abc import ABC
 from dataclasses import dataclass
 from typing import Annotated as An
 from typing import final
@@ -46,7 +46,7 @@ class BaseDataModuleConfig:
     device: An[str, one_of("cpu", "gpu")] = "${config.device}"
 
 
-class BaseDataModule(LightningDataModule, metaclass=ABCMeta):
+class BaseDataModule(LightningDataModule, ABC):
     """Base :mod:`lightning` ``DataModule``.
 
     With ``<phase>`` being any of ``train``, ``val``, ``test`` or

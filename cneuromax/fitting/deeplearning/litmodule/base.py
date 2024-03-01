@@ -1,27 +1,40 @@
-""":class:`BaseLitModule`."""
+""":class:`BaseLitModule` & its config."""
 
-from abc import ABCMeta
+from abc import ABC
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 from typing import Any, final
 
 from jaxtyping import Num
-from lightning.pytorch import LightningModule
 from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuromax.fitting.deeplearning.utils.type import Batch_type
+from cneuromax.fitting.deeplearning.utils.type import Batched_data_type
 from cneuromax.utils.beartype import one_of
 
+from .wandb_val_logging import WandbValLoggingLightningModule
 
-class BaseLitModule(LightningModule, metaclass=ABCMeta):
+
+@dataclass
+class BaseLitModuleConfig:
+    """Holds :class:`BaseLitModule` config values.
+
+    Args:
+        log_val_wandb: Whether to log validation data to :mod:`wandb`.
+    """
+
+    log_val_wandb: bool = False
+
+
+class BaseLitModule(WandbValLoggingLightningModule, ABC):
     """Base :mod:`lightning` ``LitModule``.
 
     Subclasses need to implement the :meth:`step` method that inputs
-    both ``batch`` (``tuple[torch.Tensor]``) and  ``stage`` (``str``)
-    arguments while returning the loss value(s) in the form of a
-    :class:`torch.Tensor`.
+    both ``data`` (`:class:`.Batched_data_type``) and  ``stage``
+    (``str``) arguments while returning the loss value(s) in the form of
+    a :class:`torch.Tensor`.
 
     Example definition:
 
@@ -30,8 +43,8 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
 
         def step(
             self: "BaseClassificationLitModule",
-            batch: tuple[
-                Float[Tensor, " batch_size *x_shape"],
+            data: tuple[
+                Float[Tensor, " batch_size *x_dim"],
                 Int[Tensor, " batch_size"],
             ],
             stage: An[str, one_of("train", "val", "test")],
@@ -39,13 +52,14 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             ...
 
     Note:
-        ``batch`` and loss value(s) type hints in this class are not
+        ``data`` and loss value(s) type hints in this class are not
         rendered properly in the documentation due to an\
         incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\
         Refer to the source code available next to the method\
         signatures to find the correct types.
 
     Args:
+        config: See :class:`BaseLitModuleConfig`.
         nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\
             instance.
         optimizer: A :mod:`torch` ``Optimizer`` to be used by this\
@@ -57,34 +71,32 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
             :paramref:`optimizer` is required for its initialization.
 
     Attributes:
+        config (:class:`BaseLitModuleConfig`): See\
+            :paramref:`~BaseLitModule.config`.
         nnmodule (:class:`torch.nn.Module`): See\
             :paramref:`~BaseLitModule.nnmodule`.
-        optimizer (:class:`torch.optim.Optimizer`): See\
-            :paramref:`~BaseLitModule.optimizer`.
-        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\
-            :paramref:`~BaseLitModule.scheduler`.
-        val_data (list): A list to store validation data.
-        curr_val_epoch (int): The current validation epoch.
+        optimizer (:class:`torch.optim.Optimizer`):\
+            :paramref:`~BaseLitModule.optimizer` instantiated.
+        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \
+            :paramref:`~BaseLitModule.scheduler` instantiated.
 
     Raises:
         NotImplementedError: If the :meth:`step` method is not\
-            defined or not callable.
+            defined or callable.
     """
 
     def __init__(
         self: "BaseLitModule",
+        config: BaseLitModuleConfig,
         nnmodule: nn.Module,
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
-        super().__init__()
-        # Initialize PyTorch instance attributes
+        super().__init__(logs_val=config.log_val_wandb)
+        self.config = config
         self.nnmodule = nnmodule
         self.optimizer = optimizer(params=self.parameters())
         self.scheduler = scheduler(optimizer=self.optimizer)
-        # Initialize validation logging attributes
-        self.val_data: list[list[Tensor]] = []
-        self.curr_val_epoch = 0
         # Verify `step` method.
         if not callable(getattr(self, "step", None)):
             error_msg = (
@@ -95,7 +107,7 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
     @final
     def stage_step(
         self: "BaseLitModule",
-        batch: Batch_type,
+        data: Batched_data_type,
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
         """Generic stage wrapper around the :meth:`step` method.
@@ -104,38 +116,38 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         calls it and logs the loss value(s).
 
         Args:
-            batch: The batched input data.
+            data: The batched input data.
             stage: The current stage (``train``, ``val``, ``test`` or\
                 ``predict``).
 
         Returns:
             The loss value(s).
         """
-        if isinstance(batch, list):
-            batch = tuple(batch)
-        loss: Num[Tensor, " ..."] = self.step(batch, stage)
+        if isinstance(data, list):
+            data = tuple(data)
+        loss: Num[Tensor, " ..."] = self.step(data, stage)
         self.log(name=f"{stage}/loss", value=loss)
         return loss
 
     @final
     def training_step(
         self: "BaseLitModule",
-        batch: Batch_type,
+        data: Batched_data_type,
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
-            batch: See :paramref:`~stage_step.batch`.
+            data: See :paramref:`~stage_step.data`.
 
         Returns:
             The loss value(s).
         """
-        return self.stage_step(batch=batch, stage="train")
+        return self.stage_step(data=data, stage="train")
 
     @final
     def validation_step(
         self: "BaseLitModule",
-        batch: Batch_type,
+        data: Batched_data_type,
         # :paramref:`*args` & :paramref:`**kwargs` type annotations
         # cannot be more specific because of
         # :meth:`LightningModule.validation_step`\'s signature.
@@ -145,37 +157,29 @@ class BaseLitModule(LightningModule, metaclass=ABCMeta):
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
-            batch: See :paramref:`~stage_step.batch`.
+            data: See :paramref:`~stage_step.data`.
             *args: Additional positional arguments.
             **kwargs: Additional keyword arguments.
 
         Returns:
             The loss value(s).
         """
-        return self.stage_step(batch=batch, stage="val")
-
-    def on_validation_start(self: "BaseLitModule") -> None:
-        """Resets :attr:`val_data`."""
-        self.val_data = []
-
-    def on_validation_epoch_end(self: "BaseLitModule") -> None:
-        """Increments :attr:`curr_val_epoch`."""
-        self.curr_val_epoch += 1
+        return self.stage_step(data=data, stage="val")
 
     @final
     def test_step(
         self: "BaseLitModule",
-        batch: Batch_type,
+        data: Batched_data_type,
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
-            batch: See :paramref:`~stage_step.batch`.
+            data: See :paramref:`~stage_step.data`.
 
         Returns:
             The loss value(s).
         """
-        return self.stage_step(batch=batch, stage="test")
+        return self.stage_step(data=data, stage="test")
 
     @final
     def configure_optimizers(

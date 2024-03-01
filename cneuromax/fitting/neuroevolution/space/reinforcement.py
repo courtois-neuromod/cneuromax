@@ -1,7 +1,7 @@
 """:class:`BaseReinforcementSpace`."""
 
 import copy
-from abc import ABCMeta
+from abc import ABC
 from typing import Annotated as An
 from typing import Any, final
 
@@ -18,7 +18,7 @@ from cneuromax.fitting.neuroevolution.utils.wandb import gather
 from cneuromax.utils.beartype import ge
 
 
-class BaseReinforcementSpace(BaseSpace, metaclass=ABCMeta):
+class BaseReinforcementSpace(BaseSpace, ABC):
     """Reinforcement Base Space class.
 
     Args:
