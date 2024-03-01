@@ -183,6 +183,7 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -307,46 +308,41 @@
           <h1>Source code for cneuromax.fitting.deeplearning.litmodule.classification.base</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:class:`BaseClassificationLitModule` &amp; its config.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>  <span class="c1"># noqa: TCH003</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="k">as</span> <span class="nn">f</span>
-<span class="kn">import</span> <span class="nn">wandb</span>
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Float</span><span class="p">,</span> <span class="n">Int</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
-<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">from</span> <span class="nn">torchmetrics.classification</span> <span class="kn">import</span> <span class="n">MulticlassAccuracy</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="n">BaseLitModule</span>
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseLitModule</span><span class="p">,</span>
+    <span class="n">BaseLitModuleConfig</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">one_of</span>
 
 
 <div class="viewcode-block" id="BaseClassificationLitModuleConfig">
 <a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BaseClassificationLitModuleConfig</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">BaseClassificationLitModuleConfig</span><span class="p">(</span><span class="n">BaseLitModuleConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseClassificationLitModule` config values.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_classes: Number of classes to classify between.</span>
-<span class="sd">        log_val_preds: Whether to log validation predictions to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">num_classes</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
-    <span class="n">log_val_preds</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+    <span class="n">num_classes</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">2</span></div>
 
 
 
 <div class="viewcode-block" id="BaseClassificationLitModule">
 <a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseClassificationLitModule</span><span class="p">(</span><span class="n">BaseLitModule</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">BaseClassificationLitModule</span><span class="p">(</span><span class="n">BaseLitModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Classification :mod:`lightning` ``LitModule``.</span>
 
 <span class="sd">    Args:</span>
@@ -358,40 +354,31 @@
 <span class="sd">    Attributes:</span>
 <span class="sd">        accuracy\</span>
 <span class="sd">            (:class:`~torchmetrics.classification.MulticlassAccuracy`)</span>
-<span class="sd">        wandb_input_data_wrapper (:`callable`): A wrapper to be used\</span>
-<span class="sd">            around the input datapoint when logging to W&amp;B.</span>
-<span class="sd">        wandb_table: A W&amp;B table to store validation data.</span>
+<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B\</span>
+<span class="sd">            containing validation data.</span>
+<span class="sd">        wandb_x_wrapper (:`callable`): A wrapper to be used around the\</span>
+<span class="sd">            input datapoint when logging to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">,</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">BaseClassificationLitModuleConfig</span><span class="p">,</span>
-        <span class="n">nnmodule</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
-        <span class="n">optimizer</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">],</span>
-        <span class="n">scheduler</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">LRScheduler</span><span class="p">],</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">nnmodule</span><span class="o">=</span><span class="n">nnmodule</span><span class="p">,</span>
-            <span class="n">optimizer</span><span class="o">=</span><span class="n">optimizer</span><span class="p">,</span>
-            <span class="n">scheduler</span><span class="o">=</span><span class="n">scheduler</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
-        <span class="c1"># Accuracy metric.</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">:</span> <span class="n">BaseClassificationLitModuleConfig</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">:</span> <span class="n">MulticlassAccuracy</span> <span class="o">=</span> <span class="n">MulticlassAccuracy</span><span class="p">(</span>
-            <span class="n">num_classes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
+            <span class="n">num_classes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_classes</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="c1"># W&amp;B validation attributes.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wandb_input_data_wrapper</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="p">:</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Table</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
-            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;idx&quot;</span><span class="p">,</span> <span class="s2">&quot;epoch&quot;</span><span class="p">,</span> <span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;probs&quot;</span><span class="p">,</span> <span class="s2">&quot;pred&quot;</span><span class="p">],</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_wandb</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wandb_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;y_hat&quot;</span><span class="p">,</span> <span class="s2">&quot;logits&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BaseClassificationLitModule.step">
 <a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step">[docs]</a>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span>
-            <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_shape&quot;</span><span class="p">],</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span>
+            <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_dim&quot;</span><span class="p">],</span>
             <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">],</span>
         <span class="p">],</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)],</span>
@@ -399,7 +386,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes the model accuracy and cross entropy loss.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            batch: A tuple ``(X, y)`` where ``X`` is the input data and\</span>
+<span class="sd">            data: A tuple ``(x, y)`` where ``x`` is the input data and\</span>
 <span class="sd">                ``y`` is the target data.</span>
 <span class="sd">            stage: See\</span>
 <span class="sd">                :paramref:`~.BaseLitModule.stage_step.stage`.</span>
@@ -407,14 +394,14 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            The cross entropy loss.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_dim&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">logits</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size num_classes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nnmodule</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="n">preds</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">accuracy</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+        <span class="n">y_hat</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">accuracy</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accuracy</span><span class="p">(</span><span class="n">preds</span><span class="o">=</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/acc&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">stage</span> <span class="o">==</span> <span class="s2">&quot;val&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_preds</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save_val_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">preds</span><span class="o">=</span><span class="n">preds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">stage</span> <span class="o">==</span> <span class="s2">&quot;val&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_wandb</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_val_data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">y_hat</span><span class="o">=</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">logits</span><span class="o">=</span><span class="n">logits</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">y</span><span class="p">)</span></div>
 
 
@@ -422,55 +409,34 @@
 <a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data">[docs]</a>
     <span class="k">def</span> <span class="nf">save_val_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">,</span>
-        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_shape&quot;</span><span class="p">],</span>
+        <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_dim&quot;</span><span class="p">],</span>
         <span class="n">y</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">],</span>
+        <span class="n">y_hat</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">],</span>
         <span class="n">logits</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size num_classes&quot;</span><span class="p">],</span>
-        <span class="n">preds</span><span class="p">:</span> <span class="n">Int</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size&quot;</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves data computed during validation for later use.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            x: The input data.</span>
-<span class="sd">            y: The target data.</span>
-<span class="sd">            logits: The network&#39;s raw output.</span>
-<span class="sd">            preds: The model&#39;s predictions.</span>
+<span class="sd">            y: The target class.</span>
+<span class="sd">            y_hat: The predicted class.</span>
+<span class="sd">            logits: The raw `num_classes` network outputs.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="n">probs</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">softmax</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="n">preds</span> <span class="o">=</span> <span class="n">preds</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">,</span> <span class="n">probs_i</span><span class="p">,</span> <span class="n">preds_i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
-            <span class="n">x</span><span class="p">,</span>
-            <span class="n">y</span><span class="p">,</span>
-            <span class="n">probs</span><span class="p">,</span>
-            <span class="n">preds</span><span class="p">,</span>
+        <span class="k">for</span> <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">,</span> <span class="n">y_hat_i</span><span class="p">,</span> <span class="n">logits_i</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
+            <span class="n">y</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
+            <span class="n">y_hat</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
+            <span class="n">logits</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span>
             <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">,</span> <span class="n">probs_i</span><span class="p">,</span> <span class="n">preds_i</span><span class="p">])</span></div>
-
-
-<div class="viewcode-block" id="BaseClassificationLitModule.on_validation_epoch_end">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.on_validation_epoch_end">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Called at the end of the validation epoch.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_preds</span><span class="p">:</span>
-            <span class="k">return</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val_data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="p">):</span>
-            <span class="n">x_i</span><span class="p">,</span> <span class="n">y_i</span><span class="p">,</span> <span class="n">probs_i</span><span class="p">,</span> <span class="n">preds_i</span> <span class="o">=</span> <span class="n">val_data</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
-                <span class="n">i</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">wandb_input_data_wrapper</span><span class="p">(</span><span class="n">x_i</span><span class="p">),</span>
-                <span class="n">y_i</span><span class="p">,</span>
-                <span class="n">probs_i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="n">preds_i</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="c1"># 1) Static type checking discrepancy:</span>
-        <span class="c1"># `logger.experiment` is a `wandb.wandb_run.Run` instance.</span>
-        <span class="c1"># 2) Cannot log the same table twice:</span>
-        <span class="c1"># https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="p">)})</span>  <span class="c1"># type: ignore[union-attr]</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_validation_epoch_end</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">(</span><span class="n">x_i</span><span class="p">),</span>
+                    <span class="n">y_i</span><span class="p">,</span>
+                    <span class="n">y_hat_i</span><span class="p">,</span>
+                    <span class="n">logits_i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="p">],</span>
+            <span class="p">)</span></div>
 </div>
 
 </pre></div>

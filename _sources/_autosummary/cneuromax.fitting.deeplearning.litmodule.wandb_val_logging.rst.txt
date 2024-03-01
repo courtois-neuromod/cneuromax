@@ -1,0 +1,8 @@
+wandb\_val\_logging
+===================
+
+.. automodule:: cneuromax.fitting.deeplearning.litmodule.wandb_val_logging
+   :members:
+
+
+

@@ -183,6 +183,7 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
+<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -305,32 +306,48 @@
         </div>
         <article role="main">
           <h1>Source code for cneuromax.fitting.deeplearning.litmodule.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:class:`BaseLitModule`.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;:class:`BaseLitModule` &amp; its config.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABCMeta</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">final</span>
 
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Num</span>
-<span class="kn">from</span> <span class="nn">lightning.pytorch</span> <span class="kn">import</span> <span class="n">LightningModule</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
 <span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.utils.type</span> <span class="kn">import</span> <span class="n">Batch_type</span>
+<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.utils.type</span> <span class="kn">import</span> <span class="n">Batched_data_type</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">one_of</span>
+
+<span class="kn">from</span> <span class="nn">.wandb_val_logging</span> <span class="kn">import</span> <span class="n">WandbValLoggingLightningModule</span>
+
+
+<div class="viewcode-block" id="BaseLitModuleConfig">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModuleConfig">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">BaseLitModuleConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseLitModule` config values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log_val_wandb: Whether to log validation data to :mod:`wandb`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">log_val_wandb</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span></div>
+
 
 
 <div class="viewcode-block" id="BaseLitModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ABCMeta</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">WandbValLoggingLightningModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :mod:`lightning` ``LitModule``.</span>
 
 <span class="sd">    Subclasses need to implement the :meth:`step` method that inputs</span>
-<span class="sd">    both ``batch`` (``tuple[torch.Tensor]``) and  ``stage`` (``str``)</span>
-<span class="sd">    arguments while returning the loss value(s) in the form of a</span>
-<span class="sd">    :class:`torch.Tensor`.</span>
+<span class="sd">    both ``data`` (`:class:`.Batched_data_type``) and  ``stage``</span>
+<span class="sd">    (``str``) arguments while returning the loss value(s) in the form of</span>
+<span class="sd">    a :class:`torch.Tensor`.</span>
 
 <span class="sd">    Example definition:</span>
 
@@ -339,8 +356,8 @@
 
 <span class="sd">        def step(</span>
 <span class="sd">            self: &quot;BaseClassificationLitModule&quot;,</span>
-<span class="sd">            batch: tuple[</span>
-<span class="sd">                Float[Tensor, &quot; batch_size *x_shape&quot;],</span>
+<span class="sd">            data: tuple[</span>
+<span class="sd">                Float[Tensor, &quot; batch_size *x_dim&quot;],</span>
 <span class="sd">                Int[Tensor, &quot; batch_size&quot;],</span>
 <span class="sd">            ],</span>
 <span class="sd">            stage: An[str, one_of(&quot;train&quot;, &quot;val&quot;, &quot;test&quot;)],</span>
@@ -348,13 +365,14 @@
 <span class="sd">            ...</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">        ``batch`` and loss value(s) type hints in this class are not</span>
+<span class="sd">        ``data`` and loss value(s) type hints in this class are not</span>
 <span class="sd">        rendered properly in the documentation due to an\</span>
 <span class="sd">        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\</span>
 <span class="sd">        Refer to the source code available next to the method\</span>
 <span class="sd">        signatures to find the correct types.</span>
 
 <span class="sd">    Args:</span>
+<span class="sd">        config: See :class:`BaseLitModuleConfig`.</span>
 <span class="sd">        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\</span>
 <span class="sd">            instance.</span>
 <span class="sd">        optimizer: A :mod:`torch` ``Optimizer`` to be used by this\</span>
@@ -366,34 +384,32 @@
 <span class="sd">            :paramref:`optimizer` is required for its initialization.</span>
 
 <span class="sd">    Attributes:</span>
+<span class="sd">        config (:class:`BaseLitModuleConfig`): See\</span>
+<span class="sd">            :paramref:`~BaseLitModule.config`.</span>
 <span class="sd">        nnmodule (:class:`torch.nn.Module`): See\</span>
 <span class="sd">            :paramref:`~BaseLitModule.nnmodule`.</span>
-<span class="sd">        optimizer (:class:`torch.optim.Optimizer`): See\</span>
-<span class="sd">            :paramref:`~BaseLitModule.optimizer`.</span>
-<span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): See\</span>
-<span class="sd">            :paramref:`~BaseLitModule.scheduler`.</span>
-<span class="sd">        val_data (list): A list to store validation data.</span>
-<span class="sd">        curr_val_epoch (int): The current validation epoch.</span>
+<span class="sd">        optimizer (:class:`torch.optim.Optimizer`):\</span>
+<span class="sd">            :paramref:`~BaseLitModule.optimizer` instantiated.</span>
+<span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \</span>
+<span class="sd">            :paramref:`~BaseLitModule.scheduler` instantiated.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        NotImplementedError: If the :meth:`step` method is not\</span>
-<span class="sd">            defined or not callable.</span>
+<span class="sd">            defined or callable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">BaseLitModuleConfig</span><span class="p">,</span>
         <span class="n">nnmodule</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
         <span class="n">optimizer</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">],</span>
         <span class="n">scheduler</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">LRScheduler</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># Initialize PyTorch instance attributes</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">logs_val</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_wandb</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">nnmodule</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>
-        <span class="c1"># Initialize validation logging attributes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="c1"># Verify `step` method.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -406,7 +422,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">stage_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="n">Batch_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">)],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; ...&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic stage wrapper around the :meth:`step` method.</span>
@@ -415,16 +431,16 @@
 <span class="sd">        calls it and logs the loss value(s).</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            batch: The batched input data.</span>
+<span class="sd">            data: The batched input data.</span>
 <span class="sd">            stage: The current stage (``train``, ``val``, ``test`` or\</span>
 <span class="sd">                ``predict``).</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The loss value(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="n">batch</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-        <span class="n">loss</span><span class="p">:</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; ...&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">stage</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">loss</span><span class="p">:</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; ...&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">stage</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stage</span><span class="si">}</span><span class="s2">/loss&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">loss</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">loss</span></div>
 
@@ -434,17 +450,17 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="n">Batch_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; ...&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`stage_step` with argument ``stage=&quot;train&quot;``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            batch: See :paramref:`~stage_step.batch`.</span>
+<span class="sd">            data: See :paramref:`~stage_step.data`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The loss value(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseLitModule.validation_step">
@@ -452,7 +468,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="n">Batch_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
         <span class="c1"># :paramref:`*args` &amp; :paramref:`**kwargs` type annotations</span>
         <span class="c1"># cannot be more specific because of</span>
         <span class="c1"># :meth:`LightningModule.validation_step`\&#39;s signature.</span>
@@ -462,28 +478,14 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`stage_step` with argument ``stage=&quot;val&quot;``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            batch: See :paramref:`~stage_step.batch`.</span>
+<span class="sd">            data: See :paramref:`~stage_step.data`.</span>
 <span class="sd">            *args: Additional positional arguments.</span>
 <span class="sd">            **kwargs: Additional keyword arguments.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The loss value(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="BaseLitModule.on_validation_start">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_start">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_validation_start</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets :attr:`val_data`.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_data</span> <span class="o">=</span> <span class="p">[]</span></div>
-
-
-<div class="viewcode-block" id="BaseLitModule.on_validation_epoch_end">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.on_validation_epoch_end">[docs]</a>
-    <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Increments :attr:`curr_val_epoch`.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">+=</span> <span class="mi">1</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;val&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseLitModule.test_step">
@@ -491,17 +493,17 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">batch</span><span class="p">:</span> <span class="n">Batch_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; ...&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`stage_step` with argument ``stage=&quot;test&quot;``.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            batch: See :paramref:`~stage_step.batch`.</span>
+<span class="sd">            data: See :paramref:`~stage_step.data`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The loss value(s).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">batch</span><span class="o">=</span><span class="n">batch</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stage_step</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">stage</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseLitModule.configure_optimizers">

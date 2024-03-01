@@ -3,10 +3,10 @@
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="neuroevorl_control" href="cneuromax.projects.neuroevorl_control.html" /><link rel="prev" title="datamodule_test" href="cneuromax.projects.classify_mnist.datamodule_test.html" />
+<link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="runner" href="cneuromax.fitting.deeplearning.runner.html" /><link rel="prev" title="store" href="cneuromax.fitting.deeplearning.litmodule.store.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>litmodule - CNeuroMax</title>
+        <title>wandb_val_logging - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -165,15 +165,15 @@
 <ul class="current">
 <li class="toctree-l1 current has-children"><a class="reference internal" href="cneuromax.html">cneuromax</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of cneuromax</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="cneuromax.config.html">config</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="cneuromax.fitting.html">fitting</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="cneuromax.fitting.html">fitting</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of fitting</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="cneuromax.fitting.config.html">config</a></li>
-<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.html">deeplearning</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.html">deeplearning</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of deeplearning</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.config.html">config</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html">datamodule</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of datamodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html">base</a></li>
 </ul>
 </li>
-<li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html">litmodule</a><input class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of litmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l4 current has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html">litmodule</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-5" name="toctree-checkbox-5" role="switch" type="checkbox"/><label for="toctree-checkbox-5"><div class="visually-hidden">Toggle navigation of litmodule</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.base.html">base</a></li>
 <li class="toctree-l5 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.classification.html">classification</a><input class="toctree-checkbox" id="toctree-checkbox-6" name="toctree-checkbox-6" role="switch" type="checkbox"/><label for="toctree-checkbox-6"><div class="visually-hidden">Toggle navigation of classification</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l6"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.classification.base.html">base</a></li>
@@ -184,7 +184,7 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
+<li class="toctree-l5 current current-page"><a class="current reference internal" href="#">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -242,11 +242,11 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2 current has-children"><a class="reference internal" href="cneuromax.projects.html">projects</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of projects</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
-<li class="toctree-l3 current has-children"><a class="reference internal" href="cneuromax.projects.classify_mnist.html">classify_mnist</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of classify_mnist</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="cneuromax.projects.html">projects</a><input class="toctree-checkbox" id="toctree-checkbox-17" name="toctree-checkbox-17" role="switch" type="checkbox"/><label for="toctree-checkbox-17"><div class="visually-hidden">Toggle navigation of projects</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.projects.classify_mnist.html">classify_mnist</a><input class="toctree-checkbox" id="toctree-checkbox-18" name="toctree-checkbox-18" role="switch" type="checkbox"/><label for="toctree-checkbox-18"><div class="visually-hidden">Toggle navigation of classify_mnist</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule.html">datamodule</a></li>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.datamodule_test.html">datamodule_test</a></li>
-<li class="toctree-l4 current current-page"><a class="current reference internal" href="#">litmodule</a></li>
+<li class="toctree-l4"><a class="reference internal" href="cneuromax.projects.classify_mnist.litmodule.html">litmodule</a></li>
 </ul>
 </li>
 <li class="toctree-l3 has-children"><a class="reference internal" href="cneuromax.projects.neuroevorl_control.html">neuroevorl_control</a><input class="toctree-checkbox" id="toctree-checkbox-19" name="toctree-checkbox-19" role="switch" type="checkbox"/><label for="toctree-checkbox-19"><div class="visually-hidden">Toggle navigation of neuroevorl_control</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
@@ -307,23 +307,74 @@
           </label>
         </div>
         <article role="main">
-          <section id="module-cneuromax.projects.classify_mnist.litmodule">
-<span id="litmodule"></span><h1>litmodule<a class="headerlink" href="#module-cneuromax.projects.classify_mnist.litmodule" title="Link to this heading">#</a></h1>
-<p><a class="reference internal" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule" title="cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTClassificationLitModule</span></code></a>.</p>
+          <section id="module-cneuromax.fitting.deeplearning.litmodule.wandb_val_logging">
+<span id="wandb-val-logging"></span><h1>wandb_val_logging<a class="headerlink" href="#module-cneuromax.fitting.deeplearning.litmodule.wandb_val_logging" title="Link to this heading">#</a></h1>
+<p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule</span></code></a>.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.litmodule.</span></span><span class="sig-name descname"><span class="pre">MNISTClassificationLitModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/litmodule.html#MNISTClassificationLitModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule" title="cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseClassificationLitModule</span></code></a></p>
-<p><code class="docutils literal notranslate"><span class="pre">project</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseClassificationLitModule</span></code>.</p>
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.</span></span><span class="sig-name descname"><span class="pre">WandbValLoggingLightningModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code></p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code> that logs val data to <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.nnmodule"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.nnmodule"><strong>nnmodule</strong></a> – See <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.optimizer"><strong>optimizer</strong></a> – See <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.scheduler"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.params.scheduler"><strong>scheduler</strong></a> – See <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p></li>
-</ul>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"><strong>logs_val</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to activate <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code> validation            data logging.</p>
 </dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val">
+<span class="sig-name descname"><span class="pre">logs_val</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="Link to this definition">#</a></dt>
+<dd><p>See            <code class="xref py py-paramref docutils literal notranslate"><span class="pre">logs_val</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>bool</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.curr_val_epoch">
+<span class="sig-name descname"><span class="pre">curr_val_epoch</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.curr_val_epoch" title="Link to this definition">#</a></dt>
+<dd><p>The current validation epoch (can be            different from training epoch if validation is called            multiple times per training epoch).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>int</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data">
+<span class="sig-name descname"><span class="pre">val_wandb_data</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="Link to this definition">#</a></dt>
+<dd><p>A list of of lists            containing validation data relating to one specific example            (ex: <cite>input_data</cite>, <cite>logits</cite>, …) meant to be logged to            <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>list[list[Any]]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start">
+<span class="sig-name descname"><span class="pre">on_validation_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule.on_validation_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start" title="Link to this definition">#</a></dt>
+<dd><p>Resets <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_wandb_data</span></code></a> if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end">
+<span class="sig-name descname"><span class="pre">on_validation_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule.on_validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end" title="Link to this definition">#</a></dt>
+<dd><p>Uploads <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_wandb_data</span></code></a> if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -333,23 +384,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="cneuromax.projects.neuroevorl_control.html">
+          <a class="next-page" href="cneuromax.fitting.deeplearning.runner.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">neuroevorl_control</div>
+                <div class="title">runner</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="cneuromax.projects.classify_mnist.datamodule_test.html">
+          <a class="prev-page" href="cneuromax.fitting.deeplearning.litmodule.store.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">datamodule_test</div>
+                <div class="title">store</div>
                 
               </div>
             </a>
@@ -383,8 +434,15 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">litmodule</a><ul>
-<li><a class="reference internal" href="#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule"><code class="docutils literal notranslate"><span class="pre">MNISTClassificationLitModule</span></code></a></li>
+<li><a class="reference internal" href="#">wandb_val_logging</a><ul>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule</span></code></a><ul>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.logs_val</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.curr_val_epoch"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.curr_val_epoch</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.val_wandb_data</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_start()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_epoch_end()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

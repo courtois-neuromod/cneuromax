@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../../../genindex.html" /><link rel="search" title="Search" href="../../../../../search.html" />
 
     <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
-        <title>cneuromax.fitting.neuroevolution.utils.validate - CNeuroMax</title>
+        <title>cneuromax.fitting.deeplearning.litmodule.wandb_val_logging - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
@@ -305,33 +305,102 @@
           </label>
         </div>
         <article role="main">
-          <h1>Source code for cneuromax.fitting.neuroevolution.utils.validate</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Run validation for Neuroevolution fitting.&quot;&quot;&quot;</span>
+          <h1>Source code for cneuromax.fitting.deeplearning.litmodule.wandb_val_logging</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;:class:`WandbValLoggingLightningModule`.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.space.base</span> <span class="kn">import</span> <span class="n">BaseSpace</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.utils.hydra</span> <span class="kn">import</span> <span class="n">get_launcher_config</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>  <span class="c1"># noqa: TCH003</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+
+<span class="kn">import</span> <span class="nn">wandb</span>
+<span class="kn">from</span> <span class="nn">lightning.pytorch</span> <span class="kn">import</span> <span class="n">LightningModule</span>
+<span class="kn">from</span> <span class="nn">wandb.sdk.data_types.base_types.wb_value</span> <span class="kn">import</span> <span class="n">WBValue</span>
 
 
-<div class="viewcode-block" id="validate_space">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.validate.html#cneuromax.fitting.neuroevolution.utils.validate.validate_space">[docs]</a>
-<span class="k">def</span> <span class="nf">validate_space</span><span class="p">(</span><span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">pop_merge</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes sure that the Space is valid given config values.</span>
+<div class="viewcode-block" id="WandbValLoggingLightningModule">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule">[docs]</a>
+<span class="k">class</span> <span class="nc">WandbValLoggingLightningModule</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`.LightningModule` that logs val data to :mod:`wandb`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        space: See :paramref:`~.evaluate_on_cpu.space`.</span>
-<span class="sd">        pop_merge: See\</span>
-<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.</span>
+<span class="sd">        logs_val: Whether to activate :mod:`wandb` validation\</span>
+<span class="sd">            data logging.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        logs_val (`bool`): See\</span>
+<span class="sd">            :paramref:`~WandbValLoggingMixin.logs_val`.</span>
+<span class="sd">        curr_val_epoch (`int`): The current validation epoch (can be\</span>
+<span class="sd">            different from training epoch if validation is called\</span>
+<span class="sd">            multiple times per training epoch).</span>
+<span class="sd">        val_wandb_data (`list[list[Any]]`): A list of of lists\</span>
+<span class="sd">            containing validation data relating to one specific example\</span>
+<span class="sd">            (ex: `input_data`, `logits`, ...) meant to be logged to\</span>
+<span class="sd">            :mod:`wandb`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">launcher_config</span> <span class="o">=</span> <span class="n">get_launcher_config</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">pop_merge</span> <span class="ow">and</span> <span class="n">space</span><span class="o">.</span><span class="n">num_pops</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># noqa: PLR2004</span>
-        <span class="n">error_msg</span> <span class="o">=</span> <span class="s2">&quot;`pop_merge = True` requires `num_pops = 2`.&quot;</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">gpus_per_node</span> <span class="ow">and</span> <span class="n">space</span><span class="o">.</span><span class="n">evaluates_on_gpu</span><span class="p">:</span>
-        <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;GPU evaluation is not supported when `gpus_per_node` is not &quot;</span>
-            <span class="s2">&quot;specified in the launcher config or set to 0.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;WandbValLoggingLightningModule&quot;</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">logs_val</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span> <span class="o">=</span> <span class="n">logs_val</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span><span class="p">:</span>
+            <span class="n">wandb_columns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;wandb_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">wandb_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;The `wandb_columns` attribute is either not defined or &quot;</span>
+                    <span class="s2">&quot;not a list. Define it or turn off W&amp;B validation logging.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                    <span class="s2">&quot;data_idx&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;val_epoch&quot;</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">wandb_columns</span><span class="p">,</span>
+                <span class="p">],</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;wandb_x_wrapper&quot;</span><span class="p">)</span>  <span class="c1"># noqa: B009</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">,</span> <span class="n">WBValue</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">&quot;`wandb_x_wrapper` attribute not set/invalid. &quot;</span>
+                    <span class="s2">&quot;Defaulting to not wrapping the input data.&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+
+<div class="viewcode-block" id="WandbValLoggingLightningModule.on_validation_start">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_validation_start</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;WandbValLoggingLightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets :attr:`val_wandb_data` if :attr:`logs_val`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span> <span class="o">=</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="WandbValLoggingLightningModule.on_validation_epoch_end">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_validation_epoch_end</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;WandbValLoggingLightningModule&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Uploads :attr:`val_wandb_data` if :attr:`logs_val`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">val_wandb_data_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
+                    <span class="n">i</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span><span class="p">,</span>
+                    <span class="o">*</span><span class="n">val_wandb_data_i</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="c1"># 1) Static type checking discrepancy:</span>
+            <span class="c1"># `logger.experiment` is a `wandb.wandb_run.Run` instance.</span>
+            <span class="c1"># 2) Cannot log the same table twice:</span>
+            <span class="c1"># https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="p">)})</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">+=</span> <span class="mi">1</span></div>
+</div>
 
 </pre></div>
         </article>
