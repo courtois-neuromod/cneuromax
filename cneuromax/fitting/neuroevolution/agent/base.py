@@ -1,6 +1,6 @@
 """:class:`BaseAgent` & its config."""
 
-from abc import ABCMeta, abstractmethod
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import Annotated as An
 
@@ -29,7 +29,7 @@ class BaseAgentConfig:
     mem_transfer: bool = "${config.mem_transfer}"  # type: ignore[assignment]
 
 
-class BaseAgent(metaclass=ABCMeta):
+class BaseAgent(ABC):
     """Root Neuroevolution agent class.
 
     From an algorithmic perspective, we make use of 50% truncation
