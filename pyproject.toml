@@ -52,7 +52,7 @@ dependencies = [
     "vector-quantize-pytorch==1.14.1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
-    "torchrl==0.3.0", # For reinforcement/imitation Learning tasks
+    "torchrl==0.3.1", # For reinforcement/imitation Learning tasks
     """
     gymnasium[mujoco]@git+https://github.com/Farama-Foundation/Gymnasium@\
     6baf8708bfb08e37ce3027b529193169eaa230fd""", # RL/IL environments
