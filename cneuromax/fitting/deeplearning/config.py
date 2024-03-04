@@ -26,11 +26,16 @@ class DeepLearningSubtaskConfig(FittingSubtaskConfig):
     """Deep Learning ``subtask`` config.
 
     Args:
-        try_compile: Whether to try compiling the\
-            :class:`.BaseLitModule`.
+        compile: Whether to compile the :class:`.BaseLitModule`\
+            before training. Requires\
+            :paramref:`FittingSubtaskConfig.device` to be set to\
+            ``"gpu"`` & a CUDA 7+ compatible GPU.
+        save_every_n_epochs: The frequency at which to save training\
+            checkpoints.
     """
 
-    try_compile: bool = False
+    compile: bool = False
+    save_every_n_epochs: int = 1
 
 
 @dataclass
