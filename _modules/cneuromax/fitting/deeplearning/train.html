@@ -363,6 +363,7 @@
         <span class="n">logger_partial</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
         <span class="n">device</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">device</span><span class="p">,</span>
         <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
+        <span class="n">save_every_n_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">save_every_n_epochs</span><span class="p">,</span>
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TODO: Add logic for HPO&quot;&quot;&quot;</span>
     <span class="n">set_batch_size_and_num_workers</span><span class="p">(</span>
@@ -373,7 +374,7 @@
         <span class="n">output_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span>
-        <span class="n">config</span><span class="o">.</span><span class="n">try_compile</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">compile</span>
         <span class="ow">and</span> <span class="n">config</span><span class="o">.</span><span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;gpu&quot;</span>
         <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_capability</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="o">&gt;=</span> <span class="n">TORCH_COMPILE_MINIMUM_CUDA_VERSION</span>
