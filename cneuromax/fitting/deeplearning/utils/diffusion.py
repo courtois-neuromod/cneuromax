@@ -11,13 +11,15 @@ from torch import Tensor, nn
 class GaussianDiffusion:
     """Gaussian diffusion model.
 
-    Papers:
+    Replication of (Ho et al., 2020) with the following modifications:
+    - ``alpha_t`` & ``beta_t`` follow a cosine schedule as in
+    (Nichol & Dhariwal, 2021).
 
+    Papers:
     - Denoising Diffusion Probabilistic Models
     (Ho et al., 2020) https://arxiv.org/abs/2006.11239
-
     - Improved Denoising Diffusion Probabilistic Models
-    (Nichol & Dhariwal, 2020) https://arxiv.org/abs/2102.09672
+    (Nichol & Dhariwal, 2021) https://arxiv.org/abs/2102.09672
 
     Args:
         nnmodule: The PyTorch network module.
@@ -27,7 +29,7 @@ class GaussianDiffusion:
         nnmodule: See :paramref:`nnmodule`.
         big_t: See :paramref:`big_t`.
         all_alpha_t_bar: ``alpha_t_bar`` for all diffusion timesteps.
-        all_beta_t: ``Beta_t`` for all diffusion timesteps.
+        all_beta_t: ``beta_t`` for all diffusion timesteps.
     """
 
     def __init__(
@@ -41,7 +43,7 @@ class GaussianDiffusion:
         self.compute_all_beta_t()
 
     def compute_all_alpha_t_bar(self: "GaussianDiffusion") -> None:
-        """Equation 17 from Nichol & Dhariwal (2020).
+        """Equation 17 from Nichol & Dhariwal (2021).
 
         Paper name: Improved Denoising Diffusion Probabilistic Models
         Link: https://arxiv.org/abs/2102.09672, page 4
@@ -63,7 +65,7 @@ class GaussianDiffusion:
         self.all_alpha_t_bar: Float[Tensor, " T_plus_1"] = all_f_t / all_f_t[0]
 
     def compute_all_beta_t(self: "GaussianDiffusion") -> None:
-        """After equation 17 in Nichol & Dhariwal (2020).
+        """After equation 17 in Nichol & Dhariwal (2021).
 
         Paper name: Improved Denoising Diffusion Probabilistic Models
         Link: https://arxiv.org/abs/2102.09672, page 4
@@ -87,9 +89,6 @@ class GaussianDiffusion:
     ]:
         """Equation 4 in Ho et al. (2020).
 
-        Paper name: Improved Denoising Diffusion Probabilistic Models
-        Link: https://arxiv.org/abs/2102.09672, page 2
-
         Args:
             x_0: Batched data from the data distribution.
             t: Batched timesteps up to which to noise the data.
@@ -106,6 +105,33 @@ class GaussianDiffusion:
             + (1 - self.all_alpha_t_bar[t]).sqrt() * epsilon
         )
         return q_x_t_given_x_0_sample, epsilon
+
+    def sample_from_p_x_t_given_x_t_plus_1(
+        self: "GaussianDiffusion",
+        x_t_plus_1: Float[Tensor, " batch_size *x_dim"],
+        t: Int[Tensor, " batch_size"],
+    ) -> tuple[
+        Float[Tensor, " batch_size *x_dim"],
+        Float[Tensor, " batch_size *x_dim"],
+    ]:
+        """Equation 5 in Ho et al. (2020).
+
+        Args:
+            x_t_plus_1: Batched data from the data distribution.
+            t: Batched timesteps up to which to noise the data.
+
+        Returns:
+            Batched samples from the distribution :math:`p(x_t|x_{t+1})` &\
+                batched ``epsilon``.
+        """
+        epsilon: Float[Tensor, " batch_size *x_dim"] = torch.randn_like(
+            input=x_t_plus_1,
+        )
+        p_x_t_given_x_t_plus_1_sample: Float[Tensor, " batch_size *x_dim"] = (
+            self.all_beta_t[t].sqrt() * x_t_plus_1
+            + (1 - self.all_beta_t[t]).sqrt() * epsilon
+        )
+        return p_x_t_given_x_t_plus_1_sample, epsilon
 
     def compute_l_simple(
         self: "GaussianDiffusion",
@@ -139,5 +165,3 @@ class GaussianDiffusion:
             t=t,
         )
         return f.mse_loss(input=epsilon_theta, target=epsilon)
-
-    def sample_from_
