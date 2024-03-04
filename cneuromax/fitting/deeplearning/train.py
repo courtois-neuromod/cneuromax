@@ -53,6 +53,7 @@ def train(
         logger_partial=logger,
         device=config.device,
         output_dir=config.output_dir,
+        save_every_n_epochs=config.save_every_n_epochs,
     )
     """TODO: Add logic for HPO"""
     set_batch_size_and_num_workers(
@@ -63,7 +64,7 @@ def train(
         output_dir=config.output_dir,
     )
     if (
-        config.try_compile
+        config.compile
         and config.device == "gpu"
         and torch.cuda.get_device_capability()[0]
         >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
