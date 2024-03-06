@@ -90,14 +90,17 @@ def create_unconditional_generation_data_map(
     data_map: list[tuple[int, float]] = []
     for content_id in overlapping_content_ids:
         # Find and load the annotation file
-        matching_files = paths.an_dir.glob(f"ID{content_id}*.csv")
+        matching_files = list(paths.an_dir.glob(f"ID{content_id}*.csv"))
         if len(list(matching_files)) != 1:
             continue
-        file = next(matching_files)
+        file = matching_files[0]
         data_df = pd.read_csv(file)
         # Find all annotation blocks
         time_tuples: list[tuple[float, float]] = []
         for row in data_df.iterrows():
+            confidence = row[1]["Confidence"]
+            if confidence == "Unclear":
+                continue
             time_on = row[1]["TimeOn"]
             time_off = row[1]["TimeOff"]
             # If an annotation block is immediately followed by another

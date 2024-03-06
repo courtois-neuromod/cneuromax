@@ -53,6 +53,6 @@
       "CNEUROMAX_PATH": "/workspaces/cneuromax"
     },
     "mounts": [
-      "source=/media/DATA,target=/data,type=bind,consistency=cached"
+      "source=/mnt/disks/kw-pred-data,target=/data,type=bind,consistency=cached"
     ]
   }

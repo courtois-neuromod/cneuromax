@@ -1,8 +1,11 @@
 r""":mod:`.kw_pred` :class:`lightning.pytorch.LightningModule``s."""
 
+from denoising_diffusion_pytorch import Unet1D
 from hydra_zen import ZenStore
 
-from cneuromax.utils.hydra_zen import pfs_builds
+from cneuromax.utils.hydra_zen import fs_builds
+
+from .unc_kw_gen import UnconditionalKWGenerationLitModule
 
 
 def store_configs(store: ZenStore) -> None:
@@ -12,7 +15,12 @@ def store_configs(store: ZenStore) -> None:
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
     """
     store(
-        pfs_builds(KWPredDataset, config=KWPredDatasetConfig()),
-        name="kw_pred",
-        group="datamodule/dataset",
+        fs_builds(UnconditionalKWGenerationLitModule),
+        name="unc_kw_gen",
+        group="litmodule",
+    )
+    store(
+        fs_builds(Unet1D, dim=64, dim_mults=(1, 2), channels=1),
+        name="unet1d",
+        group="litmodule/nnmodule",
     )

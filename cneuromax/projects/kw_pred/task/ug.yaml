@@ -2,5 +2,6 @@
 defaults:
   - /datamodule: kw_pred
   - /datamodule/dataset: kw_pred
-  - /litmodule: kw_pred
+  - /litmodule: unc_kw_gen
+  - /litmodule/nnmodule: unet
   - _self_

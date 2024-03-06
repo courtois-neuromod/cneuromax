@@ -168,10 +168,13 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
         while True:  # spooky (~'o')~ ...
             try:
-                return self.load_data_fn(
+                data: dict[str, Tensor] = self.load_data_fn(
                     idx,
-                    self.config.num_klk_wavs_corners,
                     self.config.duration_seconds,
+                    self.config.num_klk_wavs_corners,
                 )
+                if data["KW BL"].min() == data["KW BL"].max():
+                    raise Exception  # noqa: TRY301, TRY002
+                return data  # noqa: TRY300
             except Exception:  # noqa: PERF203, BLE001
-                idx = (idx + 1) % self.num_data_points
+                idx = (idx * idx) % self.num_data_points
