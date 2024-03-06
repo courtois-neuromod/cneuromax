@@ -11,7 +11,7 @@ import wandb
 from denoising_diffusion_pytorch import GaussianDiffusion1D
 from einops import rearrange
 from ema_pytorch import EMA
-from jaxtyping import Float, Int
+from jaxtyping import Float
 from PIL import Image
 from torch import Tensor
 
@@ -47,7 +47,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def step(
         self: "UnconditionalKWGenerationLitModule",
-        data: Float[Tensor, " batch_size 800"],
+        data: Float[Tensor, " batch_size seq_len"],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
         """Computes the model accuracy and cross entropy loss.
@@ -60,13 +60,14 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
-        x: Float[Tensor, " batch_size 1 800"] = rearrange(
+        x: Float[Tensor, " batch_size 1 seq_len"] = rearrange(
             tensor=data,
-            pattern="BS 800 -> BS 1 800",
+            pattern="BS SL -> BS 1 SL",
+            SL=800,
         )
         if stage == "val":
             self.save_val_data(x=x)
-        loss: Tensor = self.diffusion_module.forward(img=x)
+        loss: Float[Tensor, ""] = self.diffusion_module.forward(img=x)
         return loss
 
     def save_val_data(
@@ -81,9 +82,9 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             logits: The network's raw output.
             preds: The model's predictions.
         """
-        x = x.cpu().numpy()
+        x: Float[Tensor, " batch_size *x_shape"] = x.cpu().numpy()
         for x_i in x:
-            self.val_wandb_data.append(x_i)
+            self.val_wandb_data.append({"x": x_i})
 
     def on_after_backward(self: "UnconditionalKWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
