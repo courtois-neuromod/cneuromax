@@ -17,6 +17,8 @@ class WandbValLoggingLightningModule(LightningModule):
         logs_val: Whether to activate :mod:`wandb` validation\
             data logging.
 
+    TODO: Save/load attributes to/from checkpoint.
+
     Attributes:
         logs_val (`bool`): See\
             :paramref:`~WandbValLoggingMixin.logs_val`.
@@ -42,6 +44,9 @@ class WandbValLoggingLightningModule(LightningModule):
     ) -> None:
         super().__init__()
         self.logs_val = logs_val
+
+    def on_fit_start(self: "WandbValLoggingLightningModule") -> None:
+        """Instantiates :mod:`wandb` attributes if :attr:`logs_val`."""
         if self.logs_val:
             self.curr_val_epoch = 0
             self.val_wandb_data: list[dict[str, Any]] = []
@@ -53,11 +58,7 @@ class WandbValLoggingLightningModule(LightningModule):
                 )
                 raise TypeError(error_msg)
             self.wandb_table = wandb.Table(  # type: ignore[no-untyped-call]
-                columns=[
-                    "data_idx",
-                    "val_epoch",
-                    *wandb_columns,
-                ],
+                columns=["data_idx", "val_epoch", *wandb_columns],
             )
             if not (
                 getattr(self, "wandb_x_wrapper")  # noqa: B009
