@@ -27,10 +27,10 @@ class Datasets:
         predict: Prediction dataset.
     """
 
-    train: Dataset[Tensor] | HFDataset | None = None
-    val: Dataset[Tensor] | HFDataset | None = None
-    test: Dataset[Tensor] | HFDataset | None = None
-    predict: Dataset[Tensor] | HFDataset | None = None
+    train: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
+    val: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
+    test: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
+    predict: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
 
 
 @dataclass
