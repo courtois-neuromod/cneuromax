@@ -327,6 +327,8 @@
 <span class="sd">        logs_val: Whether to activate :mod:`wandb` validation\</span>
 <span class="sd">            data logging.</span>
 
+<span class="sd">    TODO: Save/load attributes to/from checkpoint.</span>
+
 <span class="sd">    Attributes:</span>
 <span class="sd">        logs_val (`bool`): See\</span>
 <span class="sd">            :paramref:`~WandbValLoggingMixin.logs_val`.</span>
@@ -352,6 +354,11 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span> <span class="o">=</span> <span class="n">logs_val</span>
+
+<div class="viewcode-block" id="WandbValLoggingLightningModule.on_fit_start">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start">[docs]</a>
+    <span class="k">def</span> <span class="nf">on_fit_start</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;WandbValLoggingLightningModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiates :mod:`wandb` attributes if :attr:`logs_val`.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -363,21 +370,18 @@
                 <span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
-                <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
-                    <span class="s2">&quot;data_idx&quot;</span><span class="p">,</span>
-                    <span class="s2">&quot;val_epoch&quot;</span><span class="p">,</span>
-                    <span class="o">*</span><span class="n">wandb_columns</span><span class="p">,</span>
-                <span class="p">],</span>
+                <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;data_idx&quot;</span><span class="p">,</span> <span class="s2">&quot;val_epoch&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">wandb_columns</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
                 <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;wandb_x_wrapper&quot;</span><span class="p">)</span>  <span class="c1"># noqa: B009</span>
-                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">,</span> <span class="n">WBValue</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">WBValue</span><span class="p">))</span>
             <span class="p">):</span>
                 <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                     <span class="s2">&quot;`wandb_x_wrapper` attribute not set/invalid. &quot;</span>
                     <span class="s2">&quot;Defaulting to not wrapping the input data.&quot;</span><span class="p">,</span>
                 <span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span></div>
+
 
 <div class="viewcode-block" id="WandbValLoggingLightningModule.on_validation_start">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start">[docs]</a>
@@ -404,7 +408,16 @@
             <span class="c1"># `logger.experiment` is a `wandb.wandb_run.Run` instance.</span>
             <span class="c1"># 2) Cannot log the same table twice:</span>
             <span class="c1"># https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="p">)})</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>  <span class="c1"># type: ignore[union-attr]</span>
+                    <span class="p">{</span><span class="s2">&quot;val_data&quot;</span><span class="p">:</span> <span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="p">)},</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001</span>
+                <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">&quot;Failed to log validation data to W&amp;B. &quot;</span>
+                    <span class="s2">&quot;You might be trying to log tensors.&quot;</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">+=</span> <span class="mi">1</span></div>
 </div>
 

@@ -320,6 +320,7 @@
 <dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"><strong>logs_val</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to activate <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code> validation            data logging.</p>
 </dd>
 </dl>
+<p>TODO: Save/load attributes to/from checkpoint.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val">
 <span class="sig-name descname"><span class="pre">logs_val</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="Link to this definition">#</a></dt>
@@ -382,6 +383,17 @@
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><cite>Callable</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start">
+<span class="sig-name descname"><span class="pre">on_fit_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule.on_fit_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start" title="Link to this definition">#</a></dt>
+<dd><p>Instantiates <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code> attributes if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -475,6 +487,7 @@
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_columns"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_columns</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_table"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_table</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_x_wrapper"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_x_wrapper</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_fit_start()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_start()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_epoch_end()</span></code></a></li>
 </ul>
