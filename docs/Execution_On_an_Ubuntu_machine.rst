@@ -27,6 +27,11 @@ On an Ubuntu machine
 Run a python script
 -------------------
 
+.. note::
+
+    Replace ``task=mlp`` with ``task=mlp_cpu`` if you don't have a GPU. You
+    might also need to remove the ``--gpus all`` flag.
+
 .. code-block:: bash
 
     # Example of a simple MNIST training run
