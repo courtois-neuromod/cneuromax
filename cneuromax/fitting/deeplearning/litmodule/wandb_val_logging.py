@@ -23,10 +23,16 @@ class WandbValLoggingLightningModule(LightningModule):
         curr_val_epoch (`int`): The current validation epoch (can be\
             different from training epoch if validation is called\
             multiple times per training epoch).
-        val_wandb_data (`list[list[Any]]`): A list of of lists\
+        val_wandb_data (`list[list[Any]]`): A list of dictionaries\
             containing validation data relating to one specific example\
             (ex: `input_data`, `logits`, ...) meant to be logged to\
             :mod:`wandb`.
+        wandb_columns (`list[str]`): A list of strings representing\
+            the keys of the dictionaries in :attr:`val_wandb_data`.
+        wandb_table (:class:`~wandb.Table`): A table to upload to W&B\
+            containing validation data.
+        wandb_x_wrapper (`Callable`): A callable that wraps the input\
+            data before logging it to W&B.
     """
 
     def __init__(
@@ -37,6 +43,8 @@ class WandbValLoggingLightningModule(LightningModule):
         super().__init__()
         self.logs_val = logs_val
         if self.logs_val:
+            self.curr_val_epoch = 0
+            self.val_wandb_data: list[dict[str, Any]] = []
             wandb_columns = getattr(self, "wandb_columns", None)
             if not (isinstance(wandb_columns, list)):
                 error_msg = (
@@ -44,8 +52,6 @@ class WandbValLoggingLightningModule(LightningModule):
                     "not a list. Define it or turn off W&B validation logging."
                 )
                 raise TypeError(error_msg)
-            self.curr_val_epoch = 0
-            self.val_wandb_data: list[Any] = []
             self.wandb_table = wandb.Table(  # type: ignore[no-untyped-call]
                 columns=[
                     "data_idx",
@@ -77,7 +83,7 @@ class WandbValLoggingLightningModule(LightningModule):
                 self.wandb_table.add_data(  # type: ignore[no-untyped-call]
                     i,
                     self.curr_val_epoch,
-                    *val_wandb_data_i,
+                    *[val_wandb_data_i[key] for key in self.wandb_columns],
                 )
             # 1) Static type checking discrepancy:
             # `logger.experiment` is a `wandb.wandb_run.Run` instance.
