@@ -38,6 +38,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         super().__init__(*args, **kwargs)
         if self.config.log_val_wandb:
             self.wandb_columns = ["x", "x_hat"]
+            self.val_wandb_data: list[dict[str, Tensor]]
         self.diffusion_module = GaussianDiffusion1D(
             model=self.nnmodule,
             seq_length=800,
@@ -47,7 +48,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def step(
         self: "UnconditionalKWGenerationLitModule",
-        data: Float[Tensor, " batch_size seq_len"],
+        data: dict[str, Float[Tensor, " batch_size seq_len"]],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
         """Computes the model accuracy and cross entropy loss.
@@ -61,7 +62,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             The cross entropy loss.
         """
         x: Float[Tensor, " batch_size 1 seq_len"] = rearrange(
-            tensor=data,
+            tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
             SL=800,
         )
@@ -104,15 +105,12 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             % len(self.val_wandb_data) : ((self.curr_val_epoch + 1) * 3)
             % len(self.val_wandb_data)
         ]
-        new_val_wandb_data = []
-        for x_i, x_hat_i in zip(self.val_wandb_data, x_hat, strict=True):
-            new_val_wandb_data.append(
-                [
-                    to_wandb_image(x_i.squeeze()),
-                    to_wandb_image(x_hat_i.squeeze()),
-                ],
-            )
-        self.val_wandb_data = new_val_wandb_data
+        for val_wandb_data_i, x_hat_i in zip(
+            self.val_wandb_data,
+            x_hat,
+            strict=True,
+        ):
+            val_wandb_data_i.update({"x_hat": x_hat_i})
         super().on_validation_epoch_end()
 
 
