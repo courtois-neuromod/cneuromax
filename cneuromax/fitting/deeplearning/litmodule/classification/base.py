@@ -43,8 +43,6 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
             (:class:`~torchmetrics.classification.MulticlassAccuracy`)
         wandb_table (:class:`~wandb.Table`): A table to upload to W&B\
             containing validation data.
-        wandb_x_wrapper (:`callable`): A wrapper to be used around the\
-            input datapoint when logging to W&B.
     """
 
     def __init__(
@@ -98,6 +96,9 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     ) -> None:
         """Saves data computed during validation for later use.
 
+        Make sure to define the :attr:`wandb_x_wrapper` attribute in\
+        the subclass to log in the correct format.
+
         Args:
             x: The input data.
             y: The target class.
@@ -112,10 +113,10 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
             strict=False,
         ):
             self.val_wandb_data.append(
-                [
-                    self.wandb_x_wrapper(x_i),
-                    y_i,
-                    y_hat_i,
-                    logits_i.tolist(),
-                ],
+                {
+                    "x": self.wandb_x_wrapper(x_i),
+                    "y": y_i,
+                    "y_hat": y_hat_i,
+                    "logits": logits_i.tolist(),
+                },
             )
