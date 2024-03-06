@@ -48,7 +48,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def step(
         self: "UnconditionalKWGenerationLitModule",
-        data: dict[str, Float[Tensor, " batch_size seq_len"]],
+        data: dict[str, Tensor],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
         """Computes the model accuracy and cross entropy loss.
@@ -61,10 +61,10 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
+        x: Float[Tensor, " batch_size seq_len"] = data["KW BL"]
         x: Float[Tensor, " batch_size 1 seq_len"] = rearrange(
-            tensor=data["KW BL"],
+            tensor=x,
             pattern="BS SL -> BS 1 SL",
-            SL=800,
         )
         if stage == "val":
             self.save_val_data(x=x)
@@ -73,7 +73,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def save_val_data(
         self: "UnconditionalKWGenerationLitModule",
-        x: Float[Tensor, " batch_size *x_shape"],
+        x: Float[Tensor, " batch_size 1 seq_len"],
     ) -> None:
         """Saves data computed during validation for later use.
 
@@ -83,7 +83,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             logits: The network's raw output.
             preds: The model's predictions.
         """
-        x: Float[Tensor, " batch_size *x_shape"] = x.cpu().numpy()
+        x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
         for x_i in x:
             self.val_wandb_data.append({"x": x_i})
 
@@ -96,8 +96,8 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> None:
         """Called at the end of the validation epoch."""
         self.diffusion_module.model = self.ema.ema_model
-        x_hat: Float[Tensor, " batch_size *x_shape"] = (
-            self.diffusion_module.sample(batch_size=3)
+        x_hat: Float[Tensor, " batch_size seq_len"] = (
+            self.diffusion_module.sample(batch_size=3).squeeze()
         )
         self.diffusion_module.model = self.nnmodule
         self.val_wandb_data = self.val_wandb_data[
@@ -114,7 +114,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         super().on_validation_epoch_end()
 
 
-def to_wandb_image(data: Float[Tensor, " batch_size *x_shape"]) -> wandb.Image:
+def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
     """Converts data to a buffer.
 
     Args:
@@ -123,9 +123,8 @@ def to_wandb_image(data: Float[Tensor, " batch_size *x_shape"]) -> wandb.Image:
     Returns:
         The buffer containing the data.
     """
-    data = data.cpu().numpy()
     plt.figure()
-    plt.plot(np.linspace(0, 1, 800), data)
+    plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
     buf = io.BytesIO()
     plt.savefig(buf, format="png")
     plt.close()
