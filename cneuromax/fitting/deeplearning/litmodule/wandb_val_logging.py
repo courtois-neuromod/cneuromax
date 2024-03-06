@@ -62,7 +62,7 @@ class WandbValLoggingLightningModule(LightningModule):
             )
             if not (
                 getattr(self, "wandb_x_wrapper")  # noqa: B009
-                and isinstance(self.wandb_x_wrapper, WBValue)
+                and isinstance(self.wandb_x_wrapper, type(WBValue))
             ):
                 logging.warning(
                     "`wandb_x_wrapper` attribute not set/invalid. "
@@ -90,5 +90,14 @@ class WandbValLoggingLightningModule(LightningModule):
             # `logger.experiment` is a `wandb.wandb_run.Run` instance.
             # 2) Cannot log the same table twice:
             # https://github.com/wandb/wandb/issues/2981#issuecomment-1458447291
-            self.logger.experiment.log({"val_data": copy(self.wandb_table)})  # type: ignore[union-attr]
+            try:
+                self.logger.experiment.log(  # type: ignore[union-attr]
+                    {"val_data": copy(self.wandb_table)},
+                )
+            except Exception as e:  # noqa: BLE001
+                error_msg = (
+                    "Failed to log validation data to W&B. "
+                    "You might be trying to log tensors."
+                )
+                raise ValueError(error_msg) from e
             self.curr_val_epoch += 1
