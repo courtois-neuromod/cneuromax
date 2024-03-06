@@ -356,8 +356,6 @@
 <span class="sd">            (:class:`~torchmetrics.classification.MulticlassAccuracy`)</span>
 <span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B\</span>
 <span class="sd">            containing validation data.</span>
-<span class="sd">        wandb_x_wrapper (:`callable`): A wrapper to be used around the\</span>
-<span class="sd">            input datapoint when logging to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -416,6 +414,9 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves data computed during validation for later use.</span>
 
+<span class="sd">        Make sure to define the :attr:`wandb_x_wrapper` attribute in\</span>
+<span class="sd">        the subclass to log in the correct format.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            x: The input data.</span>
 <span class="sd">            y: The target class.</span>
@@ -430,12 +431,12 @@
             <span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="p">[</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">(</span><span class="n">x_i</span><span class="p">),</span>
-                    <span class="n">y_i</span><span class="p">,</span>
-                    <span class="n">y_hat_i</span><span class="p">,</span>
-                    <span class="n">logits_i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
-                <span class="p">],</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_x_wrapper</span><span class="p">(</span><span class="n">x_i</span><span class="p">),</span>
+                    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">y_i</span><span class="p">,</span>
+                    <span class="s2">&quot;y_hat&quot;</span><span class="p">:</span> <span class="n">y_hat_i</span><span class="p">,</span>
+                    <span class="s2">&quot;logits&quot;</span><span class="p">:</span> <span class="n">logits_i</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                <span class="p">},</span>
             <span class="p">)</span></div>
 </div>
 

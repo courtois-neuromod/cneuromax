@@ -358,12 +358,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">wandb_x_wrapper</span> <span class="pre">(</span></span></dt>
-<dd><p><cite>callable</cite>): A wrapper to be used around the            input datapoint when logging to W&amp;B.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step" title="Link to this definition">#</a></dt>
@@ -388,6 +382,7 @@
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data">
 <span class="sig-name descname"><span class="pre">save_val_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_hat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.save_val_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data" title="Link to this definition">#</a></dt>
 <dd><p>Saves data computed during validation for later use.</p>
+<p>Make sure to define the <code class="xref py py-attr docutils literal notranslate"><span class="pre">wandb_x_wrapper</span></code> attribute in        the subclass to log in the correct format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

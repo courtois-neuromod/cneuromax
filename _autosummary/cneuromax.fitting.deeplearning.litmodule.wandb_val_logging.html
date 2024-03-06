@@ -345,10 +345,43 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data">
 <span class="sig-name descname"><span class="pre">val_wandb_data</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="Link to this definition">#</a></dt>
-<dd><p>A list of of lists            containing validation data relating to one specific example            (ex: <cite>input_data</cite>, <cite>logits</cite>, …) meant to be logged to            <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
+<dd><p>A list of dictionaries            containing validation data relating to one specific example            (ex: <cite>input_data</cite>, <cite>logits</cite>, …) meant to be logged to            <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><cite>list[list[Any]]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_columns">
+<span class="sig-name descname"><span class="pre">wandb_columns</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_columns" title="Link to this definition">#</a></dt>
+<dd><p>A list of strings representing            the keys of the dictionaries in <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_wandb_data</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>list[str]</cite></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_table">
+<span class="sig-name descname"><span class="pre">wandb_table</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_table" title="Link to this definition">#</a></dt>
+<dd><p>A table to upload to W&amp;B            containing validation data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Table</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_x_wrapper">
+<span class="sig-name descname"><span class="pre">wandb_x_wrapper</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_x_wrapper" title="Link to this definition">#</a></dt>
+<dd><p>A callable that wraps the input            data before logging it to W&amp;B.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><cite>Callable</cite></p>
 </dd>
 </dl>
 </dd></dl>
@@ -439,6 +472,9 @@
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.logs_val</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.curr_val_epoch"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.curr_val_epoch</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.val_wandb_data</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_columns"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_columns</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_table"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_table</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_x_wrapper"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.wandb_x_wrapper</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_start()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule.on_validation_epoch_end()</span></code></a></li>
 </ul>

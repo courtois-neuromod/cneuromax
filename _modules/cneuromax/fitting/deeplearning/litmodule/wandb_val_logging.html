@@ -333,10 +333,16 @@
 <span class="sd">        curr_val_epoch (`int`): The current validation epoch (can be\</span>
 <span class="sd">            different from training epoch if validation is called\</span>
 <span class="sd">            multiple times per training epoch).</span>
-<span class="sd">        val_wandb_data (`list[list[Any]]`): A list of of lists\</span>
+<span class="sd">        val_wandb_data (`list[list[Any]]`): A list of dictionaries\</span>
 <span class="sd">            containing validation data relating to one specific example\</span>
 <span class="sd">            (ex: `input_data`, `logits`, ...) meant to be logged to\</span>
 <span class="sd">            :mod:`wandb`.</span>
+<span class="sd">        wandb_columns (`list[str]`): A list of strings representing\</span>
+<span class="sd">            the keys of the dictionaries in :attr:`val_wandb_data`.</span>
+<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B\</span>
+<span class="sd">            containing validation data.</span>
+<span class="sd">        wandb_x_wrapper (`Callable`): A callable that wraps the input\</span>
+<span class="sd">            data before logging it to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
@@ -347,6 +353,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span> <span class="o">=</span> <span class="n">logs_val</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">logs_val</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">wandb_columns</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;wandb_columns&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">wandb_columns</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                 <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -354,8 +362,6 @@
                     <span class="s2">&quot;not a list. Define it or turn off W&amp;B validation logging.&quot;</span>
                 <span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">val_wandb_data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span> <span class="o">=</span> <span class="n">wandb</span><span class="o">.</span><span class="n">Table</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
                 <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
                     <span class="s2">&quot;data_idx&quot;</span><span class="p">,</span>
@@ -392,7 +398,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">wandb_table</span><span class="o">.</span><span class="n">add_data</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-call]</span>
                     <span class="n">i</span><span class="p">,</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span><span class="p">,</span>
-                    <span class="o">*</span><span class="n">val_wandb_data_i</span><span class="p">,</span>
+                    <span class="o">*</span><span class="p">[</span><span class="n">val_wandb_data_i</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wandb_columns</span><span class="p">],</span>
                 <span class="p">)</span>
             <span class="c1"># 1) Static type checking discrepancy:</span>
             <span class="c1"># `logger.experiment` is a `wandb.wandb_run.Run` instance.</span>
