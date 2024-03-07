@@ -185,7 +185,6 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         """
         return self.stage_step(data=data, stage="test")
 
-    @final
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
