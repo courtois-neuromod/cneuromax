@@ -29,7 +29,7 @@ dependencies = [
     # so that it queues the jobs sequentially rather than in parallel.
     # OPTIONAL for cneuromax/
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
-    "jaxtyping==0.2.27", # Torch tensor annotations
+    "jaxtyping==0.2.28", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.7.0", # Makes shape transformations more readable
     "jupyterlab==4.1.4", # Jupyter notebook
