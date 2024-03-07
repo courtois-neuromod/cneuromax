@@ -40,10 +40,14 @@ class BaseDataModuleConfig:
     Args:
         data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
+        max_per_device_batch_size: Maximum number of samples to load\
+            per device per iteration. Setting this to ``0`` equates to\
+            no limit.
     """
 
     data_dir: An[str, not_empty()] = "${config.data_dir}"
     device: An[str, one_of("cpu", "gpu")] = "${config.device}"
+    max_per_device_batch_size: int = 0
 
 
 class BaseDataModule(LightningDataModule, ABC):
