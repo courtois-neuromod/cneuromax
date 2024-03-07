@@ -381,6 +381,28 @@ rendered properly in the documentation due to an        incompatibility between 
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial">
+<span class="sig-name descname"><span class="pre">optimizer_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial" title="Link to this definition">#</a></dt>
+<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">functools.partial</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial">
+<span class="sig-name descname"><span class="pre">scheduler_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial" title="Link to this definition">#</a></dt>
+<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">functools.partial</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer">
 <span class="sig-name descname"><span class="pre">optimizer</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer" title="Link to this definition">#</a></dt>
 <dd><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a> instantiated.</p>
@@ -486,7 +508,7 @@ calls it and logs the loss value(s).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers" title="Link to this definition">#</a></dt>
 <dd><p>Returns a dict with <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">optimizer</span></code></a> and <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -562,6 +584,8 @@ calls it and logs the loss value(s).</p>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a><ul>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.config"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.config</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.nnmodule</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer_partial</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.scheduler_partial</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.scheduler</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.stage_step()</span></code></a></li>

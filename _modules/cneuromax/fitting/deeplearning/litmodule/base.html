@@ -388,6 +388,10 @@
 <span class="sd">            :paramref:`~BaseLitModule.config`.</span>
 <span class="sd">        nnmodule (:class:`torch.nn.Module`): See\</span>
 <span class="sd">            :paramref:`~BaseLitModule.nnmodule`.</span>
+<span class="sd">        optimizer_partial (:class:`functools.partial`): See\</span>
+<span class="sd">            :paramref:`~BaseLitModule.optimizer`.</span>
+<span class="sd">        scheduler_partial (:class:`functools.partial`): See\</span>
+<span class="sd">            :paramref:`~BaseLitModule.scheduler`.</span>
 <span class="sd">        optimizer (:class:`torch.optim.Optimizer`):\</span>
 <span class="sd">            :paramref:`~BaseLitModule.optimizer` instantiated.</span>
 <span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \</span>
@@ -408,8 +412,8 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">logs_val</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">log_val_wandb</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">nnmodule</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="n">scheduler</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_partial</span> <span class="o">=</span> <span class="n">optimizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler_partial</span> <span class="o">=</span> <span class="n">scheduler</span>
         <span class="c1"># Verify `step` method.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)):</span>
             <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -508,7 +512,6 @@
 
 <div class="viewcode-block" id="BaseLitModule.configure_optimizers">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.configure_optimizers">[docs]</a>
-    <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]]]:</span>
@@ -520,6 +523,8 @@
 <span class="sd">            :class:`~torch.optim.lr_scheduler.LRScheduler`\</span>
 <span class="sd">            attributes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_partial</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler_partial</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">],</span> <span class="p">[</span>
             <span class="p">{</span><span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
         <span class="p">]</span></div>
