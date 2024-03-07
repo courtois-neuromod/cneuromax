@@ -12,13 +12,16 @@ import torch.distributed as dist
 import torch.nn.functional as f
 from torch import nn
 
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule import (
+    BaseLitModule,
+    BaseLitModuleConfig,
+)
 
 from .attention import MultiHeadAttention
 
 
 @dataclass
-class VQVAEConfig:
+class VQVAEConfig(BaseLitModuleConfig):
     """Config for VQVAE."""
 
     n_hiddens: int = 240
@@ -41,46 +44,48 @@ class VQVAE(BaseLitModule):
 
     def __init__(
         self: "VQVAE",
-        config: VQVAEConfig,
         *args: Any,  # noqa: ANN401
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         # if config.lr_scheduler_args is None:
         #     lr_scheduler_args = {"T_max": 50000}
         super().__init__(*args, **kwargs)
-        self.sequence_length = config.sequence_length
-        self.downsample = config.downsample
-        self.embedding_dim = config.embedding_dim
-        self.n_codes = config.n_codes
-        self.resolution = config.resolution
-        self.desc = config.desc
+        self.config: VQVAEConfig
+        self.sequence_length = self.config.sequence_length
+        self.downsample = self.config.downsample
+        self.embedding_dim = self.config.embedding_dim
+        self.n_codes = self.config.n_codes
+        self.resolution = self.config.resolution
+        self.desc = self.config.desc
         # self.lr = config.lr
-        self.betas = config.betas
+        self.betas = self.config.betas
         # self.lr_scheduler = config.lr_scheduler
         # self.lr_scheduler_args = lr_scheduler_args
         self.val_recon_loss_of_epoch = []
 
         self.encoder = Encoder(
-            config.n_hiddens,
-            config.n_res_layers,
-            config.downsample,
-            not config.no_attn,
+            self.config.n_hiddens,
+            self.config.n_res_layers,
+            self.config.downsample,
+            not self.config.no_attn,
         )
         self.decoder = Decoder(
-            config.n_hiddens,
-            config.n_res_layers,
-            config.downsample,
-            not config.no_attn,
+            self.config.n_hiddens,
+            self.config.n_res_layers,
+            self.config.downsample,
+            not self.config.no_attn,
         )
 
         self.pre_vq_conv = SamePadConv3d(
-            config.n_hiddens, config.embedding_dim, kernel_size=1
+            self.config.n_hiddens, self.config.embedding_dim, kernel_size=1
         )
         self.post_vq_conv = SamePadConv3d(
-            config.embedding_dim, config.n_hiddens, kernel_size=1
+            self.config.embedding_dim, self.config.n_hiddens, kernel_size=1
         )
 
-        self.codebook = Codebook(config.n_codes, config.embedding_dim)
+        self.codebook = Codebook(
+            self.config.n_codes, self.config.embedding_dim
+        )
         self.save_hyperparameters()
 
     @property
