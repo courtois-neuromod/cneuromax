@@ -4,6 +4,7 @@ import contextlib
 import copy
 import logging
 import math
+import sys
 import time
 from functools import partial
 from typing import Annotated as An
@@ -268,8 +269,13 @@ def find_good_per_device_num_workers(
     if launcher_config.cpus_per_task in [None, 1]:
         logging.info("Only 1 worker available/provided. Returning 0.")
         return 0
-    times = []
-    for num_workers in range((launcher_config.cpus_per_task or 1) + 1):
+    # Static type checking purposes, already narrowed down to `int`
+    # through the `if` statement above.
+    assert launcher_config.cpus_per_task  # noqa: S101
+    times: list[float] = [
+        sys.float_info.max for _ in range(launcher_config.cpus_per_task + 1)
+    ]
+    for num_workers in range(launcher_config.cpus_per_task, -1, -1):
         datamodule_copy = copy.deepcopy(datamodule)
         datamodule_copy.per_device_batch_size = per_device_batch_size
         datamodule_copy.per_device_num_workers = num_workers
@@ -282,10 +288,19 @@ def find_good_per_device_num_workers(
                 num_data_passes += 1
                 if num_data_passes == max_num_data_passes:
                     break
-        times.append(time.time() - start_time)
+        times[num_workers] = time.time() - start_time
         logging.info(
-            f"num_workers: {num_workers}, time taken: {times[-1]}",
+            f"num_workers: {num_workers}, time taken: {times[num_workers]}",
         )
+        # If the time taken is not decreasing, stop the search.
+        if (
+            # Not after the first iteration.
+            num_workers != launcher_config.cpus_per_task
+            # Still want to attempt `num_workers` = 0.
+            and num_workers != 1
+            and times[num_workers + 1] <= times[num_workers]
+        ):
+            break
     best_time = int(np.argmin(times))
     logging.info(f"Best `num_workers` parameter: {best_time}.")
     return best_time
