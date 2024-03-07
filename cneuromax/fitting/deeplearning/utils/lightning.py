@@ -196,47 +196,43 @@ def find_good_per_device_batch_size(
             max_per_device_batch_size,
             datamodule.config.max_per_device_batch_size,
         )
-    if device == "cpu":
-        per_device_batch_size = max_per_device_batch_size
-    else:
-        litmodule_copy = copy.deepcopy(litmodule)
-        # Speeds up the batch size search by removing the validation
-        # epoch end method, which is independent of the batch size.
-        litmodule_copy.on_validation_epoch_end = None  # type: ignore[assignment,method-assign]
-        # Speeds up the batch size search by using a reasonable number
-        # of workers for the search.
-        if launcher_config.cpus_per_task:
-            datamodule_copy.per_device_num_workers = (
-                launcher_config.cpus_per_task
-            )
-        batch_size_finder = BatchSizeFinder(
-            mode="binsearch",
-            batch_arg_name="per_device_batch_size",
-            max_trials=int(math.log2(max_per_device_batch_size)),
-        )
-        # Stops the `fit` method after the batch size has been found.
-        batch_size_finder._early_exit = True  # noqa: SLF001
-        trainer = Trainer(
-            accelerator=device,
-            devices=[device_ids[0]],  # The first available device.
-            default_root_dir=output_dir + "/lightning/tuner/",
-            callbacks=[batch_size_finder],
-        )
-        logging.info("Finding good `batch_size` parameter...")
-        per_device_batch_size = None
-        while per_device_batch_size is None:
-            # Prevents the `fit` method from raising a `KeyError`, see:
-            # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
-            with contextlib.suppress(KeyError):
-                trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
-            per_device_batch_size = batch_size_finder.optimal_batch_size
-            if per_device_batch_size is None:
-                logging.warning("Batch size finder failed. Retrying...")
-        # Accounts for potential GPU memory fluctuations.
-        per_device_batch_size = min(
-            int(per_device_batch_size * 0.95),
-            max_per_device_batch_size,
-        )
+    litmodule_copy = copy.deepcopy(litmodule)
+    # Speeds up the batch size search by removing the validation
+    # epoch end method, which is independent of the batch size.
+    litmodule_copy.on_validation_epoch_end = None  # type: ignore[assignment,method-assign]
+    # Speeds up the batch size search by using a reasonable number
+    # of workers for the search.
+    if launcher_config.cpus_per_task:
+        datamodule_copy.per_device_num_workers = launcher_config.cpus_per_task
+    batch_size_finder = BatchSizeFinder(
+        mode="binsearch",
+        batch_arg_name="per_device_batch_size",
+        max_trials=int(math.log2(max_per_device_batch_size)),
+    )
+    # Stops the `fit` method after the batch size has been found.
+    batch_size_finder._early_exit = True  # noqa: SLF001
+    trainer = Trainer(
+        accelerator=device,
+        # The first available device
+        devices=([device_ids[0]] if device == "gpu" else 1),
+        default_root_dir=output_dir + "/lightning/tuner/",
+        callbacks=[batch_size_finder],
+    )
+    logging.info("Finding good `batch_size` parameter...")
+    per_device_batch_size = None
+    while per_device_batch_size is None:
+        # Prevents the `fit` method from raising a `KeyError`, see:
+        # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
+        with contextlib.suppress(KeyError):
+            trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
+        per_device_batch_size = batch_size_finder.optimal_batch_size
+        if per_device_batch_size is None:
+            logging.warning("Batch size finder failed. Retrying...")
+    # Accounts for potential GPU memory fluctuations.
+    per_device_batch_size = min(
+        int(per_device_batch_size * 0.95),
+        max_per_device_batch_size,
+    )
     if per_device_batch_size == 0:
         per_device_batch_size = 1
     logging.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
