@@ -189,6 +189,12 @@ def find_good_per_device_batch_size(
     per_device_batch_size: int | None
     # Ensures total batch_size is < 1% of the train dataloader size.
     max_per_device_batch_size = dataset_len // (100 * num_computing_devices)
+    # If a maximum batch size was specified, use the smaller of the two.
+    if datamodule.config.max_per_device_batch_size:
+        max_per_device_batch_size = min(
+            max_per_device_batch_size,
+            datamodule.config.max_per_device_batch_size,
+        )
     if device == "cpu":
         per_device_batch_size = max_per_device_batch_size
     else:
@@ -216,16 +222,18 @@ def find_good_per_device_batch_size(
             callbacks=[batch_size_finder],
         )
         logging.info("Finding good `batch_size` parameter...")
-        # Prevents the `fit` method from raising a `KeyError`, see:
-        # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
-        with contextlib.suppress(KeyError):
-            trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
-        per_device_batch_size = batch_size_finder.optimal_batch_size
-        # Should never happen.
-        assert per_device_batch_size is not None  # noqa: S101
+        per_device_batch_size = None
+        while per_device_batch_size is None:
+            # Prevents the `fit` method from raising a `KeyError`, see:
+            # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
+            with contextlib.suppress(KeyError):
+                trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
+            per_device_batch_size = batch_size_finder.optimal_batch_size
+            if per_device_batch_size is None:
+                logging.warning("Batch size finder failed. Retrying...")
         # Accounts for potential GPU memory fluctuations.
         per_device_batch_size = min(
-            int(per_device_batch_size * 0.9),
+            int(per_device_batch_size * 0.95),
             max_per_device_batch_size,
         )
     if per_device_batch_size == 0:
