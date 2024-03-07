@@ -75,6 +75,10 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
             :paramref:`~BaseLitModule.config`.
         nnmodule (:class:`torch.nn.Module`): See\
             :paramref:`~BaseLitModule.nnmodule`.
+        optimizer_partial (:class:`functools.partial`): See\
+            :paramref:`~BaseLitModule.optimizer`.
+        scheduler_partial (:class:`functools.partial`): See\
+            :paramref:`~BaseLitModule.scheduler`.
         optimizer (:class:`torch.optim.Optimizer`):\
             :paramref:`~BaseLitModule.optimizer` instantiated.
         scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \
@@ -95,8 +99,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         super().__init__(logs_val=config.log_val_wandb)
         self.config = config
         self.nnmodule = nnmodule
-        self.optimizer = optimizer(params=self.parameters())
-        self.scheduler = scheduler(optimizer=self.optimizer)
+        self.optimizer_partial = optimizer
+        self.scheduler_partial = scheduler
         # Verify `step` method.
         if not callable(getattr(self, "step", None)):
             error_msg = (
@@ -181,7 +185,6 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         """
         return self.stage_step(data=data, stage="test")
 
-    @final
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
@@ -193,6 +196,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
             :class:`~torch.optim.lr_scheduler.LRScheduler`\
             attributes.
         """
+        self.optimizer = self.optimizer_partial(params=self.parameters())
+        self.scheduler = self.scheduler_partial(optimizer=self.optimizer)
         return [self.optimizer], [
             {"scheduler": self.scheduler, "interval": "step", "frequency": 1},
         ]
