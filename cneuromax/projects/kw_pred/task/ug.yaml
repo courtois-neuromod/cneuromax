@@ -3,5 +3,19 @@ defaults:
   - /datamodule: kw_pred
   - /datamodule/dataset: kw_pred
   - /litmodule: unc_kw_gen
-  - /litmodule/nnmodule: unet
+  - override /litmodule/nnmodule: unet1d
   - _self_
+
+hydra:
+  launcher:
+    cpus_per_task: 8
+config:
+  device: cpu
+datamodule:
+  dataset:
+    config:
+      root_data_dir: /data/
+      audio_embeddings_rel_dir: null
+      audio_stft_rel_dir: null
+      video_embeddings_rel_dir: null
+      duration_seconds: 2

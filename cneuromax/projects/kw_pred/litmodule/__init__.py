@@ -3,6 +3,7 @@ r""":mod:`.kw_pred` :class:`lightning.pytorch.LightningModule``s."""
 from denoising_diffusion_pytorch import Unet1D
 from hydra_zen import ZenStore
 
+from cneuromax.fitting.deeplearning.litmodule import BaseLitModuleConfig
 from cneuromax.utils.hydra_zen import fs_builds
 
 from .unc_kw_gen import UnconditionalKWGenerationLitModule
@@ -15,7 +16,10 @@ def store_configs(store: ZenStore) -> None:
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
     """
     store(
-        fs_builds(UnconditionalKWGenerationLitModule),
+        fs_builds(
+            UnconditionalKWGenerationLitModule,
+            config=BaseLitModuleConfig(),
+        ),
         name="unc_kw_gen",
         group="litmodule",
     )
