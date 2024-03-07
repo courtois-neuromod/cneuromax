@@ -66,7 +66,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             tensor=x,
             pattern="BS SL -> BS 1 SL",
         )
-        if stage == "val":
+        if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x)
         loss: Float[Tensor, ""] = self.diffusion_module.forward(img=x)
         return loss
