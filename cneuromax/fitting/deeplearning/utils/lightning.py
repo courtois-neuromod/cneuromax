@@ -114,29 +114,37 @@ def set_batch_size_and_num_workers(
         device: See :paramref:`~.FittingSubtaskConfig.device`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
-    proposed_per_device_batch_size = find_good_per_device_batch_size(
-        litmodule=litmodule,
-        datamodule=datamodule,
-        device=device,
-        device_ids=trainer.device_ids,
-        output_dir=output_dir,
-    )
-    proposed_per_device_num_workers = find_good_per_device_num_workers(
-        datamodule=datamodule,
-        per_device_batch_size=proposed_per_device_batch_size,
-    )
-    per_device_batch_size = int(
-        trainer.strategy.reduce(
-            torch.tensor(proposed_per_device_batch_size),
-            reduce_op=ReduceOp.MIN,  # type: ignore [arg-type]
-        ),
-    )
-    per_device_num_workers = int(
-        trainer.strategy.reduce(
-            torch.tensor(proposed_per_device_num_workers),
-            reduce_op=ReduceOp.MAX,  # type: ignore [arg-type]
-        ),
-    )
+    if not datamodule.config.fixed_per_device_batch_size:
+        proposed_per_device_batch_size = find_good_per_device_batch_size(
+            litmodule=litmodule,
+            datamodule=datamodule,
+            device=device,
+            device_ids=trainer.device_ids,
+            output_dir=output_dir,
+        )
+        per_device_batch_size = int(
+            trainer.strategy.reduce(
+                torch.tensor(proposed_per_device_batch_size),
+                reduce_op=ReduceOp.MIN,  # type: ignore [arg-type]
+            ),
+        )
+    else:
+        per_device_batch_size = datamodule.config.fixed_per_device_batch_size
+
+    if not datamodule.config.fixed_per_device_num_workers:
+        proposed_per_device_num_workers = find_good_per_device_num_workers(
+            datamodule=datamodule,
+            per_device_batch_size=per_device_batch_size,
+        )
+        per_device_num_workers = int(
+            trainer.strategy.reduce(
+                torch.tensor(proposed_per_device_num_workers),
+                reduce_op=ReduceOp.MAX,  # type: ignore [arg-type]
+            ),
+        )
+    else:
+        per_device_num_workers = datamodule.config.fixed_per_device_num_workers
+
     datamodule.per_device_batch_size = per_device_batch_size
     datamodule.per_device_num_workers = per_device_num_workers
 
