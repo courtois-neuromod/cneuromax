@@ -10,7 +10,7 @@ from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
 
-from cneuromax.utils.beartype import not_empty, one_of
+from cneuromax.utils.beartype import ge, not_empty, one_of
 
 
 @dataclass
@@ -40,14 +40,26 @@ class BaseDataModuleConfig:
     Args:
         data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        max_per_device_batch_size: Maximum number of samples to load\
-            per device per iteration. Setting this to ``0`` equates to\
-            no limit.
+        max_per_device_batch_size: See\
+            :attr:`~BaseDataModule.per_device_batch_size`. Sets an\
+            upper bound on the aforementioned attribute.
+        fixed_per_device_batch_size: See\
+            :attr:`~BaseDataModule.per_device_batch_size`. Setting this\
+            value skips the batch size search in\
+            :func:`.find_good_per_device_batch_size` which is\
+            not recommended for resource efficiency.
+        fixed_per_device_num_workers: See\
+            :attr:`~BaseDataModule.per_device_num_workers`. Setting\
+            this value skips the num workers search in\
+            :func:`.find_good_per_device_num_workers` which is\
+            not recommended for resource efficiency.
     """
 
     data_dir: An[str, not_empty()] = "${config.data_dir}"
     device: An[str, one_of("cpu", "gpu")] = "${config.device}"
-    max_per_device_batch_size: int = 0
+    max_per_device_batch_size: An[int, ge(1)] | None = None
+    fixed_per_device_batch_size: An[int, ge(1)] | None = None
+    fixed_per_device_num_workers: An[int, ge(0)] | None = None
 
 
 class BaseDataModule(LightningDataModule, ABC):
