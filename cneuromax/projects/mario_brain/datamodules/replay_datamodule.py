@@ -183,42 +183,41 @@ class ReplayDataModule(BaseDataModule):
         self.tng_path = Path(config.lazy_load_dir) / "tng_data.h5"
         self.val_path = Path(config.lazy_load_dir) / "val_data.h5"
 
-    def prepare_data(self: "ReplayDataModule", stage: str) -> None:
+    def prepare_data(self: "ReplayDataModule") -> None:
         """Create the lazy loading files and the datasets."""
         modalities = self.config.modalities or []
-        if stage == "fit":
-            Path(self.config.lazy_load_dir).mkdir(parents=True, exist_ok=True)
-            with Path(self.config.split_file).open() as split_file:
-                run_split = json.load(split_file)
-            tng_list = run_split["training"]
-            val_list = run_split["validation"]
-            if self.config.subject != "all":
-                tng_list = [p for p in tng_list if self.config.subject in p]
-                val_list = [p for p in val_list if self.config.subject in p]
-            self.make_lazy_loading_file(
-                self.config.data_path,
-                self.tng_path,
-                tng_list,
-                self.config.n_frames,
-                modalities,
-                self.config.time_downsample,
-            )
-            self.make_lazy_loading_file(
-                self.config.data_path,
-                self.val_path,
-                val_list,
-                self.config.n_frames,
-                modalities,
-                self.config.time_downsample,
-            )
-            self.datasets.train = ReplayDataset(
-                self.tng_path,
-                ["frames", *modalities],
-            )
-            self.datasets.val = ReplayDataset(
-                self.val_path,
-                ["frames", *modalities],
-            )
+        Path(self.config.lazy_load_dir).mkdir(parents=True, exist_ok=True)
+        with Path(self.config.split_file).open() as split_file:
+            run_split = json.load(split_file)
+        tng_list = run_split["training"]
+        val_list = run_split["validation"]
+        if self.config.subject != "all":
+            tng_list = [p for p in tng_list if self.config.subject in p]
+            val_list = [p for p in val_list if self.config.subject in p]
+        self.make_lazy_loading_file(
+            self.config.data_path,
+            self.tng_path,
+            tng_list,
+            self.config.n_frames,
+            modalities,
+            self.config.time_downsample,
+        )
+        self.make_lazy_loading_file(
+            self.config.data_path,
+            self.val_path,
+            val_list,
+            self.config.n_frames,
+            modalities,
+            self.config.time_downsample,
+        )
+        self.datasets.train = ReplayDataset(
+            self.tng_path,
+            ["frames", *modalities],
+        )
+        self.datasets.val = ReplayDataset(
+            self.val_path,
+            ["frames", *modalities],
+        )
 
     @staticmethod
     def make_lazy_loading_file(  # noqa: PLR0913
