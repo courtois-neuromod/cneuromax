@@ -427,29 +427,37 @@
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">proposed_per_device_batch_size</span> <span class="o">=</span> <span class="n">find_good_per_device_batch_size</span><span class="p">(</span>
-        <span class="n">litmodule</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
-        <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
-        <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
-        <span class="n">device_ids</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">device_ids</span><span class="p">,</span>
-        <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">proposed_per_device_num_workers</span> <span class="o">=</span> <span class="n">find_good_per_device_num_workers</span><span class="p">(</span>
-        <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
-        <span class="n">per_device_batch_size</span><span class="o">=</span><span class="n">proposed_per_device_batch_size</span><span class="p">,</span>
-    <span class="p">)</span>
-    <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-        <span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">proposed_per_device_batch_size</span><span class="p">),</span>
-            <span class="n">reduce_op</span><span class="o">=</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span>  <span class="c1"># type: ignore [arg-type]</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
-    <span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-        <span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">proposed_per_device_num_workers</span><span class="p">),</span>
-            <span class="n">reduce_op</span><span class="o">=</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span>  <span class="c1"># type: ignore [arg-type]</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fixed_per_device_batch_size</span><span class="p">:</span>
+        <span class="n">proposed_per_device_batch_size</span> <span class="o">=</span> <span class="n">find_good_per_device_batch_size</span><span class="p">(</span>
+            <span class="n">litmodule</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
+            <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">device_ids</span><span class="o">=</span><span class="n">trainer</span><span class="o">.</span><span class="n">device_ids</span><span class="p">,</span>
+            <span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">proposed_per_device_batch_size</span><span class="p">),</span>
+                <span class="n">reduce_op</span><span class="o">=</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">MIN</span><span class="p">,</span>  <span class="c1"># type: ignore [arg-type]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fixed_per_device_batch_size</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fixed_per_device_num_workers</span><span class="p">:</span>
+        <span class="n">proposed_per_device_num_workers</span> <span class="o">=</span> <span class="n">find_good_per_device_num_workers</span><span class="p">(</span>
+            <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
+            <span class="n">per_device_batch_size</span><span class="o">=</span><span class="n">per_device_batch_size</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span>
+                <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">proposed_per_device_num_workers</span><span class="p">),</span>
+                <span class="n">reduce_op</span><span class="o">=</span><span class="n">ReduceOp</span><span class="o">.</span><span class="n">MAX</span><span class="p">,</span>  <span class="c1"># type: ignore [arg-type]</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">fixed_per_device_num_workers</span>
+
     <span class="n">datamodule</span><span class="o">.</span><span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">per_device_batch_size</span>
     <span class="n">datamodule</span><span class="o">.</span><span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="n">per_device_num_workers</span></div>
 

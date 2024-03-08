@@ -318,7 +318,7 @@
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">not_empty</span><span class="p">,</span> <span class="n">one_of</span>
+<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">,</span> <span class="n">one_of</span>
 
 
 <div class="viewcode-block" id="Datasets">
@@ -353,14 +353,26 @@
 <span class="sd">    Args:</span>
 <span class="sd">        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
-<span class="sd">        max_per_device_batch_size: Maximum number of samples to load\</span>
-<span class="sd">            per device per iteration. Setting this to ``0`` equates to\</span>
-<span class="sd">            no limit.</span>
+<span class="sd">        max_per_device_batch_size: See\</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Sets an\</span>
+<span class="sd">            upper bound on the aforementioned attribute.</span>
+<span class="sd">        fixed_per_device_batch_size: See\</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Setting this\</span>
+<span class="sd">            value skips the batch size search in\</span>
+<span class="sd">            :func:`.find_good_per_device_batch_size` which is\</span>
+<span class="sd">            not recommended for resource efficiency.</span>
+<span class="sd">        fixed_per_device_num_workers: See\</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_num_workers`. Setting\</span>
+<span class="sd">            this value skips the num workers search in\</span>
+<span class="sd">            :func:`.find_good_per_device_num_workers` which is\</span>
+<span class="sd">            not recommended for resource efficiency.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">data_dir</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">()]</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{config.data_dir}</span><span class="s2">&quot;</span>
     <span class="n">device</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="s2">&quot;gpu&quot;</span><span class="p">)]</span> <span class="o">=</span> <span class="s2">&quot;$</span><span class="si">{config.device}</span><span class="s2">&quot;</span>
-    <span class="n">max_per_device_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span></div>
+    <span class="n">max_per_device_batch_size</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fixed_per_device_batch_size</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">fixed_per_device_num_workers</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 
