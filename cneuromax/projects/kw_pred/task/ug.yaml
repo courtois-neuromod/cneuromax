@@ -9,8 +9,9 @@ defaults:
 hydra:
   launcher:
     cpus_per_task: 8
+    gpus_per_node: 1
 config:
-  device: cpu
+  device: gpu
 datamodule:
   dataset:
     config:

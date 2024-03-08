@@ -177,4 +177,4 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                     raise Exception  # noqa: TRY301, TRY002
                 return data  # noqa: TRY300
             except Exception:  # noqa: PERF203, BLE001
-                idx = (idx * idx) % self.num_data_points
+                idx = (idx * 2) % self.num_data_points

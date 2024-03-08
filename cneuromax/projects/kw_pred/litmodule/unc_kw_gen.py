@@ -95,22 +95,23 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         self: "UnconditionalKWGenerationLitModule",
     ) -> None:
         """Called at the end of the validation epoch."""
-        self.diffusion_module.model = self.ema.ema_model
-        x_hat: Float[Tensor, " batch_size seq_len"] = (
-            self.diffusion_module.sample(batch_size=3).squeeze()
-        )
-        self.diffusion_module.model = self.nnmodule
-        self.val_wandb_data = self.val_wandb_data[
-            (self.curr_val_epoch * 3)
-            % len(self.val_wandb_data) : ((self.curr_val_epoch + 1) * 3)
-            % len(self.val_wandb_data)
-        ]
-        for val_wandb_data_i, x_hat_i in zip(
-            self.val_wandb_data,
-            x_hat,
-            strict=True,
-        ):
-            val_wandb_data_i.update({"x_hat": x_hat_i})
+        if self.config.log_val_wandb:
+            self.diffusion_module.model = self.ema.ema_model
+            x_hat: Float[Tensor, " batch_size seq_len"] = (
+                self.diffusion_module.sample(batch_size=3).squeeze()
+            )
+            self.diffusion_module.model = self.nnmodule
+            self.val_wandb_data = self.val_wandb_data[
+                (self.curr_val_epoch * 3)
+                % len(self.val_wandb_data) : ((self.curr_val_epoch + 1) * 3)
+                % len(self.val_wandb_data)
+            ]
+            for val_wandb_data_i, x_hat_i in zip(
+                self.val_wandb_data,
+                x_hat,
+                strict=True,
+            ):
+                val_wandb_data_i.update({"x_hat": x_hat_i})
         super().on_validation_epoch_end()
 
 
