@@ -278,12 +278,12 @@ def find_good_per_device_num_workers(
     times: list[float] = [
         sys.float_info.max for _ in range(launcher_config.cpus_per_task + 1)
     ]
+    datamodule_copy = copy.deepcopy(datamodule)
+    datamodule_copy.per_device_batch_size = per_device_batch_size
+    datamodule_copy.prepare_data()
+    datamodule_copy.setup("fit")
     for num_workers in range(launcher_config.cpus_per_task, -1, -1):
-        datamodule_copy = copy.deepcopy(datamodule)
-        datamodule_copy.per_device_batch_size = per_device_batch_size
         datamodule_copy.per_device_num_workers = num_workers
-        datamodule_copy.prepare_data()
-        datamodule_copy.setup("fit")
         start_time = time.time()
         num_data_passes = 0
         while num_data_passes < max_num_data_passes:
