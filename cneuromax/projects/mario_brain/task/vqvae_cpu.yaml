@@ -6,7 +6,7 @@ defaults:
   - _self_
 hydra:
   launcher:
-    cpus_per_task: 4
+    cpus_per_task: 1
 config:
   device: cpu
 litmodule:
@@ -24,17 +24,16 @@ litmodule:
     no_attn: false
   optimizer:
     lr: 0.0003
-# datamodule:
-# #  per_device_batch_size: 12
-# #  num_workers: 4
-#   data_path: data/mario_frames_128.h5
-#   lazy_load_dir: data/lazy_load
-#   split_file: data/basic_split.json
-#   subject: sub-01
-#   n_frames: ${litmodule.sequence_length}
-#   modalities: []
-#   time_downsample: 5
-#   stride: 5
-#   fps: 60
+datamodule:
+  config:
+    data_path: /data/mario_frames_128.h5
+    lazy_load_dir: /data/lazy_load
+    split_file: /data/basic_split.json
+    subject: sub-01
+    n_frames: ${litmodule.config.sequence_length}
+    modalities: []
+    time_downsample: 5
+    stride: 5
+    fps: 60
 trainer:
   max_epochs: 1

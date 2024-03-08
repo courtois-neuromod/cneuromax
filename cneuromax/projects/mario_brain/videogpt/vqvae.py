@@ -62,6 +62,7 @@ class VQVAE(BaseLitModule):
         # self.lr_scheduler = config.lr_scheduler
         # self.lr_scheduler_args = lr_scheduler_args
         self.val_recon_loss_of_epoch = []
+        self.best_val_recon_loss = None
 
         self.encoder = Encoder(
             self.config.n_hiddens,

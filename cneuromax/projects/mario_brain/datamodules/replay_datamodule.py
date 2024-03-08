@@ -148,9 +148,9 @@ class ReplayDataModuleConfig(BaseDataModuleConfig):
             Defaults to 60.
     """
 
-    data_path: str = "data/mario_frames_128.h5"
-    lazy_load_dir: str = "data/lazy_load"
-    split_file: str = "data/basic_split.json"
+    data_path: str = "/data/mario_frames_128.h5"
+    lazy_load_dir: str = "/data/lazy_load"
+    split_file: str = "/data/basic_split.json"
     subject: str = "all"
     n_frames: int = 16
     modalities: list[str] | None = None
@@ -183,7 +183,7 @@ class ReplayDataModule(BaseDataModule):
         self.tng_path = Path(config.lazy_load_dir) / "tng_data.h5"
         self.val_path = Path(config.lazy_load_dir) / "val_data.h5"
 
-    def setup(self: "ReplayDataModule", stage: str) -> None:
+    def prepare_data(self: "ReplayDataModule", stage: str) -> None:
         """Create the lazy loading files and the datasets."""
         modalities = self.config.modalities or []
         if stage == "fit":
@@ -213,11 +213,11 @@ class ReplayDataModule(BaseDataModule):
             )
             self.datasets.train = ReplayDataset(
                 self.tng_path,
-                ["frames", *self.modalities],
+                ["frames", *modalities],
             )
             self.datasets.val = ReplayDataset(
                 self.val_path,
-                ["frames", *self.modalities],
+                ["frames", *modalities],
             )
 
     @staticmethod
