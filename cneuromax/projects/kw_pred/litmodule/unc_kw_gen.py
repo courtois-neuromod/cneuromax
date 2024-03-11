@@ -1,6 +1,5 @@
 """:class:`UnconditionalKWGenerationLitModule."""
 
-import io
 from abc import ABCMeta
 from typing import Annotated as An
 from typing import Any
@@ -12,7 +11,6 @@ from denoising_diffusion_pytorch import GaussianDiffusion1D
 from einops import rearrange
 from ema_pytorch import EMA
 from jaxtyping import Float
-from PIL import Image
 from torch import Tensor
 
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
@@ -38,7 +36,8 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         super().__init__(*args, **kwargs)
         if self.config.log_val_wandb:
             self.wandb_columns = ["x", "x_hat"]
-            self.val_wandb_data: list[dict[str, Tensor]]
+            self.wandb_x_wrapper = wandb.Image
+            self.val_wandb_data: list[dict[str, wandb.Image]]
         self.diffusion_module = GaussianDiffusion1D(
             model=self.nnmodule,
             seq_length=800,
@@ -85,7 +84,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         """
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
         for x_i in x:
-            self.val_wandb_data.append({"x": x_i})
+            self.val_wandb_data.append({"x": to_wandb_image(x_i)})
 
     def on_after_backward(self: "UnconditionalKWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
@@ -111,7 +110,7 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 x_hat,
                 strict=True,
             ):
-                val_wandb_data_i.update({"x_hat": x_hat_i})
+                val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
         super().on_validation_epoch_end()
 
 
@@ -126,10 +125,10 @@ def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
     """
     plt.figure()
     plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
-    buf = io.BytesIO()
-    plt.savefig(buf, format="png")
+    plt.axis("off")
+    canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
+    canvas.draw()
+    data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]
+    image = data.reshape(canvas.get_width_height()[::-1] + (3,))
     plt.close()
-    buf.seek(0)
-    im = Image.open(buf)
-    buf.close()
-    return wandb.Image(im)
+    return wandb.Image(image)
