@@ -223,12 +223,11 @@ def load_kw_data(
     corners = ["BL", "BR", "FL", "FR"][:num_klk_wav_corners]
     for pos in corners:
         data_file = kw_content_id_dir / f"ID{content_id}_{pos}.wav"
-        pos_data, _ = torchaudio.load(data_file)
-        pos_data: Float32[Tensor, " total_num_samples"] = pos_data.squeeze(0)
+        pos_data, _ = torchaudio.load(
+            uri=data_file,
+            frame_offset=int(starting_time * 400),
+            num_frames=duration_second * 400,
+        )
+        pos_data: Float32[Tensor, " num_samples"] = pos_data.squeeze(0)
         data[f"KW {pos}"] = pos_data
-    # Truncate data
-    starting_sample = int(starting_time * 400)
-    ending_sample = starting_sample + duration_second * 400
-    for pos in corners:
-        data[f"KW {pos}"] = data[f"KW {pos}"][starting_sample:ending_sample]
     return data
