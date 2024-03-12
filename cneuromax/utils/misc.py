@@ -39,9 +39,6 @@ def can_connect_to_internet() -> bool:
     try:
         response = requests.get(url="https://www.google.com", timeout=5)
         response.raise_for_status()
-    except (
-        requests.exceptions.RequestException,
-        requests.exceptions.HTTPError,
-    ):
+    except Exception:  # noqa: BLE001
         return False
     return True
