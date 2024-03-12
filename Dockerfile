@@ -24,6 +24,8 @@ RUN apt update && apt install -y software-properties-common && \
     ffmpeg \
     sox \
     libavdevice-dev \
+    # Required by soundfile
+    libffi7 \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 # Install torchaudio
