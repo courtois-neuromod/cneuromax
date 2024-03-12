@@ -16,6 +16,6 @@ hydra:
     account: rrg-pbellec
     python: "/cvmfs/soft.computecanada.ca/easybuild/software/2020/Core/\
       apptainer/1.1.8/bin/apptainer \
-      exec --nv ${oc.env:SCRATCH}/cneuromax.sif python3"
+      exec --no-home --nv ${oc.env:SCRATCH}/cneuromax.sif python3"
     setup:
       - module load apptainer
