@@ -328,7 +328,6 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">OmegaConf</span>
 <span class="kn">from</span> <span class="nn">torch.distributed</span> <span class="kn">import</span> <span class="n">ReduceOp</span>
-<span class="kn">from</span> <span class="nn">wandb_osh.lightning_hooks</span> <span class="kn">import</span> <span class="n">TriggerWandbSyncLightningCallback</span>
 
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.datamodule</span> <span class="kn">import</span> <span class="n">BaseDataModule</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="n">BaseLitModule</span>
@@ -367,11 +366,13 @@
     <span class="n">offline</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">logger_partial</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;offline&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">can_connect_to_internet</span><span class="p">()</span>
     <span class="p">)</span>
-    <span class="c1"># Adds the :mod:`wandb_osh` callback if offline, which signals the</span>
-    <span class="c1"># head node with internet access to sync the latest logs on</span>
-    <span class="c1"># validation epoch end.</span>
-    <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
-        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">TriggerWandbSyncLightningCallback</span><span class="p">()])</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    # Adds the :mod:`wandb_osh` callback if offline, which signals the</span>
+<span class="sd">    # head node with internet access to sync the latest logs on</span>
+<span class="sd">    # validation epoch end.</span>
+<span class="sd">    if offline:</span>
+<span class="sd">        callbacks.append(TriggerWandbSyncLightningCallback())</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Adds a callback to save the state of training (not just the model</span>
     <span class="c1"># despite the name) at the end of every validation epoch.</span>
     <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -385,13 +386,14 @@
     <span class="c1"># Instantiate the :class:`WandbLogger`.`</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logger_partial</span><span class="p">(</span><span class="n">offline</span><span class="o">=</span><span class="n">offline</span><span class="p">)</span>
     <span class="c1"># Feed the :mod:`hydra` config to :mod:`wandb`.</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_container</span><span class="p">(</span>
-            <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/.hydra/config.yaml&quot;</span><span class="p">),</span>
-            <span class="n">resolve</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">throw_on_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="p">),</span>
-    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_container</span><span class="p">(</span>
+                <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/.hydra/config.yaml&quot;</span><span class="p">),</span>
+                <span class="n">resolve</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">throw_on_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
     <span class="c1"># Instantiate the :class:`~lightning.pytorch.Trainer`.</span>
     <span class="k">return</span> <span class="n">trainer_partial</span><span class="p">(</span>
         <span class="n">devices</span><span class="o">=</span><span class="p">(</span>
@@ -399,7 +401,7 @@
             <span class="k">if</span> <span class="n">device</span> <span class="o">==</span> <span class="s2">&quot;gpu&quot;</span>
             <span class="k">else</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">tasks_per_node</span>
         <span class="p">),</span>
-        <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">=</span><span class="n">logger</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">offline</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">callbacks</span><span class="o">=</span><span class="n">callbacks</span><span class="p">,</span>
     <span class="p">)</span></div>
 

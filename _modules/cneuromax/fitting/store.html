@@ -335,15 +335,7 @@
         <span class="s2">&quot;timeout_min&quot;</span><span class="p">:</span> <span class="mi">1440</span><span class="p">,</span>  <span class="c1"># 24 hours</span>
     <span class="p">}</span>
     <span class="n">store</span><span class="p">(</span><span class="n">LocalQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;local&quot;</span><span class="p">)</span>
-    <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-        <span class="p">{</span>
-            <span class="s2">&quot;setup&quot;</span><span class="p">:</span> <span class="s2">&quot;${merge:$</span><span class="si">{setup_apptainer_slurm}</span><span class="s2">,$</span><span class="si">{copy_data_commands}</span><span class="s2">}&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
-            <span class="s2">&quot;apptainer --nv exec ${oc.env:SCRATCH}/cneuromax.sif python&quot;</span><span class="p">,</span>
-        <span class="p">},</span>
-    <span class="p">)</span>
-    <span class="n">store</span><span class="p">(</span><span class="n">SlurmQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">)</span>
-    <span class="n">store</span><span class="p">([</span><span class="s2">&quot;module load apptainer&quot;</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;setup_apptainer_slurm&quot;</span><span class="p">)</span></div>
+    <span class="n">store</span><span class="p">(</span><span class="n">SlurmQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">),</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;hydra/launcher&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;slurm&quot;</span><span class="p">)</span></div>
 
 </pre></div>
         </article>
