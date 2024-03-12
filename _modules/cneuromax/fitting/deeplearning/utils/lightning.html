@@ -328,6 +328,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">omegaconf</span> <span class="kn">import</span> <span class="n">OmegaConf</span>
 <span class="kn">from</span> <span class="nn">torch.distributed</span> <span class="kn">import</span> <span class="n">ReduceOp</span>
+<span class="kn">from</span> <span class="nn">wandb_osh.lightning_hooks</span> <span class="kn">import</span> <span class="n">TriggerWandbSyncLightningCallback</span>
 
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.datamodule</span> <span class="kn">import</span> <span class="n">BaseDataModule</span>
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.litmodule</span> <span class="kn">import</span> <span class="n">BaseLitModule</span>
@@ -366,13 +367,11 @@
     <span class="n">offline</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">logger_partial</span><span class="o">.</span><span class="n">keywords</span><span class="p">[</span><span class="s2">&quot;offline&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">can_connect_to_internet</span><span class="p">()</span>
     <span class="p">)</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    # Adds the :mod:`wandb_osh` callback if offline, which signals the</span>
-<span class="sd">    # head node with internet access to sync the latest logs on</span>
-<span class="sd">    # validation epoch end.</span>
-<span class="sd">    if offline:</span>
-<span class="sd">        callbacks.append(TriggerWandbSyncLightningCallback())</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Adds the :mod:`wandb_osh` callback if offline, which signals the</span>
+    <span class="c1"># head node with internet access to sync the latest logs on</span>
+    <span class="c1"># validation epoch end.</span>
+    <span class="k">if</span> <span class="n">offline</span><span class="p">:</span>
+        <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TriggerWandbSyncLightningCallback</span><span class="p">())</span>
     <span class="c1"># Adds a callback to save the state of training (not just the model</span>
     <span class="c1"># despite the name) at the end of every validation epoch.</span>
     <span class="n">callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
