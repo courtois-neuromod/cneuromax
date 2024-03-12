@@ -326,7 +326,10 @@ your <code class="docutils literal notranslate"><span class="pre">${SCRATCH}</sp
 <h2>2. Build the image<a class="headerlink" href="#build-the-image" title="Link to this heading">#</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This command takes around 5-10 minutes to complete on the Béluga cluster.</p>
+<p>The length of this operation depends on how much of your existing
+cache can be reused &amp; other factors like disk utilization. On
+<code class="docutils literal notranslate"><span class="pre">/scratch/</span></code> of the Béluga cluster, as of March 2024, this ranges
+from 10 minutes to an hour.</p>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>apptainer<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apptainer<span class="w"> </span>build<span class="w"> </span><span class="si">${</span><span class="nv">SCRATCH</span><span class="si">}</span>/cneuromax.sif<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>docker://cneuromod/cneuromax:latest
