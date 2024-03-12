@@ -91,7 +91,7 @@ def instantiate_trainer(
             if device == "gpu"
             else launcher_config.tasks_per_node
         ),
-        logger=logger,
+        logger=logger if not offline else None,
         callbacks=callbacks,
     )
 
