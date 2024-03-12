@@ -22,7 +22,7 @@ dependencies = [
     # `cneuromax/fitting/neuroevolution/`.
     """
     hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@\
-    9e227a095345b5ea3d914efa95b74b622e7d1fdf\
+    4c84b7185f496fe201e7ae8e48b7cae9e66df5f3\
     #subdirectory=plugins/hydra_submitit_launcher/""", # Launcher config
     # CNeuroMod fork that implements the missing connecting feature to
     # `submitit`'s `python` option. Also modifies the `local` launcher
@@ -35,7 +35,11 @@ dependencies = [
     "jupyterlab==4.1.4", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.2", # Jupyter widgets
-    "wandb-osh==1.2.1", # W&B support for SLURM
+    """
+    wandb-osh@git+https://github.com/courtois-neuromod/wandb-offline-sync-hook@\
+    f3c5d67dfa9a4a202ce8bcf48ec4eb788d547b72""", # W&B support for SLURM
+    # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
+    # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
     "h5py==3.10.0", # HDF5 file format load/save
     "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
