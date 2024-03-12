@@ -20,7 +20,10 @@ On a Slurm cluster
 
 .. note::
 
-    This command takes around 5-10 minutes to complete on the Béluga cluster.
+    The length of this operation depends on how much of your existing
+    cache can be reused & other factors like disk utilization. On
+    ``/scratch/`` of the Béluga cluster, as of March 2024, this ranges
+    from 10 minutes to an hour.
 
 .. code-block:: bash
 
