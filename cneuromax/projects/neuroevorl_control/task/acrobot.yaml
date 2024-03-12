@@ -2,6 +2,7 @@
 defaults:
   - /space: rl_control_nevo
   - /agent: rl_control_nevo
+  - override /hydra/launcher: local
   - _self_
 
 hydra:

@@ -25,12 +25,4 @@ def store_launcher_configs(store: ZenStore) -> None:
         "timeout_min": 1440,  # 24 hours
     }
     store(LocalQueueConf(**args), group="hydra/launcher", name="local")
-    args.update(
-        {
-            "setup": "${merge:${setup_apptainer_slurm},${copy_data_commands}}",
-            "python": ""
-            "apptainer --nv exec ${oc.env:SCRATCH}/cneuromax.sif python",
-        },
-    )
     store(SlurmQueueConf(**args), group="hydra/launcher", name="slurm")
-    store(["module load apptainer"], name="setup_apptainer_slurm")

@@ -2,6 +2,7 @@
 defaults:
   - /datamodule: mnist
   - /litmodule: classify_mnist
+  - override /hydra/launcher: local
   - _self_
 hydra:
   launcher:

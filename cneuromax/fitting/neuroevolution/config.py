@@ -101,6 +101,5 @@ class NeuroevolutionTaskConfig(
             "project",
             "task",
             {"task": None},
-            {"override hydra/launcher": "local"},
         ],
     )
