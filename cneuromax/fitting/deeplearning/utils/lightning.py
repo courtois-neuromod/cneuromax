@@ -4,6 +4,7 @@ import contextlib
 import copy
 import logging
 import math
+import os
 import sys
 import time
 from functools import partial
@@ -61,7 +62,13 @@ def instantiate_trainer(
     # head node with internet access to sync the latest logs on
     # validation epoch end.
     if offline:
-        callbacks.append(TriggerWandbSyncLightningCallback())
+        os.environ["WANDB_DISABLE_SERVICE"] = "True"
+        callbacks.append(
+            TriggerWandbSyncLightningCallback(
+                communication_dir=os.environ["CNEUROMAX_PATH"]
+                + "/data/wandb-osh/",
+            ),
+        )
     # Adds a callback to save the state of training (not just the model
     # despite the name) at the end of every validation epoch.
     callbacks.append(
@@ -75,14 +82,13 @@ def instantiate_trainer(
     # Instantiate the :class:`WandbLogger`.`
     logger = logger_partial(offline=offline)
     # Feed the :mod:`hydra` config to :mod:`wandb`.
-    if not offline:
-        logger.experiment.config.update(
-            OmegaConf.to_container(
-                OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
-                resolve=True,
-                throw_on_missing=True,
-            ),
-        )
+    logger.experiment.config.update(
+        OmegaConf.to_container(
+            OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
+            resolve=True,
+            throw_on_missing=True,
+        ),
+    )
     # Instantiate the :class:`~lightning.pytorch.Trainer`.
     return trainer_partial(
         devices=(
@@ -90,7 +96,7 @@ def instantiate_trainer(
             if device == "gpu"
             else launcher_config.tasks_per_node
         ),
-        logger=logger if not offline else None,
+        logger=logger,
         callbacks=callbacks,
     )
 
