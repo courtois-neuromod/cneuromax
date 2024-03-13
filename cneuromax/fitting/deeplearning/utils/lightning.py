@@ -21,7 +21,6 @@ from lightning.pytorch.trainer.connectors.checkpoint_connector import (
 )
 from omegaconf import OmegaConf
 from torch.distributed import ReduceOp
-from wandb_osh.lightning_hooks import TriggerWandbSyncLightningCallback
 
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
@@ -58,17 +57,8 @@ def instantiate_trainer(
     offline = (
         logger_partial.keywords["offline"] or not can_connect_to_internet()
     )
-    # Adds the :mod:`wandb_osh` callback if offline, which signals the
-    # head node with internet access to sync the latest logs on
-    # validation epoch end.
     if offline:
         os.environ["WANDB_DISABLE_SERVICE"] = "True"
-        callbacks.append(
-            TriggerWandbSyncLightningCallback(
-                communication_dir=os.environ["CNEUROMAX_PATH"]
-                + "/data/wandb-osh/",
-            ),
-        )
     # Adds a callback to save the state of training (not just the model
     # despite the name) at the end of every validation epoch.
     callbacks.append(
