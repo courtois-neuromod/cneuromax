@@ -85,8 +85,6 @@ systems.
 * Unassuming guides on how to contribute to the codebase.
 * Tutorials on i) how to facilitate code transport across machines &  ii) how
 to prune unrelated components of the library for paper publication.
-* Offline [Weights & Biases](https://wandb.ai/site) support with
-[wandb-osh](https://github.com/klieret/wandb-offline-sync-hook).
 
 <h2>High-level repository tree:</h2>
 
