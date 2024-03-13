@@ -419,35 +419,16 @@ docker<span class="w"> </span>pull<span class="w"> </span>docker.io/cneuromod/cn
 </section>
 <section id="on-a-slurm-cluster">
 <h2>On a Slurm cluster<a class="headerlink" href="#on-a-slurm-cluster" title="Link to this heading">#</a></h2>
-<section id="update-the-apptainer-cachedir-variable">
-<h3>1. Update the <code class="docutils literal notranslate"><span class="pre">APPTAINER_CACHEDIR</span></code> variable<a class="headerlink" href="#update-the-apptainer-cachedir-variable" title="Link to this heading">#</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This step assumes that storing the Apptainer cache folder in
-your <code class="docutils literal notranslate"><span class="pre">${HOME}</span></code> directory is less favorable than storing it in
-your <code class="docutils literal notranslate"><span class="pre">${SCRATCH}</span></code> directory (which is the case on Béluga).</p>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nexport APPTAINER_CACHEDIR=</span><span class="si">${</span><span class="nv">SCRATCH</span><span class="si">}</span><span class="s2">/.apptainer/&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+<p>Apptainer (previously called Singularity) is a generally available alternative
+to Docker on HPC clusters. We automate the process of building the CNeuroMax
+Apptainer image for CNeuroMod team members through our GitHub Actions.</p>
+<p>The latest image is available on Ginkgo at the following location:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/scratch/cneuromax/cneuromax.sif
 </pre></div>
 </div>
-</section>
-<section id="build-the-image">
-<h3>2. Build the image<a class="headerlink" href="#build-the-image" title="Link to this heading">#</a></h3>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The length of this operation depends on how much of your existing
-cache can be reused &amp; other factors like disk utilization. On
-<code class="docutils literal notranslate"><span class="pre">/scratch/</span></code> of the Béluga cluster, as of March 2024, this ranges
-from 10 minutes to an hour.</p>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>apptainer<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apptainer<span class="w"> </span>build<span class="w"> </span><span class="si">${</span><span class="nv">SCRATCH</span><span class="si">}</span>/cneuromax.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>docker://cneuromod/cneuromax:latest
-</pre></div>
-</div>
-<p>Make sure to re-run this command whenever you modify the Dockerfile
-and want to make use of the latest changes.</p>
-</section>
+<p>The process of setting up SSH keys and the required tunneling is beyond the
+scope of this documentaion. Reach out to seasoned team members if you need
+assistance.</p>
 </section>
 </section>
 
@@ -521,11 +502,7 @@ and want to make use of the latest changes.</p>
 <li><a class="reference internal" href="#pull-the-image">4. Pull the image</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#on-a-slurm-cluster">On a Slurm cluster</a><ul>
-<li><a class="reference internal" href="#update-the-apptainer-cachedir-variable">1. Update the <code class="docutils literal notranslate"><span class="pre">APPTAINER_CACHEDIR</span></code> variable</a></li>
-<li><a class="reference internal" href="#build-the-image">2. Build the image</a></li>
-</ul>
-</li>
+<li><a class="reference internal" href="#on-a-slurm-cluster">On a Slurm cluster</a></li>
 </ul>
 </li>
 </ul>

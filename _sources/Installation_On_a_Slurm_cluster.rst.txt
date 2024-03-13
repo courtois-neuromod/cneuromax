@@ -1,34 +1,16 @@
 On a Slurm cluster
 ==================
 
-1. Update the ``APPTAINER_CACHEDIR`` variable
----------------------------------------------
+Apptainer (previously called Singularity) is a generally available alternative
+to Docker on HPC clusters. We automate the process of building the CNeuroMax
+Apptainer image for CNeuroMod team members through our GitHub Actions.
 
-.. note::
-
-    This step assumes that storing the Apptainer cache folder in
-    your ``${HOME}`` directory is less favorable than storing it in
-    your ``${SCRATCH}`` directory (which is the case on Béluga).
+The latest image is available on Ginkgo at the following location:
 
 .. code-block:: bash
 
-    echo -e "\nexport APPTAINER_CACHEDIR=${SCRATCH}/.apptainer/" >> ~/.bashrc \
-        && source ~/.bashrc
+    /scratch/cneuromax/cneuromax.sif
 
-2. Build the image
-------------------
-
-.. note::
-
-    The length of this operation depends on how much of your existing
-    cache can be reused & other factors like disk utilization. On
-    ``/scratch/`` of the Béluga cluster, as of March 2024, this ranges
-    from 10 minutes to an hour.
-
-.. code-block:: bash
-
-    module load apptainer && apptainer build ${SCRATCH}/cneuromax.sif \
-        docker://cneuromod/cneuromax:latest
-
-Make sure to re-run this command whenever you modify the Dockerfile
-and want to make use of the latest changes.
+The process of setting up SSH keys and the required tunneling is beyond the
+scope of this documentaion. Reach out to seasoned team members if you need
+assistance.

@@ -137,7 +137,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -301,7 +301,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -309,35 +309,16 @@
         <article role="main">
           <section id="on-a-slurm-cluster">
 <h1>On a Slurm cluster<a class="headerlink" href="#on-a-slurm-cluster" title="Link to this heading">#</a></h1>
-<section id="update-the-apptainer-cachedir-variable">
-<h2>1. Update the <code class="docutils literal notranslate"><span class="pre">APPTAINER_CACHEDIR</span></code> variable<a class="headerlink" href="#update-the-apptainer-cachedir-variable" title="Link to this heading">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This step assumes that storing the Apptainer cache folder in
-your <code class="docutils literal notranslate"><span class="pre">${HOME}</span></code> directory is less favorable than storing it in
-your <code class="docutils literal notranslate"><span class="pre">${SCRATCH}</span></code> directory (which is the case on Béluga).</p>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nexport APPTAINER_CACHEDIR=</span><span class="si">${</span><span class="nv">SCRATCH</span><span class="si">}</span><span class="s2">/.apptainer/&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
+<p>Apptainer (previously called Singularity) is a generally available alternative
+to Docker on HPC clusters. We automate the process of building the CNeuroMax
+Apptainer image for CNeuroMod team members through our GitHub Actions.</p>
+<p>The latest image is available on Ginkgo at the following location:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/scratch/cneuromax/cneuromax.sif
 </pre></div>
 </div>
-</section>
-<section id="build-the-image">
-<h2>2. Build the image<a class="headerlink" href="#build-the-image" title="Link to this heading">#</a></h2>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The length of this operation depends on how much of your existing
-cache can be reused &amp; other factors like disk utilization. On
-<code class="docutils literal notranslate"><span class="pre">/scratch/</span></code> of the Béluga cluster, as of March 2024, this ranges
-from 10 minutes to an hour.</p>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>module<span class="w"> </span>load<span class="w"> </span>apptainer<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>apptainer<span class="w"> </span>build<span class="w"> </span><span class="si">${</span><span class="nv">SCRATCH</span><span class="si">}</span>/cneuromax.sif<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>docker://cneuromod/cneuromax:latest
-</pre></div>
-</div>
-<p>Make sure to re-run this command whenever you modify the Dockerfile
-and want to make use of the latest changes.</p>
-</section>
+<p>The process of setting up SSH keys and the required tunneling is beyond the
+scope of this documentaion. Reach out to seasoned team members if you need
+assistance.</p>
 </section>
 
         </article>
@@ -365,28 +346,8 @@ and want to make use of the latest changes.</p>
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">On a Slurm cluster</a><ul>
-<li><a class="reference internal" href="#update-the-apptainer-cachedir-variable">1. Update the <code class="docutils literal notranslate"><span class="pre">APPTAINER_CACHEDIR</span></code> variable</a></li>
-<li><a class="reference internal" href="#build-the-image">2. Build the image</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>
