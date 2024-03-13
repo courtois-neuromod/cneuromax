@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: Build the CNeuroMax Apptainer Image
         run: >
-          apptainer build /scratch/cneuromax/cneuromax.sif
+          apptainer build -F /scratch/cneuromax/cneuromax.sif
           docker://cneuromod/cneuromax:latest
       - name: Give permissions to the CNeuroMax Apptainer Image
         run: >
