@@ -37,7 +37,7 @@ dependencies = [
     "ipywidgets==8.1.2", # Jupyter widgets
     """
     wandb-osh@git+https://github.com/courtois-neuromod/wandb-offline-sync-hook@\
-    f3c5d67dfa9a4a202ce8bcf48ec4eb788d547b72""", # W&B support for SLURM
+    59ca65eff62353c35533f0f2846c060897420e23""", # W&B support for SLURM
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
     "h5py==3.10.0", # HDF5 file format load/save
