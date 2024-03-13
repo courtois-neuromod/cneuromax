@@ -1,8 +1,7 @@
 """:class:`FriendsFinetuningModel`."""
 
 from dataclasses import dataclass
-from typing import Annotated as An
-from typing import Any
+from typing import Annotated as Any
 
 from jaxtyping import Num
 from torch import Tensor
@@ -10,20 +9,20 @@ from transformers.tokenization_utils_base import BatchEncoding
 
 from cneuromax.fitting.deeplearning.litmodule import (
     BaseLitModule,
+    BaseLitModuleConfig,
 )
 from cneuromax.utils.beartype import one_of
 
 
 @dataclass
-class FriendsLitModuleConfig:
+class FriendsLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`FriendsLitModule` config values.
 
     Args:
         layer_name: layer to unfreeze
     """
 
-    layer_names: list[str, str] = "${layer_names}"
-    num_layer_to_freeze: int = "${num_layer_to_freeze}"
+    layer_names: list[Any, Any] = "${layer_names}"
 
 
 class FriendsFinetuningModel(BaseLitModule):
@@ -31,39 +30,24 @@ class FriendsFinetuningModel(BaseLitModule):
 
     def __init__(
         self: "FriendsFinetuningModel",
-        config: FriendsLitModuleConfig,
-        *args: Any,  # noqa: ANN401
-        **kwargs: Any,  # noqa: ANN401
+        *args: Any,
+        **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
+        self.config: FriendsLitModuleConfig
 
-        # for _, param in self.nnmodule.named_parameters():
-        #     param.requires_grad = False
+        for param in self.nnmodule.parameters():
+            param.requires_grad = False
 
-        # First, freeze all parameters in the model
-        for i, block in enumerate(self.nnmodule.transformer.h):
-            # Only un-freeze the last n transformer blocks
-            if i < config.num_layer_to_freeze:
-                for parameter in block.parameters():
-                    parameter.requires_grad = False
-
-        # Then, selectively unfreeze the specified layers
-        for layer_name in config.layer_names:
-            # Check if the layer_name directly matches a nodel attribute
-            if hasattr(self.nnmodule, layer_name):
-                layer = getattr(self.nnmodule, layer_name)
-                for parameter in layer.parameters():
-                    parameter.requires_grad = True
-            else:
-                # If the layer_name doesn't directly match, but a part
-                for name, param in self.nnmodule.named_parameters():
-                    if layer_name in name:
-                        param.requires_grad = True
+        for layer_name in self.config.layer_names:
+            for name, param in self.nnmodule.named_parameters():
+                if layer_name in name:
+                    param.requires_grad = True
 
     def step(
         self: "FriendsFinetuningModel",
         batch: BatchEncoding,
-        stage: An[str, one_of("train", "val", "test", "predict")],
+        stage: Any[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
         """Inputs a batch and returns the loss or logits.
 
@@ -84,11 +68,3 @@ class FriendsFinetuningModel(BaseLitModule):
             out["loss"] if stage in ["train", "val", "test"] else out["logits"]
         )
         return out
-
-    # peft_config = LoraConfig(
-    #     lora_alpha=16,
-    #     lora_dropout=0.1,
-    #     r=64,
-    #     bias="none",
-    #     task_type="CAUSAL_LM",
-    # )

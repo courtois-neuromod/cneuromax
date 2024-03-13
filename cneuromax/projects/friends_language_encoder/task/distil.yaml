@@ -3,7 +3,7 @@ defaults:
   - /datamodule: friends_language_encoder
   - /litmodule: friends_language_encoder
   - override /litmodule/nnmodule: friends_language_encoder
-  - override /hydra/sweeper: orion
+  - override hydra/sweeper: orion
   - _self_
 
 model_name: distilbert-base-uncased
@@ -16,27 +16,31 @@ hydra:
 
   sweeper:
     params:
-      lr: "loguniform(1e-5, 5e-5)"
-      wd: "loguniform(1e-3, 5e-2)"
-      #scheduler
-      # adam parameters weight decays
+      lr: "loguniform(1e-8, 1.0)"
+
+
+    experiment:
+      name: 'friends_language_encoder'
+      version: '1'
 
     algorithm:
       type: random
       config:
-        seed: 2
-
-    # experiment:
-    #   name: 'friends_language_encoder_v7'
+        seed: 1
 
     worker:
-      max_trials: 10
-config:
-  device: gpu
+      n_workers: -1
+      max_broken: 3
+      max_trials: 100
 
-trainer:
-  devices: [0]
+    storage:
+      type: legacy
+      database:
+        type: pickleddb
+        host: 'database.pkl'
+
+config:
+  device: gpu:0
 
 #Default value
-lr: 0
-wd: 0
+lr: 0.01

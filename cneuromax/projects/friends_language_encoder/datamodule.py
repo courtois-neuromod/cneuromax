@@ -42,7 +42,11 @@ def create_dataset(
     data_df = data_df.reset_index(drop=True)
     hf_dataset = HuggingfaceDataset.from_pandas(df=data_df)
     hf_tokenized_dataset = hf_dataset.map(
-        lambda x: tokenizer(x["line"], return_special_tokens_mask=True),
+        lambda x: tokenizer(
+            x["line"],
+            return_special_tokens_mask=True,
+            padding="do_not_pad",
+        ),
         batched=True,
         remove_columns=["line"],
     )
@@ -64,8 +68,8 @@ class FriendsDataModuleConfig(BaseDataModuleConfig):
         model_name: The name of the pretrained model.
     """
 
+    mlm_probability: An[float, equal(0.15)] = 0.15
     model_name: str = "${model_name}"
-    mlm: bool = "false"
 
 
 class FriendsDataModule(BaseDataModule):
@@ -86,10 +90,9 @@ class FriendsDataModule(BaseDataModule):
         """
         self.config: FriendsDataModuleConfig
         tokenizer = AutoTokenizer.from_pretrained(self.config.model_name)
-        tokenizer.pad_token = tokenizer.eos_token  # token shift towards right
         self.collate_fn = DataCollatorForLanguageModeling(
             tokenizer=tokenizer,
-            mlm=self.config.mlm,
+            mlm_probability=self.config.mlm_probability,
         )
         project_data_path = Path(
             f"{self.config.data_dir}/friends_language_encoder/",

@@ -3,13 +3,49 @@ defaults:
   - /datamodule: friends_language_encoder
   - /litmodule: friends_language_encoder
   - override /litmodule/nnmodule: friends_language_encoder
+  - override /hydra/sweeper: orion
   - _self_
 
+
 model_name: bert-base-uncased
-layer_name: cls.predictions.transform.dense
+layer_names:
+  - pooler
+  - encoder.layer.11
+
 
 hydra:
   launcher:
     gpus_per_node: 1
+    cpus_per_task: 4
+
+  sweeper:
+    params:
+      lr: "loguniform(1e-5, 5e-5)"
+      wd: "loguniform(1e-3, 5e-2)"
+
+
+    algorithm:
+      type: random
+      config:
+        seed: 1
+
+
+    worker:
+      max_trials: 10
+      max_broken: 30
 config:
   device: gpu
+  save_every_n_epochs: 0
+
+
+trainer:
+  devices:
+    - 0
+  accumulate_grad_batches: 5
+  max_epochs: 4
+
+
+
+#Default value
+lr: 0
+wd: 0

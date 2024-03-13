@@ -6,8 +6,10 @@ defaults:
   - override /hydra/sweeper: orion
   - _self_
 
-model_name: roberta-base
-layer_name: lm_head.dense
+model_name: gpt2
+layer_names:
+  - ln_f
+  - h.11
 
 hydra:
   launcher:
@@ -16,28 +18,28 @@ hydra:
 
   sweeper:
     params:
-      lr: "loguniform(1e-5, 5e-5)"
+      lr: "loguniform(1e-10, 5e-10)"
       wd: "loguniform(1e-3, 5e-2)"
-      #scheduler
-      # adam parameters weight decays
+
 
     algorithm:
       type: random
       config:
         seed: 1
 
-    # experiment:
-    #   name: 'friends_language_encoder_v7'
 
     worker:
       max_trials: 10
       max_broken: 15
-
 config:
   device: gpu
+  save_every_n_epochs: null
+
 
 trainer:
-  devices: [0]
+  devices:
+    - 0
+  accumulate_grad_batches: 5
 
 #Default value
 lr: 0
