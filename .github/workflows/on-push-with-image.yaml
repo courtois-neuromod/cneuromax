@@ -53,3 +53,14 @@ jobs:
         run: >
           docker run --rm -v ${PWD}:${PWD} -w ${PWD} cneuromod/cneuromax:latest
           pytest --cov cneuromax
+  apptainer-build:
+    needs: docker-push
+    runs-on: self-hosted
+    steps:
+      - name: Build the CNeuroMax Apptainer Image
+        run: >
+          apptainer build /scratch/cneuromax/cneuromax.sif
+          docker://cneuromod/cneuromax:latest
+      - name: Give permissions to the CNeuroMax Apptainer Image
+        run: >
+          chmod a+rwx /scratch/cneuromax/cneuromax.sif
