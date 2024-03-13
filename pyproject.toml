@@ -35,9 +35,6 @@ dependencies = [
     "jupyterlab==4.1.4", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.2", # Jupyter widgets
-    """
-    wandb-osh@git+https://github.com/courtois-neuromod/wandb-offline-sync-hook@\
-    07def65576e0a80c05a4c2f1b6f3e37e75d7f68b""", # W&B support for SLURM
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
     # Also loops while an epoch is not done syncing.
