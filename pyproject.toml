@@ -37,9 +37,10 @@ dependencies = [
     "ipywidgets==8.1.2", # Jupyter widgets
     """
     wandb-osh@git+https://github.com/courtois-neuromod/wandb-offline-sync-hook@\
-    59ca65eff62353c35533f0f2846c060897420e23""", # W&B support for SLURM
+    07def65576e0a80c05a4c2f1b6f3e37e75d7f68b""", # W&B support for SLURM
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
+    # Also loops while an epoch is not done syncing.
     "h5py==3.10.0", # HDF5 file format load/save
     "opencv-python==4.8.0.74", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
