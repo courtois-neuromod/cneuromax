@@ -1,0 +1,51 @@
+# @package _global_
+defaults:
+  - /datamodule: friends_language_encoder
+  - /litmodule: friends_language_encoder
+  - override /litmodule/nnmodule: friends_language_encoder
+  - override /hydra/sweeper: orion
+  - _self_
+
+model_name: gpt2
+layer_names:
+  - transformer.ln_f
+  - lm_head
+task_type: "CAUSAL_LM"
+inference_mode: False
+rank: 8
+lora_alpha: 32
+lora_dropout: 0.1
+
+
+hydra:
+  launcher:
+    gpus_per_node: 1
+    cpus_per_task: 4
+
+  sweeper:
+    params:
+      lr: "loguniform(1e-5, 5e-4)"
+      wd: "loguniform(1e-3, 5e-2)"
+      #scheduler
+      # adam parameters weight decays
+
+    algorithm:
+      type: random
+      config:
+        seed: 1
+
+    # experiment:
+    #   name: 'friends_language_encoder_v7'
+
+    worker:
+      max_trials: 10
+      max_broken: 15
+config:
+  device: gpu
+
+trainer:
+  devices: [0]
+
+#Default value
+lr: 0
+wd: 0
