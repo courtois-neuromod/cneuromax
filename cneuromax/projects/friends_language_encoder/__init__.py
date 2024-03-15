@@ -1,6 +1,7 @@
 """Friends language finetuning ``project``."""
 
 from hydra_zen import ZenStore
+from peft.config import PeftConfig
 from transformers import AutoModelForCausalLM
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
@@ -15,8 +16,7 @@ from .litmodule import (
     FriendsLitModuleConfig,
 )
 from .peftmodule import (
-    BasePEFTLitModule,
-    BasePEFTLitModuleConfig,
+    PEFTLitModule,
 )
 
 __all__ = [
@@ -25,8 +25,7 @@ __all__ = [
     "FriendsDataModuleConfig",
     "FriendsFinetuningModel",
     "FriendsLitModuleConfig",
-    "BasePEFTLitModule",
-    "BasePEFTLitModuleConfig",
+    "PEFTLitModule",
 ]
 
 
@@ -46,6 +45,7 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(
                 FriendsDataModule,
                 config=FriendsDataModuleConfig(),
+                peft_config=PeftConfig(),
             ),
             name="friends_language_encoder",
             group="datamodule",
@@ -65,12 +65,4 @@ class TaskRunner(DeepLearningTaskRunner):
             ),
             name="friends_language_encoder",
             group="litmodule/nnmodule",
-        )
-        store(
-            fs_builds(
-                BasePEFTLitModule,
-                config=BasePEFTLitModuleConfig(),
-            ),
-            name="friends_language_encoder",
-            group="peftmodule",
         )

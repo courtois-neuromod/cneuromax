@@ -4,24 +4,26 @@ from dataclasses import dataclass
 from typing import Annotated as Any
 
 from jaxtyping import Num
+from peft import get_peft_model
+from peft.config import PeftConfig
 from torch import Tensor
 from transformers.tokenization_utils_base import BatchEncoding
 
 from cneuromax.fitting.deeplearning.litmodule import (
     BaseLitModule,
+    BaseLitModuleConfig,
 )
+from cneuromax.friends_language_encoder.peftmodule import PEFTLitModule
 from cneuromax.utils.beartype import one_of
 
 
 @dataclass
-class FriendsLitModuleConfig:
+class FriendsLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`FriendsLitModule` config values.
 
     Args:
         layer_name: layer to unfreeze
     """
-
-    layer_names: list[Any, Any] = "${layer_names}"
 
 
 class FriendsFinetuningModel(BaseLitModule):
@@ -29,12 +31,11 @@ class FriendsFinetuningModel(BaseLitModule):
 
     def __init__(
         self: "FriendsFinetuningModel",
-        config: FriendsLitModuleConfig,
         *args: Any,
         **kwargs: Any,
     ) -> None:
         super().__init__(*args, **kwargs)
-        self.config = config
+        self.config: FriendsLitModuleConfig
 
         for param in self.nnmodule.parameters():
             param.requires_grad = False
@@ -68,3 +69,17 @@ class FriendsFinetuningModel(BaseLitModule):
             out["loss"] if stage in ["train", "val", "test"] else out["logits"]
         )
         return out
+
+
+@dataclass
+class FriendsPEFTModule(PEFTLitModule):
+    """`project` :class:`~FriendsPEFTModule`."""
+
+    def __init__(
+        self: "FriendsPEFTModule",
+        peft_config: PeftConfig,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(peft_config, *args, **kwargs)
+        self.nnmodule = get_peft_model(self.nnmodiule, peft_config)
