@@ -11,10 +11,12 @@ from .datamodule import (
     FriendsDataModule,
     FriendsDataModuleConfig,
 )
-from .litmodule_peft import (
+from .litmodule import (
     FriendsFinetuningModel,
     FriendsLitModuleConfig,
-    FriendsPEFTModule,
+)
+from .peftmodule import (
+    PEFTLitModule,
 )
 
 __all__ = [
@@ -23,7 +25,7 @@ __all__ = [
     "FriendsDataModuleConfig",
     "FriendsFinetuningModel",
     "FriendsLitModuleConfig",
-    "FriendsPEFTModule",
+    "PEFTLitModule",
 ]
 
 
