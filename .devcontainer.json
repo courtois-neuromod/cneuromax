@@ -51,8 +51,8 @@
     "containerEnv": {
       "PYTHONPATH": "/workspaces/cneuromax",
       "CNEUROMAX_PATH": "/workspaces/cneuromax"
-    },
-    "mounts": [
-      "source=/mnt/disks/kw-pred-data,target=/data,type=bind,consistency=cached"
-    ]
+    }//,
+    // "mounts": [
+    //   "source=/mnt/disks/kw-pred-data,target=/data,type=bind,consistency=cached"
+    // ]
   }
