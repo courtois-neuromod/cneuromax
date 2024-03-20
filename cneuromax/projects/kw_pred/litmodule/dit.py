@@ -90,12 +90,12 @@ class CustomDiT(DiT):
             stride=self.patch_size,
         )
 
-    def initialize_weights(self: "CustomDiT") -> None:
+    def initialize_weights(self: "CustomDiT") -> None:  # noqa: D102
         super().initialize_weights()  # type: ignore[no-untyped-call]
         pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
             embed_dim=self.hidden_size,
-            pos=int(self.x_embedder.num_patches**0.5),
+            pos=self.x_embedder.num_patches,
         )
         self.pos_embed.data.copy_(
-            torch.from_numpy(pos_embed).float(),
+            torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
