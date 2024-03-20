@@ -43,7 +43,6 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(
                 FriendsDataModule,
                 config=FriendsDataModuleConfig(),
-                peft_config=PeftConfig(),
             ),
             name="friends_language_encoder",
             group="datamodule",
@@ -52,6 +51,7 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(
                 FriendsFinetuningModel,
                 config=FriendsLitModuleConfig(),
+                peft_config=PeftConfig(),
             ),
             name="friends_language_encoder",
             group="litmodule",

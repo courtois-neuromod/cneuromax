@@ -13,6 +13,7 @@ from cneuromax.fitting.deeplearning.litmodule import (
 from cneuromax.projects.friends_language_encoder.peftmodule import (
     PEFTLitModule,
 )
+from cneuromax.utils.beartype import one_of
 
 
 @dataclass
@@ -40,6 +41,7 @@ class FriendsFinetuningModel(PEFTLitModule):
     def step(
         self: "FriendsFinetuningModel",
         batch: BatchEncoding,
+        stage: Any[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
         """Inputs a batch and returns the loss or logits.
 
@@ -55,7 +57,9 @@ class FriendsFinetuningModel(PEFTLitModule):
             attention_mask=batch["attention_mask"],
             labels=batch["labels"],
         )
-        return out.loss
+
+        loss: Tensor = out.loss
+        return loss
 
     def predict_step(
         self: "FriendsFinetuningModel",
@@ -73,4 +77,7 @@ class FriendsFinetuningModel(PEFTLitModule):
             input_ids=batch["input_ids"],
             attention_mask=batch["attention_mask"],
         )
-        return out.logits
+
+        logits: Tensor = out.logits
+
+        return logits
