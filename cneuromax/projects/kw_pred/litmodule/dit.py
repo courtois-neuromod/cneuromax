@@ -2,10 +2,14 @@
 
 from typing import Any
 
+import torch
 from jaxtyping import Float
 from torch import Tensor, nn
 
-from cneuromax.projects.kw_pred.dit.models import DiT
+from cneuromax.projects.kw_pred.dit.models import (
+    DiT,
+    get_1d_sincos_pos_embed_from_grid,
+)
 
 
 class OneDPatchEmbed(nn.Module):
@@ -15,8 +19,9 @@ class OneDPatchEmbed(nn.Module):
     given that we input 1D data as opposed to 2D images.
     """
 
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self: "OneDPatchEmbed",
+        input_size: int,
         in_channels: int,
         out_channels: int,
         kernel_size: int,
@@ -29,6 +34,7 @@ class OneDPatchEmbed(nn.Module):
             kernel_size=kernel_size,
             stride=stride,
         )
+        self.num_patches = input_size // kernel_size
 
     def forward(
         self: "OneDPatchEmbed",
@@ -75,10 +81,21 @@ class CustomDiT(DiT):
     ) -> None:
         """Initialize the model."""
         super().__init__(input_size, hidden_size, *args, **kwargs)  # type: ignore[no-untyped-call]
+        self.hidden_size = hidden_size
         self.x_embedder = OneDPatchEmbed(
+            input_size=input_size,
             in_channels=self.in_channels,
             out_channels=hidden_size,
             kernel_size=self.patch_size,
             stride=self.patch_size,
         )
-        self.y_embedder = STFTEmbedder()
+
+    def initialize_weights(self: "CustomDiT") -> None:
+        super().initialize_weights()  # type: ignore[no-untyped-call]
+        pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
+            embed_dim=self.hidden_size,
+            pos=int(self.x_embedder.num_patches**0.5),
+        )
+        self.pos_embed.data.copy_(
+            torch.from_numpy(pos_embed).float(),
+        )
