@@ -53,7 +53,7 @@ dependencies = [
     "denoising-diffusion-pytorch==1.11.0",
      # Phil Wang (Lucidrain)'s Vector Quantization library
     "vector-quantize-pytorch==1.14.4",
-    "peft==0.9.0", #PEFT methods published by Hugging Face
+    "peft==0.10.0", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.5", # Inter-process communication
     "torchrl==0.3.1", # For reinforcement/imitation Learning tasks
