@@ -2,6 +2,7 @@
 
 from typing import Any
 
+import numpy as np
 import torch
 from jaxtyping import Float
 from torch import Tensor, nn
@@ -57,16 +58,33 @@ class STFTEmbedder(nn.Module):
     class labels.
     """
 
-    def __init__(self: "STFTEmbedder") -> None:
+    def __init__(self: "STFTEmbedder", seq_len: int, num_embeds: int) -> None:
         super().__init__()
-        self.embedding_table = None
+        self.embedding_table = nn.Embedding(
+            num_embeddings=1,
+            embedding_dim=1,
+        )  # useless, just to keep the same interface
+        self.pos_embed = nn.Parameter(
+            torch.zeros(1, seq_len, num_embeds),
+            requires_grad=False,
+        )
+        pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
+            embed_dim=num_embeds,
+            pos=np.arange(seq_len),
+        )
+        self.pos_embed.data.copy_(
+            torch.from_numpy(pos_embed).float().unsqueeze(0),
+        )
+        # TODO: init weights
 
     def forward(
         self: "STFTEmbedder",
         x: Float[Tensor, " batch_size in_channels seq_len"],
+        *,
+        placeholder: bool,  # noqa: ARG002
     ) -> Float[Tensor, " batch_size num_patches out_channels"]:
         """Forward pass."""
-        return x
+        return x + self.pos_embed
 
 
 class CustomDiT(DiT):
@@ -94,8 +112,11 @@ class CustomDiT(DiT):
         super().initialize_weights()  # type: ignore[no-untyped-call]
         pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
             embed_dim=self.hidden_size,
-            pos=self.x_embedder.num_patches,
+            pos=np.arange(self.x_embedder.num_patches),
         )
         self.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
+
+    def unpatchify(self: "CustomDiT", x: Tensor) -> Tensor:  # noqa: D102
+        return x
