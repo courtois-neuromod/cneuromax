@@ -15,9 +15,6 @@ from .litmodule import (
     FriendsFinetuningModel,
     FriendsLitModuleConfig,
 )
-from .peftmodule import (
-    PEFTLitModule,
-)
 
 __all__ = [
     "TaskRunner",
@@ -25,7 +22,6 @@ __all__ = [
     "FriendsDataModuleConfig",
     "FriendsFinetuningModel",
     "FriendsLitModuleConfig",
-    "PEFTLitModule",
 ]
 
 
@@ -45,7 +41,6 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(
                 FriendsDataModule,
                 config=FriendsDataModuleConfig(),
-                peft_config=PeftConfig(),
             ),
             name="friends_language_encoder",
             group="datamodule",
