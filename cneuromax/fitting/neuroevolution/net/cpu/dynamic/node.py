@@ -40,22 +40,18 @@ class NodeList:
             nodes are in between.
     """
 
-    all: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    input: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    hidden: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    output: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    receiving: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    emitting: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    being_pruned: list["DynamicRecurrentNetNode"] = field(default_factory=list)
-    layered: list[list["DynamicRecurrentNetNode"]] = field(
-        default_factory=list,
-    )
+    all: list["Node"] = field(default_factory=list)
+    input: list["Node"] = field(default_factory=list)
+    hidden: list["Node"] = field(default_factory=list)
+    output: list["Node"] = field(default_factory=list)
+    receiving: list["Node"] = field(default_factory=list)
+    emitting: list["Node"] = field(default_factory=list)
+    being_pruned: list["Node"] = field(default_factory=list)
+    layered: list[list["Node"]] = field(default_factory=list)
 
     def __iter__(
         self: "NodeList",
-    ) -> Iterator[
-        list["DynamicRecurrentNetNode"] | list[list["DynamicRecurrentNetNode"]]
-    ]:
+    ) -> Iterator[list["Node"] | list[list["Node"]]]:
         """See return.
 
         Returns:
@@ -76,21 +72,26 @@ class NodeList:
 
 
 class Node:
-    """
-    Dynamic Recurrent Network Node.
+    """Node with full functionality.
+
+    Used when weights & biases are not vectorized and thus stored\
+    in the node itself.
+
+    Args:
+
     """
 
-    def __init__(self: "DynamicRecurrentNetNode", type: str, id: int):
+    def __init__(self: "Node", type: str, id: int):
         """Constructor"""
         self.id: int = id
         self.type: str = type
-        self.in_nodes: list[DynamicRecurrentNetNode] = []
-        self.out_nodes: list[DynamicRecurrentNetNode] = []
+        self.in_nodes: list[Node] = []
+        self.out_nodes: list[Node] = []
         self.output: Float[np.ndarray, " num_out_nodes"] = np.ndarray([0])
         if self.type != "input":
             self.initialize_parameters()
 
-    def __repr__(self: "DynamicRecurrentNetNode") -> str:
+    def __repr__(self: "Node") -> str:
         in_node_ids: tuple[int, ...] = tuple(
             [node.id for node in self.in_nodes]
         )
@@ -119,15 +120,13 @@ class Node:
                 + str(("y",) + out_node_ids)
             )
 
-    def initialize_parameters(self: "DynamicRecurrentNetNode"):
+    def initialize_parameters(self: "Node"):
         self.weights: Float[np.ndarray, " num_in_nodes"] = np.empty(0)
         self.bias: Float[np.ndarray, " 1"] = (
             np.random.randn(1) if self.type == "hidden" else np.zeros(1)
         )
 
-    def connect_to(
-        self: "DynamicRecurrentNetNode", node: "DynamicRecurrentNetNode"
-    ) -> None:
+    def connect_to(self: "Node", node: "Node") -> None:
         new_weight: Float[np.ndarray, " 1"] = np.random.randn(1)
         node.weights: Float[np.ndarray, " node_num_in_nodes+1"] = (
             np.concatenate((node.weights, new_weight))
@@ -136,9 +135,7 @@ class Node:
         self.out_nodes.append(node)
         node.in_nodes.append(self)
 
-    def disconnect_from(
-        self: "DynamicRecurrentNetNode", node: "DynamicRecurrentNetNode"
-    ) -> None:
+    def disconnect_from(self: "Node", node: "Node") -> None:
         if self not in node.in_nodes:
             return True
 
@@ -152,7 +149,7 @@ class Node:
 
         return False
 
-    def compute(self: "DynamicRecurrentNetNode") -> None:
+    def compute(self: "Node") -> None:
         x = np.ndarray([node.output for node in self.in_nodes]).squeeze()
 
         x = np.dot(x, self.weights) + self.bias
@@ -161,6 +158,6 @@ class Node:
 
         self.cached_output = x
 
-    def update(self: "DynamicRecurrentNetNode") -> None:
+    def update(self: "Node") -> None:
         self.output = self.cached_output
         self.cached_output = None

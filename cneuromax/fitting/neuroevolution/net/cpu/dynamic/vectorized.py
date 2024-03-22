@@ -1,30 +1,55 @@
+import secrets
+from typing import TypeVar
+
 import numpy as np
 
 
+class Node:  # noqa: D101
+
+    def __init__(self: "Node") -> None:
+        self.in_nodes: list[Node] = []
+        self.out_nodes: list[Node] = []
+
+
+T = TypeVar("T", bound=float)
+
+
 class SparseWeightMatrix:
-    """
-    Dynamic Sparse Network Weight Matrix.
-    """
+    """Holds :class:`~.dynamic.net.Net` weight values."""
 
-    def __init__(self):
-        self.row = np.ndarray([])
-        self.col = np.ndarray([])
-        self.data = np.ndarray([])
+    def __init__(self: "SparseWeightMatrix") -> None:
+        self.row: list[int] = []
+        self.col: list[int] = []
+        self.data: list[float] = []
+        self.nodes: list[Node] = []
 
-        self.nodes = []
+    def add_node(self: "SparseWeightMatrix", node: Node) -> None:
+        """Self-explanatory.
 
-    def add_node(self, node):
+        Args:
+            node: Node to add to the matrix.
+        """
         self.nodes.append(node)
 
-    def add_connection(self, in_node, out_node):
-        in_node_idx = self.nodes.idx(in_node)
-        out_node_idx = self.nodes.idx(out_node)
+    def add_connection(
+        self: "SparseWeightMatrix",
+        in_node: Node,
+        out_node: Node,
+    ) -> None:
+        """Adds a connection between two nodes.
 
-        self.row = np.append(self.row, in_node_idx)
-        self.col = np.append(self.col, out_node_idx)
-        self.data = np.append(self.data, np.random.randn())
+        Args:
+            in_node: Node to connect from.
+            out_node: Node to connect to.
+        """
+        in_node_idx = self.nodes.index(in_node)
+        out_node_idx = self.nodes.index(out_node)
 
-    def remove_node(self, node):
+        self.row.append(in_node_idx)
+        self.col.append(out_node_idx)
+        self.data.append(secrets.choice([True, False]))
+
+    def remove_node(self: "SparseWeightMatrix", node):
         node_idx = self.nodes.idx(node)
 
         self.nodes.remove(node)

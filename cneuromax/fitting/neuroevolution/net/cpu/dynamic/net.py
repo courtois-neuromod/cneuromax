@@ -20,7 +20,7 @@ class NetConfig:
     """Holds :class:`Net` config values.
 
     Args:
-        num_inputs:
+        num_inputs:"""
 
     num_inputs: An[int, ge(1)]
     num_outputs: An[int, ge(1)]
@@ -64,9 +64,7 @@ class Net:
 
     def grow_node(self: "Net", type="hidden") -> Node | None:
         if type == "input":
-            new_input_node = DynamicRecurrentNetNode(
-                "input", self.total_nb_nodes_grown
-            )
+            new_input_node = Node("input", self.total_nb_nodes_grown)
             self.total_nb_nodes_grown += 1
 
             self.nodes.all.append(new_input_node)
@@ -81,9 +79,7 @@ class Net:
             return new_input_node
 
         elif type == "output":
-            new_output_node = DynamicRecurrentNetNode(
-                "output", self.total_nb_nodes_grown
-            )
+            new_output_node = Node("output", self.total_nb_nodes_grown)
             self.total_nb_nodes_grown += 1
 
             self.nodes.all.append(new_output_node)
@@ -104,9 +100,7 @@ class Net:
             if len(potential_in_nodes) != 0:
                 in_node_2 = np.random.choice(potential_in_nodes)
             out_node = np.random.choice(self.nodes.hidden + self.nodes.output)
-            new_hidden_node = DynamicRecurrentNetNode(
-                "hidden", self.total_nb_nodes_grown
-            )
+            new_hidden_node = Node("hidden", self.total_nb_nodes_grown)
             self.total_nb_nodes_grown += 1
             self.grow_connection(in_node_1, new_hidden_node)
             if len(potential_in_nodes) != 0:
