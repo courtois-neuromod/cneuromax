@@ -14,8 +14,6 @@ layer_names:
   - lm_head
 
 
-
-
 hydra:
   launcher:
     gpus_per_node: 1
@@ -56,6 +54,12 @@ litmodule:
 trainer:
   devices: [0]
 
+datamodule:
+  config:
+    fixed_per_device_batch_size: 32
+    fixed_per_device_num_workers: 4
+
 # #Default value
 lr: 0
 wd: 0
+
