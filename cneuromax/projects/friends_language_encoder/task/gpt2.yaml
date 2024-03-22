@@ -62,4 +62,3 @@ datamodule:
 # #Default value
 lr: 0
 wd: 0
-
