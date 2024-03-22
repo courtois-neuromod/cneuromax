@@ -68,7 +68,6 @@ class FriendsDataModuleConfig(BaseDataModuleConfig):
         model_name: The name of the pretrained model.
     """
 
-    mlm_probability: An[float, equal(0.15)] = 0.15
     model_name: str = "${model_name}"
 
 
@@ -92,7 +91,7 @@ class FriendsDataModule(BaseDataModule):
         tokenizer = AutoTokenizer.from_pretrained(self.config.model_name)
         self.collate_fn = DataCollatorForLanguageModeling(
             tokenizer=tokenizer,
-            mlm_probability=self.config.mlm_probability,
+            mlm=False,
         )
         project_data_path = Path(
             f"{self.config.data_dir}/friends_language_encoder/",

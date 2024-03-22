@@ -4,12 +4,16 @@ defaults:
   - /litmodule: friends_language_encoder
   - override /litmodule/nnmodule: friends_language_encoder
   - override /hydra/sweeper: orion
+  - override /hydra/launcher: local
   - _self_
+
 
 model_name: gpt2
 layer_names:
   - transformer.ln_f
   - lm_head
+
+
 
 
 hydra:
@@ -34,7 +38,7 @@ hydra:
 
     worker:
       max_trials: 10
-      max_broken: 15
+      max_broken: 30
 
 config:
   device: gpu
@@ -42,17 +46,17 @@ config:
 litmodule:
   nnmodule:
     config:
-  PeftConfig:
+      dims: [784, 128, 10]
+  peft_config:
     task_type: "CAUSAL_LM"
     inference_mode: False
-    rank: 8
+    r: 8
     lora_alpha: 32
     lora_dropout: 0.1
-    target_modules: ["q_proj", "v_proj"]
-
 trainer:
   devices: [0]
 
 # #Default value
-# lr: 0
-# wd: 0
+lr: 0
+wd: 0
+

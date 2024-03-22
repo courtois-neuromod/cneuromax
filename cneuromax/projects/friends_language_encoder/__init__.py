@@ -1,7 +1,7 @@
 """Friends language finetuning ``project``."""
 
 from hydra_zen import ZenStore
-from peft.config import PeftConfig
+from peft.tuners.lora import LoraConfig
 from transformers import AutoModelForCausalLM
 
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
@@ -49,7 +49,7 @@ class TaskRunner(DeepLearningTaskRunner):
             fs_builds(
                 FriendsFinetuningModel,
                 config=FriendsLitModuleConfig(),
-                peft_config=PeftConfig(),
+                peft_config=LoraConfig(),
             ),
             name="friends_language_encoder",
             group="litmodule",

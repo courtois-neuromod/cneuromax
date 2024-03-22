@@ -1,7 +1,7 @@
 """:class:`FriendsFinetuningModel`."""
 
 from dataclasses import dataclass, field
-from typing import Any, list
+from typing import Any, Literal
 
 from jaxtyping import Num
 from torch import Tensor
@@ -13,7 +13,6 @@ from cneuromax.fitting.deeplearning.litmodule import (
 from cneuromax.projects.friends_language_encoder.peftmodule import (
     PEFTLitModule,
 )
-from cneuromax.utils.beartype import one_of
 
 
 @dataclass
@@ -41,7 +40,7 @@ class FriendsFinetuningModel(PEFTLitModule):
     def step(
         self: "FriendsFinetuningModel",
         batch: BatchEncoding,
-        stage: Any[str, one_of("train", "val", "test", "predict")],
+        stage: Literal["train", "val", "test"],
     ) -> Num[Tensor, " ..."]:
         """Inputs a batch and returns the loss or logits.
 
