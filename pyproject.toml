@@ -77,7 +77,7 @@ dependencies = [
     "pre-commit==3.7.0", # Git commit hooks
     "mypy==1.9.0", # Static type checker
     "pytest==8.1.1", # Testing framework
-    "pytest-cov==4.1.0", # Test coverage
+    "pytest-cov==5.0.0", # Test coverage
 ]
 
 [tool.black]
