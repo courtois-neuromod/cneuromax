@@ -86,7 +86,6 @@ class STFTEmbedder(nn.Module):
             torch.zeros(1, seq_len, embd_size),
             requires_grad=False,
         )
-
         self.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
@@ -96,7 +95,7 @@ class STFTEmbedder(nn.Module):
         x: Float[Tensor, " batch_size in_channels seq_len"],
         *,
         placeholder: bool,  # noqa: ARG002
-    ) -> Float[Tensor, " batch_size num_patches out_channels"]:
+    ) -> Float[Tensor, " batch_size embd_size"]:
         """Forward pass."""
         return self.proj(x) + self.pos_embed
 
