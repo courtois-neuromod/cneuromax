@@ -146,7 +146,6 @@ class CustomDiT(nn.Module):
             patch_size=patch_size,
         )
         ###########
-        # INFO: OpenDIT allows for changing the dtype of `t_embedder`.
         self.t_embedder = TimestepEmbedder(hidden_size)  # type: ignore[no-untyped-call]
         """
         self.y_embedder = LabelEmbedder(
