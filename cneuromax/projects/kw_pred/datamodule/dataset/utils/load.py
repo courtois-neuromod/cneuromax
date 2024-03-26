@@ -52,9 +52,6 @@ def load_data(
             input=ae_data,
             dim=1,
         )
-        ae_data: Float32[Tensor, " 4000 num_ae"] = (
-            interpolate_transformed_data(data=ae_data)
-        )
         transformed_data_dict["AE"] = ae_data
     if paths.af_dir:
         af_data: Float32[Tensor, " num_af_samples num_af"] = (
@@ -65,9 +62,6 @@ def load_data(
                 starting_second=int(starting_time),
             )
         )
-        af_data: Float32[Tensor, " 4000 num_af"] = (
-            interpolate_transformed_data(data=af_data)
-        )
         transformed_data_dict["AF"] = af_data
     if paths.ve_dir:
         ve_data: Float32[Tensor, " num_ve_samples num_ve"] = (
@@ -77,9 +71,6 @@ def load_data(
                 content_id=content_id,
                 starting_second=int(starting_time),
             )
-        )
-        ve_data: Float32[Tensor, " 4000 num_ve"] = (
-            interpolate_transformed_data(data=ve_data)
         )
         transformed_data_dict["VE"] = ve_data
 

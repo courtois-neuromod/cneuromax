@@ -1,13 +1,11 @@
-""":class:`UnconditionalKWGenerationLitModule."""
+""":class:`KWGenerationLitModule."""
 
 from abc import ABCMeta
 from typing import Annotated as An
 from typing import Any
 
-import matplotlib.pyplot as plt
-import numpy as np
+import torch
 import wandb
-from denoising_diffusion_pytorch import GaussianDiffusion1D
 from einops import rearrange
 from ema_pytorch import EMA
 from jaxtyping import Float
@@ -16,12 +14,15 @@ from torch import Tensor
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.utils.beartype import one_of
 
+from ..dit.diffusion import create_diffusion  # noqa: TID252
+from .unc_kw_gen import to_wandb_image
 
-class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
-    """Unconditional ``.klk`` ``.wav``generation ``LitModule``."""
+
+class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
+    """``.klk`` ``.wav``generation ``LitModule``."""
 
     def __init__(
-        self: "UnconditionalKWGenerationLitModule",
+        self: "KWGenerationLitModule",
         *args: Any,  # noqa: ANN401
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
@@ -30,15 +31,11 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             self.wandb_columns = ["x", "x_hat"]
             self.wandb_x_wrapper = wandb.Image
             self.val_wandb_data: list[dict[str, wandb.Image]]
-        self.diffusion_module = GaussianDiffusion1D(
-            model=self.nnmodule,
-            seq_length=800,
-            sampling_timesteps=100,
-        )
+        self.diffusion = create_diffusion(timestep_respacing="")  # type: ignore [no-untyped-call]
         self.ema = EMA(model=self.nnmodule)
 
     def step(
-        self: "UnconditionalKWGenerationLitModule",
+        self: "KWGenerationLitModule",
         data: dict[str, Tensor],
         stage: An[str, one_of("train", "val", "test")],
     ) -> Float[Tensor, " "]:
@@ -52,18 +49,29 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
-        x: Float[Tensor, " batch_size seq_len"] = data["KW BL"]
-        x: Float[Tensor, " batch_size 1 seq_len"] = rearrange(
-            tensor=x,
+        x: Float[Tensor, " batch_size 1 4000"] = rearrange(
+            tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x)
-        loss: Float[Tensor, ""] = self.diffusion_module.forward(img=x)
+        t = torch.randint(
+            0,
+            self.diffusion.num_timesteps,
+            (x.shape[0],),
+            device=self.device,
+        )
+        loss_dict = self.diffusion.training_losses(
+            self.nnmodule,
+            x,
+            t,
+            {"y": data["AF"]},
+        )
+        loss: Float[Tensor, ""] = loss_dict["loss"].mean()
         return loss
 
     def save_val_data(
-        self: "UnconditionalKWGenerationLitModule",
+        self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
     ) -> None:
         """Saves data computed during validation for later use.
@@ -78,15 +86,36 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         for x_i in x:
             self.val_wandb_data.append({"x": to_wandb_image(x_i)})
 
-    def on_after_backward(self: "UnconditionalKWGenerationLitModule") -> None:
+    def on_after_backward(self: "KWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
         self.ema.update()
 
     def on_validation_epoch_end(
-        self: "UnconditionalKWGenerationLitModule",
+        self: "KWGenerationLitModule",
     ) -> None:
         """Called at the end of the validation epoch."""
         if self.config.log_val_wandb:
+            """
+            # Labels to condition the model with (feel free to change):
+            class_labels = [207, 360, 387, 974, 88, 979, 417, 279]
+
+            # Create sampling noise:
+            n = len(class_labels)
+            z = torch.randn(n, 4, latent_size, latent_size, device=device)
+            y = torch.tensor(class_labels, device=device)
+
+            # Setup classifier-free guidance:
+            z = torch.cat([z, z], 0)
+            y_null = torch.tensor([1000] * n, device=device)
+            y = torch.cat([y, y_null], 0)
+            model_kwargs = dict(y=y, cfg_scale=args.cfg_scale)
+
+            # Sample images:
+            samples = diffusion.p_sample_loop(
+                model.forward_with_cfg, z.shape, z, clip_denoised=False, model_kwargs=model_kwargs, progress=True, device=device
+            )
+            samples, _ = samples.chunk(2, dim=0)  # Remove null class samples
+            """
             self.diffusion_module.model = self.ema.ema_model
             x_hat: Float[Tensor, " batch_size seq_len"] = (
                 self.diffusion_module.sample(batch_size=3).squeeze()
@@ -104,23 +133,3 @@ class UnconditionalKWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             ):
                 val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
         super().on_validation_epoch_end()
-
-
-def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
-    """Converts data to a buffer.
-
-    Args:
-        data: The data to be converted.
-
-    Returns:
-        The buffer containing the data.
-    """
-    plt.figure()
-    plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
-    plt.axis("off")
-    canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
-    canvas.draw()
-    data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]
-    image = data.reshape(canvas.get_width_height()[::-1] + (3,))
-    plt.close()
-    return wandb.Image(image)
