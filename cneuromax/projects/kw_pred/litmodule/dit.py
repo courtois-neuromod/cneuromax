@@ -9,10 +9,25 @@ from x_transformers.x_transformers import AttentionLayers
 
 from cneuromax.projects.kw_pred.dit.models import (
     DiTBlock,
-    FinalLayer,
     TimestepEmbedder,
     get_1d_sincos_pos_embed_from_grid,
 )
+
+
+def modulate(
+    x: Float[Tensor, " BS NP ES"],
+    shift: Float[Tensor, " BS ES"],
+    scale: Float[Tensor, " BS ES"],
+) -> Float[Tensor, " BS NP ES"]:
+    """Modulates (shifts and scales) the input tensor.
+
+    BS: Batch size
+    NP: Number of patches
+    ES: Embedding size (a.k.a. hidden size)
+    """
+    pattern = "BS ES -> BS 1 ES"
+    shift, scale = rearrange(shift, pattern), rearrange(scale, pattern)
+    return x * (1 + scale) + shift
 
 
 class PatchEmbed1D(nn.Module):
@@ -93,8 +108,6 @@ class STFTEmbedder(nn.Module):
     def forward(
         self: "STFTEmbedder",
         x: Float[Tensor, " BS SL NB"],  # BS x 311 x 513
-        *,
-        placeholder: bool,  # noqa: ARG002
     ) -> Float[Tensor, " BS ES"]:
         """STFT -> Embeddings.
 
@@ -108,6 +121,62 @@ class STFTEmbedder(nn.Module):
         x: Float[Tensor, " BS NP ES"] = self.encoder(x)
         x: Float[Tensor, " BS NPxES"] = rearrange(x, "BS NP ES -> BS (NP ES)")
         x: Float[Tensor, " BS ES"] = self.proj(x)
+        return x
+
+
+class FinalLayer1D(nn.Module):
+    """Custom :attr:`~DiT.final_layer`.
+
+    Meant to replace :class:`.dit.models.FinalLayer` given that we use
+    1D data instead of 2D data.
+    """
+
+    def __init__(
+        self: "FinalLayer1D",
+        hidden_size: int,
+        patch_size: int,
+        out_channels: int,
+    ) -> None:
+        super().__init__()
+        self.norm_final = nn.LayerNorm(
+            hidden_size,
+            elementwise_affine=False,
+            eps=1e-6,
+        )
+        self.linear = nn.Linear(
+            hidden_size,
+            patch_size * out_channels,
+            bias=True,
+        )
+        self.adaLN_modulation = nn.Sequential(
+            nn.SiLU(),
+            nn.Linear(hidden_size, 2 * hidden_size, bias=True),
+        )
+
+    def forward(
+        self: "FinalLayer1D",
+        x: Float[Tensor, " BS NP ES"],
+        c: Float[Tensor, " BS ES"],
+    ) -> Float[Tensor, " BS PSxOC"]:
+        """Transformer output -> Patch-wise output.
+
+        BS: Batch size
+        NP: Number of patches
+        ES: Embedding size (a.k.a. hidden size)
+        PS: Patch size
+        OC: Out channels
+        """
+        shift, scale = rearrange(
+            self.adaLN_modulation(c),
+            "BS (split ES) -> split BS ES",
+            split=2,
+        )
+        x: Float[Tensor, " BS NP ES"] = modulate(
+            self.norm_final(x),
+            shift,
+            scale,
+        )
+        x: Float[Tensor, " BS NP PSxOC"] = self.linear(x)
         return x
 
 
@@ -154,7 +223,7 @@ class CustomDiT(nn.Module):
         )
         """
         ### NEW ###
-        self.y_embedder = STFTEmbedder(
+        self.y_embedder = STFTEmbedder(  # type: ignore[assignment]
             seq_len=311,
             num_freq_bins=513,
             embd_size=hidden_size,
@@ -178,11 +247,18 @@ class CustomDiT(nn.Module):
                 for _ in range(depth)
             ],
         )
-        self.final_layer = FinalLayer(  # type: ignore[no-untyped-call]
+        """
+        self.final_layer = FinalLayer(
+            hidden_size, patch_size, self.out_channels
+        )
+        """
+        ### NEW ###
+        self.final_layer = FinalLayer1D(  # type: ignore[assignment]
             hidden_size,
             patch_size,
             self.out_channels,
         )
+        ###########
         self.initialize_weights()
 
     def initialize_weights(self: "CustomDiT") -> None:  # noqa: D102
@@ -246,40 +322,45 @@ class CustomDiT(nn.Module):
         nn.init.constant_(self.final_layer.linear.weight, 0)
         nn.init.constant_(self.final_layer.linear.bias, 0)
 
-    """ TODO: 2D -> 1D
-    def unpatchify(self, x):
-        x: (N, T, patch_size**2 * C)
-        imgs: (N, H, W, C)
-        c = self.out_channels
-        p = self.x_embedder.patch_size[0]
-        h = w = int(x.shape[1] ** 0.5)
-        assert h * w == x.shape[1]
+    def unpatchify(
+        self: "CustomDiT",
+        x: Float[Tensor, " BS NP PSxOC"],
+    ) -> Float[Tensor, " BS OC SL"]:
+        """Converts patch-wise embeddings to 1D data.
 
-        x = x.reshape(shape=(x.shape[0], h, w, p, p, c))
-        x = torch.einsum("nhwpqc->nchpwq", x)
-        imgs = x.reshape(shape=(x.shape[0], c, h * p, h * p))
-        return imgs
-    """
-
-    def forward(self: "CustomDiT", x: Tensor, t: Tensor, y: Tensor) -> Tensor:
+        BS: Batch size
+        NP: Number of patches
+        PS: Patch size
+        SL: `.klk` sequence length
+        OC: Output channels
         """
-        Forward pass of DiT.
-        # x: (N, C, H, W) tensor of spatial inputs (images or latent representations of images)
-        x: (N, C, SL) tensor of spatial inputs (haptic)
-        t: (N,) tensor of diffusion timesteps
-        y: (N,) tensor of class labels
-        """  # noqa: D205, D212, D415, W505, E501
-        x = (
-            self.x_embedder(x) + self.pos_embed
-        )  # (N, T, D), where T = H * W / patch_size ** 2
-        t = self.t_embedder(t)  # (N, D)
-        y = self.y_embedder(y, self.training)  # (N, D)
-        c = t + y  # (N, D)
+        return rearrange(
+            x,
+            "BS NP (PS OC) -> BS OC (NP PS)",
+            OC=self.out_channels,
+        )
+
+    def forward(
+        self: "CustomDiT",
+        x: Float[Tensor, " BS SL IC"],
+        t: Float[Tensor, " BS ES"],
+        y: Float[Tensor, " BS ES"],
+    ) -> Float[Tensor, " BS SL OC"]:
+        """.
+
+        BS: Batch size
+        SL: `.klk` sequence length
+        IC: Number of input `.klk` channels (number of chair corners)
+        ES: Embedding size (a.k.a. hidden size)
+        OC: Output channels
+        NP: Number of patches
+        """
+        x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
+        t: Float[Tensor, " BS ES"] = self.t_embedder(t)
+        y: Float[Tensor, " BS ES"] = self.y_embedder(y)
+        c: Float[Tensor, " BS ES"] = t + y
         for block in self.blocks:
-            x = block(x, c)  # (N, T, D)
-        x = self.final_layer(x, c)  # (N, T, patch_size ** 2 * out_channels)
-        """
-        x = self.unpatchify(x)  # type: ignore[no-untyped-call] # (N, out_channels, H, W)
-        """  # noqa: W505, E501
-        x = self.unpatchify(x)  # type: ignore[no-untyped-call] # (N, out_channels, SL)
-        return x  # type: ignore[no-any-return]  # noqa: RET504
+            x: Float[Tensor, " BS NP ES"] = block(x, c)  # type: ignore[no-redef]
+        x: Float[Tensor, " BS PSxOC"] = self.final_layer(x, c)
+        x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
+        return x
