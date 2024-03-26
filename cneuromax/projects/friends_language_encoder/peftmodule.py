@@ -12,7 +12,6 @@ from cneuromax.fitting.deeplearning.litmodule import (
 )
 
 
-@dataclass
 class PEFTLitModule(BaseLitModule, ABC):
     """``project`` :class:`~PEFTLitModule`."""
 

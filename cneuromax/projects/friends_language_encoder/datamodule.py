@@ -17,7 +17,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from cneuromax.utils.beartype import equal, one_of
+from cneuromax.utils.beartype import one_of
 
 from .utils import group_texts_hf
 
@@ -89,6 +89,7 @@ class FriendsDataModule(BaseDataModule):
         """
         self.config: FriendsDataModuleConfig
         tokenizer = AutoTokenizer.from_pretrained(self.config.model_name)
+        tokenizer.pad_token = tokenizer.eos_token
         self.collate_fn = DataCollatorForLanguageModeling(
             tokenizer=tokenizer,
             mlm=False,
