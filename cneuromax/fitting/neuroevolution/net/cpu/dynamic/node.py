@@ -1,16 +1,12 @@
 """:class:`NodeList` & :class:`Node`."""
 
-import random
-from collections.abc import Callable, Iterator
+from collections.abc import Iterator
 from dataclasses import dataclass, field
 from typing import Annotated as An
-from typing import Any
 
 import numpy as np
-from jaxtyping import Float
-from numpy.typing import NDArray
 
-from cneuromax.utils.beartype import ge
+from cneuromax.utils.beartype import one_of
 
 
 @dataclass
@@ -72,92 +68,87 @@ class NodeList:
 
 
 class Node:
-    """Node with full functionality.
-
-    Used when weights & biases are not vectorized and thus stored\
-    in the node itself.
+    """Node (Neuron) for :class:`~.dynamic.net.Net`.
 
     Args:
-
+        role: Node function in the network.
+        id_: Node unique identifier.
     """
 
-    def __init__(self: "Node", type: str, id: int):
-        """Constructor"""
-        self.id: int = id
-        self.type: str = type
+    def __init__(
+        self: "Node",
+        role: An[str, one_of("input", "hidden", "output")],
+        id_: int,
+    ) -> None:
+        self.id_: int = id_
+        self.role: str = role
         self.in_nodes: list[Node] = []
         self.out_nodes: list[Node] = []
-        self.output: Float[np.ndarray, " num_out_nodes"] = np.ndarray([0])
-        if self.type != "input":
+        self.output: float = 0
+        if self.role != "input":
             self.initialize_parameters()
 
     def __repr__(self: "Node") -> str:
-        in_node_ids: tuple[int, ...] = tuple(
-            [node.id for node in self.in_nodes]
+        """.
+
+        Returns:
+            A string representation of the node.
+        """
+        node_inputs: tuple[int, str, ...] = tuple(
+            "x" if self.role == "input" else node.id_ for node in self.in_nodes
         )
-        out_node_ids: tuple[int, ...] = tuple(
-            [node.id for node in self.out_nodes]
+        node_outputs: tuple[int, str, ...] = tuple(
+            node.id_ for node in self.out_nodes
+        )
+        if self.role == "output":
+            node_outputs = ("y", *node_outputs)
+        return (
+            str(node_inputs)
+            + "->"
+            + str(self.id_)
+            + "->"
+            + str(("y", *node_outputs))
         )
 
-        if self.type == "input":
-            return str(("x",)) + "->" + str(self.id) + "->" + str(out_node_ids)
-
-        elif self.type == "hidden":
-            return (
-                str(in_node_ids)
-                + "->"
-                + str(self.id)
-                + "->"
-                + str(out_node_ids)
-            )
-
-        else:  # self.type == 'output':
-            return (
-                str(in_node_ids)
-                + "->"
-                + str(self.id)
-                + "->"
-                + str(("y",) + out_node_ids)
-            )
-
-    def initialize_parameters(self: "Node"):
-        self.weights: Float[np.ndarray, " num_in_nodes"] = np.empty(0)
-        self.bias: Float[np.ndarray, " 1"] = (
-            np.random.randn(1) if self.type == "hidden" else np.zeros(1)
+    def initialize_parameters(self: "Node") -> None:
+        """Initialize weights and biases."""
+        self.weights: list[float] = []
+        self.bias: float = (
+            float(np.random.randn()) if self.role == "hidden" else 0
         )
 
     def connect_to(self: "Node", node: "Node") -> None:
-        new_weight: Float[np.ndarray, " 1"] = np.random.randn(1)
-        node.weights: Float[np.ndarray, " node_num_in_nodes+1"] = (
-            np.concatenate((node.weights, new_weight))
-        )
+        """Connect to another node.
 
+        Args:
+            node: Node to connect to.
+        """
+        new_weight: float = float(np.random.randn())
+        node.weights.append(new_weight)
         self.out_nodes.append(node)
         node.in_nodes.append(self)
 
     def disconnect_from(self: "Node", node: "Node") -> None:
+        """Disconnect from another node.
+
+        Args:
+            node: Node to disconnect from.
+        """
         if self not in node.in_nodes:
-            return True
-
-        i: int = node.in_nodes.index(self)
-        node.weights = np.concatenate(
-            (node.weights[:i], node.weights[i + 1 :])
-        )
-
+            return
+        i = node.in_nodes.index(self)
+        node.weights.pop(i)
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
-        return False
-
     def compute(self: "Node") -> None:
-        x = np.ndarray([node.output for node in self.in_nodes]).squeeze()
-
+        """Runs the node's computation using its `in_nodes` outputs."""
+        x = [node.output for node in self.in_nodes]
         x = np.dot(x, self.weights) + self.bias
-
         x = np.clip(x, 0, 2**31 - 1)
-
-        self.cached_output = x
+        self.cached_output = float(x)
 
     def update(self: "Node") -> None:
+        """Updates the node's output."""
         self.output = self.cached_output
         self.cached_output = None
