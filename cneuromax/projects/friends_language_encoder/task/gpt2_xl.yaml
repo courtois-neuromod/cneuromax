@@ -8,10 +8,10 @@ defaults:
   - _self_
 
 
-model_name: gpt2
-layer_names:
-  - transformer.ln_f
-  - lm_head
+model_name: gpt2-xl
+# layer_names:
+#   - transformer.ln_f
+#   - lm_head
 
 
 hydra:
@@ -46,17 +46,20 @@ litmodule:
     config:
       dims: [784, 128, 10]
   peft_config:
-    task_type: "CAUSAL_LM"
+    task_type: CAUSAL_LM
     inference_mode: False
     r: 8
     lora_alpha: 32
     lora_dropout: 0.1
 trainer:
-  devices: [0]
+  devices:
+    - 0
+  accumulate_grad_batches: 5
+  max_epochs: 4
 
 datamodule:
   config:
-    fixed_per_device_batch_size: 32
+    fixed_per_device_batch_size: 8
     fixed_per_device_num_workers: 4
 
 # #Default value
