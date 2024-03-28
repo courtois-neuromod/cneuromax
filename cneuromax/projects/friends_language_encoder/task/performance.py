@@ -24,8 +24,9 @@ class ExtractPerplexity:
 
     def get_perplexity(self: "ExtractPerplexity") -> Float[Tensor, ""]:
         """."""
+        # TODO: adaptate to pytorch ligthning perplexity
 
-        nlls = []
+        stepwise_perplexity = []
         prev_end_loc = 0
         for begin_loc in range(0, self.seq_len, self.step):
             end_loc = min(begin_loc + self.max_length, self.seq_len)
@@ -38,10 +39,10 @@ class ExtractPerplexity:
                 outputs = self.nnmodule(input_ids, labels=target_ids)
                 neg_log_likelihood = outputs.loss
 
-            nlls.append(neg_log_likelihood)
+            stepwise_perplexity.append(neg_log_likelihood)
 
             prev_end_loc = end_loc
-            if end_loc == sseq_len:
+            if end_loc == self.seq_len:
                 break
 
-        return torch.exp(torch.stack(nlls).mean())
+        return torch.exp(torch.stack(stepwise_perplexity).mean())
