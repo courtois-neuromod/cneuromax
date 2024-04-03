@@ -6,6 +6,8 @@ from hydra_zen import ZenStore
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModuleConfig
 from cneuromax.utils.hydra_zen import fs_builds
 
+from .dit import CustomDiT
+from .kw_gen import KWGenerationLitModule
 from .unc_kw_gen import UnconditionalKWGenerationLitModule
 
 
@@ -15,6 +17,7 @@ def store_configs(store: ZenStore) -> None:
     Args:
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
     """
+    # litmodule
     store(
         fs_builds(
             UnconditionalKWGenerationLitModule,
@@ -24,7 +27,21 @@ def store_configs(store: ZenStore) -> None:
         group="litmodule",
     )
     store(
+        fs_builds(
+            KWGenerationLitModule,
+            config=BaseLitModuleConfig(),
+        ),
+        name="kw_gen",
+        group="litmodule",
+    )
+    # litmodule/nnmodule
+    store(
         fs_builds(Unet1D, dim=64, dim_mults=(1, 2), channels=1),
         name="unet1d",
+        group="litmodule/nnmodule",
+    )
+    store(
+        fs_builds(CustomDiT),
+        name="custom_dit",
         group="litmodule/nnmodule",
     )

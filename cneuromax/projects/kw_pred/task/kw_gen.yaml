@@ -1,0 +1,33 @@
+# @package _global_
+defaults:
+  - /datamodule: kw_pred
+  - /datamodule/dataset: kw_pred
+  - /litmodule: kw_gen
+  - override /litmodule/nnmodule: custom_dit
+  - _self_
+
+hydra:
+  launcher:
+    cpus_per_task: 8
+    # gpus_per_node: 1
+config:
+  device: cpu # gpu
+datamodule:
+  dataset:
+    config:
+      root_data_dir: /data/
+      audio_embeddings_rel_dir: null
+      video_embeddings_rel_dir: null
+      duration_seconds: 10
+trainer:
+  val_check_interval: .25
+litmodule:
+  config:
+    log_val_wandb: True
+  nnmodule:
+    input_size: 4000
+    patch_size: 10
+    in_channels: 1
+    hidden_size: 128
+    depth: 1
+

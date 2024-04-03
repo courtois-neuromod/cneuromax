@@ -54,7 +54,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             pattern="BS SL -> BS 1 SL",
         )
         if stage == "val" and self.config.log_val_wandb:
-            self.save_val_data(x=x)
+            self.save_val_data(x=x, y=data["AF"])
         t = torch.randint(
             0,
             self.diffusion.num_timesteps,
@@ -73,6 +73,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     def save_val_data(
         self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
+        y: Float[Tensor, " batch_size num_af_samples num_af"],
     ) -> None:
         """Saves data computed during validation for later use.
 
@@ -83,8 +84,13 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             preds: The model's predictions.
         """
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
-        for x_i in x:
-            self.val_wandb_data.append({"x": to_wandb_image(x_i)})
+        y: Float[Tensor, " batch_size num_af_samples num_af"] = (
+            y.squeeze().cpu()
+        )
+        for x_i, y_i in zip(x, y, strict=True):
+            self.val_wandb_data.append(
+                {"x": to_wandb_image(x_i), "y": y_i},
+            )
 
     def on_after_backward(self: "KWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
