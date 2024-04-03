@@ -197,12 +197,15 @@ class CustomDiT(nn.Module):
         *,
         learn_sigma: bool = True,
     ) -> None:
-        self.input_size = input_size
+        super().__init__()
         self.learn_sigma = learn_sigma
         self.in_channels = in_channels
         self.out_channels = in_channels * 2 if learn_sigma else in_channels
         self.patch_size = patch_size
         self.num_heads = num_heads
+        ### NEW ###
+        self.input_size = input_size
+        ###########
         """
         self.x_embedder = PatchEmbed(
             input_size, patch_size, in_channels, hidden_size, bias=True

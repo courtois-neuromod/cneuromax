@@ -52,7 +52,8 @@ class KWPredDatasetPaths:
         if self.an_dir and (self.ae_dir or self.af_dir or self.ve_dir):
             error_msg = (
                 "Annotations are only meant to be used in an unconditional "
-                "generation setting."
+                "generation setting. Make sure to set `annot_rel_dir` to "
+                "`None`."
             )
             raise ValueError(error_msg)
 

@@ -4,6 +4,7 @@ defaults:
   - /datamodule/dataset: kw_pred
   - /litmodule: kw_gen
   - override /litmodule/nnmodule: custom_dit
+  - override /hydra/launcher: local
   - _self_
 
 hydra:
@@ -18,6 +19,7 @@ datamodule:
       root_data_dir: /data/
       audio_embeddings_rel_dir: null
       video_embeddings_rel_dir: null
+      annot_rel_dir: null
       duration_seconds: 10
 trainer:
   val_check_interval: .25

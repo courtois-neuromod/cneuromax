@@ -4,6 +4,7 @@ defaults:
   - /datamodule/dataset: kw_pred
   - /litmodule: unc_kw_gen
   - override /litmodule/nnmodule: unet1d
+  - override /hydra/launcher: local
   - _self_
 
 hydra:

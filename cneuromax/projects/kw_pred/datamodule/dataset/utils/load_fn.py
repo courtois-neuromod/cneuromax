@@ -144,7 +144,7 @@ def create_conditional_generation_data_map(
             :func:`.create_unconditional_generation_data_map`.
     """
     data_dir = paths.ae_dir or paths.af_dir or paths.ve_dir
-    if not isinstance(dir, Path):
+    if not isinstance(data_dir, Path):
         error_msg = "At least one of `ae_dir`, `af_dir`, `ve_dir` is missing."
         raise TypeError(error_msg)
     transformed_data_type = (
