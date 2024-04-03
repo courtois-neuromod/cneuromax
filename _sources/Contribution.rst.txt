@@ -293,6 +293,7 @@ following content:
 
 .. code-block:: bash
 
+    /cneuromax/.git/
     /cneuromax/.mypy_cache/
     /cneuromax/.pytest_cache/
     /cneuromax/.ruff_cache/
