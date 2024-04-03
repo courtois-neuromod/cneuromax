@@ -24,7 +24,9 @@ class ExtractPerplexity:
 
     def get_perplexity(self: "ExtractPerplexity") -> Float[Tensor, ""]:
         """."""
-        # TODO: adaptate to pytorch ligthning perplexity
+        # TODO:
+        # - adaptate to pytorch ligthning perplexity
+
 
         stepwise_perplexity = []
         prev_end_loc = 0

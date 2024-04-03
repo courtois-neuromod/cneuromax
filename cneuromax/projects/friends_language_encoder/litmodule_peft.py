@@ -7,23 +7,9 @@ from jaxtyping import Num
 from torch import Tensor
 from transformers.tokenization_utils_base import BatchEncoding
 
-from cneuromax.fitting.deeplearning.litmodule import (
-    BaseLitModuleConfig,
-)
 from cneuromax.projects.friends_language_encoder.peftmodule import (
     PEFTLitModule,
 )
-
-
-@dataclass
-class FriendsLitModuleConfig(BaseLitModuleConfig):
-    """Holds :class:`FriendsLitModule` config values.
-
-    Args:
-        layer_name: layer to unfreeze
-    """
-
-    layer_names: list[str] = field(default_factory=list)
 
 
 class FriendsFinetuningModel(PEFTLitModule):
@@ -35,7 +21,6 @@ class FriendsFinetuningModel(PEFTLitModule):
         **kwargs: Any,  # noqa: ANN401, ARG002
     ) -> None:
         super().__init__(*args, **kwargs)
-        self.config: FriendsLitModuleConfig
 
     def step(
         self: "FriendsFinetuningModel",

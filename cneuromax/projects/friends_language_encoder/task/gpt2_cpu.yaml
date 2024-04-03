@@ -45,7 +45,7 @@ litmodule:
     config:
       dims: [784, 128, 10]
   peft_config:
-    task_type: "CAUSAL_LM"
+    task_type: CAUSAL_LM
     inference_mode: False
     r: 8
     lora_alpha: 32
