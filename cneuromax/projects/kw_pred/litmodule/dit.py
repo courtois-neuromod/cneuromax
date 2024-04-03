@@ -197,6 +197,7 @@ class CustomDiT(nn.Module):
         *,
         learn_sigma: bool = True,
     ) -> None:
+        self.input_size = input_size
         self.learn_sigma = learn_sigma
         self.in_channels = in_channels
         self.out_channels = in_channels * 2 if learn_sigma else in_channels

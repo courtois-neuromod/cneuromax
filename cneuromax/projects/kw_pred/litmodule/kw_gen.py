@@ -1,6 +1,7 @@
 """:class:`KWGenerationLitModule."""
 
 from abc import ABCMeta
+from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
 
@@ -11,11 +12,27 @@ from ema_pytorch import EMA
 from jaxtyping import Float
 from torch import Tensor
 
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule import (
+    BaseLitModule,
+    BaseLitModuleConfig,
+)
 from cneuromax.utils.beartype import one_of
 
 from ..dit.diffusion import create_diffusion  # noqa: TID252
+from .dit import CustomDiT
 from .unc_kw_gen import to_wandb_image
+
+
+@dataclass
+class KWGenerationLitModuleConfig(BaseLitModuleConfig):
+    """Holds :class:`KWGenerationLitModule` config values.
+
+    Args:
+        num_val_wandb_samples: The number of samples to log to\
+            :mod:`wandb`.
+    """
+
+    num_val_wandb_samples: int = 3
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -27,6 +44,8 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(*args, **kwargs)
+        self.config: KWGenerationLitModuleConfig
+        self.nnmodule: CustomDiT
         if self.config.log_val_wandb:
             self.wandb_columns = ["x", "x_hat"]
             self.wandb_x_wrapper = wandb.Image
@@ -101,41 +120,42 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> None:
         """Called at the end of the validation epoch."""
         if self.config.log_val_wandb:
-            """
             # Labels to condition the model with (feel free to change):
-            class_labels = [207, 360, 387, 974, 88, 979, 417, 279]
-
-            # Create sampling noise:
-            n = len(class_labels)
-            z = torch.randn(n, 4, latent_size, latent_size, device=device)
-            y = torch.tensor(class_labels, device=device)
-
-            # Setup classifier-free guidance:
-            z = torch.cat([z, z], 0)
-            y_null = torch.tensor([1000] * n, device=device)
-            y = torch.cat([y, y_null], 0)
-            model_kwargs = dict(y=y, cfg_scale=args.cfg_scale)
-
-            # Sample images:
-            samples = diffusion.p_sample_loop(
-                model.forward_with_cfg, z.shape, z, clip_denoised=False, model_kwargs=model_kwargs, progress=True, device=device
-            )
-            samples, _ = samples.chunk(2, dim=0)  # Remove null class samples
-            """
-            self.diffusion_module.model = self.ema.ema_model
-            x_hat: Float[Tensor, " batch_size seq_len"] = (
-                self.diffusion_module.sample(batch_size=3).squeeze()
-            )
-            self.diffusion_module.model = self.nnmodule
             self.val_wandb_data = self.val_wandb_data[
-                (self.curr_val_epoch * 3)
-                % len(self.val_wandb_data) : ((self.curr_val_epoch + 1) * 3)
+                (self.curr_val_epoch * self.config.num_val_wandb_samples)
+                % len(self.val_wandb_data) : (
+                    (self.curr_val_epoch + 1)
+                    * self.config.num_val_wandb_samples
+                )
                 % len(self.val_wandb_data)
             ]
+            x_big_t = torch.randn(
+                3,
+                self.nnmodule.in_channels,
+                self.nnmodule.input_size,
+                device=self.device,
+            )
+            y = torch.tensor(
+                (
+                    self.val_wandb_data[i]["y"]
+                    for i in range(self.config.num_val_wandb_samples)
+                ),
+                device=self.device,
+            )
+            x_zero_hat = self.diffusion.p_sample_loop(
+                self.nnmodule.forward,
+                x_big_t.shape,
+                x_big_t,
+                clip_denoised=False,
+                model_kwargs={"y": y},
+                progress=True,
+                device=self.device,
+            )
             for val_wandb_data_i, x_hat_i in zip(
                 self.val_wandb_data,
-                x_hat,
+                x_zero_hat,
                 strict=True,
             ):
                 val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
+                val_wandb_data_i.pop("y")
         super().on_validation_epoch_end()

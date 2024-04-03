@@ -7,7 +7,7 @@ from cneuromax.fitting.deeplearning.litmodule import BaseLitModuleConfig
 from cneuromax.utils.hydra_zen import fs_builds
 
 from .dit import CustomDiT
-from .kw_gen import KWGenerationLitModule
+from .kw_gen import KWGenerationLitModule, KWGenerationLitModuleConfig
 from .unc_kw_gen import UnconditionalKWGenerationLitModule
 
 
@@ -29,7 +29,7 @@ def store_configs(store: ZenStore) -> None:
     store(
         fs_builds(
             KWGenerationLitModule,
-            config=BaseLitModuleConfig(),
+            config=KWGenerationLitModuleConfig(),
         ),
         name="kw_gen",
         group="litmodule",
