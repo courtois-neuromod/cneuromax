@@ -76,6 +76,8 @@ class STFTEmbedder(nn.Module):
     Meant to replace :class:`.dit.models.LabelEmbedder` given that our
     conditioning data is the STFT of the audio signal rather than the
     class labels.
+
+    TODO: Debug
     """
 
     def __init__(  # noqa: PLR0913
@@ -258,9 +260,9 @@ class CustomDiT(nn.Module):
         """
         ### NEW ###
         self.final_layer = FinalLayer1D(  # type: ignore[assignment]
-            hidden_size,
-            patch_size,
-            self.out_channels,
+            hidden_size=hidden_size,
+            patch_size=patch_size,
+            out_channels=self.out_channels,
         )
         ###########
         self.initialize_weights()
