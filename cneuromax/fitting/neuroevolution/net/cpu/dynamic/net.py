@@ -1,14 +1,10 @@
 """:class:`Net` & :class:`NetConfig`."""
 
 import secrets
-from collections.abc import Callable, Iterator
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Annotated as An
-from typing import Any
 
 import numpy as np
-from jaxtyping import Float
-from numpy.typing import NDArray
 
 from cneuromax.utils.beartype import ge, one_of
 
@@ -20,7 +16,13 @@ class NetConfig:
     """Holds :class:`Net` config values.
 
     Args:
-        num_inputs:"""
+        num_inputs: Self-explanatory.
+        num_outputs: Self-explanatory.
+        node_selection_scheme: The scheme used to select nodes when\
+            growing the network. If ``"layered"``, nodes grow & connect\
+            to nodes in close layers preferentially. If ``"random"``,\
+            nodes grow & connect to nodes in random positions.
+    """
 
     num_inputs: An[int, ge(1)]
     num_outputs: An[int, ge(1)]
@@ -30,27 +32,20 @@ class NetConfig:
 class Net:
     """Recurrent Neural Network.
 
-    Attributes:
-        config: The network's configuration.
+    Args:
+        config: See :class:`NetConfig`.
 
+    Attributes:
+        config: See :paramref:`config`.
+        nodes: See :class:`NodeList`.
+        total_nb_nodes_grown: The number of nodes grown in the\
+            network since its initialization.
     """
 
     def __init__(self: "Net", config: NetConfig) -> None:
-        """Constructor.
-
-        Args:
-            config: The network's configuration.
-        """
         self.config = config
-
         self.nodes = NodeList()
-
         self.total_nb_nodes_grown: int = 0
-
-        self.architectural_operations: list[Callable[[Any], Any]] = [
-            self.grow_node,
-            self.prune_node,
-        ]
 
     def initialize_architecture(self: "Net") -> None:
         """Creates the initial architecture of the network.
@@ -88,29 +83,29 @@ class Net:
         else:  # role == 'hidden'
             # Set of receiving nodes.
             potential_in_nodes = list(dict.fromkeys(self.nodes.receiving))
+            # in_node_1
             in_node_1 = secrets.choice(potential_in_nodes)
+            self.grow_connection(in_node_1, new_node)
             in_node_1_layer = find_node_layer_index(
                 in_node_1,
                 self.nodes.layered,
             )
             potential_in_nodes.remove(in_node_1)
-            if len(potential_in_nodes) != 0:
-                if self.config.node_selection_scheme == "random":
-                    in_node_2 = secrets.choice(potential_in_nodes)
-                else:  # self.config.node_selection_scheme == 'layered'
-                    # TODO
-                    pass
+            # in_node_2
+            if self.config.node_selection_scheme == "random":
+                in_node_2 = secrets.choice(potential_in_nodes)
+            else:  # self.config.node_selection_scheme == 'layered'
+                error_msg = "Layered node selection not implemented."
+                raise NotImplementedError(error_msg)
+            self.grow_connection(in_node_2, new_node)
+            # out_node
+            if self.config.node_selection_scheme == "random":
                 out_node = secrets.choice(
                     self.nodes.hidden + self.nodes.output,
                 )
             else:  # self.config.node_selection_scheme == 'layered'
-                # TODO
-                pass
-            self.grow_connection(in_node_1, new_node)
-            if len(potential_in_nodes) != 0:
-                self.grow_connection(in_node_2, new_node)
+                error_msg = "Layered node selection not implemented."
             self.grow_connection(new_node, out_node)
-
             out_node_layer = find_node_layer_index(
                 out_node,
                 self.nodes.layered,
