@@ -7,7 +7,7 @@ from typing import Any
 
 import torch
 import wandb
-from einops import rearrange
+from einops import rearrange, reduce
 from ema_pytorch import EMA
 from jaxtyping import Float
 from torch import Tensor
@@ -72,8 +72,14 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
+        y: Float[Tensor, " batch_size num_ae_samples num_ae"] = data["AE"]
+        y: Float[Tensor, " batch_size mean_num_ae"] = reduce(
+            tensor=y,
+            pattern="BS NAES NAE -> BS NAE",
+            reduction="mean",
+        )
         if stage == "val" and self.config.log_val_wandb:
-            self.save_val_data(x=x, y=data["AF"])
+            self.save_val_data(x=x, y=y)
         t = torch.randint(
             0,
             self.diffusion.num_timesteps,
@@ -84,7 +90,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             self.nnmodule,
             x,
             t,
-            {"y": data["AF"]},
+            {"y": y},
         )
         loss: Float[Tensor, ""] = loss_dict["loss"].mean()
         return loss
@@ -92,7 +98,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     def save_val_data(
         self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
-        y: Float[Tensor, " batch_size num_af_samples num_af"],
+        y: Float[Tensor, " batch_size mean_num_ae"],
     ) -> None:
         """Saves data computed during validation for later use.
 
@@ -103,9 +109,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             preds: The model's predictions.
         """
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
-        y: Float[Tensor, " batch_size num_af_samples num_af"] = (
-            y.squeeze().cpu()
-        )
+        y: Float[Tensor, " batch_size mean_num_ae"] = y.squeeze().cpu()
         for x_i, y_i in zip(x, y, strict=True):
             self.val_wandb_data.append(
                 {"x": to_wandb_image(x_i), "y": y_i},

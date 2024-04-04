@@ -17,7 +17,7 @@ datamodule:
   dataset:
     config:
       root_data_dir: /data/
-      audio_embeddings_rel_dir: null
+      audio_stft_rel_dir: null
       video_embeddings_rel_dir: null
       annot_rel_dir: null
       duration_seconds: 10

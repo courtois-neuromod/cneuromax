@@ -3,7 +3,7 @@
 import numpy as np
 import torch
 from einops import rearrange
-from jaxtyping import Float
+from jaxtyping import Float, Int
 from torch import Tensor, nn
 from x_transformers.x_transformers import AttentionLayers
 
@@ -68,6 +68,36 @@ class PatchEmbed1D(nn.Module):
         """
         x: Float[Tensor, " BS ES NP"] = self.proj(x)
         return rearrange(x, "BS ES NP -> BS NP ES")
+
+
+class BeatsEmbedder(nn.Module):
+    """Custom :attr:`~DiT.y_embedder`.
+
+    Meant to replace :class:`.dit.models.LabelEmbedder`.
+    """
+
+    def __init__(
+        self: "BeatsEmbedder",
+        og_embd_size: int,
+        embd_size: int,
+    ) -> None:
+        super().__init__()
+        self.proj = nn.Linear(og_embd_size, embd_size)
+
+        def forward(
+            self: "BeatsEmbedder",
+            x: Float[Tensor, " BS OES"],
+        ) -> Float[Tensor, " BS ES"]:
+            """Flattened BEATS -> Embeddings.
+
+            BS: Batch size
+            SL: STFT Sequence length (time steps)
+            NB: Number of STFT frequency bins
+            ES: Embedding size
+            NP: Number of patches
+            """
+            x: Float[Tensor, " BS ES"] = self.proj(x)
+            return x
 
 
 class STFTEmbedder(nn.Module):
@@ -229,6 +259,7 @@ class CustomDiT(nn.Module):
         )
         """
         ### NEW ###
+        """
         self.y_embedder = STFTEmbedder(  # type: ignore[assignment]
             seq_len=311,
             num_freq_bins=513,
@@ -239,6 +270,11 @@ class CustomDiT(nn.Module):
                 depth=depth,
                 heads=num_heads,
             ),
+        )
+        """
+        self.y_embedder = BeatsEmbedder(
+            og_embd_size=768,
+            embd_size=hidden_size,
         )
         ###########
         num_patches = self.x_embedder.num_patches
@@ -294,6 +330,7 @@ class CustomDiT(nn.Module):
         self.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
+        """
         pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
             embed_dim=self.y_embedder.pos_embed.shape[-1],
             pos=np.arange(self.y_embedder.num_patches),
@@ -301,6 +338,7 @@ class CustomDiT(nn.Module):
         self.y_embedder.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
+        """
         ###########
 
         """
@@ -349,7 +387,7 @@ class CustomDiT(nn.Module):
     def forward(
         self: "CustomDiT",
         x: Float[Tensor, " BS SL IC"],
-        t: Float[Tensor, " BS ES"],
+        t: Int[Tensor, " BS ES"],
         y: Float[Tensor, " BS ES"],
     ) -> Float[Tensor, " BS SL OC"]:
         """.

@@ -117,8 +117,8 @@ def get_transformed_data_path(
         ms_format = ".0"
 
     return transformed_data_dir / (
-        f"ID{content_id}_{starting_second}.{ms_format}_"
-        f"{starting_second+10}.{ms_format}.pt"
+        f"ID{content_id}_{starting_second}{ms_format}_"
+        f"{starting_second+10}{ms_format}.pt"
     )
 
 

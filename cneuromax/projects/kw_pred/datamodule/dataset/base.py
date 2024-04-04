@@ -96,12 +96,8 @@ class KWPredDatasetConfig:
     """
 
     root_data_dir: str = "/media/DATA/"
-    audio_embeddings_rel_dir: str | None = (
-        "audio_embeddings/beats/iter3/"
-    )
-    audio_stft_rel_dir: str | None = (
-        "stft/47f10f892d824399354c7dbb7cfe0629/"
-    )
+    audio_embeddings_rel_dir: str | None = "audio_embeddings/beats/iter3/"
+    audio_stft_rel_dir: str | None = "stft/47f10f892d824399354c7dbb7cfe0629/"
     video_embeddings_rel_dir: str | None = (
         "video_embeddings/dinov2/dinov2_vitl14/"
     )
