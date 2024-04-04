@@ -13,7 +13,7 @@ dependencies = [
     "hydra-core==1.3.2", # Configuration management
     "hydra-zen==0.12.1", # Cleaner Hydra configs
     "beartype==0.18.2", # Dynamic type checking
-    "wandb==0.16.5", # Logging
+    "wandb==0.16.6", # Logging
     """
     submitit@git+https://github.com/courtois-neuromod/submitit@\
     b289f81004ab063b185dc97982934c266e605fad""", # Local & SLURM job launcher
