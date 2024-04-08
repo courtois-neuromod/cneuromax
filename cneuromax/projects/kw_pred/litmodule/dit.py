@@ -1,5 +1,7 @@
 """:class:`CustomDiT` & its helper classes."""
 
+import logging
+
 import numpy as np
 import torch
 from einops import rearrange
@@ -84,20 +86,18 @@ class BeatsEmbedder(nn.Module):
         super().__init__()
         self.proj = nn.Linear(og_embd_size, embd_size)
 
-        def forward(
-            self: "BeatsEmbedder",
-            x: Float[Tensor, " BS OES"],
-        ) -> Float[Tensor, " BS ES"]:
-            """Flattened BEATS -> Embeddings.
+    def forward(
+        self: "BeatsEmbedder",
+        x: Float[Tensor, " BS OES"],
+    ) -> Float[Tensor, " BS ES"]:
+        """Flattened BEATS -> Embeddings.
 
-            BS: Batch size
-            SL: STFT Sequence length (time steps)
-            NB: Number of STFT frequency bins
-            ES: Embedding size
-            NP: Number of patches
-            """
-            x: Float[Tensor, " BS ES"] = self.proj(x)
-            return x
+        BS: Batch size
+        OES: Original embedding size
+        ES: Embedding size
+        """
+        x: Float[Tensor, " BS ES"] = self.proj(x)
+        return x
 
 
 class STFTEmbedder(nn.Module):
@@ -387,7 +387,7 @@ class CustomDiT(nn.Module):
     def forward(
         self: "CustomDiT",
         x: Float[Tensor, " BS SL IC"],
-        t: Int[Tensor, " BS ES"],
+        t: Int[Tensor, " BS"],
         y: Float[Tensor, " BS ES"],
     ) -> Float[Tensor, " BS SL OC"]:
         """.
@@ -399,12 +399,20 @@ class CustomDiT(nn.Module):
         OC: Output channels
         NP: Number of patches
         """
+        logging.info(0)
         x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
+        logging.info(1)
         t: Float[Tensor, " BS ES"] = self.t_embedder(t)
+        logging.info(2)
         y: Float[Tensor, " BS ES"] = self.y_embedder(y)
+        logging.info(3)
         c: Float[Tensor, " BS ES"] = t + y
+        logging.info(4)
         for block in self.blocks:
             x: Float[Tensor, " BS NP ES"] = block(x, c)  # type: ignore[no-redef]
+        logging.info(5)
         x: Float[Tensor, " BS PSxOC"] = self.final_layer(x, c)
+        logging.info(6)
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
+        logging.info(7)
         return x

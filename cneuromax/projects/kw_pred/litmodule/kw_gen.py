@@ -1,5 +1,6 @@
 """:class:`KWGenerationLitModule."""
 
+import logging
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -16,9 +17,11 @@ from cneuromax.fitting.deeplearning.litmodule import (
     BaseLitModule,
     BaseLitModuleConfig,
 )
+from cneuromax.projects.kw_pred.dit.diffusion import (
+    create_diffusion,
+)
 from cneuromax.utils.beartype import one_of
 
-from ..dit.diffusion import create_diffusion  # noqa: TID252
 from .dit import CustomDiT
 from .unc_kw_gen import to_wandb_image
 
@@ -86,6 +89,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             (x.shape[0],),
             device=self.device,
         )
+        logging.info("hi")
         loss_dict = self.diffusion.training_losses(
             self.nnmodule,
             x,
