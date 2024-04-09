@@ -1,9 +1,13 @@
 """."""
 
-# from torchmetrics.text import Perplexity
 import torch
+from jaxtyping import Float
 from torch import Tensor, nn
-from jaxtyping import Float, Int
+from tqdm import tqdm
+from transformers import (
+    PreTrainedTokenizerBase,
+)
+from transformers.tokenization_utils_base import BatchEncoding
 
 
 class ExtractPerplexity:
@@ -12,34 +16,41 @@ class ExtractPerplexity:
     def __init__(
         self: "ExtractPerplexity",
         nnmodule: nn.Module,
-        input_ids: Tensor,
+        encoding: BatchEncoding,
+        tokenizer: PreTrainedTokenizerBase,
         step: int,
     ) -> None:
         """."""
         self.nnmodule = nnmodule
-        self.input_ids = input_ids
-        self.seq_len = input_ids.size(1)
-        self.max_length = self.nnmodule.config.n_positions
+        self.text = encoding
+        self.seq_len = len(encoding["input_ids"][0])
+        self.max_length = tokenizer.model_max_length
         self.step = step
 
     def get_perplexity(self: "ExtractPerplexity") -> Float[Tensor, ""]:
-        """."""
-        # TODO:
-        # - adaptate to pytorch ligthning perplexity
-
-
+        """Method for getting perplexity."""
         stepwise_perplexity = []
         prev_end_loc = 0
-        for begin_loc in range(0, self.seq_len, self.step):
+        for begin_loc in tqdm(range(0, self.seq_len, self.step)):
+            batch = {}
             end_loc = min(begin_loc + self.max_length, self.seq_len)
             trg_len = end_loc - prev_end_loc
-            input_ids = self.input_ids[:, begin_loc:end_loc]
-            target_ids = input_ids.clone()
-            target_ids[:, :-trg_len] = -100
+            batch["input_ids"] = self.text["input_ids"][:, begin_loc:end_loc]
+            batch["attention_mask"] = self.text["attention_mask"][
+                :,
+                begin_loc:end_loc,
+            ]
+
+            labels = batch["input_ids"].clone()
+            labels[:, :-trg_len] = -100
+            batch["labels"] = labels
+            batch = BatchEncoding(batch)
 
             with torch.no_grad():
-                outputs = self.nnmodule(input_ids, labels=target_ids)
-                neg_log_likelihood = outputs.loss
+                neg_log_likelihood = self.nnmodule.step(
+                    batch=batch,
+                    stage="test",
+                )
 
             stepwise_perplexity.append(neg_log_likelihood)
 
