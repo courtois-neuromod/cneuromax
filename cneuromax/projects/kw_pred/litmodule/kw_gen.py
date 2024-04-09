@@ -1,6 +1,5 @@
 """:class:`KWGenerationLitModule."""
 
-import logging
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -96,7 +95,6 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             size=(x.shape[0],),
             device=self.device,
         )
-        logging.info("hi")
         loss_dict = self.diffusion.training_losses(
             self.nnmodule,
             x,

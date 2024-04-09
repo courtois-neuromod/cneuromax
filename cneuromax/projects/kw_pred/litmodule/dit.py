@@ -189,7 +189,7 @@ class FinalLayer1D(nn.Module):
         self: "FinalLayer1D",
         x: Float[Tensor, " BS NP ES"],
         c: Float[Tensor, " BS ES"],
-    ) -> Float[Tensor, " BS PSxOC"]:
+    ) -> Float[Tensor, " BS NP PSxOC"]:
         """Transformer output -> Patch-wise output.
 
         BS: Batch size
@@ -399,20 +399,12 @@ class CustomDiT(nn.Module):
         OC: Output channels
         NP: Number of patches
         """
-        logging.info(0)
         x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
-        logging.info(1)
         t: Float[Tensor, " BS ES"] = self.t_embedder(t)
-        logging.info(2)
         y: Float[Tensor, " BS ES"] = self.y_embedder(y)
-        logging.info(3)
         c: Float[Tensor, " BS ES"] = t + y
-        logging.info(4)
         for block in self.blocks:
             x: Float[Tensor, " BS NP ES"] = block(x, c)  # type: ignore[no-redef]
-        logging.info(5)
-        x: Float[Tensor, " BS PSxOC"] = self.final_layer(x, c)
-        logging.info(6)
+        x: Float[Tensor, " BS NP PSxOC"] = self.final_layer(x, c)
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
-        logging.info(7)
         return x
