@@ -63,6 +63,13 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> Float[Tensor, " "]:
         """Computes the model accuracy and cross entropy loss.
 
+        KW: ``.klk`` ``.wav``
+        BL: Back left
+        BS: Batch size
+        SL: Sequence length
+        NAE: Number of audio embeddings (time dimension)
+        AES: Audio embeddings size
+
         Args:
             data: .
             stage: See\
@@ -71,22 +78,22 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
-        x: Float[Tensor, " batch_size 1 4000"] = rearrange(
+        x: Float[Tensor, " BS 1 4000"] = rearrange(
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
-        y: Float[Tensor, " batch_size num_ae_samples num_ae"] = data["AE"]
-        y: Float[Tensor, " batch_size mean_num_ae"] = reduce(
+        y: Float[Tensor, " BS NAE AES"] = data["AE"]
+        y: Float[Tensor, " BS AES"] = reduce(
             tensor=y,
-            pattern="BS NAES NAE -> BS NAE",
+            pattern="BS NAE AES -> BS AES",
             reduction="mean",
         )
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
         t = torch.randint(
-            0,
-            self.diffusion.num_timesteps,
-            (x.shape[0],),
+            low=0,
+            high=self.diffusion.num_timesteps,
+            size=(x.shape[0],),
             device=self.device,
         )
         logging.info("hi")

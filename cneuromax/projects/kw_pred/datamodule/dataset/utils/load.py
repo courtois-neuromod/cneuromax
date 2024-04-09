@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 import torch.nn.functional as f
 import torchaudio
-from einops import rearrange
+from einops import rearrange, reduce
 from jaxtyping import Float32
 from torch import Tensor
 
@@ -20,6 +20,14 @@ def load_data(
     num_klk_wav_corners: int,
 ) -> dict[str, Tensor]:
     """Loads :paramref:`duration_second` seconds of data.
+
+    NAE: Number of audio embeddings (time dimension)
+    AEFB: Audio embeddings frequency bin
+    AES: Audio embeddings size
+    NAF: Number of audio fourier (time dimension)
+    AFS: Audio fourier size
+    NVE: Number of video embeddings (time dimension)
+    VES: Video embeddings size
 
     Args:
         paths: See :class:`.KWPredDatasetPaths`.
@@ -39,38 +47,32 @@ def load_data(
     """
     transformed_data_dict = {}
     if paths.ae_dir:
-        ae_data: Float32[Tensor, " num_ae_samples num_ae_1 num_ae_2"] = (
-            load_transformed_data(
-                transformed_data_dir=paths.ae_dir,
-                transformed_data_type="AE",
-                content_id=content_id,
-                starting_second=int(starting_time),
-            )
+        ae_data: Float32[Tensor, " NAE AEFB AES"] = load_transformed_data(
+            transformed_data_dir=paths.ae_dir,
+            transformed_data_type="AE",
+            content_id=content_id,
+            starting_second=int(starting_time),
         )
-        # Average out the second dimension.
-        ae_data: Float32[Tensor, " num_ae_samples num_ae"] = torch.mean(
-            input=ae_data,
-            dim=1,
+        ae_data: Float32[Tensor, " num_ae_samples num_ae"] = reduce(
+            tensor=ae_data,
+            pattern="NAE AEFB AES -> NAE AES",
+            reduction="mean",
         )
         transformed_data_dict["AE"] = ae_data
     if paths.af_dir:
-        af_data: Float32[Tensor, " num_af_samples num_af"] = (
-            load_transformed_data(
-                transformed_data_dir=paths.af_dir,
-                transformed_data_type="AF",
-                content_id=content_id,
-                starting_second=int(starting_time),
-            )
+        af_data: Float32[Tensor, " NAF AFS"] = load_transformed_data(
+            transformed_data_dir=paths.af_dir,
+            transformed_data_type="AF",
+            content_id=content_id,
+            starting_second=int(starting_time),
         )
         transformed_data_dict["AF"] = af_data
     if paths.ve_dir:
-        ve_data: Float32[Tensor, " num_ve_samples num_ve"] = (
-            load_transformed_data(
-                transformed_data_dir=paths.ve_dir,
-                transformed_data_type="VE",
-                content_id=content_id,
-                starting_second=int(starting_time),
-            )
+        ve_data: Float32[Tensor, " NVE VES"] = load_transformed_data(
+            transformed_data_dir=paths.ve_dir,
+            transformed_data_type="VE",
+            content_id=content_id,
+            starting_second=int(starting_time),
         )
         transformed_data_dict["VE"] = ve_data
 

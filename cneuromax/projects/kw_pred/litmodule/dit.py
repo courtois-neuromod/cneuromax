@@ -386,15 +386,15 @@ class CustomDiT(nn.Module):
 
     def forward(
         self: "CustomDiT",
-        x: Float[Tensor, " BS SL IC"],
+        x: Float[Tensor, " BS IC SL"],
         t: Int[Tensor, " BS"],
         y: Float[Tensor, " BS ES"],
     ) -> Float[Tensor, " BS SL OC"]:
         """.
 
         BS: Batch size
-        SL: `.klk` sequence length
         IC: Number of input `.klk` channels (number of chair corners)
+        SL: `.klk` sequence length
         ES: Embedding size (a.k.a. hidden size)
         OC: Output channels
         NP: Number of patches
