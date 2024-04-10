@@ -45,6 +45,10 @@ class NodeList:
     being_pruned: list["Node"] = field(default_factory=list)
     layered: list[list["Node"]] = field(default_factory=list)
 
+    def __post_init__(self: "NodeList") -> None:
+        """Initializes the layered attribute."""
+        self.layered = [[], []]
+
     def __iter__(
         self: "NodeList",
     ) -> Iterator[list["Node"] | list[list["Node"]]]:

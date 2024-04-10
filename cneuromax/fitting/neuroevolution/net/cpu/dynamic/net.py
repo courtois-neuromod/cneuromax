@@ -1,4 +1,4 @@
-""":class:`Net` & :class:`NetConfig`."""
+""":class:`Net`, :class:`NetConfig` & :func:`find_node_layer_index`."""
 
 import secrets
 from dataclasses import dataclass
@@ -18,15 +18,10 @@ class NetConfig:
     Args:
         num_inputs: Self-explanatory.
         num_outputs: Self-explanatory.
-        node_selection_scheme: The scheme used to select nodes when\
-            growing the network. If ``"layered"``, nodes grow & connect\
-            to nodes in close layers preferentially. If ``"random"``,\
-            nodes grow & connect to nodes in random positions.
     """
 
     num_inputs: An[int, ge(1)]
     num_outputs: An[int, ge(1)]
-    node_selection_scheme: An[str, one_of("random", "layered")]
 
 
 class Net:
@@ -45,7 +40,8 @@ class Net:
     def __init__(self: "Net", config: NetConfig) -> None:
         self.config = config
         self.nodes = NodeList()
-        self.total_nb_nodes_grown: int = 0
+        self.total_nb_nodes_grown = 0
+        self.weights: list[list[float]] = [[]]
 
     def initialize_architecture(self: "Net") -> None:
         """Creates the initial architecture of the network.
@@ -53,7 +49,6 @@ class Net:
         Grows the input and output nodes, with no connections between
         them and output node biases set to 0.
         """
-        self.nodes.layered = [[], []]
         for _ in range(self.config.num_inputs):
             self.grow_node("input")
         for _ in range(self.config.num_outputs):
@@ -64,6 +59,8 @@ class Net:
         role: An[str, one_of("input", "hidden", "output")] = "hidden",
     ) -> None:
         """Grows a node in the network.
+
+        TODO: Replace random selection with layered node selection.
 
         Args:
             role: The role of the node to grow.
@@ -81,9 +78,7 @@ class Net:
             self.nodes.output.append(new_node)
             self.nodes.layered[-1].append(new_node)
         else:  # role == 'hidden'
-            # Set of receiving nodes.
             potential_in_nodes = list(dict.fromkeys(self.nodes.receiving))
-            # in_node_1
             in_node_1 = secrets.choice(potential_in_nodes)
             self.grow_connection(in_node_1, new_node)
             in_node_1_layer = find_node_layer_index(
@@ -91,62 +86,45 @@ class Net:
                 self.nodes.layered,
             )
             potential_in_nodes.remove(in_node_1)
-            # in_node_2
-            if self.config.node_selection_scheme == "random":
-                in_node_2 = secrets.choice(potential_in_nodes)
-            else:  # self.config.node_selection_scheme == 'layered'
-                error_msg = "Layered node selection not implemented."
-                raise NotImplementedError(error_msg)
+            in_node_2 = secrets.choice(potential_in_nodes)
             self.grow_connection(in_node_2, new_node)
-            # out_node
-            if self.config.node_selection_scheme == "random":
-                out_node = secrets.choice(
-                    self.nodes.hidden + self.nodes.output,
-                )
-            else:  # self.config.node_selection_scheme == 'layered'
-                error_msg = "Layered node selection not implemented."
+            out_node = secrets.choice(self.nodes.hidden + self.nodes.output)
             self.grow_connection(new_node, out_node)
             out_node_layer = find_node_layer_index(
                 out_node,
                 self.nodes.layered,
             )
-            layer_difference = out_node_layer - in_node_1_layer
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
-
+            layer_difference = out_node_layer - in_node_1_layer
             if abs(layer_difference) > 1:
-                self.nodes.layered[
-                    in_node_1_layer + int(np.sign(layer_difference))
-                ].append(new_node)
-
+                layer = in_node_1_layer + int(np.sign(layer_difference))
             else:
                 if layer_difference == 1:
-                    latest_layer = out_node_layer
+                    layer = out_node_layer
                 else:  # layer_difference == -1 or layer_difference == 0:
-                    latest_layer = in_node_1_layer
+                    layer = in_node_1_layer
+                self.nodes.layered.insert(layer, [])
+            self.nodes.layered[layer].append(new_node)
 
-                self.nodes.layered.insert(latest_layer, [])
-                self.nodes.layered[latest_layer].append(new_node)
-
-    def grow_connection(
-        self: "Net",
-        in_node: Node,
-        out_node: Node,
-    ) -> None:
+    def grow_connection(self: "Net", in_node: Node, out_node: Node) -> None:
         """Grows a connection between two nodes.
 
         Args:
             in_node: Self-explanatory.
             out_node: Self-explanatory.
         """
-        # Add a node-wise connection.
         in_node.connect_to(out_node)
-        # Add each node once* to the receiving and emitting lists.
-        # *Nodes can appear multiple times in these lists.
         self.nodes.receiving.append(out_node)
         self.nodes.emitting.append(in_node)
 
     def prune_node(self: "Net", node: Node | None = None) -> None:
+        """Prunes a node from the network.
+
+        Args:
+            node: The node to prune. If not specified, a random hidden\
+                node is pruned.
+        """
         # If a node is not specified, sample one.
         if not node:
             if len(self.nodes.hidden) == 0:
@@ -222,7 +200,7 @@ class Net:
     def reset(self: "Net") -> None:
         """Resets all node outputs to 0."""
         for node in self.nodes.all:
-            node.output = np.ndarray([0])
+            node.output = 0
 
     def __call__(self: "Net", x: list[float]) -> list[float]:
         """Forward pass through the network.
@@ -237,20 +215,26 @@ class Net:
         """
         for x_i, input_node in zip(x, self.nodes.input, strict=True):
             input_node.output = x_i
-        for layer in range(1, len(self.nodes.layered)):
-            for node in self.nodes.layered[layer]:
-                node.compute()
-            for node in self.nodes.layered[layer]:
-                node.update()
+        for node in self.nodes.hidden + self.nodes.output:
+            node.compute()
+        for node in self.nodes.hidden + self.nodes.output:
+            node.update()
         return [node.output for node in self.nodes.output]
 
 
 def find_node_layer_index(node: Node, layered_nodes: list[list[Node]]) -> int:
-    """Finds the layer index of a node in the layered list of nodes.
+    """Finds the layer index of a node in a layered list of nodes.
 
     Args:
         node: The node to find the layer index of.
-        layered_nodes: The list of layers of nodes.
+        layered_nodes: See :paramref:`.NodeList.layered`.
+
+    Returns:
+        The layer index of the node.
+
+    Raises:
+        ValueError: If the node is not found in\
+            :paramref:`layered_nodes`.
     """
     for layer_index, layer in enumerate(layered_nodes):
         if node in layer:
