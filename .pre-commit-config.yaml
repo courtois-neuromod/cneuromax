@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: v4.6.0
     hooks:
       # Ensures that a file is either empty, or ends with one newline.
       - id: end-of-file-fixer
@@ -13,7 +13,7 @@ repos:
       - id: black-jupyter
         args: [--config=pyproject.toml]
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.3.3
+    rev: v0.3.5
     hooks:
       # Linting for Python
       - id: ruff
