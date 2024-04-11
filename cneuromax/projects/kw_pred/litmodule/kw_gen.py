@@ -19,7 +19,7 @@ from cneuromax.fitting.deeplearning.litmodule import (
 from cneuromax.projects.kw_pred.dit.diffusion import (
     create_diffusion,
 )
-from cneuromax.utils.beartype import one_of
+from cneuromax.utils.beartype import ge, one_of
 
 from .dit import CustomDiT
 from .unc_kw_gen import to_wandb_image
@@ -34,7 +34,7 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
             :mod:`wandb`.
     """
 
-    num_val_wandb_samples: int = 3
+    num_val_wandb_samples: An[int, ge(1)] = 3
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -104,18 +104,6 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         loss: Float[Tensor, ""] = loss_dict["loss"].mean()
         return loss
 
-    def on_validation_start(self: "KWGenerationLitModule") -> None:
-        """Resets :attr:`val_wandb_data` if :attr:`logs_val`."""
-        super().on_validation_start()
-        if self.logs_val:
-            self.first_index = (
-                self.curr_val_epoch * self.config.num_val_wandb_samples
-            ) % len(self.val_wandb_data)
-            self.last_index = (
-                (self.curr_val_epoch + 1) * self.config.num_val_wandb_samples
-            ) % len(self.val_wandb_data)
-            self.curr_index = 0
-
     def save_val_data(
         self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
@@ -129,15 +117,16 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             logits: The network's raw output.
             preds: The model's predictions.
         """
+        if self.val_wandb_data:
+            return
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
         y: Float[Tensor, " batch_size mean_num_ae"] = y.squeeze().cpu()
-        future_curr_index = self.curr_index + x.shape[0]
-        if self.first_index in range(self.curr_index, future_curr_index):
-
-        for x_i, y_i in zip(x, y, strict=True):
+        for i, (x_i, y_i) in enumerate(zip(x, y, strict=True)):
             self.val_wandb_data.append(
                 {"x": to_wandb_image(x_i), "y": y_i},
             )
+            if i + 1 == self.config.num_val_wandb_samples:
+                break
 
     def on_after_backward(self: "KWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
@@ -148,13 +137,6 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> None:
         """Called at the end of the validation epoch."""
         if self.config.log_val_wandb:
-            first_index = (
-                self.curr_val_epoch * self.config.num_val_wandb_samples
-            ) % len(self.val_wandb_data)
-            last_index = (
-                (self.curr_val_epoch + 1) * self.config.num_val_wandb_samples
-            ) % len(self.val_wandb_data)
-            self.val_wandb_data = self.val_wandb_data[first_index:last_index]
             x_big_t = torch.randn(
                 self.config.num_val_wandb_samples,
                 self.nnmodule.in_channels,

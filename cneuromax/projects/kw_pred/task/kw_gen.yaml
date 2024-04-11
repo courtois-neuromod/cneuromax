@@ -25,6 +25,7 @@ datamodule:
       duration_seconds: 10
 trainer:
   val_check_interval: .05
+  num_sanity_val_steps: 0
 litmodule:
   config:
     log_val_wandb: True
@@ -34,4 +35,5 @@ litmodule:
     in_channels: 1
     hidden_size: 128
     depth: 1
-
+logger:
+  offline: True
