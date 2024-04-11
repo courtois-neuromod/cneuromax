@@ -51,7 +51,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         if self.config.log_val_wandb:
             self.wandb_columns = ["x", "x_hat"]
             self.wandb_x_wrapper = wandb.Image
-            self.val_wandb_data: list[dict[str, wandb.Image]]
+            self.val_wandb_data: list[dict[str, Any]]
         self.diffusion = create_diffusion(timestep_respacing="")  # type: ignore [no-untyped-call]
         self.ema = EMA(model=self.nnmodule)
 
@@ -104,6 +104,18 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         loss: Float[Tensor, ""] = loss_dict["loss"].mean()
         return loss
 
+    def on_validation_start(self: "KWGenerationLitModule") -> None:
+        """Resets :attr:`val_wandb_data` if :attr:`logs_val`."""
+        super().on_validation_start()
+        if self.logs_val:
+            self.first_index = (
+                self.curr_val_epoch * self.config.num_val_wandb_samples
+            ) % len(self.val_wandb_data)
+            self.last_index = (
+                (self.curr_val_epoch + 1) * self.config.num_val_wandb_samples
+            ) % len(self.val_wandb_data)
+            self.curr_index = 0
+
     def save_val_data(
         self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
@@ -119,6 +131,9 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         """
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
         y: Float[Tensor, " batch_size mean_num_ae"] = y.squeeze().cpu()
+        future_curr_index = self.curr_index + x.shape[0]
+        if self.first_index in range(self.curr_index, future_curr_index):
+
         for x_i, y_i in zip(x, y, strict=True):
             self.val_wandb_data.append(
                 {"x": to_wandb_image(x_i), "y": y_i},
@@ -133,28 +148,28 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> None:
         """Called at the end of the validation epoch."""
         if self.config.log_val_wandb:
-            # Labels to condition the model with (feel free to change):
-            self.val_wandb_data = self.val_wandb_data[
-                (self.curr_val_epoch * self.config.num_val_wandb_samples)
-                % len(self.val_wandb_data) : (
-                    (self.curr_val_epoch + 1)
-                    * self.config.num_val_wandb_samples
-                )
-                % len(self.val_wandb_data)
-            ]
+            first_index = (
+                self.curr_val_epoch * self.config.num_val_wandb_samples
+            ) % len(self.val_wandb_data)
+            last_index = (
+                (self.curr_val_epoch + 1) * self.config.num_val_wandb_samples
+            ) % len(self.val_wandb_data)
+            self.val_wandb_data = self.val_wandb_data[first_index:last_index]
             x_big_t = torch.randn(
-                3,
+                self.config.num_val_wandb_samples,
                 self.nnmodule.in_channels,
                 self.nnmodule.input_size,
                 device=self.device,
             )
-            y = torch.tensor(
+            y = torch.empty(
                 (
-                    self.val_wandb_data[i]["y"]
-                    for i in range(self.config.num_val_wandb_samples)
+                    self.config.num_val_wandb_samples,
+                    *self.val_wandb_data[0]["y"].shape,
                 ),
-                device=self.device,
             )
+            for i in range(self.config.num_val_wandb_samples):
+                y[i] = self.val_wandb_data[i]["y"]
+            y = y.to(self.device)
             x_zero_hat = self.diffusion.p_sample_loop(
                 self.nnmodule.forward,
                 x_big_t.shape,
@@ -164,6 +179,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 progress=True,
                 device=self.device,
             )
+            x_zero_hat = x_zero_hat.squeeze().cpu()
             for val_wandb_data_i, x_hat_i in zip(
                 self.val_wandb_data,
                 x_zero_hat,

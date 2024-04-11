@@ -10,10 +10,12 @@ defaults:
 hydra:
   launcher:
     cpus_per_task: 8
-    # gpus_per_node: 1
+    gpus_per_node: 1
 config:
-  device: cpu # gpu
+  device: gpu
 datamodule:
+  config:
+    val_percentage: 0.01
   dataset:
     config:
       root_data_dir: /data/
@@ -22,10 +24,10 @@ datamodule:
       annot_rel_dir: null
       duration_seconds: 10
 trainer:
-  val_check_interval: .25
+  val_check_interval: .05
 litmodule:
   config:
-    log_val_wandb: False
+    log_val_wandb: True
   nnmodule:
     input_size: 4000
     patch_size: 10
