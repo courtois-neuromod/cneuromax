@@ -12,8 +12,8 @@ from .node import Node, NodeList
 
 
 @dataclass
-class NetConfig:
-    """Holds :class:`Net` config values.
+class DynamicNetConfig:
+    """Holds :class:`DynamicNet` config values.
 
     Args:
         num_inputs: Self-explanatory.
@@ -24,30 +24,37 @@ class NetConfig:
     num_outputs: An[int, ge(1)]
 
 
-class Net:
-    """Recurrent Neural Network.
+class DynamicNet:
+    """Neural network with a dynamically complexifying architecture.
+
+    This network increases/decreases in complexity by growing/pruning
+    nodes and connections through two mutation functions:
+    :meth:`grow_node` and :meth:`prune_node`. Weights & biases are
+    set upon node/connection creation but are not updated during
+    evolution.
 
     Args:
-        config: See :class:`NetConfig`.
+        config: See :class:`DynamicNetConfig`.
 
     Attributes:
         config: See :paramref:`config`.
         nodes: See :class:`NodeList`.
         total_nb_nodes_grown: The number of nodes grown in the\
-            network since its initialization.
+            network since its instantiation.
     """
 
-    def __init__(self: "Net", config: NetConfig) -> None:
+    def __init__(self: "DynamicNet", config: DynamicNetConfig) -> None:
         self.config = config
         self.nodes = NodeList()
         self.total_nb_nodes_grown = 0
         self.weights: list[list[float]] = [[]]
+        self.initialize_architecture()
 
-    def initialize_architecture(self: "Net") -> None:
+    def initialize_architecture(self: "DynamicNet") -> None:
         """Creates the initial architecture of the network.
 
-        Grows the input and output nodes, with no connections between
-        them and output node biases set to 0.
+        Grows the input and output nodes. No connection is grown and
+        output node biases are set to 0.
         """
         for _ in range(self.config.num_inputs):
             self.grow_node("input")
@@ -55,15 +62,20 @@ class Net:
             self.grow_node("output")
 
     def grow_node(
-        self: "Net",
+        self: "DynamicNet",
         role: An[str, one_of("input", "hidden", "output")] = "hidden",
     ) -> None:
-        """Grows a node in the network.
+        """Adds a new node to the network.
+
+        If the :paramref:`role` ``== "hidden"`` (when this method is
+        called during mutation), a new node is grown with two incoming
+        connections from randomly selected nodes and one outgoing
+        connection to another randomly selected node.
 
         TODO: Replace random selection with layered node selection.
 
         Args:
-            role: The role of the node to grow.
+            role: Self-explanatory.
         """
         # Creates the node & increments the total number of nodes grown.
         new_node = Node(role, self.total_nb_nodes_grown)
@@ -107,7 +119,11 @@ class Net:
                 self.nodes.layered.insert(layer, [])
             self.nodes.layered[layer].append(new_node)
 
-    def grow_connection(self: "Net", in_node: Node, out_node: Node) -> None:
+    def grow_connection(
+        self: "DynamicNet",
+        in_node: Node,
+        out_node: Node,
+    ) -> None:
         """Grows a connection between two nodes.
 
         Args:
@@ -118,12 +134,12 @@ class Net:
         self.nodes.receiving.append(out_node)
         self.nodes.emitting.append(in_node)
 
-    def prune_node(self: "Net", node: Node | None = None) -> None:
+    def prune_node(self: "DynamicNet", node: Node | None = None) -> None:
         """Prunes a node from the network.
 
         Args:
             node: The node to prune. If not specified, a random hidden\
-                node is pruned.
+                node is pruned instead.
         """
         # If a node is not specified, sample one.
         if not node:
@@ -162,17 +178,18 @@ class Net:
                     node_list.remove(node)  # type: ignore[arg-type]
 
     def prune_connection(
-        self: "Net",
+        self: "DynamicNet",
         in_node: Node,
         out_node: Node,
-        current_node_in_focus: Node | None = None,
+        current_node_in_focus: Node,
     ) -> None:
         """Prunes a connection between two nodes.
 
         Args:
             in_node: Self-explanatory.
             out_node: Self-explanatory.
-            current_node_in_focus: Self-explanatory.
+            current_node_in_focus: Either :paramref:`in_node` or\
+                :paramref:`out_node`.
         """
         # Already pruned, return to avoid infinite recursion.
         if in_node not in out_node.in_nodes:
@@ -197,12 +214,12 @@ class Net:
         ):
             self.prune_node(out_node)
 
-    def reset(self: "Net") -> None:
+    def reset(self: "DynamicNet") -> None:
         """Resets all node outputs to 0."""
         for node in self.nodes.all:
             node.output = 0
 
-    def __call__(self: "Net", x: list[float]) -> list[float]:
+    def __call__(self: "DynamicNet", x: list[float]) -> list[float]:
         """Forward pass through the network.
 
         Used for CPU-based computation.
@@ -216,21 +233,22 @@ class Net:
         for x_i, input_node in zip(x, self.nodes.input, strict=True):
             input_node.output = x_i
         for node in self.nodes.hidden + self.nodes.output:
-            node.compute()
+            node.compute_and_cache_output()
         for node in self.nodes.hidden + self.nodes.output:
-            node.update()
+            node.update_output()
         return [node.output for node in self.nodes.output]
 
 
 def find_node_layer_index(node: Node, layered_nodes: list[list[Node]]) -> int:
-    """Finds the layer index of a node in a layered list of nodes.
+    """Finds layer idx of :paramref:`node` in :paramref:`layered_nodes`.
 
     Args:
-        node: The node to find the layer index of.
-        layered_nodes: See :paramref:`.NodeList.layered`.
+        node: Self-explanatory.
+        layered_nodes: See :paramref:`~NodeList.layered_nodes`.
 
     Returns:
-        The layer index of the node.
+        The layer index of :paramref:`node` in\
+            :paramref:`layered_nodes`.
 
     Raises:
         ValueError: If the node is not found in\

@@ -3,6 +3,7 @@
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 from typing import Annotated as An
+from typing import Any
 
 import numpy as np
 
@@ -11,7 +12,7 @@ from cneuromax.utils.beartype import one_of
 
 @dataclass
 class NodeList:
-    """Holds :class:`.neuroevolution.net.dynamic.net.Net` nodes.
+    """Holds :class:`Node` instances.
 
     Args:
         all: All existing/current network nodes.
@@ -46,7 +47,7 @@ class NodeList:
     layered: list[list["Node"]] = field(default_factory=list)
 
     def __post_init__(self: "NodeList") -> None:
-        """Initializes the layered attribute."""
+        """Initializes :paramref:`layered`."""
         self.layered = [[], []]
 
     def __iter__(
@@ -72,60 +73,55 @@ class NodeList:
 
 
 class Node:
-    """Node (Neuron) for :class:`~.dynamic.net.Net`.
+    """Node for use in :class:`.DynamicNet`.
 
     Args:
-        role: Node function in the network.
-        id_: Node unique identifier.
+        role: Node function in :class:`.DynamicNet`
+        uid: Node unique identifier.
     """
 
     def __init__(
         self: "Node",
         role: An[str, one_of("input", "hidden", "output")],
-        id_: int,
+        uid: int,
     ) -> None:
-        self.id_: int = id_
+        self.uid: int = uid
         self.role: str = role
         self.in_nodes: list[Node] = []
         self.out_nodes: list[Node] = []
         self.output: float = 0
         if self.role != "input":
-            self.initialize_parameters()
+            self.weights: list[float] = []
+            if self.role == "hidden":
+                self.bias = float(np.random.randn())
 
     def __repr__(self: "Node") -> str:
         """.
 
         Returns:
-            A string representation of the node.
+            The string representation of the node.
         """
-        node_inputs: tuple[int, str, ...] = tuple(
-            "x" if self.role == "input" else node.id_ for node in self.in_nodes
+        node_inputs: tuple[Any, ...] = tuple(
+            "x" if self.role == "input" else node.uid for node in self.in_nodes
         )
-        node_outputs: tuple[int, str, ...] = tuple(
-            node.id_ for node in self.out_nodes
+        node_outputs: tuple[Any, ...] = tuple(
+            node.uid for node in self.out_nodes
         )
         if self.role == "output":
             node_outputs = ("y", *node_outputs)
         return (
             str(node_inputs)
             + "->"
-            + str(self.id_)
+            + str(self.uid)
             + "->"
             + str(("y", *node_outputs))
         )
 
-    def initialize_parameters(self: "Node") -> None:
-        """Initialize weights and biases."""
-        self.weights: list[float] = []
-        self.bias: float = (
-            float(np.random.randn()) if self.role == "hidden" else 0
-        )
-
     def connect_to(self: "Node", node: "Node") -> None:
-        """Connect to another node.
+        """Connects self to :paramref:`node`.
 
         Args:
-            node: Node to connect to.
+            node: Self-explanatory.
         """
         new_weight: float = float(np.random.randn())
         node.weights.append(new_weight)
@@ -133,10 +129,10 @@ class Node:
         node.in_nodes.append(self)
 
     def disconnect_from(self: "Node", node: "Node") -> None:
-        """Disconnect from another node.
+        """Disconnects self from :paramref:`node`.
 
         Args:
-            node: Node to disconnect from.
+            node: Self-explanatory.
         """
         if self not in node.in_nodes:
             return
@@ -145,14 +141,22 @@ class Node:
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
-    def compute(self: "Node") -> None:
-        """Runs the node's computation using its `in_nodes` outputs."""
+    def compute_and_cache_output(self: "Node") -> None:
+        """Computes the node's output from its :attr:`in_nodes`.
+
+        Non-linear transformation of :attr:`in_nodes` :attr:`output`
+        values by :attr:`weights` ``+`` :attr:`bias`, followed by a
+        ReLU activation function. The output is cached as all node
+        outputs are updated simultaneously at the end of the
+        network's "forward" pass.
+        """
         x = [node.output for node in self.in_nodes]
-        x = np.dot(x, self.weights) + self.bias
+        x = np.dot(x, self.weights)
+        if self.role == "hidden":
+            x += self.bias
         x = np.clip(x, 0, 2**31 - 1)
         self.cached_output = float(x)
 
-    def update(self: "Node") -> None:
-        """Updates the node's output."""
+    def update_output(self: "Node") -> None:
+        """Sets :attr:`output` to :attr:`cached_output`."""
         self.output = self.cached_output
-        self.cached_output = None
