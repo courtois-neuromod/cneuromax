@@ -399,6 +399,7 @@ class CustomDiT(nn.Module):
         OC: Output channels
         NP: Number of patches
         """
+        logging.debug("`forward` called.")
         x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
         t: Float[Tensor, " BS ES"] = self.t_embedder(t)
         y: Float[Tensor, " BS ES"] = self.y_embedder(y)
@@ -407,4 +408,5 @@ class CustomDiT(nn.Module):
             x: Float[Tensor, " BS NP ES"] = block(x, c)  # type: ignore[no-redef]
         x: Float[Tensor, " BS NP PSxOC"] = self.final_layer(x, c)
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
+        logging.debug("`forward` returning.")
         return x

@@ -35,5 +35,3 @@ litmodule:
     in_channels: 1
     hidden_size: 128
     depth: 1
-logger:
-  offline: True

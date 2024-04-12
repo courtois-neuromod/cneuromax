@@ -1,9 +1,11 @@
 """:class:`KWPredDataset` + its config."""
 
+import logging
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Annotated as An
 
+import torch
 from torch import Tensor
 from torch.utils.data import Dataset
 
@@ -162,6 +164,7 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
+        logging.debug("`__getitem__` called.")
         while True:  # spooky (~'o')~ ...
             try:
                 data: dict[str, Tensor] = self.load_data_fn(
@@ -171,6 +174,10 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                 )
                 if data["KW BL"].min() == data["KW BL"].max():
                     raise Exception  # noqa: TRY301, TRY002
+                logging.debug("`__getitem__` returned.")
                 return data  # noqa: TRY300
             except Exception:  # noqa: PERF203, BLE001
-                idx = (idx * 2) % self.num_data_points
+                idx = int(
+                    torch.randint(low=0, high=self.num_data_points, size=(1,)),
+                )
+                logging.debug(f"Re-sampling index: {idx}.")

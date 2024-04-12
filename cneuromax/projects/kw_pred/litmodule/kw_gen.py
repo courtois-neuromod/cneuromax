@@ -1,5 +1,6 @@
 """:class:`KWGenerationLitModule."""
 
+import logging
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -77,6 +78,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
+        logging.debug("`step` called.")
         x: Float[Tensor, " BS 1 4000"] = rearrange(
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
@@ -88,7 +90,9 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             reduction="mean",
         )
         if stage == "val" and self.config.log_val_wandb:
+            logging.debug("`save_val_data` called.")
             self.save_val_data(x=x, y=y)
+            logging.debug("`save_val_data` returning.")
         t = torch.randint(
             low=0,
             high=self.diffusion.num_timesteps,
@@ -102,6 +106,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             {"y": y},
         )
         loss: Float[Tensor, ""] = loss_dict["loss"].mean()
+        logging.debug("`step` returning.")
         return loss
 
     def save_val_data(
