@@ -27,7 +27,9 @@ class ExtractPerplexity:
         self.max_length = tokenizer.model_max_length
         self.step = step
 
-    def get_perplexity(self: "ExtractPerplexity") -> Float[Tensor, ""]:
+    def get_finetune_perplexity(
+        self: "ExtractPerplexity",
+    ) -> Float[Tensor, ""]:
         """Method for getting perplexity."""
         stepwise_perplexity = []
         prev_end_loc = 0
@@ -51,6 +53,29 @@ class ExtractPerplexity:
                     batch=batch,
                     stage="test",
                 )
+
+            stepwise_perplexity.append(neg_log_likelihood)
+
+            prev_end_loc = end_loc
+            if end_loc == self.seq_len:
+                break
+
+        return torch.exp(torch.stack(stepwise_perplexity).mean())
+
+    def get_base_perplexity(self: "ExtractPerplexity") -> Float[Tensor, ""]:
+        """Method for getting perplexity."""
+        stepwise_perplexity = []
+        prev_end_loc = 0
+        for begin_loc in tqdm(range(0, self.seq_len, self.step)):
+            end_loc = min(begin_loc + self.max_length, self.seq_len)
+            trg_len = end_loc - prev_end_loc
+            input_ids = self.text.input_ids[:, begin_loc:end_loc]
+            labels = input_ids.clone()
+            labels[:, :-trg_len] = -100
+
+            with torch.no_grad():
+                outputs = self.nnmodule(input_ids, labels=labels)
+                neg_log_likelihood = outputs.loss
 
             stepwise_perplexity.append(neg_log_likelihood)
 
