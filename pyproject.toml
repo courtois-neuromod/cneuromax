@@ -55,7 +55,7 @@ dependencies = [
     "vector-quantize-pytorch==1.14.6",
     "peft==0.10.0", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
-    "mpi4py==3.1.5", # Inter-process communication
+    "mpi4py==3.1.6", # Inter-process communication
     "torchrl==0.3.1", # For reinforcement/imitation Learning tasks
     """
     gymnasium[mujoco]@git+https://github.com/Farama-Foundation/Gymnasium@\
