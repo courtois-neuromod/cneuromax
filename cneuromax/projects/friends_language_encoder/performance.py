@@ -124,9 +124,11 @@ class EvaluateBenchmark:
         task: str,
     ) -> Any:
         """."""
-        predictions, labels = eval_pred
+        logits, labels = eval_pred
         if task != "stsb":
-            predictions = np.argmax(predictions, axis=1)
+            predictions = np.argmax(
+                logits, axis=1
+            )  # check if -1 is true too from here https://github.com/huggingface/transformers/blob/b109257f4fb8b1166e7c53cc5418632014ed53a5/docs/source/en/training.md?plain=1#L25
         else:
             predictions = predictions[:, 0]
         return self.metric.compute(predictions=predictions, references=labels)
