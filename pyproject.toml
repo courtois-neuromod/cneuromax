@@ -47,7 +47,7 @@ dependencies = [
     "diffusers==0.27.2", # Diffusion models published on Hugging Face
     "timm==0.9.16", # Image models
     "datasets==2.18.0", # Datasets published on Hugging Face
-    "x-transformers==1.27.19", # Phil Wang (Lucidrain)'s Transformer library
+    "x-transformers==1.27.20", # Phil Wang (Lucidrain)'s Transformer library
     # Phil Wang (Lucidrain)'s Diffusion model library
     # `ema-pytorch` is a dependency
     "denoising-diffusion-pytorch==1.11.0",
