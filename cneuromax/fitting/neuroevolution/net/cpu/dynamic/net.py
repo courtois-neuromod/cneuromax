@@ -1,6 +1,6 @@
 """:class:`Net`, :class:`NetConfig` & :func:`find_node_layer_index`."""
 
-import secrets
+import random
 from dataclasses import dataclass
 from typing import Annotated as An
 
@@ -38,9 +38,11 @@ class DynamicNet:
 
     Attributes:
         config: See :paramref:`config`.
-        nodes: See :class:`NodeList`.
+        nodes: See :class:`.NodeList`.
         total_nb_nodes_grown: The number of nodes grown in the\
             network since its instantiation.
+        weights: Node connection weights.
+        biases: Node biases.
     """
 
     def __init__(self: "DynamicNet", config: DynamicNetConfig) -> None:
@@ -48,6 +50,7 @@ class DynamicNet:
         self.nodes = NodeList()
         self.total_nb_nodes_grown = 0
         self.weights: list[list[float]] = [[]]
+        self.biases: list[float] = []
         self.initialize_architecture()
 
     def initialize_architecture(self: "DynamicNet") -> None:
@@ -86,21 +89,24 @@ class DynamicNet:
             self.nodes.input.append(new_node)
             self.nodes.receiving.append(new_node)
             self.nodes.layered[0].append(new_node)
-        elif role == "output":
+            return
+        if role == "output":
             self.nodes.output.append(new_node)
             self.nodes.layered[-1].append(new_node)
         else:  # role == 'hidden'
             potential_in_nodes = list(dict.fromkeys(self.nodes.receiving))
-            in_node_1 = secrets.choice(potential_in_nodes)
+            in_node_1 = random.choice(potential_in_nodes)  # noqa: S311
             self.grow_connection(in_node_1, new_node)
             in_node_1_layer = find_node_layer_index(
                 in_node_1,
                 self.nodes.layered,
             )
             potential_in_nodes.remove(in_node_1)
-            in_node_2 = secrets.choice(potential_in_nodes)
+            in_node_2 = random.choice(potential_in_nodes)  # noqa: S311
             self.grow_connection(in_node_2, new_node)
-            out_node = secrets.choice(self.nodes.hidden + self.nodes.output)
+            out_node = random.choice(  # noqa: S311
+                self.nodes.hidden + self.nodes.output,
+            )
             self.grow_connection(new_node, out_node)
             out_node_layer = find_node_layer_index(
                 out_node,
@@ -118,6 +124,8 @@ class DynamicNet:
                     layer = in_node_1_layer
                 self.nodes.layered.insert(layer, [])
             self.nodes.layered[layer].append(new_node)
+        self.weights.append(new_node.weights)
+        self.biases.append(new_node.bias)
 
     def grow_connection(
         self: "DynamicNet",
@@ -145,7 +153,7 @@ class DynamicNet:
         if not node:
             if len(self.nodes.hidden) == 0:
                 return
-            node = secrets.choice(self.nodes.hidden)
+            node = random.choice(self.nodes.hidden)
         # If the node is already being pruned, return to avoid infinite
         # recursion.
         if node in self.nodes.being_pruned:

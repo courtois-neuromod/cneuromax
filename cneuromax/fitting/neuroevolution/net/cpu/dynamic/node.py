@@ -77,7 +77,22 @@ class Node:
 
     Args:
         role: Node function in :class:`.DynamicNet`
-        uid: Node unique identifier.
+        uid: Self-explanatory
+
+    Attributes:
+        role: See :paramref:`role`.
+        uid: See :paramref:`uid`.
+        in_nodes: List of nodes that send information to this node.
+        out_nodes: List of nodes that receive information from this\
+            node.
+        output: Value emitted from the node.
+        weights: Weights to apply to received values emitted by\
+            :attr:`in_nodes`. Is of length 3, as a node can have at\
+            most 3 incoming connections.
+        num_in_nodes: Number of incoming connections.
+        bias: Bias to apply to the node's output. Only present in\
+            hidden nodes.
+        cached_output: See :meth:`compute_and_cache_output`.
     """
 
     def __init__(
@@ -85,22 +100,18 @@ class Node:
         role: An[str, one_of("input", "hidden", "output")],
         uid: int,
     ) -> None:
-        self.uid: int = uid
-        self.role: str = role
+        self.role = role
+        self.uid = uid
         self.in_nodes: list[Node] = []
         self.out_nodes: list[Node] = []
         self.output: float = 0
         if self.role != "input":
-            self.weights: list[float] = []
+            self.weights: list[float] = [0, 0, 0]
+            self.num_in_nodes = 0
             if self.role == "hidden":
-                self.bias = float(np.random.randn())
+                self.bias = np.random.randn()
 
-    def __repr__(self: "Node") -> str:
-        """.
-
-        Returns:
-            The string representation of the node.
-        """
+    def __repr__(self: "Node") -> str:  # noqa: D105
         node_inputs: tuple[Any, ...] = tuple(
             "x" if self.role == "input" else node.uid for node in self.in_nodes
         )
@@ -117,27 +128,20 @@ class Node:
             + str(("y", *node_outputs))
         )
 
-    def connect_to(self: "Node", node: "Node") -> None:
-        """Connects self to :paramref:`node`.
-
-        Args:
-            node: Self-explanatory.
-        """
+    def connect_to(self: "Node", node: "Node") -> None:  # noqa: D102
         new_weight: float = float(np.random.randn())
-        node.weights.append(new_weight)
+        node.weights[self.num_in_nodes] = new_weight
+        self.num_in_nodes += 1
         self.out_nodes.append(node)
         node.in_nodes.append(self)
 
-    def disconnect_from(self: "Node", node: "Node") -> None:
-        """Disconnects self from :paramref:`node`.
-
-        Args:
-            node: Self-explanatory.
-        """
-        if self not in node.in_nodes:
-            return
+    def disconnect_from(self: "Node", node: "Node") -> None:  # noqa: D102
         i = node.in_nodes.index(self)
-        node.weights.pop(i)
+        if i == 0:
+            node.weights[0] = node.weights[1]
+        if i in (0, 1):
+            node.weights[1] = node.weights[2]
+        node.weights[2] = 0
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
@@ -157,6 +161,5 @@ class Node:
         x = np.clip(x, 0, 2**31 - 1)
         self.cached_output = float(x)
 
-    def update_output(self: "Node") -> None:
-        """Sets :attr:`output` to :attr:`cached_output`."""
+    def update_output(self: "Node") -> None:  # noqa: D102
         self.output = self.cached_output
