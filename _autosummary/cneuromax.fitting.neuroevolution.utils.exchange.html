@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="initialize" href="cneuromax.fitting.neuroevolution.utils.initialize.html" /><link rel="prev" title="evolve" href="cneuromax.fitting.neuroevolution.utils.evolve.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>exchange - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,11 +308,11 @@
         </div>
         <article role="main">
           <section id="module-cneuromax.fitting.neuroevolution.utils.exchange">
-<span id="exchange"></span><h1>exchange<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.utils.exchange" title="Link to this heading">#</a></h1>
+<span id="exchange"></span><h1>exchange<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.utils.exchange" title="Link to this heading">¶</a></h1>
 <p>Process agent exchange for Neuroevolution fitting.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.exchange.</span></span><span class="sig-name descname"><span class="pre">update_exchange_and_mutate_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/exchange.html#update_exchange_and_mutate_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.exchange.</span></span><span class="sig-name descname"><span class="pre">update_exchange_and_mutate_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generation_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seeds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/exchange.html#update_exchange_and_mutate_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info" title="Link to this definition">¶</a></dt>
 <dd><p>Update the exchange and mutate information.</p>
 <p>The selection process of the algorithm is in some sense implicit in
 <a class="reference internal" href="cneuromax.html#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a>. We make use of 50% truncation selection, which is
@@ -338,7 +338,7 @@ in this function.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.utils.exchange.exchange_agents">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.exchange.</span></span><span class="sig-name descname"><span class="pre">exchange_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info_batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/exchange.html#exchange_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.exchange.exchange_agents" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.exchange.</span></span><span class="sig-name descname"><span class="pre">exchange_agents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info_batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/exchange.html#exchange_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.exchange.exchange_agents" title="Link to this definition">¶</a></dt>
 <dd><p>Exchange agents between processes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -427,7 +427,7 @@ in this function.</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="net" href="cneuromax.fitting.neuroevolution.net.html" /><link rel="prev" title="config" href="cneuromax.fitting.neuroevolution.config.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>fit - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,11 +308,11 @@
         </div>
         <article role="main">
           <section id="module-cneuromax.fitting.neuroevolution.fit">
-<span id="fit"></span><h1>fit<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.fit" title="Link to this heading">#</a></h1>
+<span id="fit"></span><h1>fit<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.fit" title="Link to this heading">¶</a></h1>
 <p><a class="reference internal" href="#cneuromax.fitting.neuroevolution.fit.fit" title="cneuromax.fitting.neuroevolution.fit.fit"><code class="xref py py-func docutils literal notranslate"><span class="pre">fit()</span></code></a>, <code class="xref py py-func docutils literal notranslate"><span class="pre">train()</span></code> and <a class="reference internal" href="#cneuromax.fitting.neuroevolution.fit.test" title="cneuromax.fitting.neuroevolution.fit.test"><code class="xref py py-func docutils literal notranslate"><span class="pre">test()</span></code></a>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.fit.fit">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.fit" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.fit" title="Link to this definition">¶</a></dt>
 <dd><p>Neuroevolution + testing.</p>
 <p>Note that this function and all of its sub-functions will be called
 by <code class="docutils literal notranslate"><span class="pre">num_nodes</span> <span class="pre">*</span> <span class="pre">tasks_per_node</span></code> MPI processes/tasks. These two
@@ -334,7 +334,7 @@ variables are set in the Hydra launcher configuration.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.fit.evolve">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">evolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#evolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.evolve" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">evolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#evolve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.evolve" title="Link to this definition">¶</a></dt>
 <dd><p>Neuroevolution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -353,7 +353,7 @@ variables are set in the Hydra launcher configuration.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.fit.test">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.test" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.fit.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/fit.html#test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.fit.test" title="Link to this definition">¶</a></dt>
 <dd><p>Neuroevolution testing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -441,7 +441,7 @@ variables are set in the Hydra launcher configuration.</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

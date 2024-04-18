@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="exchange" href="cneuromax.fitting.neuroevolution.utils.exchange.html" /><link rel="prev" title="compute" href="cneuromax.fitting.neuroevolution.utils.compute.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>evolve - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,13 +308,13 @@
         </div>
         <article role="main">
           <section id="module-cneuromax.fitting.neuroevolution.utils.evolve">
-<span id="evolve"></span><h1>evolve<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.utils.evolve" title="Link to this heading">#</a></h1>
+<span id="evolve"></span><h1>evolve<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.utils.evolve" title="Link to this heading">¶</a></h1>
 <p>Evolutionary operations for Neuroevolution fitting.</p>
 <p>The selection operation is implicit in <a class="reference internal" href="cneuromax.html#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a>, see
 <a class="reference internal" href="cneuromax.fitting.neuroevolution.utils.exchange.html#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info" title="cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info"><code class="xref py py-func docutils literal notranslate"><span class="pre">update_exchange_and_mutate_info()</span></code></a> for more details.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.utils.evolve.mutate">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exchange_and_mutate_info_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_pops</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate" title="Link to this definition">¶</a></dt>
 <dd><p>Mutate <a class="reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.mutate.params.agents_batch" title="cneuromax.fitting.neuroevolution.utils.evolve.mutate"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">agents_batch</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -333,7 +333,7 @@ maintained by this process.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">evaluate_on_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_gen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#evaluate_on_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">evaluate_on_cpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_gen</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#evaluate_on_cpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu" title="Link to this definition">¶</a></dt>
 <dd><p>Evaluate <a class="reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu.params.agents_batch" title="cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_cpu"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">agents_batch</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -354,7 +354,7 @@ maintained by this process.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_gpu">
-<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">evaluate_on_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ith_gpu_comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_gen</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#evaluate_on_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_gpu" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.utils.evolve.</span></span><span class="sig-name descname"><span class="pre">evaluate_on_gpu</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ith_gpu_comm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agents_batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">curr_gen</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transfer</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/utils/evolve.html#evaluate_on_gpu"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_gpu" title="Link to this definition">¶</a></dt>
 <dd><p>Gather <a class="reference internal" href="#cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_gpu.params.agents_batch" title="cneuromax.fitting.neuroevolution.utils.evolve.evaluate_on_gpu"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">agents_batch</span></code></a> on process subset &amp; evaluate.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -448,7 +448,7 @@ maintained by this process.</p></li>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

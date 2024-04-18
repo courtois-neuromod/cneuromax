@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="space" href="cneuromax.projects.neuroevorl_control.space.html" /><link rel="prev" title="neuroevorl_control" href="cneuromax.projects.neuroevorl_control.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>agent - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,11 +308,11 @@
         </div>
         <article role="main">
           <section id="module-cneuromax.projects.neuroevorl_control.agent">
-<span id="agent"></span><h1>agent<a class="headerlink" href="#module-cneuromax.projects.neuroevorl_control.agent" title="Link to this heading">#</a></h1>
+<span id="agent"></span><h1>agent<a class="headerlink" href="#module-cneuromax.projects.neuroevorl_control.agent" title="Link to this heading">¶</a></h1>
 <p><a class="reference internal" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent" title="cneuromax.projects.neuroevorl_control.agent.GymAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">GymAgent</span></code></a> &amp; its config.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgentConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.neuroevorl_control.agent.</span></span><span class="sig-name descname"><span class="pre">GymAgentConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.env_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.fit_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.mem_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${space.config.env_name}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgentConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgentConfig" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.neuroevorl_control.agent.</span></span><span class="sig-name descname"><span class="pre">GymAgentConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.env_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.fit_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.mem_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${space.config.env_name}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mutation_std</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgentConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgentConfig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.neuroevolution.agent.base.html#cneuromax.fitting.neuroevolution.agent.base.BaseAgentConfig" title="cneuromax.fitting.neuroevolution.agent.base.BaseAgentConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAgentConfig</span></code></a></p>
 <p>Holds <a class="reference internal" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent" title="cneuromax.projects.neuroevorl_control.agent.GymAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">GymAgent</span></code></a> config values.</p>
 <dl class="field-list simple">
@@ -328,7 +328,7 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.neuroevorl_control.agent.</span></span><span class="sig-name descname"><span class="pre">GymAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_idx</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pops_are_merged</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.neuroevorl_control.agent.</span></span><span class="sig-name descname"><span class="pre">GymAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_idx</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pops_are_merged</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.neuroevolution.agent.base.html#cneuromax.fitting.neuroevolution.agent.base.BaseAgent" title="cneuromax.fitting.neuroevolution.agent.base.BaseAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAgent</span></code></a></p>
 <p><code class="docutils literal notranslate"><span class="pre">project</span></code> <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAgent</span></code>.</p>
 <dl class="field-list simple">
@@ -342,7 +342,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgent.mutate">
-<span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.mutate" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.mutate" title="Link to this definition">¶</a></dt>
 <dd><p>Mutates the agent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -353,7 +353,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgent.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.reset" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.reset" title="Link to this definition">¶</a></dt>
 <dd><p>Resets the agent’s memory state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -364,7 +364,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgent.env_to_net">
-<span class="sig-name descname"><span class="pre">env_to_net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.env_to_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.env_to_net" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">env_to_net</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.env_to_net"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.env_to_net" title="Link to this definition">¶</a></dt>
 <dd><p>Processes the observation before feeding it to the network.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -381,7 +381,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.projects.neuroevorl_control.agent.GymAgent.net_to_env">
-<span class="sig-name descname"><span class="pre">net_to_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.net_to_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.net_to_env" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">net_to_env</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/neuroevorl_control/agent.html#GymAgent.net_to_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.neuroevorl_control.agent.GymAgent.net_to_env" title="Link to this definition">¶</a></dt>
 <dd><p>Processes the network output before feeding it to the env.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -476,7 +476,7 @@
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

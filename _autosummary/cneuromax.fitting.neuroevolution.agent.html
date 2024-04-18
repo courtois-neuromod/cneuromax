@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="base" href="cneuromax.fitting.neuroevolution.agent.base.html" /><link rel="prev" title="neuroevolution" href="cneuromax.fitting.neuroevolution.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>agent - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,11 +308,11 @@
         </div>
         <article role="main">
           <section id="module-cneuromax.fitting.neuroevolution.agent">
-<span id="agent"></span><h1>agent<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.agent" title="Link to this heading">#</a></h1>
+<span id="agent"></span><h1>agent<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.agent" title="Link to this heading">¶</a></h1>
 <p>Neuroevolution Agent.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.agent.</span></span><span class="sig-name descname"><span class="pre">BaseAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_idx</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pops_are_merged</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.agent.</span></span><span class="sig-name descname"><span class="pre">BaseAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pop_idx</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pops_are_merged</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Root Neuroevolution agent class.</p>
 <p>From an algorithmic perspective, we make use of 50% truncation
@@ -337,7 +337,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.config">
-<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.config" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.config" title="Link to this definition">¶</a></dt>
 <dd><p>See <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.params.config" title="cneuromax.fitting.neuroevolution.agent.BaseAgent"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">config</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -348,7 +348,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.role">
-<span class="sig-name descname"><span class="pre">role</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.role" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">role</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.role" title="Link to this definition">¶</a></dt>
 <dd><p>The agent’s role. Can be either <code class="docutils literal notranslate"><span class="pre">&quot;generator&quot;</span></code>            or <code class="docutils literal notranslate"><span class="pre">&quot;discriminator&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -359,7 +359,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.is_other_role_in_other_pop">
-<span class="sig-name descname"><span class="pre">is_other_role_in_other_pop</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.is_other_role_in_other_pop" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">is_other_role_in_other_pop</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.is_other_role_in_other_pop" title="Link to this definition">¶</a></dt>
 <dd><p>Whether the agent is the            other role in the other population. If the two populations            are merged (see <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.params.pops_are_merged" title="cneuromax.fitting.neuroevolution.agent.BaseAgent"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">pops_are_merged</span></code></a>), then an            agent is both a generator and a discriminator. It is a            generator/discriminator in this population while it is a            discriminator/generator in the other population. Such            type of agent needs to accomodate this property through            its network architecture.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -370,7 +370,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.total_num_steps">
-<span class="sig-name descname"><span class="pre">total_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.total_num_steps" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">total_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.total_num_steps" title="Link to this definition">¶</a></dt>
 <dd><p>The total number of steps taken by            the agent and all of its predecessors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -381,7 +381,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_score">
-<span class="sig-name descname"><span class="pre">curr_eval_score</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_score" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">curr_eval_score</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_score" title="Link to this definition">¶</a></dt>
 <dd><p>The score obtained by the agent            during the current evaluation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -392,7 +392,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_num_steps">
-<span class="sig-name descname"><span class="pre">curr_eval_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_num_steps" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">curr_eval_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_eval_num_steps" title="Link to this definition">¶</a></dt>
 <dd><p>The number of steps taken by the            agent during the current evaluation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -403,7 +403,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env">
-<span class="sig-name descname"><span class="pre">saved_env</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">saved_env</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env" title="Link to this definition">¶</a></dt>
 <dd><p>The <code class="xref py py-mod docutils literal notranslate"><span class="pre">torchrl</span></code>            environment instance to resume from (only set if
 <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig.params.env_transfer" title="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">env_transfer</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
 <dl class="field-list simple">
@@ -415,7 +415,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env_out">
-<span class="sig-name descname"><span class="pre">saved_env_out</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env_out" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">saved_env_out</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.saved_env_out" title="Link to this definition">¶</a></dt>
 <dd><p>The latest output            from the environment to resume from (only set if            <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig.params.env_transfer" title="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">env_transfer</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -426,25 +426,25 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_score">
-<span class="sig-name descname"><span class="pre">curr_episode_score</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_score" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">curr_episode_score</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_score" title="Link to this definition">¶</a></dt>
 <dd><p>The current episode score (only set if            <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig.params.env_transfer" title="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">env_transfer</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_num_steps">
-<span class="sig-name descname"><span class="pre">curr_episode_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_num_steps" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">curr_episode_num_steps</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.curr_episode_num_steps" title="Link to this definition">¶</a></dt>
 <dd><p>The number of steps taken in the            current episode (only set if            <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig.params.env_transfer" title="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">env_transfer</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.continual_fitness">
-<span class="sig-name descname"><span class="pre">continual_fitness</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.continual_fitness" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">continual_fitness</span></span><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.continual_fitness" title="Link to this definition">¶</a></dt>
 <dd><p>The agent’s fitness in addition to all of            its predecessors’ fitnesses (only set if            <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig.params.fit_transfer" title="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">fit_transfer</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.initialize_eval_attributes">
-<span class="sig-name descname"><span class="pre">initialize_eval_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.initialize_eval_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.initialize_eval_attributes" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">initialize_eval_attributes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.initialize_eval_attributes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.initialize_eval_attributes" title="Link to this definition">¶</a></dt>
 <dd><p>Initializes attributes used during evaluation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -455,7 +455,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.mutate">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.mutate" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">mutate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.mutate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.mutate" title="Link to this definition">¶</a></dt>
 <dd><p>Applies random mutation(s) to the agent.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -466,7 +466,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgent.reset">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.reset" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgent.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent.reset" title="Link to this definition">¶</a></dt>
 <dd><p>Resets the agent’s memory state.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
@@ -479,7 +479,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
 
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.agent.BaseAgentConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.agent.</span></span><span class="sig-name descname"><span class="pre">BaseAgentConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.env_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.fit_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.mem_transfer}'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgentConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.agent.</span></span><span class="sig-name descname"><span class="pre">BaseAgentConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.env_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.fit_transfer}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mem_transfer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.mem_transfer}'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/agent/base.html#BaseAgentConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.agent.BaseAgentConfig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Holds <a class="reference internal" href="#cneuromax.fitting.neuroevolution.agent.BaseAgent" title="cneuromax.fitting.neuroevolution.agent.BaseAgent"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAgent</span></code></a> config values.</p>
 <dl class="field-list simple">
@@ -591,7 +591,7 @@ an <code class="docutils literal notranslate"><span class="pre">AgentContainer</
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>

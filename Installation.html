@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Execution" href="Execution.html" /><link rel="prev" title="CNeuroMax" href="index.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>Installation - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
@@ -308,15 +308,15 @@
         </div>
         <article role="main">
           <section id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h1>
 <p>Below are full installation steps (catered towards Ubuntu &amp; Slurm users) so as
 to maximize CNeuroMax’s reproducibility across platforms, utilizing
 virtualization technologies Docker, Podman &amp; Apptainer.</p>
 <section id="common-to-all-machines">
-<h2>Common to all machines<a class="headerlink" href="#common-to-all-machines" title="Link to this heading">#</a></h2>
+<h2>Common to all machines<a class="headerlink" href="#common-to-all-machines" title="Link to this heading">¶</a></h2>
 <p>The following commands are meant to set-up the repository.</p>
 <section id="move-to-the-desired-containing-folder">
-<h3>1. Move to the desired containing folder<a class="headerlink" href="#move-to-the-desired-containing-folder" title="Link to this heading">#</a></h3>
+<h3>1. Move to the desired containing folder<a class="headerlink" href="#move-to-the-desired-containing-folder" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We recommend, in the <code class="docutils literal notranslate"><span class="pre">Contribution</span></code> section, to make use of
@@ -329,20 +329,20 @@ Dropbox/Maestral if you plan to alter the code on different machines.</p>
 </div>
 </section>
 <section id="clone-the-repository">
-<h3>2. Clone the repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">#</a></h3>
+<h3>2. Clone the repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:courtois-neuromod/cneuromax.git
 </pre></div>
 </div>
 </section>
 <section id="define-the-cneuromax-path-variable">
-<h3>3. Define the <code class="docutils literal notranslate"><span class="pre">CNEUROMAX_PATH</span></code> variable<a class="headerlink" href="#define-the-cneuromax-path-variable" title="Link to this heading">#</a></h3>
+<h3>3. Define the <code class="docutils literal notranslate"><span class="pre">CNEUROMAX_PATH</span></code> variable<a class="headerlink" href="#define-the-cneuromax-path-variable" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;\nexport CNEUROMAX_PATH=</span><span class="si">${</span><span class="nv">PWD</span><span class="si">}</span><span class="s2">/cneuromax&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.bashrc
 </pre></div>
 </div>
 </section>
 <section id="weights-biases">
-<h3>4. Weights &amp; biases<a class="headerlink" href="#weights-biases" title="Link to this heading">#</a></h3>
+<h3>4. Weights &amp; biases<a class="headerlink" href="#weights-biases" title="Link to this heading">¶</a></h3>
 <p>Weights &amp; Biases is a tool to log experiments. In order to make use of it, you
 will need to create an account on their <a class="reference external" href="https://www.wandb.com/">website</a> and
 generate an API key. Once you have done so, create a file called
@@ -353,13 +353,13 @@ be added to the team list.</p>
 </section>
 </section>
 <section id="on-an-ubuntu-machine">
-<h2>On an Ubuntu machine<a class="headerlink" href="#on-an-ubuntu-machine" title="Link to this heading">#</a></h2>
+<h2>On an Ubuntu machine<a class="headerlink" href="#on-an-ubuntu-machine" title="Link to this heading">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Skip to Step 4 if you do not have administrator privileges.</p>
 </div>
 <section id="install-docker-or-podman">
-<h3>1. Install Docker or Podman<a class="headerlink" href="#install-docker-or-podman" title="Link to this heading">#</a></h3>
+<h3>1. Install Docker or Podman<a class="headerlink" href="#install-docker-or-podman" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We suggest installing Docker if you meet any of the following conditions:</p>
@@ -385,7 +385,7 @@ by the container are owned by your user and not by root). See this <a class="ref
 <p>Follow the <a class="reference external" href="https://podman.io/getting-started/installation">Podman installation guide</a>.</p>
 </section>
 <section id="install-the-nvidia-driver">
-<h3>2. Install the NVIDIA driver<a class="headerlink" href="#install-the-nvidia-driver" title="Link to this heading">#</a></h3>
+<h3>2. Install the NVIDIA driver<a class="headerlink" href="#install-the-nvidia-driver" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Skip this step if your machine does not have an NVIDIA GPU.</p>
@@ -400,7 +400,7 @@ metapackage from nvidia-driver-XXX (proprietary, tested)” option.</p>
 <p>Follow the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-installation-notes/index.html">NVIDIA driver installation guide</a>.</p>
 </section>
 <section id="install-the-nvidia-container-toolkit">
-<h3>3. Install the NVIDIA Container Toolkit<a class="headerlink" href="#install-the-nvidia-container-toolkit" title="Link to this heading">#</a></h3>
+<h3>3. Install the NVIDIA Container Toolkit<a class="headerlink" href="#install-the-nvidia-container-toolkit" title="Link to this heading">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Skip this step if your machine does not have an NVIDIA GPU.</p>
@@ -410,7 +410,7 @@ metapackage from nvidia-driver-XXX (proprietary, tested)” option.</p>
 <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/1.13.5/install-guide.html#step-3-rootless-containers-setup">Rootless setup</a>.</p>
 </section>
 <section id="pull-the-image">
-<h3>4. Pull the image<a class="headerlink" href="#pull-the-image" title="Link to this heading">#</a></h3>
+<h3>4. Pull the image<a class="headerlink" href="#pull-the-image" title="Link to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Substitute `docker` with `podman` if you installed Podman.</span>
 docker<span class="w"> </span>pull<span class="w"> </span>docker.io/cneuromod/cneuromax:latest
 </pre></div>
@@ -418,7 +418,7 @@ docker<span class="w"> </span>pull<span class="w"> </span>docker.io/cneuromod/cn
 </section>
 </section>
 <section id="on-a-slurm-cluster">
-<h2>On a Slurm cluster<a class="headerlink" href="#on-a-slurm-cluster" title="Link to this heading">#</a></h2>
+<h2>On a Slurm cluster<a class="headerlink" href="#on-a-slurm-cluster" title="Link to this heading">¶</a></h2>
 <p>Apptainer (previously called Singularity) is a generally available alternative
 to Docker on HPC clusters. We automate the process of building the CNeuroMax
 Apptainer image for CNeuroMod team members through our GitHub Actions.</p>
@@ -515,7 +515,7 @@ assistance.</p>
     </aside>
   </div>
 </div><script src="_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>

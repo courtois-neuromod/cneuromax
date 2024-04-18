@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="config" href="cneuromax.config.html" /><link rel="prev" title="Contribution" href="../Contribution.html" />
 
-    <!-- Generated with Sphinx 7.2.6 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.3.6 and Furo 2024.01.29 -->
         <title>cneuromax - CNeuroMax</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
@@ -308,16 +308,16 @@
         </div>
         <article role="main">
           <section id="module-cneuromax">
-<span id="cneuromax"></span><h1>cneuromax<a class="headerlink" href="#module-cneuromax" title="Link to this heading">#</a></h1>
+<span id="cneuromax"></span><h1>cneuromax<a class="headerlink" href="#module-cneuromax" title="Link to this heading">¶</a></h1>
 <p><a class="reference internal" href="#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a> package.</p>
 <section id="execution">
-<h2>Execution<a class="headerlink" href="#execution" title="Link to this heading">#</a></h2>
+<h2>Execution<a class="headerlink" href="#execution" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">cneuromax</span> <span class="pre">project=PROJECT_NAME</span> <span class="pre">task=TASK_NAME</span></code>.</p>
 </section>
 <section id="terminology">
-<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">#</a></h2>
+<h2>Terminology<a class="headerlink" href="#terminology" title="Link to this heading">¶</a></h2>
 <section id="quck-definitions">
-<h3>1. Quck definitions<a class="headerlink" href="#quck-definitions" title="Link to this heading">#</a></h3>
+<h3>1. Quck definitions<a class="headerlink" href="#quck-definitions" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">subtask</span></code>: Sub-work unit of a <code class="docutils literal notranslate"><span class="pre">task</span></code> (ex: a model training run
 with a specific set of hyper-parameters).</p>
 <p><code class="docutils literal notranslate"><span class="pre">task</span></code>: Some work unit specified by a <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> config
@@ -332,9 +332,9 @@ functionality (ex: a custom <code class="xref py py-mod docutils literal notrans
 <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> base configs).</p>
 </section>
 <section id="interface">
-<h3>2. Interface<a class="headerlink" href="#interface" title="Link to this heading">#</a></h3>
+<h3>2. Interface<a class="headerlink" href="#interface" title="Link to this heading">¶</a></h3>
 <section id="a-interface-overview">
-<h4>a. Interface overview<a class="headerlink" href="#a-interface-overview" title="Link to this heading">#</a></h4>
+<h4>a. Interface overview<a class="headerlink" href="#a-interface-overview" title="Link to this heading">¶</a></h4>
 <p>An <code class="docutils literal notranslate"><span class="pre">interface</span></code> refers to a Python package located at
 <code class="docutils literal notranslate"><span class="pre">cneuromax/INTERFACE_PATH/</span></code>.</p>
 <div class="admonition note">
@@ -343,12 +343,12 @@ functionality (ex: a custom <code class="xref py py-mod docutils literal notrans
 </div>
 </section>
 <section id="b-example-interfaces">
-<h4>b. Example interfaces<a class="headerlink" href="#b-example-interfaces" title="Link to this heading">#</a></h4>
+<h4>b. Example interfaces<a class="headerlink" href="#b-example-interfaces" title="Link to this heading">¶</a></h4>
 <p>Root interface: <a class="reference internal" href="#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/">source folder</a>)</p>
 <p>Fitting: <a class="reference internal" href="cneuromax.fitting.html#module-cneuromax.fitting" title="cneuromax.fitting"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.fitting</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/fitting/">source folder</a>)</p>
 </section>
 <section id="c-creating-a-new-interface">
-<h4>c. Creating a new interface<a class="headerlink" href="#c-creating-a-new-interface" title="Link to this heading">#</a></h4>
+<h4>c. Creating a new interface<a class="headerlink" href="#c-creating-a-new-interface" title="Link to this heading">¶</a></h4>
 <p>To create <code class="docutils literal notranslate"><span class="pre">INTERFACE_NAME</span></code> at path
 <code class="docutils literal notranslate"><span class="pre">cneuromax/.../PARENT_INTERFACE_NAME/INTERFACE_NAME</span></code>, create a class
 to inherit from the <a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner" title="cneuromax.runner.BaseTaskRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTaskRunner</span></code></a> class/sub-class implemented
@@ -357,20 +357,20 @@ by <code class="docutils literal notranslate"><span class="pre">PARENT_INTERFACE
 </section>
 </section>
 <section id="service">
-<h3>3. Service<a class="headerlink" href="#service" title="Link to this heading">#</a></h3>
+<h3>3. Service<a class="headerlink" href="#service" title="Link to this heading">¶</a></h3>
 <section id="a-service-overview">
-<h4>a. Service overview<a class="headerlink" href="#a-service-overview" title="Link to this heading">#</a></h4>
+<h4>a. Service overview<a class="headerlink" href="#a-service-overview" title="Link to this heading">¶</a></h4>
 <p>A <code class="docutils literal notranslate"><span class="pre">service</span></code> refers to a Python package located at
 <code class="docutils literal notranslate"><span class="pre">cneuromax/INTERFACE_PATH/SERVICE_NAME/</span></code>.</p>
 </section>
 <section id="b-example-services">
-<h4>b. Example services<a class="headerlink" href="#b-example-services" title="Link to this heading">#</a></h4>
+<h4>b. Example services<a class="headerlink" href="#b-example-services" title="Link to this heading">¶</a></h4>
 <p>Deep Learning: <a class="reference internal" href="cneuromax.fitting.deeplearning.html#module-cneuromax.fitting.deeplearning" title="cneuromax.fitting.deeplearning"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.fitting.deeplearning</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/fitting/deeplearning">source folder</a>)</p>
 <p>Neuroevolution: <a class="reference internal" href="cneuromax.fitting.neuroevolution.html#module-cneuromax.fitting.neuroevolution" title="cneuromax.fitting.neuroevolution"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.fitting.neuroevolution</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/fitting/neuroevolution">source folder</a>)</p>
 <p>Model serving (in progress): <a class="reference internal" href="cneuromax.serving.html#module-cneuromax.serving" title="cneuromax.serving"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.serving</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/serving/">source folder</a>)</p>
 </section>
 <section id="c-creating-a-new-service">
-<h4>c. Creating a new service<a class="headerlink" href="#c-creating-a-new-service" title="Link to this heading">#</a></h4>
+<h4>c. Creating a new service<a class="headerlink" href="#c-creating-a-new-service" title="Link to this heading">¶</a></h4>
 <p>To create <code class="docutils literal notranslate"><span class="pre">SERVICE_NAME</span></code> at path
 <code class="docutils literal notranslate"><span class="pre">cneuromax/.../INTERFACE_LATEST_NAME/SERVICE_NAME</span></code>, create a class
 to inherit from the <a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner" title="cneuromax.runner.BaseTaskRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTaskRunner</span></code></a> class/sub-class implemented
@@ -380,21 +380,21 @@ by <code class="docutils literal notranslate"><span class="pre">INTERFACE_LATEST
 </section>
 </section>
 <section id="project">
-<h3>4. Project<a class="headerlink" href="#project" title="Link to this heading">#</a></h3>
+<h3>4. Project<a class="headerlink" href="#project" title="Link to this heading">¶</a></h3>
 <section id="a-project-overview">
-<h4>a. Project overview<a class="headerlink" href="#a-project-overview" title="Link to this heading">#</a></h4>
+<h4>a. Project overview<a class="headerlink" href="#a-project-overview" title="Link to this heading">¶</a></h4>
 <p>A <code class="docutils literal notranslate"><span class="pre">project</span></code> refers to a Python package located at
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/</span></code>.</p>
 </section>
 <section id="b-example-projects">
-<h4>b. Example projects<a class="headerlink" href="#b-example-projects" title="Link to this heading">#</a></h4>
+<h4>b. Example projects<a class="headerlink" href="#b-example-projects" title="Link to this heading">¶</a></h4>
 <p>MNIST classification: <a class="reference internal" href="cneuromax.projects.classify_mnist.html#module-cneuromax.projects.classify_mnist" title="cneuromax.projects.classify_mnist"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.projects.classify_mnist</span></code></a> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/projects/classify_mnist">source
 folder</a>)</p>
 <p>Control tasks neuroevolution: <code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax.projects.control_nevo</span></code>
 (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/projects/control_nevo">source folder</a>)</p>
 </section>
 <section id="c-creating-a-new-project">
-<h4>c. Creating a new project<a class="headerlink" href="#c-creating-a-new-project" title="Link to this heading">#</a></h4>
+<h4>c. Creating a new project<a class="headerlink" href="#c-creating-a-new-project" title="Link to this heading">¶</a></h4>
 <p>To create <code class="docutils literal notranslate"><span class="pre">PROJECT_NAME</span></code> at path
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/</span></code>, create a class to inherit from
 the <a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner" title="cneuromax.runner.BaseTaskRunner"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseTaskRunner</span></code></a> class/sub-class implemented by the
@@ -407,9 +407,9 @@ the above class in the <code class="docutils literal notranslate"><span class="p
 </section>
 </section>
 <section id="task">
-<h3>5. Task<a class="headerlink" href="#task" title="Link to this heading">#</a></h3>
+<h3>5. Task<a class="headerlink" href="#task" title="Link to this heading">¶</a></h3>
 <section id="a-task-overview">
-<h4>a. Task overview<a class="headerlink" href="#a-task-overview" title="Link to this heading">#</a></h4>
+<h4>a. Task overview<a class="headerlink" href="#a-task-overview" title="Link to this heading">¶</a></h4>
 <p>A <code class="docutils literal notranslate"><span class="pre">task</span></code> is a work unit specified by a <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> configuration
 <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file located in
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml</span></code> or a
@@ -417,13 +417,13 @@ the above class in the <code class="docutils literal notranslate"><span class="p
 <a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner.store_configs" title="cneuromax.runner.BaseTaskRunner.store_configs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseTaskRunner.store_configs()</span></code></a>.</p>
 </section>
 <section id="b-example-tasks">
-<h4>b. Example tasks<a class="headerlink" href="#b-example-tasks" title="Link to this heading">#</a></h4>
+<h4>b. Example tasks<a class="headerlink" href="#b-example-tasks" title="Link to this heading">¶</a></h4>
 <p>MLP MNIST classification: <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/classify_mnist/task/mlp.yaml</span></code> (<a class="reference external" href="https://github.com/courtois-neuromod/cneuromax/tree/main/cneuromax/projects/classify_mnist/task/mlp.yaml">source file</a>)</p>
 <p>Acrobot neuroevolution: Check out the contents of
 <code class="xref py py-func docutils literal notranslate"><span class="pre">cneuromax.projects.control_nevo.TaskRunner.store_configs()</span></code>.</p>
 </section>
 <section id="c-creating-a-new-task">
-<h4>c. Creating a new task<a class="headerlink" href="#c-creating-a-new-task" title="Link to this heading">#</a></h4>
+<h4>c. Creating a new task<a class="headerlink" href="#c-creating-a-new-task" title="Link to this heading">¶</a></h4>
 <p>Create <code class="docutils literal notranslate"><span class="pre">TASK_NAME.yaml</span></code> at path
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml</span></code> and include
 <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">&#64;package</span> <span class="pre">_global_</span></code> at the top of the file (as shown
@@ -434,7 +434,7 @@ in the second above example).</p>
 </section>
 </section>
 <section id="main-py">
-<h2>__main__.py<a class="headerlink" href="#main-py" title="Link to this heading">#</a></h2>
+<h2>__main__.py<a class="headerlink" href="#main-py" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">cneuromax.runner</span> <span class="kn">import</span> <span class="n">BaseTaskRunner</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.runner</span> <span class="kn">import</span> <span class="n">get_task_runner_class</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.wandb</span> <span class="kn">import</span> <span class="n">login_wandb</span>
@@ -577,7 +577,7 @@ in the second above example).</p>
     </aside>
   </div>
 </div><script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
