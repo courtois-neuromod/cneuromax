@@ -43,7 +43,7 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.2.2",
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "transformers==4.39.3", # Pre-trained models published on Hugging Face
+    "transformers==4.40.0", # Pre-trained models published on Hugging Face
     "diffusers==0.27.2", # Diffusion models published on Hugging Face
     "timm==0.9.16", # Image models
     "datasets==2.18.0", # Datasets published on Hugging Face
