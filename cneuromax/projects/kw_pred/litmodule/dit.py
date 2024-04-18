@@ -220,7 +220,7 @@ class CustomDiT(nn.Module):
         input_size: int = 32,
         patch_size: int = 2,
         in_channels: int = 4,
-        hidden_size: int = 1152,
+        # hidden_size: int = 1152,  # noqa: ERA001
         depth: int = 28,
         num_heads: int = 16,
         mlp_ratio: float = 4.0,
@@ -237,6 +237,7 @@ class CustomDiT(nn.Module):
         self.num_heads = num_heads
         ### NEW ###
         self.input_size = input_size
+        hidden_size = 64 * depth  # As in the MM-DiT paper
         ###########
         """
         self.x_embedder = PatchEmbed(
@@ -399,7 +400,6 @@ class CustomDiT(nn.Module):
         OC: Output channels
         NP: Number of patches
         """
-        logging.debug("`forward` called.")
         x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
         t: Float[Tensor, " BS ES"] = self.t_embedder(t)
         y: Float[Tensor, " BS ES"] = self.y_embedder(y)
@@ -408,5 +408,4 @@ class CustomDiT(nn.Module):
             x: Float[Tensor, " BS NP ES"] = block(x, c)  # type: ignore[no-redef]
         x: Float[Tensor, " BS NP PSxOC"] = self.final_layer(x, c)
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
-        logging.debug("`forward` returning.")
         return x

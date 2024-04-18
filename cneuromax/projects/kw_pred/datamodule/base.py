@@ -70,5 +70,8 @@ class KWPredDataModule(BaseDataModule):
                 lengths=self.train_val_split,
             )
         else:  # stage == "test":
-            error_msg = "No test dataset available."
-            raise NotImplementedError(error_msg)
+            try:
+                self.datasets.test = self.datasets.val
+            except AttributeError as e:
+                error_msg = "No test dataset available."
+                raise AttributeError(error_msg) from e

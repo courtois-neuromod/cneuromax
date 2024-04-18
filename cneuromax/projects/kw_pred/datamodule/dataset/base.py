@@ -95,6 +95,7 @@ class KWPredDatasetConfig:
         num_klk_wavs_corners: Number of corners in the ``.klk``\
             ``.wav`` files to model.
         duration_seconds: Length of each data point in seconds.
+        dataset_percentage: Percentage of the dataset to use.
     """
 
     root_data_dir: str = "/media/DATA/"
@@ -107,6 +108,7 @@ class KWPredDatasetConfig:
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
     num_klk_wavs_corners: An[int, ge(1), le(4)] = 1
     duration_seconds: An[int, ge(1)] = 10
+    dataset_percentage: An[float, ge(0), le(1)] = 1.0
 
 
 class KWPredDataset(Dataset[dict[str, Tensor]]):
@@ -160,11 +162,10 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     def __len__(self: "KWPredDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
-        return self.num_data_points
+        return int(self.num_data_points * self.config.dataset_percentage)
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
-        logging.debug("`__getitem__` called.")
         while True:  # spooky (~'o')~ ...
             try:
                 data: dict[str, Tensor] = self.load_data_fn(
@@ -172,12 +173,10 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                     self.config.duration_seconds,
                     self.config.num_klk_wavs_corners,
                 )
-                if data["KW BL"].min() == data["KW BL"].max():
-                    raise Exception  # noqa: TRY301, TRY002
-                logging.debug("`__getitem__` returned.")
                 return data  # noqa: TRY300
-            except Exception:  # noqa: PERF203, BLE001
+            except Exception as e:  # noqa: PERF203, BLE001
+                logging.debug(f"Error class: {e.__class__.__name__}")
+                logging.debug(f"Error: {e}, re-sampling index.")
                 idx = int(
-                    torch.randint(low=0, high=self.num_data_points, size=(1,)),
+                    torch.randint(low=0, high=len(self), size=(1,)),
                 )
-                logging.debug(f"Re-sampling index: {idx}.")

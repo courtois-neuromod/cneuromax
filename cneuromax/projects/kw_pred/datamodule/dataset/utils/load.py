@@ -46,7 +46,6 @@ def load_data(
             "KW FL" & "KW FR". For unconditional generation, the keys\
             are a subset of "KW BL", "KW BR", "KW FL" & "KW FR".
     """
-    logging.debug("`load_data` called.")
     transformed_data_dict = {}
     if paths.ae_dir:
         ae_data: Float32[Tensor, " NAE AEFB AES"] = load_transformed_data(
@@ -80,7 +79,7 @@ def load_data(
 
     kw_data: dict[
         str,
-        Float32[Tensor, " 4000"] | Float32[Tensor, " dur_sec*400"],
+        Tensor,  # Float32[Tensor, " 4000"] | Float32[Tensor, " dur_sec*400"],
     ] = load_kw_data(
         kw_dir=paths.kw_dir,
         content_id=content_id,
@@ -88,7 +87,6 @@ def load_data(
         duration_second=duration_second,
         num_klk_wav_corners=num_klk_wav_corners,
     )
-    logging.debug("`load_data` returning.")
     return {**transformed_data_dict, **kw_data}
 
 
