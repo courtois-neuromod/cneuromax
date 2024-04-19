@@ -1,11 +1,16 @@
 """."""
 
+from typing import Any
+
+import numpy as np
 import torch
+from datasets import load_metric
 from jaxtyping import Float
 from torch import Tensor, nn
 from tqdm import tqdm
 from transformers import (
     PreTrainedTokenizerBase,
+    Trainer,
 )
 from transformers.tokenization_utils_base import BatchEncoding
 
@@ -84,3 +89,58 @@ class ExtractPerplexity:
                 break
 
         return torch.exp(torch.stack(stepwise_perplexity).mean())
+
+
+class EvaluateBenchmark:
+    """."""
+
+    def __init__(
+        self: "EvaluateBenchmark",
+        actual_task: str,
+        predictions: torch.Tensor,
+        labels: torch.Tensor,
+        nnmodule: nn.Module,
+        eval_dataset: torch.Tensor,
+        tokenizer: PreTrainedTokenizerBase,
+        metric: "str",
+    ) -> None:
+        """."""
+        self.actual_task = actual_task
+        self.predictions = predictions
+        self.labels = labels
+        self.model = nnmodule
+        self.eval_dataset = eval_dataset
+        self.tokenizer = tokenizer
+
+        self.metric = load_metric(metric, self.actual_task)
+        self.metric.compute(
+            predictions=self.predictions,
+            references=self.labels,
+        )
+
+    def compute_metrics(
+        self: "EvaluateBenchmark",
+        eval_pred: torch.Tensor,
+        task: str,
+    ) -> Any:
+        """."""
+        logits, labels = eval_pred
+        if task != "stsb":
+            predictions = np.argmax(
+                logits, axis=1
+            )  # check if -1 is true too from here https://github.com/huggingface/transformers/blob/b109257f4fb8b1166e7c53cc5418632014ed53a5/docs/source/en/training.md?plain=1#L25
+        else:
+            predictions = predictions[:, 0]
+        return self.metric.compute(predictions=predictions, references=labels)
+
+    def compute_evaluation(
+        self: "EvaluateBenchmark",
+    ) -> Any:
+        """."""
+        trainer = Trainer(
+            model=self.model,
+            eval_dataset=self.eval_dataset,
+            tokenizer=self.tokenizer,
+            compute_metrics=self.compute_metrics,
+        )
+        return trainer.evaluate()

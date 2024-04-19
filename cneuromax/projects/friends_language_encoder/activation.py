@@ -18,16 +18,17 @@ class AttachLayerHook:
         self.nnmodule = nnmodule
         self.layer_name = layer_name
         self.activations: dict[str, Tensor] = {}
+        activation_hook = self.get_activation_hook(self.layer_name)
 
-        self.nnmodule.model.get_submodule(
+        self.nnmodule.get_submodule(
             self.layer_name,
-        ).register_forward_hook(self.get_activation_hook(self.layer_name))
+        ).register_forward_hook(activation_hook)
 
     # Define hook function
     def get_activation_hook(
         self: "AttachLayerHook",
         name: str,
-    ) -> Callable[[nn.Module, Tensor, Tensor], None]:
+    ) -> Any:
         """."""
 
         def hook(

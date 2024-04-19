@@ -21,6 +21,8 @@ class FriendsFinetuningModel(PEFTLitModule):
         **kwargs: Any,  # noqa: ANN401, ARG002
     ) -> None:
         super().__init__(*args, **kwargs)
+        for name, param in self.nnmodule.named_parameters():
+            print(name)
 
     def step(
         self: "FriendsFinetuningModel",
