@@ -62,7 +62,7 @@ dependencies = [
     6baf8708bfb08e37ce3027b529193169eaa230fd""", # RL/IL environments
     # Bug fixes for Gymnasium
     # MANDATORY for docs/
-    "sphinx==7.3.6", # Documentation generator
+    "sphinx==7.3.7", # Documentation generator
     "esbonio==0.16.4", # Language server to render sphinx
     "furo==2024.1.29", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
