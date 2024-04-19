@@ -1,10 +1,11 @@
-""":class:`Net`, :class:`NetConfig` & :func:`find_node_layer_index`."""
+""":class:`DynamicNet` & its config."""
 
 import random
 from dataclasses import dataclass
 from typing import Annotated as An
 
 import numpy as np
+from ordered_set import OrderedSet
 
 from cneuromax.utils.beartype import ge, one_of
 
@@ -31,7 +32,10 @@ class DynamicNet:
     nodes and connections through two mutation functions:
     :meth:`grow_node` and :meth:`prune_node`. Weights & biases are
     set upon node/connection creation but are not updated during
-    evolution.
+    evolution. New connections are grown between nodes that are
+    "nearby" in the network, where the definition of "nearby" is
+    controlled by the mutable :attr:`connectivity_temperature`
+    attribute.
 
     Args:
         config: See :class:`DynamicNetConfig`.
@@ -43,6 +47,12 @@ class DynamicNet:
             network since its instantiation.
         weights: Node connection weights.
         biases: Node biases.
+        connectivity_temperature: A mutable value between 0 and 1\
+            that controls the probability of selecting a nearby node\
+            to connect to/from. A value of 0 means that all nodes are\
+            equally likely to be selected, while a value of 1 means\
+            that only nodes with a distance of 1 from the original\
+            node are considered.
     """
 
     def __init__(self: "DynamicNet", config: DynamicNetConfig) -> None:
@@ -52,17 +62,44 @@ class DynamicNet:
         self.weights: list[list[float]] = [[]]
         self.biases: list[float] = []
         self.initialize_architecture()
+        # Mutable attributes.
+        self.connectivity_temperature: float = 0
+        self.number_of_prune_mutations = 0
+        self.number_of_grow_mutations = 1
 
     def initialize_architecture(self: "DynamicNet") -> None:
         """Creates the initial architecture of the network.
 
-        Grows the input and output nodes. No connection is grown and
-        output node biases are set to 0.
+        Grows the input and output nodes. No connection is grown.
         """
         for _ in range(self.config.num_inputs):
             self.grow_node("input")
         for _ in range(self.config.num_outputs):
             self.grow_node("output")
+
+    def mutate_parameters(
+        self: "DynamicNet",
+    ) -> None:
+        """Perturbs the network's mutable attributes."""
+        self.connectivity_temperature += np.random.randn() * 0.01
+        self.connectivity_temperature = np.clip(
+            self.connectivity_temperature,
+            0,
+            1,
+        )
+        self.number_of_prune_mutations *= 2
+
+    def mutate(
+        self: "DynamicNet",
+    ) -> None:
+        """Mutates the network's architecture and parameters."""
+        self.mutate_parameters()
+        node_to_prune = None
+        for _ in range(self.number_of_prune_mutations):
+            node_to_prune = self.prune_node(node_to_prune)
+        node_to_connect_with = None
+        for _ in range(self.number_of_grow_mutations):
+            node_to_connect_with = self.grow_node(node_to_connect_with)
 
     def grow_node(
         self: "DynamicNet",
@@ -74,70 +111,40 @@ class DynamicNet:
         called during mutation), a new node is grown with two incoming
         connections from randomly selected nodes and one outgoing
         connection to another randomly selected node.
-
-        TODO: Replace random selection with layered node selection.
-
-        Args:
-            role: Self-explanatory.
         """
-        # Creates the node & increments the total number of nodes grown.
         new_node = Node(role, self.total_nb_nodes_grown)
         self.total_nb_nodes_grown += 1
-        # Adds the node to the appropriate lists.
         self.nodes.all.append(new_node)
         if role == "input":
             self.nodes.input.append(new_node)
             self.nodes.receiving.append(new_node)
-            self.nodes.layered[0].append(new_node)
             return
         if role == "output":
             self.nodes.output.append(new_node)
-            self.nodes.layered[-1].append(new_node)
         else:  # role == 'hidden'
-            potential_in_nodes = list(dict.fromkeys(self.nodes.receiving))
-            in_node_1 = random.choice(potential_in_nodes)  # noqa: S311
+            receiving_nodes_set = OrderedSet(self.nodes.receiving)
+            in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
             self.grow_connection(in_node_1, new_node)
-            in_node_1_layer = find_node_layer_index(
-                in_node_1,
-                self.nodes.layered,
+            in_node_2 = in_node_1.find_nearby_node(
+                receiving_nodes_set,
+                self.connectivity_temperature,
             )
-            potential_in_nodes.remove(in_node_1)
-            in_node_2 = random.choice(potential_in_nodes)  # noqa: S311
             self.grow_connection(in_node_2, new_node)
-            out_node = random.choice(  # noqa: S311
-                self.nodes.hidden + self.nodes.output,
+            out_node = new_node.find_nearby_node(
+                OrderedSet(self.nodes.hidden + self.nodes.output),
+                self.connectivity_temperature,
             )
             self.grow_connection(new_node, out_node)
-            out_node_layer = find_node_layer_index(
-                out_node,
-                self.nodes.layered,
-            )
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
-            layer_difference = out_node_layer - in_node_1_layer
-            if abs(layer_difference) > 1:
-                layer = in_node_1_layer + int(np.sign(layer_difference))
-            else:
-                if layer_difference == 1:
-                    layer = out_node_layer
-                else:  # layer_difference == -1 or layer_difference == 0:
-                    layer = in_node_1_layer
-                self.nodes.layered.insert(layer, [])
-            self.nodes.layered[layer].append(new_node)
         self.weights.append(new_node.weights)
         self.biases.append(new_node.bias)
 
-    def grow_connection(
+    def grow_connection(  # noqa: D102
         self: "DynamicNet",
         in_node: Node,
         out_node: Node,
     ) -> None:
-        """Grows a connection between two nodes.
-
-        Args:
-            in_node: Self-explanatory.
-            out_node: Self-explanatory.
-        """
         in_node.connect_to(out_node)
         self.nodes.receiving.append(out_node)
         self.nodes.emitting.append(in_node)
@@ -153,7 +160,7 @@ class DynamicNet:
         if not node:
             if len(self.nodes.hidden) == 0:
                 return
-            node = random.choice(self.nodes.hidden)
+            node = random.choice(self.nodes.hidden)  # noqa: S311
         # If the node is already being pruned, return to avoid infinite
         # recursion.
         if node in self.nodes.being_pruned:
@@ -167,23 +174,8 @@ class DynamicNet:
             self.prune_connection(in_node, node, node)
         # Remove the node from all node lists.
         for node_list in self.nodes:
-            if node_list == self.nodes.layered:
-                node_layer_index = find_node_layer_index(
-                    node,
-                    self.nodes.layered,
-                )
-                self.nodes.layered[node_layer_index].remove(node)
-                # Remove the layer if it is empty.
-                if (
-                    node_layer_index not in (0, len(self.nodes.layered) - 1)
-                    and self.nodes.layered[node_layer_index] == []
-                ):
-                    self.nodes.layered.remove(
-                        self.nodes.layered[node_layer_index],
-                    )
-            else:
-                while node in node_list:
-                    node_list.remove(node)  # type: ignore[arg-type]
+            while node in node_list:
+                node_list.remove(node)  # type: ignore[arg-type]
 
     def prune_connection(
         self: "DynamicNet",
@@ -228,7 +220,7 @@ class DynamicNet:
             node.output = 0
 
     def __call__(self: "DynamicNet", x: list[float]) -> list[float]:
-        """Forward pass through the network.
+        """Runs one pass through the network.
 
         Used for CPU-based computation.
 
@@ -245,25 +237,3 @@ class DynamicNet:
         for node in self.nodes.hidden + self.nodes.output:
             node.update_output()
         return [node.output for node in self.nodes.output]
-
-
-def find_node_layer_index(node: Node, layered_nodes: list[list[Node]]) -> int:
-    """Finds layer idx of :paramref:`node` in :paramref:`layered_nodes`.
-
-    Args:
-        node: Self-explanatory.
-        layered_nodes: See :paramref:`~NodeList.layered_nodes`.
-
-    Returns:
-        The layer index of :paramref:`node` in\
-            :paramref:`layered_nodes`.
-
-    Raises:
-        ValueError: If the node is not found in\
-            :paramref:`layered_nodes`.
-    """
-    for layer_index, layer in enumerate(layered_nodes):
-        if node in layer:
-            return layer_index
-    error_msg = "Node not found in layered nodes."
-    raise ValueError(error_msg)

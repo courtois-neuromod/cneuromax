@@ -1,11 +1,13 @@
 """:class:`NodeList` & :class:`Node`."""
 
+import random
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
 import numpy as np
+from ordered_set import OrderedSet
 
 from cneuromax.utils.beartype import one_of
 
@@ -31,10 +33,6 @@ class NodeList:
         being_pruned: List of nodes currently being pruned. As a\
             pruning operation can kicksart a series of other pruning\
             operations, this list is used to prevent infinite loops.
-        layered: List of lists of nodes, where each list is indexed by\
-            the layer it belongs to. Input nodes are in the first\
-            layer, output nodes are in the last layer, and hidden\
-            nodes are in between.
     """
 
     all: list["Node"] = field(default_factory=list)
@@ -44,11 +42,6 @@ class NodeList:
     receiving: list["Node"] = field(default_factory=list)
     emitting: list["Node"] = field(default_factory=list)
     being_pruned: list["Node"] = field(default_factory=list)
-    layered: list[list["Node"]] = field(default_factory=list)
-
-    def __post_init__(self: "NodeList") -> None:
-        """Initializes :paramref:`layered`."""
-        self.layered = [[], []]
 
     def __iter__(
         self: "NodeList",
@@ -67,7 +60,6 @@ class NodeList:
                 self.receiving,
                 self.emitting,
                 self.being_pruned,
-                self.layered,
             ],
         )
 
@@ -127,6 +119,51 @@ class Node:
             + "->"
             + str(("y", *node_outputs))
         )
+
+    def find_nearby_node(
+        self: "Node",
+        nodes_considered: OrderedSet["Node"],
+        p_select: float,
+    ) -> "Node":
+        """Finds a nearby node to connect to/from.
+
+        With ``i`` starting at ``1``, return a random node within
+        distance ``i`` with probability :paramref:`p_select`,
+        else increase distance by 1 until a node is found. (The search
+        range is increased to all "receiving" nodes in the network if
+        all connected nodes have been considered.)
+        """
+        found = False
+        # Start with nodes within distance of 1 from the original node.
+        nodes_at_distance_i = OrderedSet(self.in_nodes + self.out_nodes)
+        while not found:
+            uniform_sample = np.random.uniform()
+            nodes_considered_at_distance_i = (
+                nodes_at_distance_i & nodes_considered
+            )
+            if uniform_sample < p_select and nodes_considered_at_distance_i:
+                nearby_node = random.choice(  # noqa: S311
+                    nodes_considered_at_distance_i,
+                )
+                found = True
+            else:
+                # Increase the distance by 1.
+                nodes_at_distance_i_plus_1 = nodes_at_distance_i.copy()
+                for node in nodes_at_distance_i:
+                    nodes_at_distance_i_plus_1 |= OrderedSet(
+                        node.in_nodes + node.out_nodes,
+                    )
+                # If all connected nodes have been considered, increase
+                # the search range to all "receiving" nodes in the
+                # network & set selection_probability to 1 which will
+                # force the selection of a node during the next
+                # iteration.
+                if nodes_at_distance_i == nodes_at_distance_i_plus_1:
+                    nodes_at_distance_i = OrderedSet(nodes_considered)
+                    p_select = 1
+                else:
+                    nodes_at_distance_i = nodes_at_distance_i_plus_1
+        return nearby_node
 
     def connect_to(self: "Node", node: "Node") -> None:  # noqa: D102
         new_weight: float = float(np.random.randn())
