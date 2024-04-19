@@ -29,6 +29,9 @@ dependencies = [
     # so that it queues the jobs sequentially rather than in parallel.
     # OPTIONAL for cneuromax/
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
+    """
+    autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
+    989206cd0b03d59bdac4a4d82402ceb2fa8f43aa""", # Hyperparameter optimization
     "jaxtyping==0.2.28", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.7.0", # Makes shape transformations more readable
