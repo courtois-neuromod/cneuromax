@@ -19,6 +19,7 @@ class DynamicNetConfig:
     Args:
         num_inputs: Self-explanatory.
         num_outputs: Self-explanatory.
+        runs_on_gpu: Self-explanatory.
     """
 
     num_inputs: An[int, ge(1)]
@@ -28,14 +29,20 @@ class DynamicNetConfig:
 class DynamicNet:
     """Neural network with a dynamically complexifying architecture.
 
-    This network increases/decreases in complexity by growing/pruning
-    nodes and connections through two mutation functions:
-    :meth:`grow_node` and :meth:`prune_node`. Weights & biases are
-    set upon node/connection creation but are not updated during
-    evolution. New connections are grown between nodes that are
-    "nearby" in the network, where the definition of "nearby" is
-    controlled by the mutable :attr:`connectivity_temperature`
-    attribute.
+    Computation in this network is more brain-like in the sense that
+    all neurons constantly compute, there is no concept of layers. The
+    network initially consists of input and output nodes devoid of
+    connections. Hidden nodes are grown/pruned through two mutation
+    functions: :meth:`grow_node` and :meth:`prune_node` that each get
+    called a number of times determined by the mutable
+    :attr:`num_grow_mutations` and :attr:`num_prune_mutations`. Weights
+    (no biases in this network) are set upon node/connection creation
+    and are left fixed from that point on. New connections are grown
+    between nodes that are "more or less" distant from each other (the
+    distance corresponds to the number of connections between two
+    nodes, regardless of connection direction). The "more or less"
+    component is controlled by the mutable
+    :attr:`connectivity_temperature` attribute.
 
     Args:
         config: See :class:`DynamicNetConfig`.
@@ -46,11 +53,15 @@ class DynamicNet:
         total_nb_nodes_grown: The number of nodes grown in the\
             network since its instantiation.
         weights: Node connection weights.
-        biases: Node biases.
+        outputs: Node outputs.
+        num_grow_mutations: A mutable value that controls the\
+            number of chained :meth:`grow_node` mutations to perform.
+        num_prune_mutations: A mutable value that controls the\
+            number of chained :meth:`prune_node` mutations to perform.
         connectivity_temperature: A mutable value between 0 and 1\
             that controls the probability of selecting a nearby node\
-            to connect to/from. A value of 0 means that all nodes are\
-            equally likely to be selected, while a value of 1 means\
+            to connect to/from. A value of 1 means that all nodes are\
+            equally likely to be selected, while a value of 0 means\
             that only nodes with a distance of 1 from the original\
             node are considered.
     """
@@ -60,34 +71,39 @@ class DynamicNet:
         self.nodes = NodeList()
         self.total_nb_nodes_grown = 0
         self.weights: list[list[float]] = [[]]
-        self.biases: list[float] = []
+        self.outputs: list[float] = []
         self.initialize_architecture()
         # Mutable attributes.
-        self.connectivity_temperature: float = 0
-        self.number_of_prune_mutations = 0
-        self.number_of_grow_mutations = 1
+        self.num_grow_mutations: float = 1.0
+        self.num_prune_mutations: float = 0.5
+        self.connectivity_temperature: float = 0.5
 
-    def initialize_architecture(self: "DynamicNet") -> None:
-        """Creates the initial architecture of the network.
-
-        Grows the input and output nodes. No connection is grown.
-        """
+    def initialize_architecture(self: "DynamicNet") -> None:  # noqa: D102
         for _ in range(self.config.num_inputs):
             self.grow_node("input")
         for _ in range(self.config.num_outputs):
             self.grow_node("output")
 
-    def mutate_parameters(
-        self: "DynamicNet",
-    ) -> None:
-        """Perturbs the network's mutable attributes."""
-        self.connectivity_temperature += np.random.randn() * 0.01
-        self.connectivity_temperature = np.clip(
-            self.connectivity_temperature,
-            0,
-            1,
-        )
-        self.number_of_prune_mutations *= 2
+    def mutate_parameters(self: "DynamicNet") -> None:
+        """Perturbs the network's mutable attributes.
+
+        Increase/decrease with a 1% chance.
+        """
+        rand_num = np.random.randint(100)
+        if rand_num == 0:
+            self.num_grow_mutations /= 2
+        if rand_num == 1:
+            self.num_grow_mutations *= 2
+        rand_num = np.random.randint(100)
+        if rand_num == 0:
+            self.num_prune_mutations /= 2
+        if rand_num == 1:
+            self.num_prune_mutations *= 2
+        rand_num = np.random.randint(100)
+        if rand_num == 0 and self.connectivity_temperature != 1:
+            self.connectivity_temperature += 0.1
+        if rand_num == 1 and self.connectivity_temperature != 0:
+            self.connectivity_temperature -= 0.1
 
     def mutate(
         self: "DynamicNet",
@@ -95,10 +111,10 @@ class DynamicNet:
         """Mutates the network's architecture and parameters."""
         self.mutate_parameters()
         node_to_prune = None
-        for _ in range(self.number_of_prune_mutations):
+        for _ in range(self.num_prune_mutations):
             node_to_prune = self.prune_node(node_to_prune)
         node_to_connect_with = None
-        for _ in range(self.number_of_grow_mutations):
+        for _ in range(self.num_grow_mutations):
             node_to_connect_with = self.grow_node(node_to_connect_with)
 
     def grow_node(
@@ -138,7 +154,6 @@ class DynamicNet:
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
         self.weights.append(new_node.weights)
-        self.biases.append(new_node.bias)
 
     def grow_connection(  # noqa: D102
         self: "DynamicNet",

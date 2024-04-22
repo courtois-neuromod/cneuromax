@@ -82,8 +82,6 @@ class Node:
             :attr:`in_nodes`. Is of length 3, as a node can have at\
             most 3 incoming connections.
         num_in_nodes: Number of incoming connections.
-        bias: Bias to apply to the node's output. Only present in\
-            hidden nodes.
         cached_output: See :meth:`compute_and_cache_output`.
     """
 
@@ -123,25 +121,28 @@ class Node:
     def find_nearby_node(
         self: "Node",
         nodes_considered: OrderedSet["Node"],
-        p_select: float,
+        connectivity_temperature: float,
     ) -> "Node":
         """Finds a nearby node to connect to/from.
 
         With ``i`` starting at ``1``, return a random node within
-        distance ``i`` with probability :paramref:`p_select`,
-        else increase distance by 1 until a node is found. (The search
-        range is increased to all "receiving" nodes in the network if
-        all connected nodes have been considered.)
+        distance ``i`` with probability ``1 -``
+        :paramref:`connectivity_temperature`, else increase distance by
+        1 until a node is found. (The search range is increased to all
+        "receiving" nodes in the network if all connected nodes have
+        been considered.)
         """
         found = False
         # Start with nodes within distance of 1 from the original node.
         nodes_at_distance_i = OrderedSet(self.in_nodes + self.out_nodes)
         while not found:
-            uniform_sample = np.random.uniform()
             nodes_considered_at_distance_i = (
                 nodes_at_distance_i & nodes_considered
             )
-            if uniform_sample < p_select and nodes_considered_at_distance_i:
+            if (
+                np.random.uniform() < 1 - connectivity_temperature
+                and nodes_considered_at_distance_i
+            ):
                 nearby_node = random.choice(  # noqa: S311
                     nodes_considered_at_distance_i,
                 )
@@ -155,12 +156,12 @@ class Node:
                     )
                 # If all connected nodes have been considered, increase
                 # the search range to all "receiving" nodes in the
-                # network & set selection_probability to 1 which will
+                # network & set connectivity_temperature to 1 which will
                 # force the selection of a node during the next
                 # iteration.
                 if nodes_at_distance_i == nodes_at_distance_i_plus_1:
                     nodes_at_distance_i = OrderedSet(nodes_considered)
-                    p_select = 1
+                    connectivity_temperature = 1
                 else:
                     nodes_at_distance_i = nodes_at_distance_i_plus_1
         return nearby_node
