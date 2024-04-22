@@ -1,6 +1,6 @@
 """:class:`CustomDiT` & its helper classes."""
 
-import logging
+from typing import Annotated as An
 
 import numpy as np
 import torch
@@ -14,6 +14,7 @@ from cneuromax.projects.kw_pred.dit.models import (
     TimestepEmbedder,
     get_1d_sincos_pos_embed_from_grid,
 )
+from cneuromax.utils.beartype import one_of
 
 
 def modulate(
@@ -100,7 +101,7 @@ class BeatsEmbedder(nn.Module):
         return x
 
 
-class STFTEmbedder(nn.Module):
+class ConditioningEmbedder(nn.Module):
     """Custom :attr:`~DiT.y_embedder`.
 
     Meant to replace :class:`.dit.models.LabelEmbedder` given that our
@@ -111,7 +112,7 @@ class STFTEmbedder(nn.Module):
     """
 
     def __init__(  # noqa: PLR0913
-        self: "STFTEmbedder",
+        self: "ConditioningEmbedder",
         seq_len: int,
         num_freq_bins: int,
         embd_size: int,
@@ -138,7 +139,7 @@ class STFTEmbedder(nn.Module):
         self.proj = nn.Linear(num_patches * embd_size, embd_size)
 
     def forward(
-        self: "STFTEmbedder",
+        self: "ConditioningEmbedder",
         x: Float[Tensor, " BS SL NB"],  # BS x 311 x 513
     ) -> Float[Tensor, " BS ES"]:
         """STFT -> Embeddings.
@@ -226,6 +227,12 @@ class CustomDiT(nn.Module):
         mlp_ratio: float = 4.0,
         # class_dropout_prob: float = 0.1,  # noqa: ERA001
         # num_classes: int = 1000,  # noqa: ERA001
+        ### NEW ###
+        conditioning: An[
+            str,
+            one_of("random", "linear", "transformer"),
+        ] = "random",
+        ###########
         *,
         learn_sigma: bool = True,
     ) -> None:
@@ -260,23 +267,25 @@ class CustomDiT(nn.Module):
         )
         """
         ### NEW ###
-        """
-        self.y_embedder = STFTEmbedder(  # type: ignore[assignment]
-            seq_len=311,
-            num_freq_bins=513,
-            embd_size=hidden_size,
-            num_patches=self.x_embedder.num_patches,
-            encoder=AttentionLayers(
-                dim=hidden_size,
-                depth=depth,
-                heads=num_heads,
-            ),
-        )
-        """
-        self.y_embedder = BeatsEmbedder(
-            og_embd_size=768,
-            embd_size=hidden_size,
-        )
+        # BEATS: 62 8 768
+        # STFT: 311 513
+        self.y_embedder: nn.Module
+        if conditioning == "random":
+            self.y_embedder = nn.Identity()
+        elif conditioning == "averaged":
+            self.y_embedder = nn.Linear(768, hidden_size)
+        else:  # conditioning == "encoded"
+            self.y_embedder = ConditioningEmbedder(  # type: ignore[assignment]
+                seq_len=62,
+                num_freq_bins=768,
+                embd_size=hidden_size,
+                num_patches=self.x_embedder.num_patches,
+                encoder=AttentionLayers(
+                    dim=hidden_size,
+                    depth=depth,
+                    heads=num_heads,
+                ),
+            )
         ###########
         num_patches = self.x_embedder.num_patches
         # Will use fixed sin-cos embedding:
@@ -389,7 +398,11 @@ class CustomDiT(nn.Module):
         self: "CustomDiT",
         x: Float[Tensor, " BS IC SL"],
         t: Int[Tensor, " BS"],
-        y: Float[Tensor, " BS ES"],
+        y: (
+            Float[Tensor, " BS AES"]
+            | Float[Tensor, " BS NAE AES"]
+            | Float[Tensor, " BS ES"]
+        ),
     ) -> Float[Tensor, " BS SL OC"]:
         """.
 
@@ -399,6 +412,8 @@ class CustomDiT(nn.Module):
         ES: Embedding size (a.k.a. hidden size)
         OC: Output channels
         NP: Number of patches
+        AES: Audio embeddings size
+        NAE: Number of audio embeddings (time dimension)
         """
         x: Float[Tensor, " BS NP ES"] = self.x_embedder(x) + self.pos_embed
         t: Float[Tensor, " BS ES"] = self.t_embedder(t)

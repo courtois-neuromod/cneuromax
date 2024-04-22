@@ -1,6 +1,5 @@
 """:class:`KWGenerationLitModule."""
 
-import logging
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -33,9 +32,12 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
     Args:
         num_val_wandb_samples: The number of samples to log to\
             :mod:`wandb`.
+        randomize_conditioning: Whether to replace the conditioning\
+            information with random values.
     """
 
     num_val_wandb_samples: An[int, ge(1)] = 3
+    conditioning: An[str, one_of("random", "linear", "transformer")] = "random"
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -82,12 +84,20 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
-        y: Float[Tensor, " BS NAE AES"] = data["AE"]
-        y: Float[Tensor, " BS AES"] = reduce(
-            tensor=y,
-            pattern="BS NAE AES -> BS AES",
-            reduction="mean",
-        )
+        if self.config.conditioning == "random":
+            y: Float[Tensor, " AES"] = torch.randn(
+                (x.shape[0], 768),
+                device=self.device,
+            )
+        else:
+            y = data["AE"]
+            if y.dim() == 3:  # noqa: PLR2004
+                y: Float[Tensor, " BS AES"] = reduce(  # type: ignore [no-redef]
+                    tensor=y,
+                    pattern="BS NAE AES -> BS AES",
+                    reduction="mean",
+                )
+
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
         t = torch.randint(
