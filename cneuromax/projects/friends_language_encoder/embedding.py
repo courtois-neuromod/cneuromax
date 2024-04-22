@@ -3,7 +3,6 @@
 import os
 import string
 from collections import defaultdict
-from pathlib import Path
 from typing import Any
 
 import numpy as np
@@ -14,172 +13,9 @@ from tqdm import tqdm
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    PreTrainedTokenizerBase,
-    pipeline,
 )
 
-
-class PrepareStimuli:
-    """."""
-
-    def __init__(
-        self: "PrepareStimuli",
-        tokenizer: PreTrainedTokenizerBase,
-        tsv_path: str,
-        season: int,
-        episode: str,
-        context_size: int,
-        connection_character: str = "Ġ",
-    ) -> None:
-        self.tokenizer = tokenizer
-        self.max_seq_length = tokenizer.model_max_length
-        self.tsv_path = tsv_path
-        self.season = season
-        self.episode = episode
-        self.connection_character = connection_character
-        self.context_size = context_size
-
-    def read_tsv(self: "PrepareStimuli") -> pd:
-        """."""
-        file = os.path.join(
-            self.tsv_path,
-            f"s{self.season}",
-            f"friends_{self.episode}.tsv",
-        )
-        return pd.read_csv(file, sep="\t")
-
-    def combine_words(self: "PrepareStimuli") -> str:
-        """."""
-        stimuli_data = self.read_tsv()
-        stimuli_data["clean_word"] = stimuli_data["word"].apply(
-            lambda x: x.translate(
-                str.maketrans("", "", string.punctuation),
-            ).lower(),
-        )
-        return " ".join(stimuli_data["clean_word"])
-
-    def tokenize_and_match(
-        self: "PrepareStimuli",
-    ) -> defaultdict[int, list[int]]:
-        """."""
-        eos_token = "<|endoftext|>"
-        untokenized_sent = self.combine_words()
-        tokenized_sent = self.tokenizer.tokenize(untokenized_sent)
-        mapping = defaultdict(list)
-        untokenized_sent_index = 0
-        tokenized_sent_index = 0
-        while untokenized_sent_index < len(
-            untokenized_sent,
-        ) and tokenized_sent_index < len(tokenized_sent):
-            while (
-                tokenized_sent_index + 1 < len(tokenized_sent)
-                and (
-                    not tokenized_sent[tokenized_sent_index + 1].startswith(
-                        self.connection_character,
-                    )
-                )
-                and tokenized_sent[tokenized_sent_index + 1] != eos_token
-            ):
-                mapping[untokenized_sent_index].append(tokenized_sent_index)
-                tokenized_sent_index += 1
-            mapping[untokenized_sent_index].append(tokenized_sent_index)
-            untokenized_sent_index += 1
-            tokenized_sent_index += 1
-        return mapping
-
-    def pad_to_max_length(
-        self: "PrepareStimuli",
-        sequence: list[str],
-        space: Any = 220,
-        special_token_end: Any = 50256,
-    ) -> Any:
-        """."""
-
-        sequence = sequence[:max_seq_length]
-        n = len(sequence)
-        result = sequence + [space, special_token_end] * (
-            (self.max_seq_length - n) // 2
-        )
-        if len(result) == self.max_seq_length:
-            return result
-        else:
-            return result + [space]
-
-    def create_examples(
-        self: "PrepareStimuli",
-        sequence: list[Any],
-        space: Any = 220,
-        special_token_beg: Any = 50256,
-        special_token_end: Any = 50256,
-    ) -> Any:
-        """."""
-        new_sequence = (
-            [special_token_beg] + sequence + [space, special_token_end]
-        )
-        return self.pad_to_max_length(new_sequence)
-
-    def get_text_chunks(
-        self: "PrepareStimuli",
-        special_token_beg: str = "<|endoftext|>",
-        special_token_end: str = "<|endoftext|>",
-    ) -> Any:
-        """."""
-        stimuli = self.combine_words()
-
-        if self.context_size is None:
-            self.max_seq_length = self.max_seq_length
-        else:
-            self.max_seq_length = (
-                self.context_size + 5
-            )  # count for special tokens
-        try:
-            data = tokenizer.encode(stimuli).ids
-            text = tokenizer.encode(stimuli).tokens
-        except:
-            data = tokenizer.encode(stimuli)
-            text = tokenizer.tokenize(stimuli)
-
-        if self.context_size == 0:
-            examples = [
-                self.create_examples(data[i : i + 2])
-                for i, _ in enumerate(data)
-            ]
-            tokens = [
-                self.create_examples(
-                    text[i : i + 2],
-                    space=self.connection_character,
-                    special_token_beg=special_token_beg,
-                    special_token_end=special_token_end,
-                )
-                for i, _ in enumerate(text)
-            ]
-        else:
-            examples = [
-                self.create_examples(data[i : i + self.context_size + 2])
-                for i, _ in enumerate(data[: -self.context_size])
-            ]
-            tokens = [
-                self.create_examples(
-                    text[i : i + self.context_size + 2],
-                    space=space,
-                    special_token_beg=special_token_beg,
-                    special_token_end=special_token_end,
-                )
-                for i, _ in enumerate(text[: -self.context_size])
-            ]
-
-        features = [
-            torch.FloatTensor(example).unsqueeze(0).to(torch.int64)
-            for example in examples
-        ]
-        input_ids = torch.cat(features, dim=0)
-        indexes = [(1, self.context_size + 2)] + [
-            (self.context_size + 1, self.context_size + 2)
-            for i in range(1, len(input_ids))
-        ]
-        del examples
-        del features
-        return input_ids, indexes, tokens
+from cneuromax.projects.friends_language_encoder.data import ProcessText
 
 
 class ExtractEmbedding:
@@ -187,7 +23,7 @@ class ExtractEmbedding:
 
     def __init__(
         self: "ExtractEmbedding",
-        indexes: list[list[int]],
+        indexes: list[tuple[int, int]],
         input_ids: torch.Tensor,
         mapping: defaultdict[int, list[int]],
         model: nn.Module,
@@ -225,7 +61,7 @@ class ExtractEmbedding:
                 )
                 # shape: (#nb_layers, batch_size_tmp, max_seq_length, hidden_state_dimension)
                 hidden_states_activations_.append(
-                    hidden_states_activations_tmp
+                    hidden_states_activations_tmp,
                 )
 
             hidden_states_activations_ = np.swapaxes(
@@ -284,8 +120,11 @@ special_token_end = "<|endoftext|>"  # special tokens added at the end of the se
 
 tokenizer = AutoTokenizer.from_pretrained("gpt2")
 model = AutoModelForCausalLM.from_pretrained("gpt2")
-tsv_path = "./data/friends_language_encoder/annotations/"
-my_stimuli = PrepareStimuli(
+# tsv_path = "./data/friends_language_encoder/annotations/"
+tsv_path = "./data/friends_language_encoder/stimuli/"
+
+
+text = ProcessText(
     tokenizer=tokenizer,
     tsv_path=tsv_path,
     season=1,
@@ -295,8 +134,8 @@ my_stimuli = PrepareStimuli(
 )
 
 
-mapping = my_stimuli.tokenize_and_match()
-input_ids, indexes, tokens = my_stimuli.get_text_chunks()
+mapping = text.tokenize_and_match()
+input_ids, indexes, tokens = text.get_text_chunks()
 
 
 embeddings = ExtractEmbedding(
