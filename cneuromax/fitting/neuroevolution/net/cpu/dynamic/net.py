@@ -73,22 +73,17 @@ class DynamicNet:
         self.weights: list[list[float]] = [[]]
         self.outputs: list[float] = []
         self.initialize_architecture()
-        # Mutable attributes.
         self.num_grow_mutations: float = 1.0
         self.num_prune_mutations: float = 0.5
         self.connectivity_temperature: float = 0.5
 
     def initialize_architecture(self: "DynamicNet") -> None:  # noqa: D102
         for _ in range(self.config.num_inputs):
-            self.grow_node("input")
+            self.grow_node(role="input")
         for _ in range(self.config.num_outputs):
-            self.grow_node("output")
+            self.grow_node(role="output")
 
-    def mutate_parameters(self: "DynamicNet") -> None:
-        """Perturbs the network's mutable attributes.
-
-        Increase/decrease with a 1% chance.
-        """
+    def mutate_parameters(self: "DynamicNet") -> None:  # noqa: D102
         rand_num = np.random.randint(100)
         if rand_num == 0:
             self.num_grow_mutations /= 2
@@ -105,55 +100,61 @@ class DynamicNet:
         if rand_num == 1 and self.connectivity_temperature != 0:
             self.connectivity_temperature -= 0.1
 
-    def mutate(
-        self: "DynamicNet",
-    ) -> None:
-        """Mutates the network's architecture and parameters."""
+    def mutate(self: "DynamicNet") -> None:  # noqa: D102
         self.mutate_parameters()
-        node_to_prune = None
-        for _ in range(self.num_prune_mutations):
-            node_to_prune = self.prune_node(node_to_prune)
+        if self.num_prune_mutations < 1:
+            rand_num = np.random.uniform()
+            num_prune_mutations = int(rand_num < self.num_prune_mutations)
+        else:
+            num_prune_mutations = int(self.num_prune_mutations)
+        for _ in range(num_prune_mutations):
+            self.prune_node()
+        if self.num_grow_mutations < 1:
+            rand_num = np.random.uniform()
+            num_grow_mutations = int(rand_num < self.num_grow_mutations)
+        else:
+            num_grow_mutations = int(self.num_grow_mutations)
         node_to_connect_with = None
-        for _ in range(self.num_grow_mutations):
+        for _ in range(num_grow_mutations):
             node_to_connect_with = self.grow_node(node_to_connect_with)
 
-    def grow_node(
+    def grow_node(  # noqa: D102
         self: "DynamicNet",
+        node_to_connect_with: Node | None = None,
         role: An[str, one_of("input", "hidden", "output")] = "hidden",
-    ) -> None:
-        """Adds a new node to the network.
-
-        If the :paramref:`role` ``== "hidden"`` (when this method is
-        called during mutation), a new node is grown with two incoming
-        connections from randomly selected nodes and one outgoing
-        connection to another randomly selected node.
-        """
+    ) -> Node:
         new_node = Node(role, self.total_nb_nodes_grown)
         self.total_nb_nodes_grown += 1
         self.nodes.all.append(new_node)
         if role == "input":
             self.nodes.input.append(new_node)
             self.nodes.receiving.append(new_node)
-            return
         if role == "output":
             self.nodes.output.append(new_node)
         else:  # role == 'hidden'
+            if node_to_connect_with:
+                from_to = random.choice(["from", "to"])  # noqa: S311
+                in_node_1 = node_to_connect_with if from_to == "from" else None
+                out_node = node_to_connect_with if from_to == "to" else None
             receiving_nodes_set = OrderedSet(self.nodes.receiving)
-            in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
+            if not in_node_1:
+                in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
             self.grow_connection(in_node_1, new_node)
             in_node_2 = in_node_1.find_nearby_node(
                 receiving_nodes_set,
                 self.connectivity_temperature,
             )
             self.grow_connection(in_node_2, new_node)
-            out_node = new_node.find_nearby_node(
-                OrderedSet(self.nodes.hidden + self.nodes.output),
-                self.connectivity_temperature,
-            )
+            if not out_node:
+                out_node = new_node.find_nearby_node(
+                    OrderedSet(self.nodes.hidden + self.nodes.output),
+                    self.connectivity_temperature,
+                )
             self.grow_connection(new_node, out_node)
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
         self.weights.append(new_node.weights)
+        return new_node
 
     def grow_connection(  # noqa: D102
         self: "DynamicNet",
@@ -164,58 +165,37 @@ class DynamicNet:
         self.nodes.receiving.append(out_node)
         self.nodes.emitting.append(in_node)
 
-    def prune_node(self: "DynamicNet", node: Node | None = None) -> None:
-        """Prunes a node from the network.
-
-        Args:
-            node: The node to prune. If not specified, a random hidden\
-                node is pruned instead.
-        """
-        # If a node is not specified, sample one.
+    def prune_node(  # noqa: D102
+        self: "DynamicNet",
+        node_to_prune: Node | None = None,
+    ) -> None:
+        node = node_to_prune
         if not node:
             if len(self.nodes.hidden) == 0:
                 return
             node = random.choice(self.nodes.hidden)  # noqa: S311
-        # If the node is already being pruned, return to avoid infinite
-        # recursion.
         if node in self.nodes.being_pruned:
             return
         self.nodes.being_pruned.append(node)
-        # Remove all outcoming connections.
         for out_node in node.out_nodes.copy():
             self.prune_connection(node, out_node, node)
-        # Remove all incoming connections.
         for in_node in node.in_nodes.copy():
             self.prune_connection(in_node, node, node)
-        # Remove the node from all node lists.
         for node_list in self.nodes:
             while node in node_list:
                 node_list.remove(node)  # type: ignore[arg-type]
 
-    def prune_connection(
+    def prune_connection(  # noqa: D102
         self: "DynamicNet",
         in_node: Node,
         out_node: Node,
         current_node_in_focus: Node,
     ) -> None:
-        """Prunes a connection between two nodes.
-
-        Args:
-            in_node: Self-explanatory.
-            out_node: Self-explanatory.
-            current_node_in_focus: Either :paramref:`in_node` or\
-                :paramref:`out_node`.
-        """
-        # Already pruned, return to avoid infinite recursion.
         if in_node not in out_node.in_nodes:
             return
-        # Remove the node-wise connection.
         in_node.disconnect_from(out_node)
-        # Remove each node once* from the receiving and emitting lists.
-        # *Nodes can appear multiple times in these lists.
         self.nodes.receiving.remove(out_node)
         self.nodes.emitting.remove(in_node)
-        # Prune the nodes if they are cut-off from the information flow.
         if (
             in_node is not current_node_in_focus
             and in_node not in self.nodes.emitting
