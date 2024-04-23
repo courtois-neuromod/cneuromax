@@ -17,7 +17,10 @@ class NodeList:
     """Holds :class:`Node` instances.
 
     Args:
-        all: All existing/current network nodes.
+        all: Contains all :class:`Node` instances currently in the\
+            network.
+        indices: Contains the indices of all :class:`Node` instances\
+            currently in the network.
         input: There are as many input nodes as there are input\
             signals. Each input node is assigned an input value and\
             forwards it to nodes that it connects to. Input nodes are\
@@ -36,6 +39,7 @@ class NodeList:
     """
 
     all: list["Node"] = field(default_factory=list)
+    # indices: list[int] = field(default_factory=list)
     input: list["Node"] = field(default_factory=list)
     hidden: list["Node"] = field(default_factory=list)
     output: list["Node"] = field(default_factory=list)
@@ -98,8 +102,10 @@ class Node:
         if self.role != "input":
             self.weights: list[float] = [0, 0, 0]
             self.num_in_nodes = 0
-            if self.role == "hidden":
-                self.bias = np.random.randn()
+        self.mean: float = 0
+        self.v: float = 0
+        self.std: float = 0
+        self.n: int = 0
 
     def __repr__(self: "Node") -> str:  # noqa: D105
         node_inputs: tuple[Any, ...] = tuple(
@@ -183,6 +189,13 @@ class Node:
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
+    def update_mean_std(self: "Node", x: float) -> None:  # noqa: D102
+        temp_m = self.mean + (x - self.mean) / self.n
+        temp_v = self.v + (x - self.mean) * (x - temp_m)
+        self.v = temp_v
+        self.mean = temp_m
+        self.std = np.sqrt(self.v / self.n)
+
     def compute_and_cache_output(self: "Node") -> None:
         """Computes the node's output from its :attr:`in_nodes`.
 
@@ -193,11 +206,11 @@ class Node:
         network's "forward" pass.
         """
         x = [node.output for node in self.in_nodes]
-        x = np.dot(x, self.weights)
-        if self.role == "hidden":
-            x += self.bias
-        x = np.clip(x, 0, 2**31 - 1)
-        self.cached_output = float(x)
+        x: float = float(np.dot(x, self.weights))
+        self.update_mean_std(x)
+        x = (x - self.mean) / (self.std + (self.std == 0))
+        self.cached_output = x
+        self.n += 1
 
     def update_output(self: "Node") -> None:  # noqa: D102
         self.output = self.cached_output

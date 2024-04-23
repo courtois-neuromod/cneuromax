@@ -19,7 +19,6 @@ class DynamicNetConfig:
     Args:
         num_inputs: Self-explanatory.
         num_outputs: Self-explanatory.
-        runs_on_gpu: Self-explanatory.
     """
 
     num_inputs: An[int, ge(1)]
@@ -29,20 +28,23 @@ class DynamicNetConfig:
 class DynamicNet:
     """Neural network with a dynamically complexifying architecture.
 
-    Computation in this network is more brain-like in the sense that
-    all neurons constantly compute, there is no concept of layers. The
-    network initially consists of input and output nodes devoid of
+    The flow of computation in this network is more brain-like than
+    standard multi-layered neural networks in the sense that all neurons
+    compute in parallel, there is no concept of layers. For any task,
+    this network initially consists of input and output nodes devoid of
     connections. Hidden nodes are grown/pruned through two mutation
     functions: :meth:`grow_node` and :meth:`prune_node` that each get
     called a number of times determined by the mutable
     :attr:`num_grow_mutations` and :attr:`num_prune_mutations`. Weights
-    (no biases in this network) are set upon node/connection creation
-    and are left fixed from that point on. New connections are grown
-    between nodes that are "more or less" distant from each other (the
-    distance corresponds to the number of connections between two
-    nodes, regardless of connection direction). The "more or less"
-    component is controlled by the mutable
-    :attr:`connectivity_temperature` attribute.
+    (no biases in this network as all node outputs are standardized) are
+    set upon node/connection creation and are left fixed from that point
+    on. New connections are grown between nodes that are "more or less"
+    distant from each other (the distance corresponds to the number of
+    connections between two nodes, regardless of connection direction).
+    The "more or less" component is controlled by the mutable
+    :attr:`connectivity_temperature` attribute. Finally, the number of
+    passes through the network per input is controlled by the
+    mutable :attr:`num_network_passes_per_input` attribute.
 
     Args:
         config: See :class:`DynamicNetConfig`.
@@ -52,7 +54,8 @@ class DynamicNet:
         nodes: See :class:`.NodeList`.
         total_nb_nodes_grown: The number of nodes grown in the\
             network since its instantiation.
-        weights: Node connection weights.
+        weights: A 2D list of weights. Each inner list corresponds\
+            to the weights
         outputs: Node outputs.
         num_grow_mutations: A mutable value that controls the\
             number of chained :meth:`grow_node` mutations to perform.
@@ -70,11 +73,11 @@ class DynamicNet:
         self.config = config
         self.nodes = NodeList()
         self.total_nb_nodes_grown = 0
-        self.weights: list[list[float]] = [[]]
-        self.outputs: list[float] = []
+        # self.weights: list[list[float]] = [[]]
         self.initialize_architecture()
         self.num_grow_mutations: float = 1.0
         self.num_prune_mutations: float = 0.5
+        self.num_network_passes_per_input: float = 1.0
         self.connectivity_temperature: float = 0.5
 
     def initialize_architecture(self: "DynamicNet") -> None:  # noqa: D102
@@ -94,6 +97,11 @@ class DynamicNet:
             self.num_prune_mutations /= 2
         if rand_num == 1:
             self.num_prune_mutations *= 2
+        rand_num = np.random.randint(100)
+        if rand_num == 0 and self.num_network_passes_per_input != 1:
+            self.num_network_passes_per_input /= 2
+        if rand_num == 1:
+            self.num_network_passes_per_input *= 2
         rand_num = np.random.randint(100)
         if rand_num == 0 and self.connectivity_temperature != 1:
             self.connectivity_temperature += 0.1
@@ -153,7 +161,7 @@ class DynamicNet:
             self.grow_connection(new_node, out_node)
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
-        self.weights.append(new_node.weights)
+        # self.weights.append(new_node.weights)
         return new_node
 
     def grow_connection(  # noqa: D102
@@ -225,10 +233,11 @@ class DynamicNet:
         Returns:
             Output values.
         """
-        for x_i, input_node in zip(x, self.nodes.input, strict=True):
-            input_node.output = x_i
-        for node in self.nodes.hidden + self.nodes.output:
-            node.compute_and_cache_output()
-        for node in self.nodes.hidden + self.nodes.output:
-            node.update_output()
+        for _ in range(int(self.num_network_passes_per_input)):
+            for x_i, input_node in zip(x, self.nodes.input, strict=True):
+                input_node.output = x_i
+            for node in self.nodes.hidden + self.nodes.output:
+                node.compute_and_cache_output()
+            for node in self.nodes.hidden + self.nodes.output:
+                node.update_output()
         return [node.output for node in self.nodes.output]
