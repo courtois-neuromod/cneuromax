@@ -85,13 +85,16 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             pattern="BS SL -> BS 1 SL",
         )
         if self.config.conditioning == "random":
-            y: Float[Tensor, " AES"] = torch.randn(
-                (x.shape[0], 768),
+            y: Float[Tensor, " BS AES"] = torch.randn(
+                (x.shape[0], self.nnmodule.hidden_size),
                 device=self.device,
             )
         else:
             y = data["AE"]
-            if y.dim() == 3:  # noqa: PLR2004
+            if (
+                self.config.conditioning == "linear"
+                and y.dim() == 3  # noqa: PLR2004
+            ):
                 y: Float[Tensor, " BS AES"] = reduce(  # type: ignore [no-redef]
                     tensor=y,
                     pattern="BS NAE AES -> BS AES",
@@ -118,7 +121,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     def save_val_data(
         self: "KWGenerationLitModule",
         x: Float[Tensor, " batch_size 1 seq_len"],
-        y: Float[Tensor, " batch_size mean_num_ae"],
+        y: Tensor,  # Float[Tensor, " batch_size mean_num_ae"],
     ) -> None:
         """Saves data computed during validation for later use.
 
@@ -131,7 +134,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         if self.val_wandb_data:
             return
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
-        y: Float[Tensor, " batch_size mean_num_ae"] = y.squeeze().cpu()
+        y: Tensor = y.squeeze().cpu()
         for i, (x_i, y_i) in enumerate(zip(x, y, strict=True)):
             self.val_wandb_data.append(
                 {"x": to_wandb_image(x_i), "y": y_i},

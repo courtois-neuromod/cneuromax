@@ -13,9 +13,9 @@ hydra:
     gpus_per_node: 1
   sweeper:
     params:
-      datamodule.dataset.config.dataset_percentage: 0.1, 0.5, 1.0
-      litmodule.nnmodule.depth: 1, 2, 4
-      litmodule.conditioning: random, linear, transformer
+      datamodule.dataset.config.dataset_percentage: 0.5, 1.0
+      litmodule.nnmodule.depth: 1, 4
+      litmodule.config.conditioning: random, linear, transformer
 
 config:
   device: gpu
@@ -30,6 +30,7 @@ datamodule:
       annot_rel_dir: null
       klk_wavs_rel_dir: HEMC_klk_wavs_9hz/
       duration_seconds: 10
+      #dataset_percentage: 0.1
 trainer:
   val_check_interval: 100
   num_sanity_val_steps: 0
@@ -39,8 +40,10 @@ trainer:
 litmodule:
   config:
     log_val_wandb: True
+    #conditioning: transformer
   nnmodule:
     input_size: 4000
     patch_size: 10
     in_channels: 1
-    conditioning: ${litmodule.conditioning}
+    #depth: 1
+    conditioning: ${litmodule.config.conditioning}

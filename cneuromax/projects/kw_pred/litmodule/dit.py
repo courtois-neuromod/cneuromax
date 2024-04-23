@@ -1,5 +1,6 @@
 """:class:`CustomDiT` & its helper classes."""
 
+import logging
 from typing import Annotated as An
 
 import numpy as np
@@ -73,34 +74,6 @@ class PatchEmbed1D(nn.Module):
         return rearrange(x, "BS ES NP -> BS NP ES")
 
 
-class BeatsEmbedder(nn.Module):
-    """Custom :attr:`~DiT.y_embedder`.
-
-    Meant to replace :class:`.dit.models.LabelEmbedder`.
-    """
-
-    def __init__(
-        self: "BeatsEmbedder",
-        og_embd_size: int,
-        embd_size: int,
-    ) -> None:
-        super().__init__()
-        self.proj = nn.Linear(og_embd_size, embd_size)
-
-    def forward(
-        self: "BeatsEmbedder",
-        x: Float[Tensor, " BS OES"],
-    ) -> Float[Tensor, " BS ES"]:
-        """Flattened BEATS -> Embeddings.
-
-        BS: Batch size
-        OES: Original embedding size
-        ES: Embedding size
-        """
-        x: Float[Tensor, " BS ES"] = self.proj(x)
-        return x
-
-
 class ConditioningEmbedder(nn.Module):
     """Custom :attr:`~DiT.y_embedder`.
 
@@ -114,29 +87,31 @@ class ConditioningEmbedder(nn.Module):
     def __init__(  # noqa: PLR0913
         self: "ConditioningEmbedder",
         seq_len: int,
-        num_freq_bins: int,
+        og_embd_size: int,
         embd_size: int,
-        num_patches: int,
+        x_embedder_num_patches: int,
         encoder: AttentionLayers,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
         self.embd_size = embd_size
-        self.num_patches = num_patches
-        patch_size = seq_len // num_patches
+        patch_size = seq_len // x_embedder_num_patches or 1
         # STFT -> Patch-wise embedded STFT
         self.patch_embed = PatchEmbed1D(
             input_size=seq_len,
-            in_channels=num_freq_bins,
+            in_channels=og_embd_size,
             embd_size=embd_size,
             patch_size=patch_size,
         )
         self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches, embd_size),
+            torch.zeros(1, self.patch_embed.num_patches, embd_size),
             requires_grad=False,
         )
         self.encoder = encoder
-        self.proj = nn.Linear(num_patches * embd_size, embd_size)
+        self.proj = nn.Linear(
+            self.patch_embed.num_patches * embd_size,
+            embd_size,
+        )
 
     def forward(
         self: "ConditioningEmbedder",
@@ -150,6 +125,7 @@ class ConditioningEmbedder(nn.Module):
         ES: Embedding size
         NP: Number of patches
         """
+        x: Float[Tensor, " BS NB SL"] = rearrange(x, "BS SL NB -> BS NB SL")
         x: Float[Tensor, " BS NP ES"] = self.patch_embed(x) + self.pos_embed
         x: Float[Tensor, " BS NP ES"] = self.encoder(x)
         x: Float[Tensor, " BS NPxES"] = rearrange(x, "BS NP ES -> BS (NP ES)")
@@ -244,7 +220,7 @@ class CustomDiT(nn.Module):
         self.num_heads = num_heads
         ### NEW ###
         self.input_size = input_size
-        hidden_size = 64 * depth  # As in the MM-DiT paper
+        self.hidden_size = 64 * depth  # As in the MM-DiT paper
         ###########
         """
         self.x_embedder = PatchEmbed(
@@ -255,12 +231,12 @@ class CustomDiT(nn.Module):
         self.x_embedder = PatchEmbed1D(
             input_size=input_size,
             in_channels=in_channels,
-            embd_size=hidden_size,
+            embd_size=self.hidden_size,
             patch_size=patch_size,
         )
         ###########
         # INFO: OpenDIT allows for changing the dtype of `t_embedder`.
-        self.t_embedder = TimestepEmbedder(hidden_size)  # type: ignore[no-untyped-call]
+        self.t_embedder = TimestepEmbedder(self.hidden_size)  # type: ignore[no-untyped-call]
         """
         self.y_embedder = LabelEmbedder(
             num_classes, hidden_size, class_dropout_prob
@@ -272,16 +248,16 @@ class CustomDiT(nn.Module):
         self.y_embedder: nn.Module
         if conditioning == "random":
             self.y_embedder = nn.Identity()
-        elif conditioning == "averaged":
-            self.y_embedder = nn.Linear(768, hidden_size)
-        else:  # conditioning == "encoded"
-            self.y_embedder = ConditioningEmbedder(  # type: ignore[assignment]
+        elif conditioning == "linear":
+            self.y_embedder = nn.Linear(768, self.hidden_size)
+        else:  # conditioning == "transformer"
+            self.y_embedder = ConditioningEmbedder(
                 seq_len=62,
-                num_freq_bins=768,
-                embd_size=hidden_size,
-                num_patches=self.x_embedder.num_patches,
+                og_embd_size=768,
+                embd_size=self.hidden_size,
+                x_embedder_num_patches=self.x_embedder.num_patches,
                 encoder=AttentionLayers(
-                    dim=hidden_size,
+                    dim=self.hidden_size,
                     depth=depth,
                     heads=num_heads,
                 ),
@@ -290,12 +266,12 @@ class CustomDiT(nn.Module):
         num_patches = self.x_embedder.num_patches
         # Will use fixed sin-cos embedding:
         self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches, hidden_size),
+            torch.zeros(1, num_patches, self.hidden_size),
             requires_grad=False,
         )
         self.blocks = nn.ModuleList(
             [
-                DiTBlock(hidden_size, num_heads, mlp_ratio=mlp_ratio)  # type: ignore[no-untyped-call]
+                DiTBlock(self.hidden_size, num_heads, mlp_ratio=mlp_ratio)  # type: ignore[no-untyped-call]
                 for _ in range(depth)
             ],
         )
@@ -306,7 +282,7 @@ class CustomDiT(nn.Module):
         """
         ### NEW ###
         self.final_layer = FinalLayer1D(  # type: ignore[assignment]
-            hidden_size=hidden_size,
+            hidden_size=self.hidden_size,
             patch_size=patch_size,
             out_channels=self.out_channels,
         )
