@@ -28,6 +28,14 @@ def modulate(
     BS: Batch size
     NP: Number of patches
     ES: Embedding size (a.k.a. hidden size)
+
+    Args:
+        x: The input tensor.
+        shift: How much to shift the input tensor.
+        scale: How much to scale the input tensor.
+
+    Returns:
+        The modulated tensor.
     """
     pattern = "BS ES -> BS 1 ES"
     shift, scale = rearrange(shift, pattern), rearrange(scale, pattern)
@@ -35,38 +43,54 @@ def modulate(
 
 
 class PatchEmbed1D(nn.Module):
-    """Converts a 1D signal into patch-wise embeddings.
+    """Converts 1D signal(s) into patch-wise embeddings.
 
-    Meant for :attr:`.DiT.x_embedder` originally a
-    :class:`~timm.models.vision_transformer.PatchEmbed` instance
-    that converts a 2D image into patch-wise embeddings.
+    See https://arxiv.org/abs/2010.11929 for more details on patch-wise
+    embeddings.
+
+    Meant to replace :class:`~timm.models.vision_transformer.PatchEmbed`
+    when using 1D signal(s) instead of 2D signal(s).
+
+    Padding is added to the input signal(s) to ensure that no
+    information is lost when converting.
+
+    Args:
+        seq_len: The length of the input 1D signal(s).
+        num_signals: The number of 1D input signals (e.g., 1 to 4 for\
+            ``.klk`` files, 513 for STFT data, ...).
+        embd_size: The number of values for each patch-wise\
+            embedding.
+        patch_size: The length of each patch.
     """
 
     def __init__(
         self: "PatchEmbed1D",
-        input_size: int,
-        in_channels: int,
+        seq_len: int,
+        num_signals: int,
         embd_size: int,
         patch_size: int,
     ) -> None:
         super().__init__()
         self.proj = nn.Conv1d(
-            in_channels=in_channels,
+            in_channels=num_signals,
             out_channels=embd_size,
             kernel_size=patch_size,
             stride=patch_size,
+            padding=(patch_size - seq_len % patch_size) % patch_size,
         )
-        self.num_patches = input_size // patch_size
+        self.num_patches = seq_len // patch_size + int(
+            seq_len % patch_size > 0,
+        )
 
     def forward(
         self: "PatchEmbed1D",
-        x: Float[Tensor, " BS IC SL"],
+        x: Float[Tensor, " BS NS SL"],
     ) -> Float[Tensor, " BS NP ES"]:
         """1D Data -> Patch-wise embeddings.
 
         BS: Batch size
-        IC: Number of input `.klk` channels
-        SL: `.klk` sequence length
+        NS: Number of 1D input signals
+        SL: The length of the input 1D signal(s)
         NP: Number of patches
         ES: Embedding size
         """
@@ -74,20 +98,24 @@ class PatchEmbed1D(nn.Module):
         return rearrange(x, "BS ES NP -> BS NP ES")
 
 
-class ConditioningEmbedder(nn.Module):
-    """Custom :attr:`~DiT.y_embedder`.
+class TransformerEncode1D(nn.Module):
+    """Encodes 1D conditioning signal(s) w/ a transformer encoder.
 
-    Meant to replace :class:`.dit.models.LabelEmbedder` given that our
-    conditioning data is the STFT of the audio signal rather than the
-    class labels.
+    Meant to replace :class:`.dit.models.LabelEmbedder` when the
+    conditioning data is made up of 1D signals.
 
-    TODO: Debug
+    Args:
+        seq_len: See :paramref:`PatchEmbed1D.seq_len`.
+        num_signals: See :paramref:`PatchEmbed1D.num_signals`.
+        embd_size: See :paramref:`PatchEmbed1D.embd_size`.
+        x_embedder_num_patches: Self-explanatory.
+        encoder: The transformer encoder.
     """
 
     def __init__(  # noqa: PLR0913
-        self: "ConditioningEmbedder",
+        self: "TransformerEncode1D",
         seq_len: int,
-        og_embd_size: int,
+        num_signals: int,
         embd_size: int,
         x_embedder_num_patches: int,
         encoder: AttentionLayers,
@@ -96,10 +124,9 @@ class ConditioningEmbedder(nn.Module):
         self.seq_len = seq_len
         self.embd_size = embd_size
         patch_size = seq_len // x_embedder_num_patches or 1
-        # STFT -> Patch-wise embedded STFT
         self.patch_embed = PatchEmbed1D(
-            input_size=seq_len,
-            in_channels=og_embd_size,
+            seq_len=seq_len,
+            num_signals=num_signals,
             embd_size=embd_size,
             patch_size=patch_size,
         )
@@ -114,18 +141,18 @@ class ConditioningEmbedder(nn.Module):
         )
 
     def forward(
-        self: "ConditioningEmbedder",
-        x: Float[Tensor, " BS SL NB"],  # BS x 311 x 513
+        self: "TransformerEncode1D",
+        x: Float[Tensor, " BS SL NS"],
     ) -> Float[Tensor, " BS ES"]:
-        """STFT -> Embeddings.
+        """1D signal(s) -> Encoded conditioning information.
 
         BS: Batch size
-        SL: STFT Sequence length (time steps)
-        NB: Number of STFT frequency bins
+        SL: The length of the input 1D signal(s)
+        NS: Number of 1D input signals
         ES: Embedding size
         NP: Number of patches
         """
-        x: Float[Tensor, " BS NB SL"] = rearrange(x, "BS SL NB -> BS NB SL")
+        x: Float[Tensor, " BS NS SL"] = rearrange(x, "BS SL NS -> BS NS SL")
         x: Float[Tensor, " BS NP ES"] = self.patch_embed(x) + self.pos_embed
         x: Float[Tensor, " BS NP ES"] = self.encoder(x)
         x: Float[Tensor, " BS NPxES"] = rearrange(x, "BS NP ES -> BS (NP ES)")
@@ -136,30 +163,35 @@ class ConditioningEmbedder(nn.Module):
 class FinalLayer1D(nn.Module):
     """Custom :attr:`~DiT.final_layer`.
 
-    Meant to replace :class:`.dit.models.FinalLayer` given that we use
-    1D data instead of 2D data.
+    Meant to replace :class:`.dit.models.FinalLayer` when using 1D
+    signal(s) instead of 2D signal(s).
+
+    Args:
+        embd_size: See :paramref:`PatchEmbed1D.embd_size`.
+        patch_size: See :paramref:`PatchEmbed1D.patch_size`.
+        out_channels: See :attr:`CustomDiT.out_channels`.
     """
 
     def __init__(
         self: "FinalLayer1D",
-        hidden_size: int,
+        embd_size: int,
         patch_size: int,
         out_channels: int,
     ) -> None:
         super().__init__()
         self.norm_final = nn.LayerNorm(
-            hidden_size,
+            embd_size,
             elementwise_affine=False,
             eps=1e-6,
         )
         self.linear = nn.Linear(
-            hidden_size,
+            embd_size,
             patch_size * out_channels,
             bias=True,
         )
         self.adaLN_modulation = nn.Sequential(
             nn.SiLU(),
-            nn.Linear(hidden_size, 2 * hidden_size, bias=True),
+            nn.Linear(embd_size, 2 * embd_size, bias=True),
         )
 
     def forward(
@@ -171,9 +203,9 @@ class FinalLayer1D(nn.Module):
 
         BS: Batch size
         NP: Number of patches
-        ES: Embedding size (a.k.a. hidden size)
+        ES: Embedding size
         PS: Patch size
-        OC: Out channels
+        OC: Output channels
         """
         shift, scale = rearrange(
             self.adaLN_modulation(c),
@@ -190,37 +222,63 @@ class FinalLayer1D(nn.Module):
 
 
 class CustomDiT(nn.Module):
-    """Custom DiT model."""
+    """Custom DiT model.
+
+    Args:
+        input_size: The length of the input 1D signal.
+        patch_size: The length of each patch.
+        in_channels: The number of input channels (e.g., 4 for `.klk`\
+            files, 513 for STFT data, ...).
+        depth: The number of transformer blocks.
+        num_heads: The number of attention heads.
+        mlp_ratio: By how much to scale the hidden size in the\
+            MLP sub-blocks.
+        conditioning: How to process the conditioning data. Either a
+            linear layer or a transformer encoder.
+        audio_stft_rel_dir: See\
+            :paramref:`.KWPredDatasetConfig.audio_stft_rel_dir`.
+        audio_embeddings_rel_dir: See\
+            :paramref:`.KWPredDatasetConfig.audio_embeddings_rel_dir`.
+        learn_sigma: Whether to learn the standard deviation of the\
+            output distribution.
+    """
 
     def __init__(  # noqa: PLR0913
         self: "CustomDiT",
-        input_size: int = 32,
+        ### NEW ###
+        klk_seq_len: int = 4000,  # replaces `input_size: int = 32,`
+        num_klk_corners: int = 1,  # replaces `in_channels: int = 4,`
+        conditioning: An[str, one_of("linear", "transformer")] = "linear",
+        audio_stft_rel_dir: str | None = None,
+        audio_embeddings_rel_dir: str | None = None,
+        ###########
         patch_size: int = 2,
-        in_channels: int = 4,
-        # hidden_size: int = 1152,  # noqa: ERA001
+        # hidden_size: int = 1152, now `embd_size` & computed w/ `depth`
         depth: int = 28,
         num_heads: int = 16,
         mlp_ratio: float = 4.0,
         # class_dropout_prob: float = 0.1,  # noqa: ERA001
         # num_classes: int = 1000,  # noqa: ERA001
-        ### NEW ###
-        conditioning: An[
-            str,
-            one_of("random", "linear", "transformer"),
-        ] = "random",
-        ###########
         *,
         learn_sigma: bool = True,
     ) -> None:
         super().__init__()
         self.learn_sigma = learn_sigma
-        self.in_channels = in_channels
-        self.out_channels = in_channels * 2 if learn_sigma else in_channels
+        self.num_klk_corners = num_klk_corners
+        self.out_channels = (
+            num_klk_corners * 2 if learn_sigma else num_klk_corners
+        )
         self.patch_size = patch_size
         self.num_heads = num_heads
         ### NEW ###
-        self.input_size = input_size
-        self.hidden_size = 64 * depth  # As in the MM-DiT paper
+        self.klk_seq_len = klk_seq_len
+        self.embd_size = 64 * depth  # As in MM-DiT paper (old `hidden_size`)
+        if bool(audio_embeddings_rel_dir) == bool(audio_stft_rel_dir):
+            error_msg = (
+                "Exactly one of `audio_embeddings_rel_dir` and "
+                "`audio_stft_rel_dir` must be provided."
+            )
+            raise ValueError(error_msg)
         ###########
         """
         self.x_embedder = PatchEmbed(
@@ -229,35 +287,38 @@ class CustomDiT(nn.Module):
         """
         ### NEW ###
         self.x_embedder = PatchEmbed1D(
-            input_size=input_size,
-            in_channels=in_channels,
-            embd_size=self.hidden_size,
+            seq_len=num_klk_corners,
+            num_signals=klk_seq_len,
+            embd_size=self.embd_size,
             patch_size=patch_size,
         )
         ###########
         # INFO: OpenDIT allows for changing the dtype of `t_embedder`.
-        self.t_embedder = TimestepEmbedder(self.hidden_size)  # type: ignore[no-untyped-call]
+        self.t_embedder = TimestepEmbedder(self.embd_size)  # type: ignore[no-untyped-call]
         """
         self.y_embedder = LabelEmbedder(
             num_classes, hidden_size, class_dropout_prob
         )
         """
         ### NEW ###
-        # BEATS: 62 8 768
+        # BEATS: 62 (8) 768
         # STFT: 311 513
+        conditioning_seq_len = 62 if audio_embeddings_rel_dir else 311
+        conditioning_num_signals = 768 if audio_embeddings_rel_dir else 513
         self.y_embedder: nn.Module
-        if conditioning == "random":
-            self.y_embedder = nn.Identity()
-        elif conditioning == "linear":
-            self.y_embedder = nn.Linear(768, self.hidden_size)
+        if conditioning == "linear":
+            self.y_embedder = nn.Linear(
+                conditioning_num_signals,
+                self.embd_size,
+            )
         else:  # conditioning == "transformer"
-            self.y_embedder = ConditioningEmbedder(
-                seq_len=62,
-                og_embd_size=768,
-                embd_size=self.hidden_size,
+            self.y_embedder = TransformerEncode1D(
+                seq_len=conditioning_seq_len,
+                num_signals=conditioning_num_signals,
+                embd_size=self.embd_size,
                 x_embedder_num_patches=self.x_embedder.num_patches,
                 encoder=AttentionLayers(
-                    dim=self.hidden_size,
+                    dim=self.embd_size,
                     depth=depth,
                     heads=num_heads,
                 ),
@@ -266,12 +327,12 @@ class CustomDiT(nn.Module):
         num_patches = self.x_embedder.num_patches
         # Will use fixed sin-cos embedding:
         self.pos_embed = nn.Parameter(
-            torch.zeros(1, num_patches, self.hidden_size),
+            torch.zeros(1, num_patches, self.embd_size),
             requires_grad=False,
         )
         self.blocks = nn.ModuleList(
             [
-                DiTBlock(self.hidden_size, num_heads, mlp_ratio=mlp_ratio)  # type: ignore[no-untyped-call]
+                DiTBlock(self.embd_size, num_heads, mlp_ratio=mlp_ratio)  # type: ignore[no-untyped-call]
                 for _ in range(depth)
             ],
         )
@@ -282,7 +343,7 @@ class CustomDiT(nn.Module):
         """
         ### NEW ###
         self.final_layer = FinalLayer1D(  # type: ignore[assignment]
-            hidden_size=self.hidden_size,
+            embd_size=self.embd_size,
             patch_size=patch_size,
             out_channels=self.out_channels,
         )
@@ -310,21 +371,20 @@ class CustomDiT(nn.Module):
         """  # noqa: W505
         ### NEW ###
         pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
-            embed_dim=self.pos_embed.shape[-1],
+            embed_dim=self.embd_size,
             pos=np.arange(self.x_embedder.num_patches),
         )
         self.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
-        """
-        pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
-            embed_dim=self.y_embedder.pos_embed.shape[-1],
-            pos=np.arange(self.y_embedder.num_patches),
-        )
-        self.y_embedder.pos_embed.data.copy_(
-            torch.from_numpy(pos_embed).float().unsqueeze(0),
-        )
-        """
+        if isinstance(self.y_embedder, TransformerEncode1D):
+            pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
+                embed_dim=self.embd_size,
+                pos=np.arange(self.y_embedder.patch_embed.num_patches),
+            )
+            self.y_embedder.pos_embed.data.copy_(
+                torch.from_numpy(pos_embed).float().unsqueeze(0),
+            )
         ###########
 
         """

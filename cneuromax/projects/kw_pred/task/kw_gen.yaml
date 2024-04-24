@@ -14,7 +14,7 @@ hydra:
   sweeper:
     params:
       datamodule.dataset.config.dataset_percentage: 0.5, 1.0
-      litmodule.nnmodule.depth: 1, 4
+      litmodule.nnmodule.depth: 6, 8
       litmodule.config.conditioning: random, linear, transformer
 
 config:
@@ -42,8 +42,11 @@ litmodule:
     log_val_wandb: True
     #conditioning: transformer
   nnmodule:
-    input_size: 4000
+    klk_seq_len: 4000
     patch_size: 10
-    in_channels: 1
+    num_klk_corners: 1
     #depth: 1
     conditioning: ${litmodule.config.conditioning}
+    audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
+    # yamllint disable-line rule:line-length
+    audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}
