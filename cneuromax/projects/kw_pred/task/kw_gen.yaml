@@ -13,15 +13,18 @@ hydra:
     gpus_per_node: 1
   sweeper:
     params:
-      datamodule.dataset.config.dataset_percentage: 0.5, 1.0
-      litmodule.nnmodule.depth: 6, 8
-      litmodule.config.conditioning: random, linear, transformer
+      #datamodule.dataset.config.dataset_percentage: 0.5#, 1.0
+      litmodule.nnmodule.depth: 1, 2, 4, 8, 16
+      litmodule.config.conditioning: transformer, linear
 
 config:
   device: gpu
+  save_every_n_epochs: 0
 datamodule:
   config:
-    val_percentage: 0.01
+    val_percentage: 0.05
+    fixed_per_device_batch_size: 256
+    fixed_per_device_num_workers: 8
   dataset:
     config:
       root_data_dir: /data/
@@ -30,14 +33,19 @@ datamodule:
       annot_rel_dir: null
       klk_wavs_rel_dir: HEMC_klk_wavs_9hz/
       duration_seconds: 10
-      #dataset_percentage: 0.1
+      dataset_percentage: 1.0
 trainer:
+  max_epochs: 4
   val_check_interval: 100
+  check_val_every_n_epoch: null
   num_sanity_val_steps: 0
+  #max_epochs: 1
   callbacks:
     - _target_: lightning.pytorch.callbacks.early_stopping.EarlyStopping
       monitor: val/loss
 litmodule:
+  optimizer:
+    lr: 1e-4
   config:
     log_val_wandb: True
     #conditioning: transformer

@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
 
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import wandb
 from einops import rearrange, reduce
@@ -22,7 +24,6 @@ from cneuromax.projects.kw_pred.dit.diffusion import (
 from cneuromax.utils.beartype import ge, one_of
 
 from .dit import CustomDiT
-from .unc_kw_gen import to_wandb_image
 
 
 @dataclass
@@ -32,12 +33,10 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
     Args:
         num_val_wandb_samples: The number of samples to log to\
             :mod:`wandb`.
-        randomize_conditioning: Whether to replace the conditioning\
-            information with random values.
     """
 
     num_val_wandb_samples: An[int, ge(1)] = 3
-    conditioning: An[str, one_of("random", "linear", "transformer")] = "random"
+    conditioning: An[str, one_of("linear", "transformer")] = "linear"
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -56,7 +55,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             self.wandb_x_wrapper = wandb.Image
             self.val_wandb_data: list[dict[str, Any]]
         self.diffusion = create_diffusion(timestep_respacing="")  # type: ignore [no-untyped-call]
-        self.ema = EMA(model=self.nnmodule)
+        self.ema_nnmodule = EMA(model=self.nnmodule)
 
     def step(
         self: "KWGenerationLitModule",
@@ -84,22 +83,16 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
-        if self.config.conditioning == "random":
-            y: Float[Tensor, " BS AES"] = torch.randn(
-                (x.shape[0], self.nnmodule.hidden_size),
-                device=self.device,
+        y = data["AE"]
+        if (
+            self.config.conditioning == "linear"
+            and y.dim() == 3  # noqa: PLR2004
+        ):
+            y: Float[Tensor, " BS AES"] = reduce(  # type: ignore [no-redef]
+                tensor=y,
+                pattern="BS NAE AES -> BS AES",
+                reduction="mean",
             )
-        else:
-            y = data["AE"]
-            if (
-                self.config.conditioning == "linear"
-                and y.dim() == 3  # noqa: PLR2004
-            ):
-                y: Float[Tensor, " BS AES"] = reduce(  # type: ignore [no-redef]
-                    tensor=y,
-                    pattern="BS NAE AES -> BS AES",
-                    reduction="mean",
-                )
 
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
@@ -109,8 +102,11 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             size=(x.shape[0],),
             device=self.device,
         )
+        model = (
+            self.nnmodule if stage == "train" else self.ema_nnmodule.ema_model
+        )
         loss_dict = self.diffusion.training_losses(
-            self.nnmodule,
+            model,
             x,
             t,
             {"y": y},
@@ -144,7 +140,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
 
     def on_after_backward(self: "KWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
-        self.ema.update()
+        self.ema_nnmodule.update()
 
     def on_validation_epoch_end(
         self: "KWGenerationLitModule",
@@ -153,8 +149,8 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         if self.config.log_val_wandb:
             x_big_t = torch.randn(
                 self.config.num_val_wandb_samples,
-                self.nnmodule.in_channels,
-                self.nnmodule.input_size,
+                self.nnmodule.num_klk_corners,
+                self.nnmodule.klk_seq_len,
                 device=self.device,
             )
             y = torch.empty(
@@ -167,7 +163,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 y[i] = self.val_wandb_data[i]["y"]
             y = y.to(self.device)
             x_zero_hat = self.diffusion.p_sample_loop(
-                self.nnmodule.forward,
+                self.ema_nnmodule.ema_model.forward,
                 x_big_t.shape,
                 x_big_t,
                 clip_denoised=False,
@@ -184,3 +180,23 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
                 val_wandb_data_i.pop("y")
         super().on_validation_epoch_end()
+
+
+def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
+    """Converts data to a buffer.
+
+    Args:
+        data: The data to be converted.
+
+    Returns:
+        The buffer containing the data.
+    """
+    plt.figure()
+    plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
+    plt.axis("off")
+    canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
+    canvas.draw()
+    data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]
+    image = data.reshape(canvas.get_width_height()[::-1] + (3,))
+    plt.close()
+    return wandb.Image(image)

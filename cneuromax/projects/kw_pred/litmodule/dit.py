@@ -287,8 +287,8 @@ class CustomDiT(nn.Module):
         """
         ### NEW ###
         self.x_embedder = PatchEmbed1D(
-            seq_len=num_klk_corners,
-            num_signals=klk_seq_len,
+            seq_len=klk_seq_len,
+            num_signals=num_klk_corners,
             embd_size=self.embd_size,
             patch_size=patch_size,
         )
@@ -342,7 +342,7 @@ class CustomDiT(nn.Module):
         )
         """
         ### NEW ###
-        self.final_layer = FinalLayer1D(  # type: ignore[assignment]
+        self.final_layer = FinalLayer1D(
             embd_size=self.embd_size,
             patch_size=patch_size,
             out_channels=self.out_channels,
