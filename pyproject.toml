@@ -63,6 +63,7 @@ dependencies = [
     """
     gymnasium[mujoco]@git+https://github.com/Farama-Foundation/Gymnasium@\
     6baf8708bfb08e37ce3027b529193169eaa230fd""", # RL/IL environments
+    "ordered-set==4.1.0",
     # Bug fixes for Gymnasium
     # MANDATORY for docs/
     "sphinx==7.3.7", # Documentation generator
