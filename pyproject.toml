@@ -59,7 +59,7 @@ dependencies = [
     "peft==0.10.0", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.6", # Inter-process communication
-    "torchrl==0.3.1", # For reinforcement/imitation Learning tasks
+    "torchrl==0.4.0", # For reinforcement/imitation Learning tasks
     """
     gymnasium[mujoco]@git+https://github.com/Farama-Foundation/Gymnasium@\
     6baf8708bfb08e37ce3027b529193169eaa230fd""", # RL/IL environments
