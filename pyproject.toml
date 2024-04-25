@@ -71,7 +71,7 @@ dependencies = [
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
     "sphinx-autodoc-typehints==2.1.0", # More type hint customization
-    "myst-parser==2.0.0", # Embeds markdown in sphinx
+    "myst-parser==3.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==24.4.1", # Python Formatter
     "ruff==0.4.1", # Python Linter
