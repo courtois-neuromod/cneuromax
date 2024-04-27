@@ -68,7 +68,7 @@ dependencies = [
     # MANDATORY for docs/
     "sphinx==7.3.7", # Documentation generator
     "esbonio==0.16.4", # Language server to render sphinx
-    "furo==2024.1.29", # Theme
+    "furo==2024.4.27", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
     "sphinx-autodoc-typehints==2.1.0", # More type hint customization
