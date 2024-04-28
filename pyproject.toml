@@ -34,7 +34,7 @@ dependencies = [
     989206cd0b03d59bdac4a4d82402ceb2fa8f43aa""", # Hyperparameter optimization
     "jaxtyping==0.2.28", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
-    "einops==0.7.0", # Makes shape transformations more readable
+    "einops==0.8.0", # Makes shape transformations more readable
     "jupyterlab==4.1.8", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
     "ipywidgets==8.1.2", # Jupyter widgets
