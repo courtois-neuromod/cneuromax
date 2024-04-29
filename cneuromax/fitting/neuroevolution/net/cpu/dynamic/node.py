@@ -174,8 +174,8 @@ class Node:
 
     def connect_to(self: "Node", node: "Node") -> None:  # noqa: D102
         new_weight: float = float(np.random.randn())
-        node.weights[self.num_in_nodes] = new_weight
-        self.num_in_nodes += 1
+        node.weights[node.num_in_nodes] = new_weight
+        node.num_in_nodes += 1
         self.out_nodes.append(node)
         node.in_nodes.append(self)
 

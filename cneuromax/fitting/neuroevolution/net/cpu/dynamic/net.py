@@ -1,5 +1,6 @@
 """:class:`DynamicNet` & its config."""
 
+import logging
 import random
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -109,7 +110,9 @@ class DynamicNet:
             self.connectivity_temperature -= 0.1
 
     def mutate(self: "DynamicNet") -> None:  # noqa: D102
+        logging.debug("Starting mutation.")
         self.mutate_parameters()
+        logging.debug("Mutated parameters.")
         if self.num_prune_mutations < 1:
             rand_num = np.random.uniform()
             num_prune_mutations = int(rand_num < self.num_prune_mutations)
@@ -117,6 +120,7 @@ class DynamicNet:
             num_prune_mutations = int(self.num_prune_mutations)
         for _ in range(num_prune_mutations):
             self.prune_node()
+            logging.debug("Pruned node.")
         if self.num_grow_mutations < 1:
             rand_num = np.random.uniform()
             num_grow_mutations = int(rand_num < self.num_grow_mutations)
@@ -125,6 +129,7 @@ class DynamicNet:
         node_to_connect_with = None
         for _ in range(num_grow_mutations):
             node_to_connect_with = self.grow_node(node_to_connect_with)
+            logging.debug("Grew node.")
 
     def grow_node(  # noqa: D102
         self: "DynamicNet",
@@ -137,9 +142,10 @@ class DynamicNet:
         if role == "input":
             self.nodes.input.append(new_node)
             self.nodes.receiving.append(new_node)
-        if role == "output":
+        elif role == "output":
             self.nodes.output.append(new_node)
         else:  # role == 'hidden'
+            in_node_1 = out_node = None
             if node_to_connect_with:
                 from_to = random.choice(["from", "to"])  # noqa: S311
                 in_node_1 = node_to_connect_with if from_to == "from" else None
