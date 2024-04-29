@@ -1,0 +1,18 @@
+# @package _global_
+defaults:
+  - /space: rl_control_nevo
+  - /agent: agent
+  - override /hydra/launcher: local
+  - _self_
+
+hydra:
+  launcher:
+    tasks_per_node: 3
+
+config:
+  agents_per_task: 6
+  total_num_gens: 250
+
+space:
+  config:
+    env_name: "Acrobot-v1"
