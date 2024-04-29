@@ -248,7 +248,6 @@ class CustomDiT(nn.Module):
         ### NEW ###
         klk_seq_len: int = 4000,  # replaces `input_size: int = 32,`
         num_klk_corners: int = 1,  # replaces `in_channels: int = 4,`
-        conditioning: An[str, one_of("linear", "transformer")] = "linear",
         audio_stft_rel_dir: str | None = None,
         audio_embeddings_rel_dir: str | None = None,
         ###########
@@ -305,24 +304,17 @@ class CustomDiT(nn.Module):
         # STFT: 311 513
         conditioning_seq_len = 62 if audio_embeddings_rel_dir else 311
         conditioning_num_signals = 768 if audio_embeddings_rel_dir else 513
-        self.y_embedder: nn.Module
-        if conditioning == "linear":
-            self.y_embedder = nn.Linear(
-                conditioning_num_signals,
-                self.embd_size,
-            )
-        else:  # conditioning == "transformer"
-            self.y_embedder = TransformerEncode1D(
-                seq_len=conditioning_seq_len,
-                num_signals=conditioning_num_signals,
-                embd_size=self.embd_size,
-                x_embedder_num_patches=self.x_embedder.num_patches,
-                encoder=AttentionLayers(
-                    dim=self.embd_size,
-                    depth=depth,
-                    heads=num_heads,
-                ),
-            )
+        self.y_embedder = TransformerEncode1D(
+            seq_len=conditioning_seq_len,
+            num_signals=conditioning_num_signals,
+            embd_size=self.embd_size,
+            x_embedder_num_patches=self.x_embedder.num_patches,
+            encoder=AttentionLayers(
+                dim=self.embd_size,
+                depth=depth,
+                heads=num_heads,
+            ),
+        )
         ###########
         num_patches = self.x_embedder.num_patches
         # Will use fixed sin-cos embedding:
@@ -377,14 +369,13 @@ class CustomDiT(nn.Module):
         self.pos_embed.data.copy_(
             torch.from_numpy(pos_embed).float().unsqueeze(0),
         )
-        if isinstance(self.y_embedder, TransformerEncode1D):
-            pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
-                embed_dim=self.embd_size,
-                pos=np.arange(self.y_embedder.patch_embed.num_patches),
-            )
-            self.y_embedder.pos_embed.data.copy_(
-                torch.from_numpy(pos_embed).float().unsqueeze(0),
-            )
+        pos_embed = get_1d_sincos_pos_embed_from_grid(  # type: ignore[no-untyped-call]
+            embed_dim=self.embd_size,
+            pos=np.arange(self.y_embedder.patch_embed.num_patches),
+        )
+        self.y_embedder.pos_embed.data.copy_(
+            torch.from_numpy(pos_embed).float().unsqueeze(0),
+        )
         ###########
 
         """

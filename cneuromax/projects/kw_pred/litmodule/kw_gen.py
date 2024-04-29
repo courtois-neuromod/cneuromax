@@ -36,7 +36,6 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
     """
 
     num_val_wandb_samples: An[int, ge(1)] = 3
-    conditioning: An[str, one_of("linear", "transformer")] = "linear"
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -84,15 +83,6 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             pattern="BS SL -> BS 1 SL",
         )
         y = data["AE"]
-        if (
-            self.config.conditioning == "linear"
-            and y.dim() == 3  # noqa: PLR2004
-        ):
-            y: Float[Tensor, " BS AES"] = reduce(  # type: ignore [no-redef]
-                tensor=y,
-                pattern="BS NAE AES -> BS AES",
-                reduction="mean",
-            )
 
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
