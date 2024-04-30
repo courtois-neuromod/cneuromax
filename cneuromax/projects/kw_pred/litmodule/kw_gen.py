@@ -82,7 +82,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             tensor=data["KW BL"],
             pattern="BS SL -> BS 1 SL",
         )
-        y = data["AE"]
+        y = data["AE"] if "AE" in data else data["AF"]
 
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)

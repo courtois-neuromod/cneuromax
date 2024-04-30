@@ -9,13 +9,12 @@ defaults:
 
 hydra:
   launcher:
-    cpus_per_task: 8
+    cpus_per_task: 16
     gpus_per_node: 1
   sweeper:
     params:
-      #datamodule.dataset.config.dataset_percentage: 0.5#, 1.0
-      litmodule.nnmodule.depth: 1, 2, 4, 8, 16
-      litmodule.config.conditioning: transformer, linear
+      #datamodule.dataset.config.dataset_percentage: 0.5, 1.0
+      litmodule.nnmodule.depth: 1,2,3,4,5,6
 
 config:
   device: gpu
@@ -28,7 +27,8 @@ datamodule:
   dataset:
     config:
       root_data_dir: /data/
-      audio_stft_rel_dir: null
+      #audio_stft_rel_dir: null
+      audio_embeddings_rel_dir: null
       video_embeddings_rel_dir: null
       annot_rel_dir: null
       klk_wavs_rel_dir: HEMC_klk_wavs_9hz/
@@ -36,25 +36,23 @@ datamodule:
       dataset_percentage: 1.0
 trainer:
   max_epochs: 4
+  precision: bf16
   val_check_interval: 100
   check_val_every_n_epoch: null
   num_sanity_val_steps: 0
-  #max_epochs: 1
-  callbacks:
-    - _target_: lightning.pytorch.callbacks.early_stopping.EarlyStopping
-      monitor: val/loss
+  #callbacks:
+    #- _target_: lightning.pytorch.callbacks.early_stopping.EarlyStopping
+    #  monitor: val/loss
 litmodule:
   optimizer:
     lr: 1e-4
   config:
     log_val_wandb: True
-    #conditioning: transformer
   nnmodule:
     klk_seq_len: 4000
     patch_size: 10
     num_klk_corners: 1
     #depth: 1
-    conditioning: ${litmodule.config.conditioning}
     audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
     # yamllint disable-line rule:line-length
     audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}
