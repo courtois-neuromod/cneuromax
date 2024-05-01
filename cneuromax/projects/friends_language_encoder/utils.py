@@ -1,16 +1,27 @@
 """``project`` utilities."""
 
+import glob
+import json
 import logging
 import os
+import string
+from pathlib import Path
 from typing import Any
 
+import h5py
 import numpy as np
 import pandas as pd
+import scipy.stats as stats
 import yaml
 from datasets.formatting.formatting import LazyBatch
+from scipy.spatial.distance import cosine
+from scipy.stats import pearsonr
 from sklearn.cluster import FeatureAgglomeration
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LinearRegression, RidgeCV
+from sklearn.model_selection import GroupKFold
+from tqdm import tqdm
+from transformers import BertModel, BertTokenizer, pipeline
 
 
 def group_texts_hf(examples: Any, block_size: Any) -> Any:  # noqa:ANN401,D103
@@ -171,6 +182,188 @@ def get_possible_reduction_methods() -> list[str]:
         - list
     """
     return [None, "pca", "agglomerative_clustering"]
+
+
+STUDY_PARAMS = {
+    "tr": 1.49,
+    "max_tokens": 512,
+}
+
+
+def list_seasons(
+    idir: str,
+) -> list:
+    """."""
+
+    season_list = [
+        x.split("/")[-1] for x in sorted(glob.glob(f"{idir}/s[0-9]"))
+    ]
+
+    return season_list
+
+
+def list_episodes(
+    idir: str,
+    season: str,
+    outfile: str,
+) -> list:
+    """.
+
+    Compile season's list of episodes to process.
+    """
+    all_epi = [
+        x.split("/")[-1].split(".")[0][8:15]
+        for x in sorted(glob.glob(f"{idir}/{season}/friends_s*.tsv"))
+    ]
+
+    if Path(outfile).exists():
+        season_h5_file = h5py.File(outfile, "r")
+        processed_epi = list(season_h5_file.keys())
+        season_h5_file.close()
+    else:
+        processed_epi = []
+
+    episode_list = [epi for epi in all_epi if epi not in processed_epi]
+
+    return episode_list
+
+
+def set_output(
+    season: str,
+    output_dir: str,
+    compression: str = "gzip",
+    compression_opts: int = 4,
+) -> tuple:
+    """.
+
+    Set compression params and output file name.
+    """
+    compress_details = ""
+    comp_args = {}
+    if compression is not None:
+        compress_details = f"_{compression}"
+        comp_args["compression"] = compression
+        if compression == "gzip":
+            compress_details += f"_level-{compression_opts}"
+            comp_args["compression_opts"] = compression_opts
+
+    out_file = (
+        f"{output_dir}/friends_{season}_features_" f"text{compress_details}.h5"
+    )
+
+    # Path(f"{args.odir}/temp").mkdir(exist_ok=True, parents=True)
+
+    return comp_args, out_file
+
+
+def save_features(
+    episode: str,
+    feature: np.array,
+    outfile_name: str,
+    comp_args: dict,
+) -> None:
+    """.
+
+    Save episode's text features into .h5 file.
+    """
+    flag = "a" if Path(outfile_name).exists() else "w"
+
+    with h5py.File(outfile_name, flag) as f:
+        group = f.create_group(episode)
+
+        group.create_dataset(
+            "features",
+            data=feature,
+            **comp_args,
+        )
+
+
+def preprocess_words(tsv_path:str) -> str:
+    """Un-punctuate, lower and combine the words like a text.
+
+    Args:
+        - tsv_path: path to the episode file
+    Returns:
+        - list of concatanated words
+    """
+    data = read_tsv(tsv_path)
+    stimuli_data = data["word"].apply(
+        lambda x: x.translate(
+            str.maketrans("", "", string.punctuation),
+        ).lower(),
+    )
+
+    return " ".join(stimuli_data)
+
+
+# def split_episodes(
+#     bold_dir: str,
+#     stimuli_dir: str,
+#     atlas: str,
+#     parcel: str,
+#     subject_id: str,
+#     n_split: int,
+#     random_state: int = None,
+#     test_set: str = "s03",
+#     seasons: list[str] = ["s01", "s02", "s03", "s04", "s05", "s06"],
+#     seasons_sub_04: list[str] = ["s01", "s02", "s03", "s04"],
+# ) -> tuple:
+#     """.
+
+#     Assigns subject's runs to train, validation and test sets
+#     """
+#     sub_h5_fmri = h5py.File(
+#         f"{bold_dir}/{atlas}_{parcel}/{subject_id}/func/"
+#         f"{subject_id}_task-friends_space-MNI152NLin2009cAsym_"
+#         f"atlas-{atlas}_desc-{parcel}_timeseries.h5",
+#         "r",
+#     )
+
+#     # Season 3 held out for test set
+#     test_fmri_set = []
+#     for ses in sub_h5_fmri:
+#         test_fmri_set += [
+#             x for x in sub_h5_fmri[ses] if x.split("-")[-1][:3] == test_set
+#         ]
+
+
+#     test_stimuli= Path(data_config.stimuli_dir) / f"friends_{test_set}_embeddings.h5"
+
+#     with h5py.File(test_stimuli, "r") as file:
+#         for episodes in file:
+
+
+# # Remaining runs assigned to train and validation sets
+# r = np.random.RandomState(random_state)  # select season for validation set
+
+# if subject_id == "sub-04":
+#     val_season = r.choice(seasons_sub_04.remove(test_set), 1)[0]
+# else:
+#     val_season = r.choice(seasons.remove(test_set), 1)[0]
+# val_fmri_set = []
+# for ses in sub_h5_fmri:
+#     val_fmri_set += [
+#         x for x in sub_h5_fmri[ses] if x.split("-")[-1][:3] == val_season
+#     ]
+# train_fmri_set = []
+# for ses in sub_h5_fmri:
+#     train_fmri_set += [
+#         x
+#         for x in sub_h5_fmri[ses]
+#         if x.split("-")[-1][:3] not in ["s03", val_season]
+#     ]
+# train_fmri_set = sorted(train_fmri_set)
+
+# sub_h5_fmri.close()
+
+# # Assign consecutive train set episodes to cross-validation groups
+# lts = len(train_fmri_set)
+# train_groups = (
+#     np.floor(np.arange(lts) / (lts / n_split)).astype(int).tolist()
+# )
+
+
+# return train_groups, train_fmri_set, val_fmri_set, test_fmri_set
 
 
 # def get_linearmodel(name, alpha=1, alpha_min=-3, alpha_max=8, nb_alphas=10):
