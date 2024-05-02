@@ -110,9 +110,7 @@ class DynamicNet:
             self.connectivity_temperature -= 0.1
 
     def mutate(self: "DynamicNet") -> None:  # noqa: D102
-        logging.debug("Starting mutation.")
         self.mutate_parameters()
-        logging.debug("Mutated parameters.")
         if self.num_prune_mutations < 1:
             rand_num = np.random.uniform()
             num_prune_mutations = int(rand_num < self.num_prune_mutations)
@@ -120,7 +118,6 @@ class DynamicNet:
             num_prune_mutations = int(self.num_prune_mutations)
         for _ in range(num_prune_mutations):
             self.prune_node()
-            logging.debug("Pruned node.")
         if self.num_grow_mutations < 1:
             rand_num = np.random.uniform()
             num_grow_mutations = int(rand_num < self.num_grow_mutations)
@@ -129,7 +126,6 @@ class DynamicNet:
         node_to_connect_with = None
         for _ in range(num_grow_mutations):
             node_to_connect_with = self.grow_node(node_to_connect_with)
-            logging.debug("Grew node.")
 
     def grow_node(  # noqa: D102
         self: "DynamicNet",
@@ -145,6 +141,7 @@ class DynamicNet:
         elif role == "output":
             self.nodes.output.append(new_node)
         else:  # role == 'hidden'
+            logging.debug("1")
             in_node_1 = out_node = None
             if node_to_connect_with:
                 from_to = random.choice(["from", "to"])  # noqa: S311
@@ -153,18 +150,24 @@ class DynamicNet:
             receiving_nodes_set = OrderedSet(self.nodes.receiving)
             if not in_node_1:
                 in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
+            logging.debug("2")
             self.grow_connection(in_node_1, new_node)
+            logging.debug("2a")
             in_node_2 = in_node_1.find_nearby_node(
                 receiving_nodes_set,
                 self.connectivity_temperature,
             )
+            logging.debug("3")
             self.grow_connection(in_node_2, new_node)
+            logging.debug("4")
             if not out_node:
                 out_node = new_node.find_nearby_node(
                     OrderedSet(self.nodes.hidden + self.nodes.output),
                     self.connectivity_temperature,
                 )
+            logging.debug("5")
             self.grow_connection(new_node, out_node)
+            logging.debug("6")
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
         # self.weights.append(new_node.weights)
