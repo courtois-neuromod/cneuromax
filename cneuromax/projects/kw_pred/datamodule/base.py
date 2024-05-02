@@ -65,10 +65,11 @@ class KWPredDataModule(BaseDataModule):
             stage: Current stage type.
         """
         if stage == "fit":
-            self.datasets.train, self.datasets.val = random_split(
-                dataset=self.dataset,
-                lengths=self.train_val_split,
-            )
+            self.datasets.train = self.datasets.val = self.dataset
+            # self.datasets.train, self.datasets.val = random_split(
+            #     dataset=self.dataset,
+            #     lengths=self.train_val_split,
+            # )
         else:  # stage == "test":
             try:
                 self.datasets.test = self.datasets.val
