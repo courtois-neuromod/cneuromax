@@ -184,6 +184,7 @@ def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
     plt.figure()
     plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
     plt.axis("off")
+    plt.ylim(-1, 1)
     canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
     canvas.draw()
     data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]
