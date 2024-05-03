@@ -5,7 +5,7 @@ from typing import Annotated as An
 
 import torch
 import torch.nn.functional as f
-from jaxtyping import Float32, Int64
+from jaxtyping import Float, Int
 from torch import Tensor
 from torchrl.data.tensor_specs import ContinuousBox
 from torchrl.envs.libs.gym import GymEnv
@@ -67,8 +67,8 @@ class Agent(BaseAgent):  # noqa: D101
 
     def __call__(
         self: "Agent",
-        x: Float32[Tensor, " obs_size"],
-    ) -> Float32[Tensor, " act_size"] | Int64[Tensor, " act_size"]:
+        x: Float[Tensor, " obs_size"],
+    ) -> Float[Tensor, " act_size"] | Int[Tensor, " act_size"]:
         """Forward pass.
 
         Args:
@@ -79,23 +79,16 @@ class Agent(BaseAgent):  # noqa: D101
         """
         x: list[float] = x.tolist()
         x: list[float] = self.net(x)
-        x: Float32[Tensor, " act_size"] = torch.tensor(x)
-        x: (
-            Float32[
-                Tensor,
-                " act_size",
-            ]
-            | Int64[
-                Tensor,
-                " act_size",
-            ]
-        ) = self.net_to_env(x=x)
+        x: Float[Tensor, " act_size"] = torch.tensor(x)
+        x: Float[Tensor, " act_size"] | Int[Tensor, " act_size"] = (
+            self.net_to_env(x=x)
+        )
         return x
 
     def net_to_env(
         self: "Agent",
-        x: Float32[Tensor, " act_size"],
-    ) -> Float32[Tensor, " act_size"] | Int64[Tensor, " act_size"]:
+        x: Float[Tensor, " act_size"],
+    ) -> Float[Tensor, " act_size"] | Int[Tensor, " act_size"]:
         """Processes the network output before feeding it to the env.
 
         Args:
@@ -105,20 +98,20 @@ class Agent(BaseAgent):  # noqa: D101
             The network output processed for the env.
         """
         if self.output_mode == "discrete":
-            x_d: Float32[Tensor, " act_size"] = torch.softmax(input=x, dim=0)
-            x_d: Int64[Tensor, " "] = torch.multinomial(
+            x_d: Float[Tensor, " act_size"] = torch.softmax(input=x, dim=0)
+            x_d: Int[Tensor, " "] = torch.multinomial(
                 input=x_d,
                 num_samples=1,
             ).squeeze()
             # Turn the integer into a one-hot vector.
-            x_d: Int64[Tensor, " act_size"] = f.one_hot(
+            x_d: Int[Tensor, " act_size"] = f.one_hot(
                 x_d,
                 num_classes=self.num_actions,
             )
             return x_d
         else:  # self.output_mode == "continuous"  # noqa: RET505
-            x_c: Float32[Tensor, " act_size"] = torch.tanh(input=x)
-            x_c: Float32[Tensor, " act_size"] = (
+            x_c: Float[Tensor, " act_size"] = torch.tanh(input=x)
+            x_c: Float[Tensor, " act_size"] = (
                 x_c * (self.output_high - self.output_low) / 2
                 + (self.output_high + self.output_low) / 2
             )

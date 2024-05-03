@@ -1,5 +1,6 @@
 """:class:`NodeList` & :class:`Node`."""
 
+import logging
 import random
 from collections.abc import Iterator
 from dataclasses import dataclass, field
@@ -109,7 +110,11 @@ class Node:
 
     def __repr__(self: "Node") -> str:  # noqa: D105
         node_inputs: tuple[Any, ...] = tuple(
-            "x" if self.role == "input" else node.uid for node in self.in_nodes
+            (
+                "x"
+                if self.role == "input"
+                else (node.uid for node in self.in_nodes)
+            ),
         )
         node_outputs: tuple[Any, ...] = tuple(
             node.uid for node in self.out_nodes
@@ -117,17 +122,14 @@ class Node:
         if self.role == "output":
             node_outputs = ("y", *node_outputs)
         return (
-            str(node_inputs)
-            + "->"
-            + str(self.uid)
-            + "->"
-            + str(("y", *node_outputs))
+            str(node_inputs) + "->" + str(self.uid) + "->" + str(node_outputs)
         )
 
     def find_nearby_node(
         self: "Node",
         nodes_considered: OrderedSet["Node"],
         connectivity_temperature: float,
+        purpose: An[str, one_of("connect with", "connect to")],
     ) -> "Node":
         """Finds a nearby node to connect to/from.
 
@@ -141,6 +143,13 @@ class Node:
         found = False
         # Start with nodes within distance of 1 from the original node.
         nodes_at_distance_i = OrderedSet(self.in_nodes + self.out_nodes)
+        for node in nodes_considered.copy():
+            if node is self or (
+                purpose == "connect to"
+                and node.role != "input"
+                and node.num_in_nodes == 3  # noqa: PLR2004
+            ):
+                nodes_considered.remove(node)  # type: ignore[arg-type]
         while not found:
             nodes_considered_at_distance_i = (
                 nodes_at_distance_i & nodes_considered
@@ -167,7 +176,7 @@ class Node:
                 # iteration.
                 if nodes_at_distance_i == nodes_at_distance_i_plus_1:
                     nodes_at_distance_i = OrderedSet(nodes_considered)
-                    connectivity_temperature = 1
+                    connectivity_temperature = 0
                 else:
                     nodes_at_distance_i = nodes_at_distance_i_plus_1
         return nearby_node
@@ -186,10 +195,12 @@ class Node:
         if i in (0, 1):
             node.weights[1] = node.weights[2]
         node.weights[2] = 0
+        node.num_in_nodes -= 1
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
     def update_mean_std(self: "Node", x: float) -> None:  # noqa: D102
+        self.n += 1
         temp_m = self.mean + (x - self.mean) / self.n
         temp_v = self.v + (x - self.mean) * (x - temp_m)
         self.v = temp_v
@@ -206,11 +217,10 @@ class Node:
         network's "forward" pass.
         """
         x = [node.output for node in self.in_nodes]
-        x: float = float(np.dot(x, self.weights))
+        x: float = float(np.dot(x, self.weights[: len(x)]))
         self.update_mean_std(x)
         x = (x - self.mean) / (self.std + (self.std == 0))
         self.cached_output = x
-        self.n += 1
 
     def update_output(self: "Node") -> None:  # noqa: D102
         self.output = self.cached_output

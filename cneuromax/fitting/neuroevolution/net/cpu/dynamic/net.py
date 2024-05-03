@@ -141,7 +141,6 @@ class DynamicNet:
         elif role == "output":
             self.nodes.output.append(new_node)
         else:  # role == 'hidden'
-            logging.debug("1")
             in_node_1 = out_node = None
             if node_to_connect_with:
                 from_to = random.choice(["from", "to"])  # noqa: S311
@@ -150,24 +149,22 @@ class DynamicNet:
             receiving_nodes_set = OrderedSet(self.nodes.receiving)
             if not in_node_1:
                 in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
-            logging.debug("2")
             self.grow_connection(in_node_1, new_node)
-            logging.debug("2a")
             in_node_2 = in_node_1.find_nearby_node(
-                receiving_nodes_set,
-                self.connectivity_temperature,
+                nodes_considered=receiving_nodes_set,
+                connectivity_temperature=self.connectivity_temperature,
+                purpose="connect with",
             )
-            logging.debug("3")
             self.grow_connection(in_node_2, new_node)
-            logging.debug("4")
             if not out_node:
                 out_node = new_node.find_nearby_node(
-                    OrderedSet(self.nodes.hidden + self.nodes.output),
-                    self.connectivity_temperature,
+                    nodes_considered=OrderedSet(
+                        self.nodes.hidden + self.nodes.output,
+                    ),
+                    connectivity_temperature=self.connectivity_temperature,
+                    purpose="connect to",
                 )
-            logging.debug("5")
             self.grow_connection(new_node, out_node)
-            logging.debug("6")
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
         # self.weights.append(new_node.weights)

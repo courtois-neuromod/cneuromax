@@ -10,7 +10,7 @@ hydra:
     tasks_per_node: 3
 
 config:
-  agents_per_task: 6
+  agents_per_task: 4
   total_num_gens: 250
 
 space:
