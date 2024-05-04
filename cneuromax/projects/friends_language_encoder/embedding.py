@@ -1,6 +1,7 @@
 """."""
 
 import os
+import pickle
 import string
 from collections import defaultdict
 from dataclasses import dataclass
@@ -42,8 +43,8 @@ class DataConfigBase:
     """."""
 
     sweep: str = "overrides#lr~0.0001161#wd~0.001303"
-    tsv_path: str = "/scratch/ibilgin/Dropbox/cneuromax/stimuli/"
-    stimuli_dir: str = "/scratch/ibilgin/Dropbox/cneuromax/stimuli/gpt2"
+    tsv_path: str = "./data/friends_language_encoder/stimuli/"
+    stimuli_dir: str = "./data/friends_language_encoder/stimuli/gpt2"
     base_model_name: str = "gpt2"
     task_type = "CAUSAL_LM"
     inference_mode = False
@@ -94,7 +95,7 @@ class PrepareTokenizedTextBatches:
             untokenized words with the subtokens.
         """
         eos_token = "<|endoftext|>"
-        untokenized_text = preprocess_words()
+        untokenized_text = preprocess_words(self.tsv_path)
         tokenized_text = self.tokenizer.tokenize(untokenized_text)
         mapping = defaultdict(list)
         untokenized_text_index = 0
@@ -174,7 +175,7 @@ class PrepareTokenizedTextBatches:
         end_token: str = "<|endoftext|>",
     ) -> Any:
         """."""
-        stimuli = self.preprocess_words()
+        stimuli = preprocess_words(self.tsv_path)
 
         if self.context_size is None:
             self.max_seq_length = self.max_seq_length
@@ -307,16 +308,23 @@ class ExtractEmbedding:
                     activations[:, index, :]
                     for index in self.mapping[word_index]
                 ],
-            )
-            word_activation = np.vstack(word_activation)
-            features.append(np.mean(word_activation, axis=0).reshape(-1))
+            )  # this is just a list of stacked lists
+            word_activation = np.vstack(
+                word_activation,
+            )  # this stucks lists of actications of sub-tokens of a word and convert it into a numpy array
+
+            features.append(
+                np.mean(word_activation, axis=0).reshape(-1)
+            )  # here is a list keep appending
+            # mean over subtokens of a word taken to estimate the word activation.
+
             # list of elements of shape:
             # (#nb_layers, hidden_state_dimension).reshape(-1)
             # After vstacking it will be of shape:
             # (batch_size, #nb_layers*hidden_state_dimension)
 
         return pd.DataFrame(
-            np.vstack(features),
+            np.vstack(features),  # converts to a numpy array
             columns=[
                 "hidden_state-layer-{}-{}".format(layer, index)
                 for layer in np.arange(1 + self.num_hidden_layers)
@@ -427,11 +435,11 @@ def prepare_embedding_h5py(
             season=season,
             outfile=outfile_name,
         )
+
         # Create a new HDF5 file
         outfile = (
             Path(data_config.stimuli_dir) / f"friends_{season}_embeddings.h5"
         )
-
         with h5py.File(outfile, "w") as file:
             for episode in episode_list:
                 print(episode)
@@ -442,3 +450,111 @@ def prepare_embedding_h5py(
                     finetuned=False,
                 )
                 file.create_dataset(episode, data=feature)
+
+
+def prepare_embedding_pkl(
+    data_config,
+):
+
+    # # prepare hdf5 bundles that includes extracted features
+    # # and fmri time series per episodes
+
+    seasons = list_seasons(data_config.tsv_path)
+    print(seasons)
+
+    # create embeddigns
+    for season in seasons:
+        features = pd.DataFrame()
+        # creates a h5py file per season including its
+        # all episodes embeddings.
+        comp_args, outfile_name = set_output(
+            season=season,
+            output_dir=data_config.stimuli_dir,
+        )
+        episode_list = list_episodes(
+            idir=data_config.tsv_path,
+            season=season,
+            outfile=outfile_name,
+        )
+        outfile = (
+            Path(data_config.stimuli_dir) / f"friends_{season}_embeddings.pkl"
+        )
+
+        for episode in episode_list:
+            print(episode)
+            features[episode] = prepare_embeddings(
+                data_config=data_config,
+                season=season,
+                episode=episode,
+                finetuned=False,
+            )
+
+        with open(outfile, "wb") as f:
+            pickle.dump(features, f)
+
+
+def get_layer_embeddding(data_config):
+
+    seasons = list_seasons(data_config.tsv_path)
+    print(seasons)
+    for season in seasons:
+        comp_args, outfile_name = set_output(
+            season=season,
+            output_dir=data_config.stimuli_dir,
+        )
+        episode_list = list_episodes(
+            idir=data_config.tsv_path,
+            season=season,
+            outfile=outfile_name,
+        )
+        print(episode_list)
+        # Create a new HDF5 file
+        outfile = (
+            Path(data_config.stimuli_dir)
+            / f"friends_{season}_layer_{data_config.target_layer - 1}_embeddings.h5"
+        )
+        print(outfile)
+        with h5py.File(outfile, "w") as file:
+            for episode in episode_list:
+                print(episode)
+                feature = prepare_embeddings(
+                    data_config=data_config,
+                    season=season,
+                    episode=episode,
+                    finetuned=False,
+                )
+
+                layer_features = [
+                    row[
+                        (data_config.target_layer - 1)
+                        * data_config.feature_count : data_config.target_layer
+                        * data_config.feature_count
+                    ]
+                    for _, row in feature.iterrows()
+                ]
+                print("creating the file")
+
+                file.create_dataset(episode, data=layer_features)
+
+
+def create_train_val_test_stimuli(data_config, season: str):
+    """."""
+
+    season_stimuli = os.path.join(
+        data_config.stimuli_dir,
+        f"friends_{season}_layer_{data_config.target_layer-1}_embeddings.h5",
+    )
+    word_feature_matrix = []
+
+    with h5py.File(season_stimuli, "r") as file:
+        for name in file:
+            print(name)
+            print("hey")
+            dataset = file[name][...]
+            print(len(dataset))
+            # Concatanate the word vectors from all episodes
+            word_feature_matrix.extend(
+                dataset,
+            )
+
+    return word_feature_matrix
