@@ -53,7 +53,7 @@ dependencies = [
     "x-transformers==1.28.5", # Phil Wang (Lucidrain)'s Transformer library
     # Phil Wang (Lucidrain)'s Diffusion model library
     # `ema-pytorch` is a dependency
-    "denoising-diffusion-pytorch==1.11.1",
+    "denoising-diffusion-pytorch==2.0.0",
      # Phil Wang (Lucidrain)'s Vector Quantization library
     "vector-quantize-pytorch==1.14.12",
     "peft==0.10.0", #PEFT methods published by Hugging Face
