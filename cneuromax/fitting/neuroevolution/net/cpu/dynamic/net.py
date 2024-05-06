@@ -20,10 +20,12 @@ class DynamicNetConfig:
     Args:
         num_inputs: Self-explanatory.
         num_outputs: Self-explanatory.
+        tensorized: .
     """
 
     num_inputs: An[int, ge(1)]
     num_outputs: An[int, ge(1)]
+    tensorized: bool = False
 
 
 class DynamicNet:
@@ -74,7 +76,7 @@ class DynamicNet:
         self.config = config
         self.nodes = NodeList()
         self.total_nb_nodes_grown = 0
-        # self.weights: list[list[float]] = [[]]
+        self.weights: list[list[float]] = [[]]
         self.initialize_architecture()
         self.num_grow_mutations: float = 1.0
         self.num_prune_mutations: float = 0.5
@@ -167,7 +169,7 @@ class DynamicNet:
             self.grow_connection(new_node, out_node)
             self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
-        # self.weights.append(new_node.weights)
+        self.weights.append(new_node.weights)
         return new_node
 
     def grow_connection(  # noqa: D102
@@ -239,11 +241,14 @@ class DynamicNet:
         Returns:
             Output values.
         """
-        for _ in range(int(self.num_network_passes_per_input)):
-            for x_i, input_node in zip(x, self.nodes.input, strict=True):
-                input_node.output = x_i
-            for node in self.nodes.hidden + self.nodes.output:
-                node.compute_and_cache_output()
-            for node in self.nodes.hidden + self.nodes.output:
-                node.update_output()
-        return [node.output for node in self.nodes.output]
+        if not self.config.tensorized:
+            for _ in range(int(self.num_network_passes_per_input)):
+                for x_i, input_node in zip(x, self.nodes.input, strict=True):
+                    input_node.output = x_i
+                for node in self.nodes.hidden + self.nodes.output:
+                    node.compute_and_cache_output()
+                for node in self.nodes.hidden + self.nodes.output:
+                    node.update_output()
+            return [node.output for node in self.nodes.output]
+        else:
+            return []
