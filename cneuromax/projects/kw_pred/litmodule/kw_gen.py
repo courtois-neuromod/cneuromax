@@ -83,7 +83,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             pattern="BS SL -> BS 1 SL",
         )
         y = data["AE"] if "AE" in data else data["AF"]
-
+        y = torch.zeros_like(y)
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
         t = torch.randint(
