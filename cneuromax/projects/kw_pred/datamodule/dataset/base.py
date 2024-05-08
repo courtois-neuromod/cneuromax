@@ -162,7 +162,7 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
 
     def __len__(self: "KWPredDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
-        return 9  # int(self.num_data_points * self.config.dataset_percentage)
+        return int(self.num_data_points * self.config.dataset_percentage)
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""

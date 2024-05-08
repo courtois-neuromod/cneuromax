@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import wandb
-from einops import rearrange, reduce
+from einops import rearrange
 from ema_pytorch import EMA
 from jaxtyping import Float
 from torch import Tensor
@@ -83,7 +83,6 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             pattern="BS SL -> BS 1 SL",
         )
         y = data["AE"] if "AE" in data else data["AF"]
-        y = torch.zeros_like(y)
         if stage == "val" and self.config.log_val_wandb:
             self.save_val_data(x=x, y=y)
         t = torch.randint(
