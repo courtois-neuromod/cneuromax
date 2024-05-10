@@ -78,9 +78,12 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
-        x: Float[Tensor, " BS 1 4000"] = rearrange(
-            tensor=data["KW BL"],
-            pattern="BS SL -> BS 1 SL",
+        x: Float[Tensor, " BS 1 4000"] = (
+            rearrange(
+                tensor=data["KW BL"],
+                pattern="BS SL -> BS 1 SL",
+            )
+            * 1000
         )
         y = data["AE"] if "AE" in data else data["AF"]
         if stage == "val" and self.config.log_val_wandb:
@@ -183,7 +186,7 @@ def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
     plt.figure()
     plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
     plt.axis("off")
-    plt.ylim(-1, 1)
+    plt.ylim(-3, 3)
     canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
     canvas.draw()
     data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]

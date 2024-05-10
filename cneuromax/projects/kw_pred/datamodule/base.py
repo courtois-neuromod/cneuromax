@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Annotated as An
 
-from torch.utils.data import random_split
+from torch.utils.data import Subset
 
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
@@ -65,9 +65,16 @@ class KWPredDataModule(BaseDataModule):
             stage: Current stage type.
         """
         if stage == "fit":
-            self.datasets.train, self.datasets.val = random_split(
-                dataset=self.dataset,
-                lengths=self.train_val_split,
+            last_train_idx = int(
+                len(self.dataset) * (1 - self.config.val_percentage),
+            )
+            self.datasets.train = Subset(
+                self.dataset,
+                indices=range(last_train_idx),
+            )
+            self.datasets.val = Subset(
+                self.dataset,
+                indices=range(last_train_idx, len(self.dataset)),
             )
         else:  # stage == "test":
             try:

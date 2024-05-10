@@ -1,5 +1,6 @@
 """:func:`create_load_function` and its helper functions."""
 
+import random
 from collections.abc import Callable
 from pathlib import Path
 
@@ -32,6 +33,7 @@ def create_load_function(
     overlapping_content_ids = get_overlapping_content_ids(
         paths=paths,
     )
+    random.shuffle(overlapping_content_ids)
     data_map = (
         create_conditional_generation_data_map(
             paths=paths,
