@@ -55,7 +55,7 @@ dependencies = [
     # `ema-pytorch` is a dependency
     "denoising-diffusion-pytorch==2.0.0",
      # Phil Wang (Lucidrain)'s Vector Quantization library
-    "vector-quantize-pytorch==1.14.22",
+    "vector-quantize-pytorch==1.14.23",
     "accelerate==0.30.1", # PEFT crashing w/ 0.30.0
     "peft==0.10.0", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
