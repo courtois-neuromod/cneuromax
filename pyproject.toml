@@ -57,7 +57,7 @@ dependencies = [
      # Phil Wang (Lucidrain)'s Vector Quantization library
     "vector-quantize-pytorch==1.14.23",
     "accelerate==0.30.1", # PEFT crashing w/ 0.30.0
-    "peft==0.10.0", #PEFT methods published by Hugging Face
+    "peft==0.11.0", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.6", # Inter-process communication
     "torchrl==0.4.0", # For reinforcement/imitation Learning tasks
