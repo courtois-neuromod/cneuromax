@@ -43,142 +43,104 @@ import glob
 from dataclasses import dataclass
 from pathlib import Path
 
-import h5py
-import pandas as pd
-
 from cneuromax.projects.friends_language_encoder.embedding import (
     DataConfigBase,
-    create_train_val_test_stimuli,
     get_layer_embeddding,
-    prepare_embedding_pkl,
     prepare_embeddings,
 )
 from cneuromax.projects.friends_language_encoder.utils import (
-    build_input,
-    build_output,
-    build_text,
     list_episodes,
     split_episodes,
-    test_ridgeReg,
-    train_ridgeReg,
 )
 
-
-@dataclass
-class DataConfig(DataConfigBase):
-    """."""
-
-    bold_dir: str = "/data/friends_language_encoder/fmri_data/"
-    stimuli_dir: str = "./data/friends_language_encoder/stimuli/gpt2"
-    output_dir: str = "./data/friends_language_encoder/ridge_regression"
-    tsv_path: str = "./data/friends_language_encoder/stimuli/"
-    fmri_file: str = (
-        "sub-03_task-friends_space-MNI152NLin2009cAsym_atlas-MIST_desc-444_timeseries.h5"
-    )
-    target_layer: int = 13
-    atlas: str = "MIST"
-    parcel: str = "444"
-    subject_id: str = "sub-03"
-    n_split: int = 7
-    random_state: int = 42
-    test_season = "s03"  # season allocated for test
-    TR_delay = (
-        5  # "How far back in time (in TRs) does the input window start "
-    )
-    # "in relation to the TR it predicts. E.g., back = 5 means that input "
-    # "features are sampled starting 5 TRs before the target BOLD TR onset",
-    duration = 3
-    # "Duration of input time window (in TRs) to predict a BOLD TR. "
-    # "E.g., input_duration = 3 means that input is sampled over 3 TRs "
-    # "to predict a target BOLD TR.",
-
-
 seasons = ["s01", "s02", "s03", "s04", "s05", "s06"]
-
-data_config = DataConfig()
+print(seasons)
+data_config = DataConfigBase()
 
 # get layer embeddings
 
 # get train and test fmri and stimuli sets.
-train_groups, train_runs, val_runs, test_runs, val_season = split_episodes(
-    data_config,
-)
+# train_groups, train_runs, val_runs, test_runs, val_season = split_episodes(
+#     data_config,
+# )
+print("starting embedding extraction")
 
-# get_layer_embeddding(data_config)
-
-
-training_seasons = list(
-    filter(lambda x: x not in [data_config.test_season, val_season], seasons),
-)
+get_layer_embeddding(data_config)
+print("done embedding extraction")
 
 
-# for season in ["s02"]:
-#     stimuli_file = (
-#         Path(data_config.stimuli_dir)
-#         / f"friends_{season}_layer_{data_config.target_layer - 1}_embeddings.h5"
-#     )
-#     print(stimuli_file)
-#     with h5py.File(stimuli_file, "r") as file:
-#         print("opened")
-#         for episode in file:
-#             print(file[episode])
-# #             print(episode)
+# training_seasons = list(
+#     filter(lambda x: x not in [data_config.test_season, val_season], seasons),
+# )
 
 
-# build_text(data_config, training_seasons, train_runs)
+# # for season in ["s02"]:
+# #     stimuli_file = (
+# #         Path(data_config.stimuli_dir)
+# #         / f"friends_{season}_layer_{data_config.target_layer - 1}_embeddings.h5"
+# #     )
+# #     print(stimuli_file)
+# #     with h5py.File(stimuli_file, "r") as file:
+# #         print("opened")
+# #         for episode in file:
+# #             print(file[episode])
+# # #             print(episode)
 
 
-y_train, length_train, train_groups = build_output(
-    data_config,
-    train_runs,
-    train_groups,
-)
+# # build_text(data_config, training_seasons, train_runs)
 
 
-# print(f"y_train_length: {len(y_train)}")
-# print(f"length_train: {length_train}")
-# print(f"train_groups: {train_groups}")
-# print(f"train_runs: {train_runs}")
-
-y_val, length_val, _ = build_output(
-    data_config,
-    val_runs,
-)
+# y_train, length_train, train_groups = build_output(
+#     data_config,
+#     train_runs,
+#     train_groups,
+# )
 
 
-# print(f"y_val_length: {len(y_val)}")
-# print(f"length_train: {length_val}")
-# print(f"y_val: {y_val}")
-# print(f"val_runs: {val_runs}")
-# # create train, val, test text
-x_train = build_text(
-    data_config,
-    train_runs,
-    length_train,
-)
+# # print(f"y_train_length: {len(y_train)}")
+# # print(f"length_train: {length_train}")
+# # print(f"train_groups: {train_groups}")
+# # print(f"train_runs: {train_runs}")
 
-x_val = build_text(
-    data_config,
-    val_runs,
-    length_val,
-)
+# y_val, length_val, _ = build_output(
+#     data_config,
+#     val_runs,
+# )
 
 
-model = train_ridgeReg(
-    x_train,
-    y_train,
-    train_groups,
-    data_config,
-)
+# # print(f"y_val_length: {len(y_val)}")
+# # print(f"length_train: {length_val}")
+# # print(f"y_val: {y_val}")
+# # print(f"val_runs: {val_runs}")
+# # # create train, val, test text
+# x_train = build_text(
+#     data_config,
+#     train_runs,
+#     length_train,
+# )
 
-test_ridgeReg(
-    data_config,
-    model,
-    x_train,
-    y_train,
-    x_val,
-    y_val,
-)
+# x_val = build_text(
+#     data_config,
+#     val_runs,
+#     length_val,
+# )
+
+
+# model = train_ridgeReg(
+#     x_train,
+#     y_train,
+#     train_groups,
+#     data_config,
+# )
+
+# test_ridgeReg(
+#     data_config,
+#     model,
+#     x_train,
+#     y_train,
+#     x_val,
+#     y_val,
+# )
 
 
 # test_stimuli = create_train_val_test_stimuli(data_config, test_season)

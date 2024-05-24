@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
+import torch
 from jaxtyping import Num
 from torch import Tensor
 from transformers.tokenization_utils_base import BatchEncoding
@@ -21,8 +22,8 @@ class FriendsFinetuningModel(PEFTLitModule):
         **kwargs: Any,  # noqa: ANN401, ARG002
     ) -> None:
         super().__init__(*args, **kwargs)
-        for name, param in self.nnmodule.named_parameters():
-            print(name)
+        # for name, param in self.nnmodule.named_parameters():
+        #     print(name)
 
     def step(
         self: "FriendsFinetuningModel",
@@ -67,3 +68,12 @@ class FriendsFinetuningModel(PEFTLitModule):
         logits: Tensor = out.logits
 
         return logits
+
+    # def forward(self: "FriendsFinetuningModel",
+    #             input_ids: torch.Tensor,
+    #             )-> Num[Tensor, " ..."]:
+    #     """."""
+
+    #     return self.nnmodule(input_ids,
+    #                     output_hidden_states=True)
+
