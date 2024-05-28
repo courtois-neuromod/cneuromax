@@ -37,7 +37,7 @@ dependencies = [
     "einops==0.8.0", # Makes shape transformations more readable
     "jupyterlab==4.2.1", # Jupyter notebook
     "jupyterlab-code-formatter==2.2.1", # Jupyter code formatter
-    "ipywidgets==8.1.2", # Jupyter widgets
+    "ipywidgets==8.1.3", # Jupyter widgets
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
     # Also loops while an epoch is not done syncing.
