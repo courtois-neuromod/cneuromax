@@ -1,63 +1,43 @@
 import glob
-
-# Open an existing HDF5 file
-# with h5py.File(
-#     "/sub-03/func/sub-03_task-friends_space-MNI152NLin2009cAsym_atlas-MIST_desc-444_timeseries.h5",
-#     "r",
-# ) as file:
-#     # List all groups
-#     print("Keys: %s" % file.keys())
-#     a_group_key = list(file.keys())[0]
-#     # Get the data
-#     data = list(file[a_group_key])
-# print(data)
-# dir = "./stimuli/"
-# season = "s1"
-# data = pd.DataFrame()
-# with h5py.File(f"friends_{season}_embeddings.h5", "w") as file:
-#     for x in sorted(glob.glob(f"{dir}/{season}/friends_s*.tsv")):
-#         print(x)
-#         episode = x.split("/")[-1].split(".")[0][8:15]
-#         print(episode)
-#         data[episode] = pd.read_csv(x, sep="\t")
-#     file.create_dataset(episode, data=data)
-# with h5py.File(f"friends_{season}_embeddings.h5", "r") as file:
-#     for name in file:
-#         print(name)
-# data_to_add = {
-#     "dataset1": np.random.rand(10, 10),
-#     "dataset2": np.random.rand(20, 20),
-#     "dataset3": np.random.rand(5, 5),
-# }
-# # Create a new HDF5 file
-# with h5py.File("example.h5", "w") as file:
-#     for identifier, data in data_to_add.items():
-#         print(identifier)
-#         # Create a dataset for each item
-#         file.create_dataset(identifier, data=data)
-# # Verify by reopening the file and checking contents
-# with h5py.File("example.h5", "r") as file:
-#     for name in file:
-#         print(f"Dataset {name}:")
-#         print(file[name][:])  # This prints the data in each dataset
+import os
+from collections import defaultdict
 from dataclasses import dataclass
+from functools import partial
+from pathlib import Path
 
+from datasets.arrow_dataset import Dataset as HuggingfaceDataset
+from peft.tuners.lora.config import LoraConfig
+from torch.optim import Adam
+from tqdm import tqdm
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    PreTrainedTokenizerBase,
+    get_constant_schedule,
+)
+from transformers.tokenization_utils_base import BatchEncoding
+
+from cneuromax.fitting.deeplearning.litmodule.base import (
+    BaseLitModuleConfig,
+)
 from cneuromax.projects.friends_language_encoder.embedding import (
     DataConfigBase,
-    create_train_val_test_stimuli,
+    PrepareFinetunedTokenizedBatches,
     get_layer_embeddding,
-    prepare_embedding_pkl,
     prepare_embeddings,
 )
-from cneuromax.projects.friends_language_encoder.utils import (
-    build_input,
-    build_output,
-    build_text,
-    list_episodes,
-    split_episodes,
-    test_ridgeReg,
-    train_ridgeReg,
+from cneuromax.projects.friends_language_encoder.litmodule_peft import (
+    FriendsFinetuningModel,
 )
+from cneuromax.projects.friends_language_encoder.utils import (
+    list_episodes,
+    list_seasons,
+    preprocess_words,
+    set_output,
+    split_episodes,
+)
+
+from .utils import group_texts_hf
 
 
 @dataclass
@@ -79,6 +59,9 @@ class DataConfig(DataConfigBase):
     fmri_file: str = (
         "sub-03_task-friends_space-MNI152NLin2009cAsym_atlas-MIST_desc-444_timeseries.h5"
     )
+    word_tsv_path: str = (
+        "/scratch/ibilgin/Dropbox/cneuromax/data/friends_language_encoder/stimuli/word_alignment/"
+    )
     target_layer: int = 13
     atlas: str = "MIST"
     parcel: str = "444"
@@ -96,90 +79,109 @@ class DataConfig(DataConfigBase):
     # "E.g., input_duration = 3 means that input is sampled over 3 TRs "
     # "to predict a target BOLD TR.",
 
+data_config = DataConfig()
+
+from transformers import (
+    AutoModelForCausalLM,
+    AutoTokenizer,
+    PreTrainedTokenizerBase,
+    get_constant_schedule,
+)
+
+from cneuromax.projects.friends_language_encoder.activation import (
+    AttachLayerHook,
+)
+from cneuromax.projects.friends_language_encoder.utils import (
+    list_episodes,
+    list_seasons,
+    preprocess_words,
+    set_output,
+)
 
 seasons = ["s01", "s02", "s03", "s04", "s05", "s06"]
 
-data_config = DataConfig()
-
-# get layer embeddings
-
-# get train and test fmri and stimuli sets.
-train_groups, train_runs, val_runs, test_runs, val_season = split_episodes(
-    data_config,
-)
-
-# get_layer_embeddding(data_config)
 
 
-training_seasons = list(
-    filter(lambda x: x not in [data_config.test_season, val_season], seasons),
-)
+tokenizer = AutoTokenizer.from_pretrained(data_config.base_model_name)
+for season in seasons[:1]:
+    print(season)
+    comp_args, outfile_name = set_output(
+        season=season,
+        output_dir=data_config.embedding_dir,
+    )
+    episode_list = list_episodes(
+        idir=data_config.word_tsv_path,
+        season=season,
+        outfile=outfile_name,
+    )
+    print(episode_list)
+
+    for episode in episode_list[:1]:
+        print(episode)
+
+        model_config = BaseLitModuleConfig()
+        peft_config = LoraConfig(
+            task_type=data_config.task_type,
+            inference_mode=data_config.inference_mode,
+            r=data_config.r,
+            lora_alpha=data_config.lora_alpha,
+            lora_dropout=data_config.lora_dropout,
+            fan_in_fan_out=data_config.fan_in_fan_out,
+        )
 
 
-# for season in ["s02"]:
-#     stimuli_file = (
-#         Path(data_config.stimuli_dir)
-#         / f"friends_{season}_layer_{data_config.target_layer - 1}_embeddings.h5"
-#     )
-#     print(stimuli_file)
-#     with h5py.File(stimuli_file, "r") as file:
-#         print("opened")
-#         for episode in file:
-#             print(file[episode])
-# #             print(episode)
+        nnmodule = AutoModelForCausalLM.from_pretrained(
+            data_config.base_model_name,
+        )
 
+        ckp_path: Path = (
+            Path(data_config.model_dir)
+            / data_config.base_model_name
+            / f"{data_config.sweep}"
+            / "lightning"
+            / "last.ckpt"
+        )
 
-# build_text(data_config, training_seasons, train_runs)
+        model = FriendsFinetuningModel.load_from_checkpoint(
+            ckp_path,
+            config=model_config,
+            peft_config=peft_config,
+            nnmodule=nnmodule,
+            optimizer=partial(Adam),
+            scheduler=partial(get_constant_schedule),
+        )
+        # for name, module in model.named_children():
+        #     print(f"{name}: {type(module)}")
 
+        # for name, module in model.named_modules():
+        #     print(f"{name}: {type(module)}")
 
-y_train, length_train, train_groups = build_output(
-    data_config,
-    train_runs,
-    train_groups,
-)
+        # for name, module in model.
+        #     print(f"{name}: {type(module)}")
 
+        # my_activations = AttachLayerHook(model, layer_name="h.11.attn" )
 
-# print(f"y_train_length: {len(y_train)}")
-# print(f"length_train: {length_train}")
-# print(f"train_groups: {train_groups}")
-# print(f"train_runs: {train_runs}")
+        # all_activations = my_activations.get_activations()
+        # print(all_activations)
+        # text = PrepareFinetunedTokenizedBatches(
+        #     tokenizer=tokenizer,
+        #     tsv_path=data_config.word_tsv_path,
+        #     season=season,
+        #     episode=episode,
+        #     context_size=data_config.context_size,
+        #     connection_character="Ġ",
+        # )
+        # print("text class is ready.")
 
-y_val, length_val, _ = build_output(
-    data_config,
-    val_runs,
-)
+        # hf_grouped_and_tokenized_dataset,hf_tokenized_dataset_tmp= text.tokenize_batch()
+        # print("mapping is done.")
 
+        # input_ids, indexes, tokens = text.get_text_batches()
 
-# print(f"y_val_length: {len(y_val)}")
-# print(f"length_train: {length_val}")
-# print(f"y_val: {y_val}")
-# print(f"val_runs: {val_runs}")
-# # create train, val, test text
-x_train = build_text(
-    data_config,
-    train_runs,
-    length_train,
-)
-
-x_val = build_text(
-    data_config,
-    val_runs,
-    length_val,
-)
-
-
-model = train_ridgeReg(
-    x_train,
-    y_train,
-    train_groups,
-    data_config,
-)
-
-test_ridgeReg(
-    data_config,
-    model,
-    x_train,
-    y_train,
-    x_val,
-    y_val,
-)
+            # embeddings = ExtractEmbedding(
+            #     indexes=indexes,
+            #     mapping=mapping,
+            #     input_ids=input_ids,
+            #     model=model,
+            #     data_config=data_config,
+            # )

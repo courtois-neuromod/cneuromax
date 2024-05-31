@@ -4,8 +4,9 @@ from abc import ABC
 from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
-from typing import Any, final
+from typing import Any, Optional, Tuple, final
 
+import torch
 from jaxtyping import Num
 from torch import Tensor, nn
 from torch.optim import Optimizer
@@ -113,7 +114,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         self: "BaseLitModule",
         data: Batched_data_type,
         stage: An[str, one_of("train", "val", "test", "predict")],
-    ) -> Num[Tensor, " ..."]:
+    ) -> Tuple[torch.Tensor, Optional[Any]]:
         """Generic stage wrapper around the :meth:`step` method.
 
         Verifies that the :meth:`step` method exists and is callable,
@@ -129,15 +130,16 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         """
         if isinstance(data, list):
             data = tuple(data)
-        loss: Num[Tensor, " ..."] = self.step(data, stage)
+        loss, hidden_states = self.step(data, stage)
         self.log(name=f"{stage}/loss", value=loss)
-        return loss
+
+        return loss, hidden_states
 
     @final
     def training_step(
         self: "BaseLitModule",
         data: Batched_data_type,
-    ) -> Num[Tensor, " ..."]:
+    ) ->  Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
@@ -146,7 +148,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         Returns:
             The loss value(s).
         """
-        return self.stage_step(data=data, stage="train")
+        loss, _ = self.stage_step(data=data, stage="train")
+        return loss
 
     @final
     def validation_step(
@@ -157,7 +160,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         # :meth:`LightningModule.validation_step`\'s signature.
         *args: Any,  # noqa: ANN401, ARG002
         **kwargs: Any,  # noqa: ANN401, ARG002
-    ) -> Num[Tensor, " ..."]:
+    ) -> Tuple[torch.Tensor, Optional[Any]]:
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
@@ -174,7 +177,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     def test_step(
         self: "BaseLitModule",
         data: Batched_data_type,
-    ) -> Num[Tensor, " ..."]:
+    ) -> Tuple[torch.Tensor, Optional[Any]]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:

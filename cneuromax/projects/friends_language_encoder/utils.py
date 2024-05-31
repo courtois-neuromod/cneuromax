@@ -11,14 +11,6 @@ import h5py
 import numpy as np
 import pandas as pd
 from datasets.formatting.formatting import LazyBatch
-from scipy.spatial.distance import cosine
-from scipy.stats import pearsonr
-from sklearn.cluster import FeatureAgglomeration
-from sklearn.decomposition import PCA
-from sklearn.linear_model import LinearRegression, RidgeCV
-from sklearn.model_selection import GroupKFold
-from tqdm import tqdm
-from transformers import BertModel, BertTokenizer, pipeline
 
 
 def group_texts_hf(examples: Any, block_size: Any) -> Any:  # noqa:ANN401,D103
@@ -209,6 +201,22 @@ def preprocess_words(tsv_path: str) -> str:
 
     return " ".join(stimuli_data)
 
+def preprocess_stimuli(tsv_path: str) -> str:
+    """Un-punctuate, lower and combine the words like a text.
+
+    Args:
+        - tsv_path: path to the episode file
+    Returns:
+        - list of concatanated words
+    """
+    data = read_tsv(tsv_path)
+    stimuli_data = data["word"].apply(
+        lambda x: x.translate(
+            str.maketrans("", "", string.punctuation),
+        ).lower(),
+    )
+
+    return stimuli_data
 
 def split_episodes(
     data_config,

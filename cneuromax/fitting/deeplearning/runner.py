@@ -14,7 +14,7 @@ from cneuromax.fitting.deeplearning.config import (
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
 )
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule.base import BaseLitModule
 from cneuromax.fitting.deeplearning.litmodule.store import (
     store_basic_optimizer_configs,
     store_basic_scheduler_configs,

@@ -23,7 +23,7 @@ from omegaconf import OmegaConf
 from torch.distributed import ReduceOp
 
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule.base import BaseLitModule
 from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import one_of
 from cneuromax.utils.misc import can_connect_to_internet

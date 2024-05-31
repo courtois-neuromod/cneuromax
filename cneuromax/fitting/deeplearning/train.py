@@ -10,7 +10,7 @@ from cneuromax.fitting.deeplearning.config import (
     DeepLearningSubtaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule.base import BaseLitModule
 from cneuromax.fitting.deeplearning.utils.lightning import (
     instantiate_trainer,
     set_batch_size_and_num_workers,

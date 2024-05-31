@@ -14,7 +14,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
+from cneuromax.fitting.deeplearning.litmodule.base import BaseLitModule
 from cneuromax.utils.hydra_zen import (
     fs_builds,
     pfs_builds,

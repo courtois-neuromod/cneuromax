@@ -1,7 +1,7 @@
 """:class:`FriendsFinetuningModel`."""
 
 from dataclasses import dataclass, field
-from typing import Any, Literal
+from typing import Any, Literal, Optional, Tuple
 
 import torch
 from jaxtyping import Num
@@ -29,7 +29,7 @@ class FriendsFinetuningModel(PEFTLitModule):
         self: "FriendsFinetuningModel",
         batch: BatchEncoding,
         stage: Literal["train", "val", "test"],
-    ) -> Num[Tensor, " ..."]:
+    ) -> Tuple[torch.Tensor, Optional[Any]]:
         """Inputs a batch and returns the loss or logits.
 
         Args:
@@ -44,9 +44,12 @@ class FriendsFinetuningModel(PEFTLitModule):
             attention_mask=batch["attention_mask"],
             labels=batch["labels"],
         )
+        hidden_states = out.hidden_states
+        print(f"hidden_states = {hidden_states}")
+
 
         loss: Tensor = out.loss
-        return loss
+        return loss, hidden_states
 
     def predict_step(
         self: "FriendsFinetuningModel",

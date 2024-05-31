@@ -4,7 +4,7 @@ from hydra_zen import ZenStore
 from peft.tuners.lora import LoraConfig
 from transformers import AutoModelForCausalLM
 
-from cneuromax.fitting.deeplearning.litmodule import (
+from cneuromax.fitting.deeplearning.litmodule.base import (
     BaseLitModuleConfig,
 )
 from cneuromax.fitting.deeplearning.runner import DeepLearningTaskRunner
@@ -15,13 +15,18 @@ from .datamodule import (
     FriendsDataModuleConfig,
 )
 from .litmodule_peft import FriendsFinetuningModel
+from .peftmodule import (
+    PeftConfig,
+    PEFTLitModule,
+)
 
 __all__ = [
     "TaskRunner",
     "FriendsDataModule",
     "FriendsDataModuleConfig",
     "FriendsFinetuningModel",
-    "FriendsLitModuleConfig",
+    "PeftConfig",
+    "PEFTLitModule",
 ]
 
 
@@ -48,7 +53,7 @@ class TaskRunner(DeepLearningTaskRunner):
         store(
             fs_builds(
                 FriendsFinetuningModel,
-                config=BaseLitModuleConfig,
+                config=BaseLitModuleConfig(),
                 peft_config=LoraConfig(),
             ),
             name="friends_language_encoder",

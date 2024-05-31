@@ -16,7 +16,7 @@ from transformers import (
     get_constant_schedule,
 )
 
-from cneuromax.fitting.deeplearning.litmodule import (
+from cneuromax.fitting.deeplearning.litmodule.base import (
     BaseLitModuleConfig,
 )
 from cneuromax.projects.friends_language_encoder.litmodule_peft import (

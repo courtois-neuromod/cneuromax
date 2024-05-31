@@ -7,7 +7,7 @@ from typing import Any
 from peft.config import PeftConfig
 from peft.mapping import get_peft_model
 
-from cneuromax.fitting.deeplearning.litmodule import (
+from cneuromax.fitting.deeplearning.litmodule.base import (
     BaseLitModule,
 )
 

@@ -11,7 +11,7 @@ from jaxtyping import Float, Int
 from torch import Tensor
 from torchmetrics.classification import MulticlassAccuracy
 
-from cneuromax.fitting.deeplearning.litmodule import (
+from cneuromax.fitting.deeplearning.litmodule.base import (
     BaseLitModule,
     BaseLitModuleConfig,
 )
