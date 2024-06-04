@@ -1,8 +1,5 @@
 """:class:`CustomDiT` & its helper classes."""
 
-import logging
-from typing import Annotated as An
-
 import numpy as np
 import torch
 from einops import rearrange
@@ -15,7 +12,6 @@ from cneuromax.projects.kw_pred.dit.models import (
     TimestepEmbedder,
     get_1d_sincos_pos_embed_from_grid,
 )
-from cneuromax.utils.beartype import one_of
 
 
 def modulate(
@@ -108,7 +104,9 @@ class TransformerEncode1D(nn.Module):
         seq_len: See :paramref:`PatchEmbed1D.seq_len`.
         num_signals: See :paramref:`PatchEmbed1D.num_signals`.
         embd_size: See :paramref:`PatchEmbed1D.embd_size`.
-        x_embedder_num_patches: Self-explanatory.
+        target_num_patches: The "desired" number of patches. However,\
+            if this number is greater than :paramref:`seq_len`, the\
+            number of patches will be set to :paramref:`seq_len`.
         encoder: The transformer encoder.
     """
 
@@ -117,13 +115,13 @@ class TransformerEncode1D(nn.Module):
         seq_len: int,
         num_signals: int,
         embd_size: int,
-        x_embedder_num_patches: int,
+        target_num_patches: int,
         encoder: AttentionLayers,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
         self.embd_size = embd_size
-        patch_size = seq_len // x_embedder_num_patches or 1
+        patch_size = seq_len // target_num_patches or 1
         self.patch_embed = PatchEmbed1D(
             seq_len=seq_len,
             num_signals=num_signals,
@@ -308,7 +306,7 @@ class CustomDiT(nn.Module):
             seq_len=conditioning_seq_len,
             num_signals=conditioning_num_signals,
             embd_size=self.embd_size,
-            x_embedder_num_patches=self.x_embedder.num_patches,
+            target_num_patches=self.x_embedder.num_patches,
             encoder=AttentionLayers(
                 dim=self.embd_size,
                 depth=depth,
@@ -378,15 +376,21 @@ class CustomDiT(nn.Module):
         )
         ###########
 
-        """
         # Initialize patch_embed like nn.Linear (instead of nn.Conv2d):
         w = self.x_embedder.proj.weight.data
         nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
-        nn.init.constant_(self.x_embedder.proj.bias, 0)
+        nn.init.constant_(self.x_embedder.proj.bias, 0)  # type: ignore[arg-type]
 
+        """
         # Initialize label embedding table:
         nn.init.normal_(self.y_embedder.embedding_table.weight, std=0.02)
         """  # noqa: W505
+        ### NEW ###
+        # Initialize patch_embed like nn.Linear (instead of nn.Conv2d):
+        w = self.y_embedder.patch_embed.proj.weight.data
+        nn.init.xavier_uniform_(w.view([w.shape[0], -1]))
+        nn.init.constant_(self.y_embedder.patch_embed.proj.bias, 0)  # type: ignore[arg-type]
+        ###########
 
         # Initialize timestep embedding MLP:
         nn.init.normal_(self.t_embedder.mlp[0].weight, std=0.02)
