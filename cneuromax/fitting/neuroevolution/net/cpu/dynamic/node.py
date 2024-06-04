@@ -1,6 +1,5 @@
-""":class:`NodeList` & :class:`Node`."""
+""":class:`NodeList`, :class:`Node`, and :class:`ComputingNode`."""
 
-import logging
 import random
 from collections.abc import Iterator
 from dataclasses import dataclass, field
@@ -40,7 +39,6 @@ class NodeList:
     """
 
     all: list["Node"] = field(default_factory=list)
-    # indices: list[int] = field(default_factory=list)
     input: list["Node"] = field(default_factory=list)
     hidden: list["Node"] = field(default_factory=list)
     output: list["Node"] = field(default_factory=list)
@@ -51,11 +49,7 @@ class NodeList:
     def __iter__(
         self: "NodeList",
     ) -> Iterator[list["Node"] | list[list["Node"]]]:
-        """See return.
-
-        Returns:
-            An iterator over all lists of nodes.
-        """
+        """Iterator over all lists of nodes."""
         return iter(
             [
                 self.all,
@@ -70,7 +64,7 @@ class NodeList:
 
 
 class Node:
-    """Node for use in :class:`.DynamicNet`.
+    """Node (Neuron) for use in :class:`.DynamicNet`.
 
     Args:
         role: Node function in :class:`.DynamicNet`
@@ -82,12 +76,14 @@ class Node:
         in_nodes: List of nodes that send information to this node.
         out_nodes: List of nodes that receive information from this\
             node.
-        output: Value emitted from the node.
         weights: Weights to apply to received values emitted by\
             :attr:`in_nodes`. Is of length 3, as a node can have at\
             most 3 incoming connections.
         num_in_nodes: Number of incoming connections.
-        cached_output: See :meth:`compute_and_cache_output`.
+        output: Value emitted from the node.
+
+        TODO: move :attr:`output` to :class:`ComputingNode` and\
+        figure out how to type-hint ``self.in_nodes`` as ``list[self]``.
     """
 
     def __init__(
@@ -99,14 +95,10 @@ class Node:
         self.uid = uid
         self.in_nodes: list[Node] = []
         self.out_nodes: list[Node] = []
-        self.output: float = 0
         if self.role != "input":
             self.weights: list[float] = [0, 0, 0]
             self.num_in_nodes = 0
-        self.mean: float = 0
-        self.v: float = 0
-        self.std: float = 0
-        self.n: int = 0
+        self.output: float = 0
 
     def __repr__(self: "Node") -> str:  # noqa: D105
         node_inputs: tuple[Any, ...] = tuple(
@@ -199,28 +191,58 @@ class Node:
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
 
-    def update_mean_std(self: "Node", x: float) -> None:  # noqa: D102
+
+class ComputingNode(Node):
+    """:class:`Node` that handles its own computation.
+
+    Attributes:
+        mean: Mean of the node's output.
+        v: Variance of the node's output.
+        std: Standard deviation of the node's output.
+        n: Number of times the node's output has been updated.
+    """
+
+    def __init__(
+        self: "ComputingNode",
+        *args: Any,  # noqa: ANN401
+        **kwargs: Any,  # noqa: ANN401,
+    ) -> None:
+        super().__init__(*args, **kwargs)
+        self.mean: float = 0
+        self.v: float = 0
+        self.std: float = 0
+        self.n: int = 0
+
+    def update_standardization_attributes(
+        self: "ComputingNode",
+        raw_output: float,
+    ) -> None:
+        """Updates standardization attributes given :attr:`raw_output`.
+
+        Args:
+            raw_output: The node's output before normalization.
+        """
         self.n += 1
-        temp_m = self.mean + (x - self.mean) / self.n
-        temp_v = self.v + (x - self.mean) * (x - temp_m)
+        temp_m = self.mean + (raw_output - self.mean) / self.n
+        temp_v = self.v + (raw_output - self.mean) * (raw_output - temp_m)
         self.v = temp_v
         self.mean = temp_m
         self.std = np.sqrt(self.v / self.n)
 
-    def compute_and_cache_output(self: "Node") -> None:
-        """Computes the node's output from its :attr:`in_nodes`.
+    def compute_and_cache_output(self: "ComputingNode") -> None:
+        """Computes the node's output from its :attr:`in_nodes` outputs.
 
-        Non-linear transformation of :attr:`in_nodes` :attr:`output`
-        values by :attr:`weights` ``+`` :attr:`bias`, followed by a
-        ReLU activation function. The output is cached as all node
-        outputs are updated simultaneously at the end of the
-        network's "forward" pass.
+        Gathers input values (:attr:`in_nodes` output values) and
+        runs a dot product with the node's :attr:`weights`. The output
+        is then standardized and cached as all node outputs are updated
+        simultaneously at the end of the network's pass.
         """
         x = [node.output for node in self.in_nodes]
-        x: float = float(np.dot(x, self.weights[: len(x)]))
-        self.update_mean_std(x)
+        x = float(np.dot(x, self.weights[: len(x)]))
+        self.update_standardization_attributes(x)
         x = (x - self.mean) / (self.std + (self.std == 0))
         self.cached_output = x
 
-    def update_output(self: "Node") -> None:  # noqa: D102
+    def update_output(self: "ComputingNode") -> None:
+        """Sets :attr:`output` to :attr:`cached_output`."""
         self.output = self.cached_output
