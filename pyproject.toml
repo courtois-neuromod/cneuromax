@@ -72,7 +72,7 @@ dependencies = [
     "furo==2024.5.6", # Theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
     "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
-    "sphinx-autodoc-typehints==2.1.0", # More type hint customization
+    "sphinx-autodoc-typehints==2.1.1", # More type hint customization
     "myst-parser==3.0.1", # Embeds markdown in sphinx
     # fMRI libraries
     "nibabel==5.2.1",
