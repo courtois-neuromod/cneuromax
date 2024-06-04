@@ -42,7 +42,7 @@ dependencies = [
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
     # Also loops while an epoch is not done syncing.
     "h5py==3.11.0", # HDF5 file format load/save
-    "opencv-python==4.8.0.74", # Image processing
+    "opencv-python==4.10.0.82", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.2.5",
     # OPTIONAL for cneuromax/fitting/deeplearning/
