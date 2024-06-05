@@ -94,7 +94,7 @@ class WandbValLoggingLightningModule(LightningModule):
                 self.logger.experiment.log(  # type: ignore[union-attr]
                     {"val_data": copy(self.wandb_table)},
                 )
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 error_msg = (
                     "Failed to log validation data to W&B. "
                     "You might be trying to log tensors."
