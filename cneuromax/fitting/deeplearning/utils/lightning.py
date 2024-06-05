@@ -232,11 +232,18 @@ def find_good_per_device_batch_size(
         )
         logging.info("Finding good `batch_size` parameter...")
         per_device_batch_size = None
+        # Prevents the `fit` method from raising a `KeyError`, see:
+        # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
         with contextlib.suppress(KeyError):
             trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
-        # Accounts for potential GPU memory fluctuations.
+        # If any OOM occurs the value is stored in
+        # `per_device_batch_size` else in `optimal_batch_size`. 
+        optimal_per_device_batch_size = max(
+            datamodule_copy.per_device_batch_size,
+            batch_size_finder.optimal_batch_size,
+        )
         per_device_batch_size = min(
-            int(datamodule_copy.per_device_batch_size * 0.95),
+            optimal_per_device_batch_size,
             max_per_device_batch_size,
         )
     if per_device_batch_size == 0:
