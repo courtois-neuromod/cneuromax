@@ -11,18 +11,18 @@ hydra:
   launcher:
     cpus_per_task: 16
     gpus_per_node: 1
-  #sweeper:
-    #params:
+  sweeper:
+    params:
       #datamodule.dataset.config.dataset_percentage: 0.1, 0.5, 0.75, 1.0
-      #litmodule.nnmodule.depth: 3,4,5,6,7,8,9,10
+      litmodule.nnmodule.depth: 1,2,3,4,5,6,7,8,9,10
 
 config:
   device: gpu
   save_every_n_epochs: 0
 datamodule:
   config:
-    val_percentage: 0.05
-    fixed_per_device_batch_size: 256
+    val_percentage: 0.01
+    #fixed_per_device_batch_size: 256
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
   dataset:
     config:
@@ -35,7 +35,8 @@ datamodule:
       duration_seconds: 10
       dataset_percentage: 1.0
 trainer:
-  max_steps: 1000000
+  #max_steps: 1000000
+  max_time: 00:01:00:00
   #max_epochs: 2
   #accumulate_grad_batches: 2
   precision: bf16
@@ -55,7 +56,7 @@ litmodule:
     klk_seq_len: 4000
     patch_size: 10
     num_klk_corners: 1
-    depth: 3
+    #depth: 3
     audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
     # yamllint disable-line rule:line-length
     audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}
