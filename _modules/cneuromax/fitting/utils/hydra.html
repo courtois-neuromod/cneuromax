@@ -402,15 +402,15 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">launcher_container_config</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span>
     <span class="n">launcher_config_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">launcher_container_config</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>  <span class="c1"># noqa: SLF001</span>
+    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>
         <span class="n">LocalLauncher</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">LocalQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">launcher_config_dict</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>  <span class="c1"># noqa: SLF001</span>
+    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>
         <span class="n">SlurmLauncher</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">SlurmQueueConf</span><span class="p">(</span><span class="o">**</span><span class="n">launcher_config_dict</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>  <span class="c1"># noqa: SLF001</span>
+    <span class="k">if</span> <span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span> <span class="o">==</span> <span class="n">get_path</span><span class="p">(</span>
         <span class="n">BasicLauncher</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
@@ -419,10 +419,7 @@
             <span class="s2">&quot;`override hydra/launcher: slurm`.&quot;</span>
         <span class="p">)</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-    <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="s2">&quot;Unsupported launcher: &quot;</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># noqa: SLF001</span>
-    <span class="p">)</span>
+    <span class="n">error_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Unsupported launcher: </span><span class="si">{</span><span class="n">launcher_dict_config</span><span class="o">.</span><span class="n">_target_</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span></div>
 
 </pre></div>
