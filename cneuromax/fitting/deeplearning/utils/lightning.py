@@ -218,7 +218,7 @@ def find_good_per_device_batch_size(
                 launcher_config.cpus_per_task
             )
         batch_size_finder = BatchSizeFinder(
-            mode="binsearch",
+            mode="power",
             batch_arg_name="per_device_batch_size",
             max_trials=int(math.log2(max_per_device_batch_size)),
         )
@@ -232,17 +232,11 @@ def find_good_per_device_batch_size(
         )
         logging.info("Finding good `batch_size` parameter...")
         per_device_batch_size = None
-        while per_device_batch_size is None:
-            # Prevents the `fit` method from raising a `KeyError`, see:
-            # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
-            with contextlib.suppress(KeyError):
-                trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
-            per_device_batch_size = batch_size_finder.optimal_batch_size
-            if per_device_batch_size is None:
-                logging.warning("Batch size finder failed. Retrying...")
+        with contextlib.suppress(KeyError):
+            trainer.fit(model=litmodule_copy, datamodule=datamodule_copy)
         # Accounts for potential GPU memory fluctuations.
         per_device_batch_size = min(
-            int(per_device_batch_size * 0.95),
+            int(datamodule_copy.per_device_batch_size * 0.95),
             max_per_device_batch_size,
         )
     if per_device_batch_size == 0:
