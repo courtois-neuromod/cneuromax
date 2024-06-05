@@ -51,8 +51,5 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
             "`override hydra/launcher: slurm`."
         )
         raise TypeError(error_msg)
-    error_msg = (
-        "Unsupported launcher: "
-        f"{launcher_dict_config._target_}"
-    )
+    error_msg = f"Unsupported launcher: {launcher_dict_config._target_}"
     raise TypeError(error_msg)
