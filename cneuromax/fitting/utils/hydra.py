@@ -34,15 +34,15 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
     if not isinstance(launcher_container_config, dict):
         raise TypeError
     launcher_config_dict = dict(launcher_container_config)
-    if launcher_dict_config._target_ == get_path(  # noqa: SLF001
+    if launcher_dict_config._target_ == get_path(
         LocalLauncher,
     ):
         return LocalQueueConf(**launcher_config_dict)
-    if launcher_dict_config._target_ == get_path(  # noqa: SLF001
+    if launcher_dict_config._target_ == get_path(
         SlurmLauncher,
     ):
         return SlurmQueueConf(**launcher_config_dict)
-    if launcher_dict_config._target_ == get_path(  # noqa: SLF001
+    if launcher_dict_config._target_ == get_path(
         BasicLauncher,
     ):
         error_msg = (
@@ -53,6 +53,6 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
         raise TypeError(error_msg)
     error_msg = (
         "Unsupported launcher: "
-        f"{launcher_dict_config._target_}"  # noqa: SLF001
+        f"{launcher_dict_config._target_}"
     )
     raise TypeError(error_msg)
