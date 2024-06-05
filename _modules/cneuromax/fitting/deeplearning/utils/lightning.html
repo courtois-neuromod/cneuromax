@@ -611,10 +611,10 @@
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">KeyError</span><span class="p">):</span>
             <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule_copy</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule_copy</span><span class="p">)</span>
         <span class="c1"># If any OOM occurs the value is stored in</span>
-        <span class="c1"># `per_device_batch_size` else in `optimal_batch_size`. </span>
+        <span class="c1"># `per_device_batch_size` else in `optimal_batch_size`.</span>
         <span class="n">optimal_per_device_batch_size</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
             <span class="n">datamodule_copy</span><span class="o">.</span><span class="n">per_device_batch_size</span><span class="p">,</span>
-            <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">optimal_batch_size</span><span class="p">,</span>
+            <span class="n">batch_size_finder</span><span class="o">.</span><span class="n">optimal_batch_size</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
             <span class="n">optimal_per_device_batch_size</span><span class="p">,</span>
