@@ -1,7 +1,6 @@
 """."""
 
 import os
-import string
 from collections import defaultdict
 from dataclasses import dataclass
 from functools import partial
@@ -12,57 +11,45 @@ import h5py
 import numpy as np
 import pandas as pd
 import torch
-from datasets.arrow_dataset import Dataset as HuggingfaceDataset
 from peft.tuners.lora.config import LoraConfig
 from torch import nn
 from torch.optim import Adam
 from tqdm import tqdm
-from transformers import (
-    AutoModelForCausalLM,
-    AutoTokenizer,
-    PreTrainedTokenizerBase,
-    get_constant_schedule,
-)
-from transformers.tokenization_utils_base import BatchEncoding
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          PreTrainedTokenizerBase, get_constant_schedule)
 
-from cneuromax.fitting.deeplearning.litmodule.base import (
-    BaseLitModuleConfig,
-)
-from cneuromax.projects.friends_language_encoder.litmodule_peft import (
-    FriendsFinetuningModel,
-)
+from cneuromax.fitting.deeplearning.litmodule import BaseLitModuleConfig
+from cneuromax.projects.friends_language_encoder.litmodule_peft import \
+    FriendsFinetuningModel
 from cneuromax.projects.friends_language_encoder.utils import (
-    list_episodes,
-    list_seasons,
-    preprocess_words,
-    read_tsv,
-    set_output,
-)
-
-from .utils import group_texts_hf
+    list_episodes, list_seasons, preprocess_words, set_output)
 
 
 @dataclass
 class DataConfigBase:
     """."""
 
+    bold_dir: str = "./data/friends_language_encoder/fmri_data/"
     embedding_dir: str = "./data/friends_language_encoder/stimuli/"
+    output_dir: str = "./data/friends_language_encoder/ridge_regression"
     tsv_path: str = "./data/friends_language_encoder/stimuli/word_alignment"
 
-    model_dir = "./data/friends_language_encoder/"
+    model_dir = "./data/friends_language_encoder/finetuned_models"
     finetuned = False
-    target_layer: int = 2
+    target_layer: int = 13
 
     random_state: int = 42
-    base_model_name: str = "gpt2-xl"
-    sweep: str = "overrides#lr~1.692e-05#wd~0.005011"
+    base_model_name: str = "gpt2"
+    sweep: str = "overrides#lr~0.0001161#wd~0.001303"
     task_type = "CAUSAL_LM"
+    feature_count = 768
+    num_hidden_layers = 12
     inference_mode = False
     r = 8
     lora_alpha = 32
     lora_dropout = 0.1
     fan_in_fan_out = True
-    context_size = 50
+    context_size = 512 # average word per segment is 1500
     bsz = 32
 
 
@@ -104,7 +91,14 @@ class PrepareTokenizedTextBatches:
         """
         eos_token = "<|endoftext|>"
         untokenized_text = preprocess_words(self.tsv_path)
-        tokenized_text = self.tokenizer.tokenize(untokenized_text)
+        midpoint = len(untokenized_text) // 2
+        first_half = untokenized_text[:midpoint]
+        second_half = untokenized_text[midpoint:]
+
+        tokenized_text_first = self.tokenizer.tokenize(first_half)
+        tokenized_text_second = self.tokenizer.tokenize(second_half)
+        tokenized_text = tokenized_text_first + tokenized_text_second
+
         mapping = defaultdict(list)
         untokenized_text_index = 0
         tokenized_text_index = 0
@@ -130,6 +124,7 @@ class PrepareTokenizedTextBatches:
     def pad_to_max_length(
         self: "PrepareTokenizedTextBatches",
         sequence: list[Any],
+        max_seq_length: int,
         padding_value: Any = 220,
         end_token: Any = 50256,
     ) -> Any:
@@ -143,12 +138,12 @@ class PrepareTokenizedTextBatches:
         Returns:
             - result: padded texts as list of int
         """
-        sequence = sequence[: self.max_seq_length]
-        padding_required = self.max_seq_length - len(sequence)
+        sequence = sequence[:max_seq_length]
+        padding_required = max_seq_length - len(sequence)
         result = sequence + [padding_value, end_token] * (
             padding_required // 2
         )
-        if len(result) == self.max_seq_length:
+        if len(result) == max_seq_length:
             return result
         else:
             return result + [padding_value]
@@ -156,6 +151,7 @@ class PrepareTokenizedTextBatches:
     def create_examples(
         self: "PrepareTokenizedTextBatches",
         sequence: list[Any],
+        max_seq_length: int,
         padding_value: Any = 220,
         start_token: Any = 50256,
         end_token: Any = 50256,
@@ -174,7 +170,7 @@ class PrepareTokenizedTextBatches:
             - end_token: int (default 50256)
         """
         new_sequence = [start_token] + sequence + [padding_value, end_token]
-        return self.pad_to_max_length(new_sequence)
+        return self.pad_to_max_length(new_sequence, max_seq_length)
 
     def get_text_batches(
         self: "PrepareTokenizedTextBatches",
@@ -186,26 +182,41 @@ class PrepareTokenizedTextBatches:
         stimuli = preprocess_words(self.tsv_path)
 
         if self.context_size is None:
-            self.max_seq_length = self.max_seq_length
+            max_seq_length = self.max_seq_length
         else:
-            self.max_seq_length = (
+            max_seq_length = (
                 self.context_size + 5
             )  # count for special tokens
+
+        midpoint = len(stimuli) // 2
+        first_half = stimuli[:midpoint]
+        second_half = stimuli[midpoint:]
         try:
-            data = self.tokenizer.encode(stimuli).ids
-            text = self.tokenizer.encode(stimuli).tokens
+            data_tmp_first = self.tokenizer.encode(first_half).ids
+            text_tmp_first = self.tokenizer.encode(first_half).tokens
+            data_tmp_second = self.tokenizer.encode(second_half).ids
+            text_tmp_second = self.tokenizer.encode(second_half).tokens
         except:
-            data = self.tokenizer.encode(stimuli)
-            text = self.tokenizer.tokenize(stimuli)
+            data_tmp_first = self.tokenizer.encode(first_half)
+            text_tmp_first = self.tokenizer.tokenize(first_half)
+            data_tmp_second = self.tokenizer.encode(second_half)
+            text_tmp_second = self.tokenizer.tokenize(second_half)
+
+        data =  data_tmp_first + data_tmp_second
+        text =  text_tmp_first + text_tmp_second
+        print("Here I Am done!")
 
         if self.context_size == 0:
             examples = [
-                self.create_examples(data[i : i + 2])
+                self.create_examples(data[i : i + 2],
+                                     max_seq_length= max_seq_length,
+                                     )
                 for i, _ in enumerate(data)
             ]
             tokens = [
                 self.create_examples(
                     text[i : i + 2],
+                    max_seq_length= max_seq_length,
                     start_token=start_token,
                     end_token=end_token,
                     padding_value=self.connection_character,
@@ -214,7 +225,9 @@ class PrepareTokenizedTextBatches:
             ]
         else:
             examples = [
-                self.create_examples(data[i : i + self.context_size + 2])
+                self.create_examples(data[i : i + self.context_size + 2],
+                                     max_seq_length=max_seq_length,
+                                     )
                 for i, _ in enumerate(data[: -self.context_size])
             ]
             tokens = [
@@ -223,6 +236,7 @@ class PrepareTokenizedTextBatches:
                     padding_value=padding_value,
                     start_token=start_token,
                     end_token=end_token,
+                    max_seq_length=max_seq_length,
                 )
                 for i, _ in enumerate(text[: -self.context_size])
             ]
@@ -240,31 +254,6 @@ class PrepareTokenizedTextBatches:
         del features
         return input_ids, indexes, tokens
 
-def extract_embeddings(model, input_ids):
-    """Extracts embeddings from a specific layer of the fine-tuned model.
-
-    Args:
-        model: The FriendsFinetuningModel instance.
-        input_ids: The input token IDs (Tensor).
-        layer_index: The index of the desired layer (int).
-
-    Returns:
-        A Tensor containing the embeddings from the specified layer.
-    """
-    batch = BatchEncoding(input_ids=input_ids)
-
-    # Pass the BatchEncoding object to the step method
-    with torch.no_grad():
-        _, output = model.step(batch=batch, stage="test")
-
-    # Assuming output is a dictionary containing hidden states
-    if "hidden_states" not in output:
-        raise ValueError("Model output doesn't contain hidden states. Check model architecture.")
-
-    # Extract hidden states and return the desired layer
-
-    return output["hidden_states"]
-
 
 class ExtractEmbedding:
     """."""
@@ -276,15 +265,13 @@ class ExtractEmbedding:
         mapping: defaultdict[int, list[int]],
         model: nn.Module,
         data_config: DataConfigBase(),
-        feature_count: int,
-        num_hidden_layers: int,
     ) -> None:
         """."""
         self.mapping = mapping
         self.model = model
         self.bsz = data_config.bsz
-        self.num_hidden_layers = num_hidden_layers
-        self.feature_count = feature_count
+        self.num_hidden_layers = data_config.num_hidden_layers
+        self.feature_count = data_config.feature_count
         self.indexes = indexes
         self.input_ids = input_ids
 
@@ -300,20 +287,10 @@ class ExtractEmbedding:
             ):
                 hidden_states_activations_tmp = []
                 if data_config.finetuned:
-                    # encoded_layers = self.model(
-                    #     input_tmp,
-                    #     output_hidden_states=True,
-                    # )
-                    with torch.no_grad():
-                        _, output = self.model.step(input_tmp, stage="test")
-                    if "hidden_states" not in output:
-                        raise ValueError("Model output doesn't contain hidden states. Check model architecture.")
-                    print(f"this is hidden states = {output}")
-                    print(f"this is output.hidden_states= {output.hidden_states}")
-
-                    encoded_layers = output["hidden_states"]
-                    print(f"this is encoded_layers= {encoded_layers}")
-
+                    encoded_layers = self.model(
+                        input_tmp,
+                        output_hidden_states=True,
+                    )
                 else:
                     encoded_layers = self.model(
                                             input_tmp,
@@ -365,7 +342,7 @@ class ExtractEmbedding:
             )  # this stucks lists of actications of sub-tokens of a word and convert it into a numpy array
 
             features.append(
-                np.mean(word_activation, axis=0).reshape(-1)
+                np.mean(word_activation, axis=0).reshape(-1),
             )  # here is a list keep appending
             # mean over subtokens of a word taken to estimate the word activation.
 
@@ -438,17 +415,10 @@ def prepare_embeddings(
             scheduler=partial(get_constant_schedule),
         )
 
-        feature_count = model.config.vocab_size
-        num_layers = len(model.encoder.layer)
-        num_hidden_layers = len(model.encoder.layer)
-
-
     else:
         model = AutoModelForCausalLM.from_pretrained(
             data_config.base_model_name,
         )
-        feature_count = model.config.vocab_size
-        num_hidden_layers = len(model.encoder.layer)
 
     text = PrepareTokenizedTextBatches(
         tokenizer=tokenizer,
@@ -468,127 +438,16 @@ def prepare_embeddings(
         input_ids=input_ids,
         model=model,
         data_config=data_config,
-        feature_count = feature_count,
-        num_hidden_layers = num_hidden_layers,
     )
-# features that each column is a hidden layer of the model
+    # features that each column is a hidden layer of the model
 
-    return embeddings.get_hidden_features(), feature_count
-
-class PrepareFinetunedTokenizedBatches:
-    """."""
-    def __init__(
-        self: "PrepareFinetunedTokenizedBatches",
-        tokenizer: PreTrainedTokenizerBase,
-        tsv_path: str,
-        season: str,
-        episode: str,
-        context_size: int,
-        connection_character: str = "Ġ",
-    ) -> None:
-        self.tokenizer = tokenizer
-        self.max_seq_length = tokenizer.model_max_length
-        self.tsv_path = os.path.join(
-            tsv_path,
-            f"{season}",
-            f"friends_{episode}.tsv",
-        )
-        self.season = season
-        self.episode = episode
-        self.connection_character = connection_character
-        self.context_size = context_size
-
-    def tokenize_batch(
-        self: "PrepareFinetunedTokenizedBatches",
-    ) -> HuggingfaceDataset:
-        """Tokenize and map sub-tokens with the words.
-
-        Returns:
-            - mapping: A dictionary {int: list(int)} mapping of
-            untokenized words with the subtokens.
-        """
+    return embeddings.get_hidden_features()
 
 
-        text_tmp = []
-        data = read_tsv(self.tsv_path)
-        for line in data["word"]:
-            line.translate(
-            str.maketrans("", "", string.punctuation),
-            ).lower()
-            print(f"word: {line}")
-            text_tmp.append(line)
-        print(f"text_tmp: {text_tmp}")
-       # Create DataFrame from the list
-        untokenized_text = pd.DataFrame({"text": text_tmp})
-        print(f"untokenized_text: {untokenized_text}")
-
-        my_text = untokenized_text["text"]
-        print(f"my_data: {my_text}")
-        untokenized_text = untokenized_text.reset_index(drop=True)
-        hf_dataset = HuggingfaceDataset.from_pandas(df=untokenized_text)
-        print(hf_dataset)
-
-        hf_tokenized_dataset_tmp = hf_dataset.map(
-            lambda x: {
-                "tokens": self.tokenizer.convert_ids_to_tokens(
-                    self.tokenizer(x["text"], return_special_tokens=False, padding="do_not_pad")["input_ids"]
-                ),
-            },
-            batched=True,
-            remove_columns=["text"],
-            )
-        print(f"hf_tokenized_dataset_tmp: {hf_tokenized_dataset_tmp}")
-        hf_tokenized_dataset = hf_dataset.map(
-        lambda x: self.tokenizer(
-            x["text"],
-            return_special_tokens_mask=False,
-            padding="do_not_pad",
-        ),
-        batched=True,
-        remove_columns=["text"],
-        )
-        print(f"hf_tokenized_dataset: {hf_tokenized_dataset}")
-
-
-        hf_grouped_and_tokenized_dataset = hf_tokenized_dataset.map(
-            partial(group_texts_hf,
-                    block_size=self.tokenizer.model_max_length),
-                    batched=True,
-                    )
-        print(f"hf_grouped_and_tokenized_dataset: {hf_grouped_and_tokenized_dataset}")
-        hf_grouped_and_tokenized_dataset.set_format("torch")
-        print(hf_grouped_and_tokenized_dataset["input_ids"])
-        print(hf_grouped_and_tokenized_dataset["input_ids"])
-
-        return hf_grouped_and_tokenized_dataset, hf_tokenized_dataset_tmp
-
-    # def create_mapping(self):
-    #     eos_token = "<|endoftext|>"
-    #     _,tokenized_text = self.hf_grouped_and_tokenized_dataset["input_ids"]
-    #     mapping = defaultdict(list)
-    #     untokenized_text_index = 0
-    #     tokenized_text_index = 0
-    #     while untokenized_text_index < len(
-    #         untokenized_text,
-    #     ) and tokenized_text_index < len(tokenized_text):
-    #         while (
-    #             tokenized_text_index + 1 < len(tokenized_text)
-    #             and (
-    #                 not tokenized_text[tokenized_text_index + 1].startswith(
-    #                     self.connection_character,
-    #                 )
-    #             )
-    #             and tokenized_text[tokenized_text_index + 1] != eos_token
-    #         ):
-    #             mapping[untokenized_text_index].append(tokenized_text_index)
-    #             tokenized_text_index += 1
-    #         mapping[untokenized_text_index].append(untokenized_text_index)
-    #         untokenized_text_index += 1
-    #         tokenized_text_index += 1
-    #     return mapping
 
 
 def get_layer_embeddding(data_config):
+    """."""
 
     seasons = list_seasons(data_config.tsv_path)
     print(seasons)
@@ -617,7 +476,7 @@ def get_layer_embeddding(data_config):
             with h5py.File(outfile, "w") as file:
                 for episode in episode_list:
                     print(episode)
-                    feature, feature_count = prepare_embeddings(
+                    feature = prepare_embeddings(
                         data_config=data_config,
                         season=season,
                         episode=episode,
@@ -627,8 +486,8 @@ def get_layer_embeddding(data_config):
                     layer_features = [
                         row[
                             (layer_indx - 1)
-                            * feature_count : layer_indx
-                            * feature_count
+                            * data_config.feature_count : layer_indx
+                            * data_config.feature_count
                         ]
                         for _, row in feature.iterrows()
                     ]
@@ -703,4 +562,3 @@ def get_layer_embeddding(data_config):
 #                     finetuned=False,
 #                 )
 #                 file.create_dataset(episode, data=feature)
-
