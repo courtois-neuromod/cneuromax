@@ -66,7 +66,7 @@ def instantiate_trainer(
             dirpath=trainer_partial.keywords["default_root_dir"],
             every_n_epochs=save_every_n_epochs,
             save_last=True,
-            save_top_k=-1,
+            save_top_k=1,
         ),
     )
     # Instantiate the :class:`WandbLogger`.`
