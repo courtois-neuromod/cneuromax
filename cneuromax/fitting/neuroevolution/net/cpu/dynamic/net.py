@@ -54,6 +54,9 @@ class DynamicNet:
     Attributes:
         config: See :paramref:`config`.
         nodes: See :class:`.NodeList`.
+        weights: A list comprised of the list of weights for each node.
+        outputs: A list comprised of the latest output values for each\
+            node.
         total_nb_nodes_grown: The number of nodes grown in the\
             network since its instantiation.
         num_grow_mutations: A mutable value that controls the\
@@ -71,6 +74,8 @@ class DynamicNet:
     def __init__(self: "DynamicNet", config: DynamicNetConfig) -> None:
         self.config = config
         self.nodes = NodeList()
+        self.weights: list[list[float]] = []
+        self.outputs: list[float] = []
         self.total_nb_nodes_grown = 0
         self.initialize_architecture()
         self.num_grow_mutations: float = 1.0
@@ -168,8 +173,10 @@ class DynamicNet:
                     purpose="connect to",
                 )
             self.grow_connection(new_node, out_node)
-            self.nodes.all.append(new_node)
             self.nodes.hidden.append(new_node)
+        if role in ["hidden", "output"]:
+            self.weights.append(new_node.weights)
+            self.outputs.append(0)
         return new_node
 
     def grow_connection(  # noqa: D102
@@ -224,27 +231,3 @@ class DynamicNet:
             and out_node in self.nodes.hidden
         ):
             self.prune_node(out_node)
-
-    def reset(self: "DynamicNet") -> None:  # noqa: D102
-        for node in self.nodes.all:
-            node.output = 0
-
-    def __call__(self: "DynamicNet", x: list[float]) -> list[float]:
-        """Runs one pass through the network.
-
-        Used for CPU-based computation.
-
-        Args:
-            x: Input values.
-
-        Returns:
-            Output values.
-        """
-        for _ in range(int(self.num_network_passes_per_input)):
-            for x_i, input_node in zip(x, self.nodes.input, strict=True):
-                input_node.output = x_i
-            for node in self.nodes.hidden + self.nodes.output:
-                node.compute_and_cache_output()
-            for node in self.nodes.hidden + self.nodes.output:
-                node.update_output()
-        return [node.output for node in self.nodes.output]

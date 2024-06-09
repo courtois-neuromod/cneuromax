@@ -19,8 +19,6 @@ class NodeList:
     Args:
         all: Contains all :class:`Node` instances currently in the\
             network.
-        indices: Contains the indices of all :class:`Node` instances\
-            currently in the network.
         input: There are as many input nodes as there are input\
             signals. Each input node is assigned an input value and\
             forwards it to nodes that it connects to. Input nodes are\
@@ -68,7 +66,7 @@ class Node:
 
     Args:
         role: Node function in :class:`.DynamicNet`
-        uid: Self-explanatory
+        uid: Self-explanatory.
 
     Attributes:
         role: See :paramref:`role`.
@@ -80,10 +78,6 @@ class Node:
             :attr:`in_nodes`. Is of length 3, as a node can have at\
             most 3 incoming connections.
         num_in_nodes: Number of incoming connections.
-        output: Value emitted from the node.
-
-        TODO: move :attr:`output` to :class:`ComputingNode` and\
-        figure out how to type-hint ``self.in_nodes`` as ``list[self]``.
     """
 
     def __init__(
@@ -98,7 +92,6 @@ class Node:
         if self.role != "input":
             self.weights: list[float] = [0, 0, 0]
             self.num_in_nodes = 0
-        self.output: float = 0
 
     def __repr__(self: "Node") -> str:  # noqa: D105
         node_inputs: tuple[Any, ...] = tuple(
@@ -190,59 +183,3 @@ class Node:
         node.num_in_nodes -= 1
         self.out_nodes.remove(node)
         node.in_nodes.remove(self)
-
-
-class ComputingNode(Node):
-    """:class:`Node` that handles its own computation.
-
-    Attributes:
-        mean: Mean of the node's output.
-        v: Variance of the node's output.
-        std: Standard deviation of the node's output.
-        n: Number of times the node's output has been updated.
-    """
-
-    def __init__(
-        self: "ComputingNode",
-        *args: Any,  # noqa: ANN401
-        **kwargs: Any,  # noqa: ANN401,
-    ) -> None:
-        super().__init__(*args, **kwargs)
-        self.mean: float = 0
-        self.v: float = 0
-        self.std: float = 0
-        self.n: int = 0
-
-    def update_standardization_attributes(
-        self: "ComputingNode",
-        raw_output: float,
-    ) -> None:
-        """Updates standardization attributes given :attr:`raw_output`.
-
-        Args:
-            raw_output: The node's output before normalization.
-        """
-        self.n += 1
-        temp_m = self.mean + (raw_output - self.mean) / self.n
-        temp_v = self.v + (raw_output - self.mean) * (raw_output - temp_m)
-        self.v = temp_v
-        self.mean = temp_m
-        self.std = np.sqrt(self.v / self.n)
-
-    def compute_and_cache_output(self: "ComputingNode") -> None:
-        """Computes the node's output from its :attr:`in_nodes` outputs.
-
-        Gathers input values (:attr:`in_nodes` output values) and
-        runs a dot product with the node's :attr:`weights`. The output
-        is then standardized and cached as all node outputs are updated
-        simultaneously at the end of the network's pass.
-        """
-        x = [node.output for node in self.in_nodes]
-        x = float(np.dot(x, self.weights[: len(x)]))
-        self.update_standardization_attributes(x)
-        x = (x - self.mean) / (self.std + (self.std == 0))
-        self.cached_output = x
-
-    def update_output(self: "ComputingNode") -> None:
-        """Sets :attr:`output` to :attr:`cached_output`."""
-        self.output = self.cached_output
