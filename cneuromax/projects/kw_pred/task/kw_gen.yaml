@@ -9,8 +9,9 @@ defaults:
 
 hydra:
   launcher:
-    cpus_per_task: 16
-    gpus_per_node: 1
+    cpus_per_task: 12
+    tasks_per_node: 2
+    gpus_per_node: 2
   #sweeper:
     #params:
       #datamodule.dataset.config.dataset_percentage: 0.1, 0.5, 0.75, 1.0
@@ -23,7 +24,7 @@ datamodule:
   config:
     val_percentage: 0.05
     #max_per_device_batch_size: 256
-    fixed_per_device_batch_size: 256
+    fixed_per_device_batch_size: 128
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
   dataset:
     config:
@@ -41,7 +42,7 @@ trainer:
   #max_epochs: 2
   #accumulate_grad_batches: 2
   precision: bf16
-  val_check_interval: 100
+  val_check_interval: 200
   check_val_every_n_epoch: null
   num_sanity_val_steps: 0
   #callbacks:
@@ -57,7 +58,7 @@ litmodule:
     klk_seq_len: 4000
     patch_size: 10
     num_klk_corners: 1
-    depth: 3
+    depth: 6
     audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
     # yamllint disable-line rule:line-length
     audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}
