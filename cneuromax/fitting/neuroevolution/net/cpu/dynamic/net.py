@@ -1,5 +1,6 @@
 """:class:`DynamicNet` & :class:`DynamicNetConfig`."""
 
+import logging
 import random
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -57,8 +58,6 @@ class DynamicNet:
         weights: A list comprised of the list of weights for each node.
         outputs: A list comprised of the latest output values for each\
             node.
-        total_nb_nodes_grown: The number of nodes grown in the\
-            network since its instantiation.
         num_grow_mutations: A mutable value that controls the\
             number of chained :meth:`grow_node` mutations to perform.
         num_prune_mutations: A mutable value that controls the\
@@ -76,7 +75,6 @@ class DynamicNet:
         self.nodes = NodeList()
         self.weights: list[list[float]] = []
         self.outputs: list[float] = []
-        self.total_nb_nodes_grown = 0
         self.initialize_architecture()
         self.num_grow_mutations: float = 1.0
         self.num_prune_mutations: float = 0.5
@@ -140,8 +138,8 @@ class DynamicNet:
         node_to_connect_with: Node | None = None,
         role: An[str, one_of("input", "hidden", "output")] = "hidden",
     ) -> Node:
-        new_node = Node(role, self.total_nb_nodes_grown)
-        self.total_nb_nodes_grown += 1
+        new_node = Node(role, len(self.nodes.all))
+        logging.debug(f"New {role} node: {new_node} w/ index {new_node.index}")
         self.nodes.all.append(new_node)
         if role == "input":
             self.nodes.input.append(new_node)
@@ -149,21 +147,29 @@ class DynamicNet:
         elif role == "output":
             self.nodes.output.append(new_node)
         else:  # role == 'hidden'
+            self.nodes.hidden.append(new_node)
             in_node_1 = out_node = None
             if node_to_connect_with:
                 from_to = random.choice(["from", "to"])  # noqa: S311
+                logging.debug(f"`node_to_connect_with`: {from_to}")
                 in_node_1 = node_to_connect_with if from_to == "from" else None
                 out_node = node_to_connect_with if from_to == "to" else None
             receiving_nodes_set = OrderedSet(self.nodes.receiving)
             if not in_node_1:
                 in_node_1 = random.choice(receiving_nodes_set)  # noqa: S311
             self.grow_connection(in_node_1, new_node)
+            logging.debug(
+                f"Connected from {in_node_1} w/ index {in_node_1.index}",
+            )
             in_node_2 = in_node_1.find_nearby_node(
                 nodes_considered=receiving_nodes_set,
                 connectivity_temperature=self.connectivity_temperature,
                 purpose="connect with",
             )
             self.grow_connection(in_node_2, new_node)
+            logging.debug(
+                f"Connected from {in_node_2} w/ index {in_node_2.index}",
+            )
             if not out_node:
                 out_node = new_node.find_nearby_node(
                     nodes_considered=OrderedSet(
@@ -173,7 +179,7 @@ class DynamicNet:
                     purpose="connect to",
                 )
             self.grow_connection(new_node, out_node)
-            self.nodes.hidden.append(new_node)
+            logging.debug(f"Connected to {out_node} w/ index {out_node.index}")
         if role in ["hidden", "output"]:
             self.weights.append(new_node.weights)
             self.outputs.append(0)

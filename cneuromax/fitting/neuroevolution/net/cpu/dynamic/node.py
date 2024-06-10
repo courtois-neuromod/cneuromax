@@ -1,5 +1,6 @@
 """:class:`NodeList`, :class:`Node`, and :class:`ComputingNode`."""
 
+import logging
 import random
 from collections.abc import Iterator
 from dataclasses import dataclass, field
@@ -66,11 +67,11 @@ class Node:
 
     Args:
         role: Node function in :class:`.DynamicNet`
-        uid: Self-explanatory.
+        index: Self-explanatory.
 
     Attributes:
         role: See :paramref:`role`.
-        uid: See :paramref:`uid`.
+        index: See :paramref:`uid`.
         in_nodes: List of nodes that send information to this node.
         out_nodes: List of nodes that receive information from this\
             node.
@@ -83,10 +84,10 @@ class Node:
     def __init__(
         self: "Node",
         role: An[str, one_of("input", "hidden", "output")],
-        uid: int,
+        index: int,
     ) -> None:
         self.role = role
-        self.uid = uid
+        self.index = index
         self.in_nodes: list[Node] = []
         self.out_nodes: list[Node] = []
         if self.role != "input":
@@ -98,16 +99,20 @@ class Node:
             (
                 "x"
                 if self.role == "input"
-                else (node.uid for node in self.in_nodes)
+                else (node.index for node in self.in_nodes)
             ),
         )
         node_outputs: tuple[Any, ...] = tuple(
-            node.uid for node in self.out_nodes
+            node.index for node in self.out_nodes
         )
         if self.role == "output":
             node_outputs = ("y", *node_outputs)
         return (
-            str(node_inputs) + "->" + str(self.uid) + "->" + str(node_outputs)
+            str(node_inputs)
+            + "->"
+            + str(self.index)
+            + "->"
+            + str(node_outputs)
         )
 
     def find_nearby_node(
