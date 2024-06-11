@@ -45,10 +45,9 @@ trainer:
   val_check_interval: 200
   check_val_every_n_epoch: null
   num_sanity_val_steps: 0
-  #callbacks:
-    #- _target_: lightning.pytorch.callbacks.early_stopping.EarlyStopping
-      #monitor: val/loss
-      #patience: 10000000
+  callbacks:
+    - _target_: cneuromax.projects.kw_pred.utils.ema.EMA
+      decay: .9999
 litmodule:
   optimizer:
     lr: 1e-4
