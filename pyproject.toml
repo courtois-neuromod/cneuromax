@@ -13,7 +13,7 @@ dependencies = [
     "hydra-core==1.3.2", # Configuration management
     "hydra-zen==0.13.0", # Cleaner Hydra configs
     "beartype==0.18.5", # Dynamic type checking
-    "wandb==0.17.0", # Logging
+    "wandb==0.17.1", # Logging
     """
     submitit@git+https://github.com/courtois-neuromod/submitit@\
     b289f81004ab063b185dc97982934c266e605fad""", # Local & SLURM job launcher
@@ -50,13 +50,13 @@ dependencies = [
     "diffusers==0.28.2", # Diffusion models published on Hugging Face
     "timm==1.0.3", # Image models
     "datasets==2.19.2", # Datasets published on Hugging Face
-    "x-transformers==1.30.11", # Phil Wang (Lucidrain)'s Transformer library
+    "x-transformers==1.30.16", # Phil Wang (Lucidrain)'s Transformer library
     # Phil Wang (Lucidrain)'s Diffusion model library
     # `ema-pytorch` is a dependency
     "denoising-diffusion-pytorch==2.0.6",
      # Phil Wang (Lucidrain)'s Vector Quantization library
     "vector-quantize-pytorch==1.14.24",
-    "accelerate==0.30.1", # PEFT crashing w/ 0.30.0
+    "accelerate==0.31.0", # PEFT crashing w/ 0.30.0
     "peft==0.11.1", #PEFT methods published by Hugging Face
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==3.1.6", # Inter-process communication
