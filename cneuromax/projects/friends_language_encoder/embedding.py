@@ -254,7 +254,6 @@ class PrepareTokenizedTextBatches:
         del features
         return input_ids, indexes, tokens
 
-
 class ExtractEmbedding:
     """."""
 
@@ -361,7 +360,6 @@ class ExtractEmbedding:
         )
 
 
-
 def prepare_embeddings(
     data_config: data_config,
     season: str,
@@ -445,8 +443,7 @@ def prepare_embeddings(
 
 
 
-
-def get_layer_embeddding(data_config):
+def get_layer_embedding(data_config):
     """."""
 
     seasons = list_seasons(data_config.tsv_path)
@@ -455,11 +452,8 @@ def get_layer_embeddding(data_config):
         file_tag = "finetuned"
     else:
         file_tag = "base"
-
-    for layer_indx in range(1, data_config.target_layer):
-        outfolder = f"{data_config.embedding_dir}/{data_config.base_model_name}/{file_tag}/layer_{layer_indx}"
         for season in seasons:
-            comp_args, outfile_name = set_output(
+            _, outfile_name = set_output(
                 season=season,
                 output_dir=data_config.embedding_dir,
             )
@@ -468,97 +462,29 @@ def get_layer_embeddding(data_config):
                 season=season,
                 outfile=outfile_name,
             )
-            print(episode_list)
-            # Create a new HDF5 file
-            outfile = f"{outfolder}/friends_{season}_embeddings_{data_config.base_model_name}_{file_tag}_layer_{layer_indx}.h5"
-
+            outfolder = f"{data_config.embedding_dir}/{data_config.base_model_name}/{file_tag}"
+            outfile = f"{outfolder}/friends_{season}_embeddings_{data_config.base_model_name}_{file_tag}.h5"
             print(outfile)
             with h5py.File(outfile, "w") as file:
                 for episode in episode_list:
                     print(episode)
+                    episode_group = file.create_group(episode)  # Create a group for each episode
                     feature = prepare_embeddings(
                         data_config=data_config,
                         season=season,
                         episode=episode,
                         finetuned=data_config.finetuned,
                     )
-
-                    layer_features = [
-                        row[
-                            (layer_indx - 1)
-                            * data_config.feature_count : layer_indx
-                            * data_config.feature_count
+                    for layer_indx in range(1, data_config.target_layer):
+                        layer_features = [
+                            row[
+                                (layer_indx - 1)
+                                * data_config.feature_count : layer_indx
+                                * data_config.feature_count
+                            ]
+                            for _, row in feature.iterrows()
                         ]
-                        for _, row in feature.iterrows()
-                    ]
-                    print("creating the file")
+                        print("creating the file")
 
-                    file.create_dataset(episode, data=layer_features)
+                        episode_group.create_dataset(f"layer_{layer_indx}", data=layer_features)
 
-
-# def create_train_val_test_stimuli(data_config, season: str):
-#     """."""
-
-#     season_stimuli = os.path.join(
-#         data_config.embedding_dir,
-#         f"friends_{season}_layer_{data_config.target_layer-1}_embeddings.h5",
-#     )
-#     word_feature_matrix = []
-
-#     with h5py.File(season_stimuli, "r") as file:
-#         for name in file:
-
-#             dataset = file[name][...]
-#             print(len(dataset))
-#             # Concatanate the word vectors from all episodes
-#             word_feature_matrix.extend(
-#                 dataset,
-#             )
-
-#     return word_feature_matrix
-
-
-
-# def prepare_embedding_h5py(
-#     data_config,
-# ):
-
-#     # # prepare hdf5 bundles that includes extracted features
-#     # # and fmri time series per episodes
-
-#     seasons = list_seasons(data_config.tsv_path)
-#     print(seasons)
-
-#     # create embeddigns
-#     for season in seasons:
-#         # creates a h5py file per season including its
-#         # all episodes embeddings.
-#         comp_args, outfile_name = set_output(
-#             season=season,
-#             output_dir=data_config.output_dir,
-#         )
-#         episode_list = list_episodes(
-#             idir=data_config.tsv_path,
-#             season=season,
-#             outfile=outfile_name,
-#         )
-
-#         # Create a new HDF5 file
-#         if data_config.finetuned == True:
-#             file_tag = "finetuned"
-#         else:
-#             file_tag = "base"
-
-#         outfile = (
-#             Path(data_config.embedding_dir) / f"{data_config.base_model_name}/{file_tag}/friends_{season}_embeddings_{data_config.base_model_name}_{file_tag}.h5"
-#         )
-#         with h5py.File(outfile, "w") as file:
-#             for episode in episode_list:
-#                 print(episode)
-#                 feature = prepare_embeddings(
-#                     data_config=data_config,
-#                     season=season,
-#                     episode=episode,
-#                     finetuned=False,
-#                 )
-#                 file.create_dataset(episode, data=feature)
