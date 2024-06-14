@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # PyTorch (w/ ecosystem) + CUDA + cuDNN + MPI + UCX + Python (w/ pip & headers)
-FROM nvcr.io/nvidia/pytorch:24.02-py3
+FROM nvcr.io/nvidia/pytorch:24.05-py3
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
@@ -29,8 +29,8 @@ RUN apt update && apt install -y software-properties-common && \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 # Install torchaudio
-COPY install_torchaudio_latest.sh /install_torchaudio_latest.sh
-RUN /bin/bash /install_torchaudio_latest.sh
+# COPY install_torchaudio_latest.sh /install_torchaudio_latest.sh
+# RUN /bin/bash /install_torchaudio_latest.sh
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
 # To push the current branch to the existing same name branch
