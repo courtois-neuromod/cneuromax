@@ -34,7 +34,7 @@ RUN apt update && apt install -y software-properties-common && \
     libffi7 \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
-# Install https://github.com/astral-sh/uv 
+# Install https://github.com/astral-sh/uv
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
