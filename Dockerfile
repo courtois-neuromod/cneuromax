@@ -45,5 +45,5 @@ RUN git config --global push.default current
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
 RUN pip install uv \
-    && uv pip install --system --no-cache-dir -e /cneuromax \
-    && uv pip uninstall --system -y cneuromax
+    && uv pip install --preview --system --no-cache-dir -e /cneuromax \
+    && uv pip uninstall --preview --system -y cneuromax
