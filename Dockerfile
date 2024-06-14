@@ -37,7 +37,7 @@ RUN apt update && apt install -y software-properties-common && \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 # Install https://github.com/astral-sh/uv
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh && source $HOME/.cargo/env
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && . $HOME/.cargo/env
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
 # To push the current branch to the existing same name branch
