@@ -43,6 +43,6 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN curl -LsSf https://astral.sh/uv/install.sh \
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && ${HOME}/.cargo/bin/uv pip install --no-cache-dir -e /cneuromax \
     && ${HOME}/.cargo/bin/uv pip uninstall -y cneuromax
