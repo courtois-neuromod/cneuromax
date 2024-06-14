@@ -22,8 +22,9 @@ RUN apt update && apt install -y software-properties-common && \
     libopenmpi-dev \
     # UCX for InfiniBand
     libucx0 \
-    # Python dev version to get header files for mpi4py
+    # Python dev version to get header files for mpi4py + pip
     python3-dev \
+    python3-pip \
     # Java to build our fork of Hydra
     default-jre \
     # Audio libraries
@@ -43,6 +44,6 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
-    && ${HOME}/.cargo/bin/uv pip install --no-cache-dir -e /cneuromax \
-    && ${HOME}/.cargo/bin/uv pip uninstall -y cneuromax
+RUN pip install uv \
+    && uv pip install --system --no-cache-dir -e /cneuromax \
+    && uv pip uninstall --system -y cneuromax
