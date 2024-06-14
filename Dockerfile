@@ -32,6 +32,8 @@ RUN apt update && apt install -y software-properties-common && \
     libavdevice-dev \
     # Required by soundfile
     libffi7 \
+    # Required for uv
+    curl \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 # Install https://github.com/astral-sh/uv
