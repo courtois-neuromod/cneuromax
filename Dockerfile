@@ -36,8 +36,6 @@ RUN apt update && apt install -y software-properties-common && \
     curl \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
-# Install https://github.com/astral-sh/uv
-RUN curl -LsSf https://astral.sh/uv/install.sh
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
 # To push the current branch to the existing same name branch
@@ -45,5 +43,6 @@ RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN ${HOME}/.cargo/bin/uv pip install --no-cache-dir -e /cneuromax \
+RUN curl -LsSf https://astral.sh/uv/install.sh \
+    && ${HOME}/.cargo/bin/uv pip install --no-cache-dir -e /cneuromax \
     && ${HOME}/.cargo/bin/uv pip uninstall -y cneuromax
