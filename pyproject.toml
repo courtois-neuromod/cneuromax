@@ -32,6 +32,10 @@ dependencies = [
     "matplotlib==3.9.0", # Plotting
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
     """
+    GPy@git+https://github.com/SheffieldML/GPy@\
+    bfa1d67fdaec142049cff18a0c87f1ac72ff0635""", # Gaussian processes
+    # Solves https://github.com/SheffieldML/GPy/issues/1069
+    """
     autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
     989206cd0b03d59bdac4a4d82402ceb2fa8f43aa""", # Hyperparameter optimization
     # CNeuroMod fork that strips components preventing the use of newer Python.
