@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # ~ CUDA + cuDNN on Ubuntu ~ #
-FROM nvcr.io/nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+FROM nvcr.io/nvidia/cuda:12.2.2-cudnn8-devel-ubuntu22.04
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
