@@ -37,6 +37,7 @@ RUN apt update && apt install -y software-properties-common && \
     curl \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
+RUN ln -s /usr/bin/python3 /usr/bin/python
 # To not have to specify `-u origin <BRANCH_NAME>` when pushing
 RUN git config --global push.autoSetupRemote true
 # To push the current branch to the existing same name branch
