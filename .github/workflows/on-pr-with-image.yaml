@@ -54,7 +54,7 @@ jobs:
         run: >
           docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
-          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
+          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=classify_mnist task=mlp_cpu
           logger.entity=maximilienlc
   classify_mnist-mlp:
@@ -69,7 +69,7 @@ jobs:
         run: >
           docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
-          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
+          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=classify_mnist task=mlp
           logger.entity=maximilienlc litmodule.config.log_val_wandb=True
   neuroevorl_control-acrobot:
@@ -84,6 +84,6 @@ jobs:
         run: >
           docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
-          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:latest
+          -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=neuroevorl_control task=acrobot
           logger.entity=maximilienlc config.total_num_gens=10
