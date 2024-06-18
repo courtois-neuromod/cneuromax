@@ -1,7 +1,7 @@
 """:class:`BaseLitModule` & its config."""
 
 from abc import ABC
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from functools import partial
 from typing import Annotated as An
 from typing import Any, final
@@ -9,6 +9,7 @@ from typing import Any, final
 from jaxtyping import Num
 from lightning.pytorch.utilities.types import (
     LRSchedulerConfig,
+    LRSchedulerConfigType,
     OptimizerLRSchedulerConfig,
 )
 from torch import Tensor, nn
@@ -202,8 +203,11 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         self.scheduler = self.scheduler_partial(optimizer=self.optimizer)
         return OptimizerLRSchedulerConfig(
             optimizer=self.optimizer,
-            lr_scheduler=LRSchedulerConfig(
+            lr_scheduler=LRSchedulerConfigType(
                 scheduler=self.scheduler,
                 interval="step",
+                frequency=1,
+                reduce_on_plateau=False,
+                scrict=True,  # :facepalm:
             ),
         )
