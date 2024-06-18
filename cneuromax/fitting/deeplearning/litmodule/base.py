@@ -7,6 +7,10 @@ from typing import Annotated as An
 from typing import Any, final
 
 from jaxtyping import Num
+from lightning.pytorch.utilities.types import (
+    LRSchedulerConfigType,
+    OptimizerLRSchedulerConfig,
+)
 from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
@@ -187,17 +191,22 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
 
     def configure_optimizers(
         self: "BaseLitModule",
-    ) -> tuple[list[Optimizer], list[dict[str, LRScheduler | str | int]]]:
+    ) -> OptimizerLRSchedulerConfig:
         """Returns a dict with :attr:`optimizer` and :attr:`scheduler`.
 
         Returns:
-            A tuple containing this instance's\
-            :class:`~torch.optim.Optimizer` and\
-            :class:`~torch.optim.lr_scheduler.LRScheduler`\
-            attributes.
+            This instance's :class:`~torch.optim.Optimizer` and\
+            :class:`~torch.optim.lr_scheduler.LRScheduler`.
         """
         self.optimizer = self.optimizer_partial(params=self.parameters())
         self.scheduler = self.scheduler_partial(optimizer=self.optimizer)
-        return [self.optimizer], [
-            {"scheduler": self.scheduler, "interval": "step", "frequency": 1},
-        ]
+        return OptimizerLRSchedulerConfig(
+            optimizer=self.optimizer,
+            lr_scheduler=LRSchedulerConfigType(
+                scheduler=self.scheduler,
+                interval="step",
+                frequency=1,
+                reduce_on_plateau=False,
+                scrict=True,  # :facepalm:
+            ),
+        )
