@@ -1,14 +1,13 @@
 """:class:`BaseLitModule` & its config."""
 
 from abc import ABC
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from functools import partial
 from typing import Annotated as An
 from typing import Any, final
 
 from jaxtyping import Num
 from lightning.pytorch.utilities.types import (
-    LRSchedulerConfig,
     LRSchedulerConfigType,
     OptimizerLRSchedulerConfig,
 )
