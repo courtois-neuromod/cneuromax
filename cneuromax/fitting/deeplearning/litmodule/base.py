@@ -9,7 +9,7 @@ from typing import Any, final
 from jaxtyping import Num
 from lightning.pytorch.utilities.types import (
     LRSchedulerConfig,
-    LRSchedulerConfigType,
+    OptimizerLRSchedulerConfig,
 )
 from torch import Tensor, nn
 from torch.optim import Optimizer
@@ -191,18 +191,19 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
 
     def configure_optimizers(
         self: "BaseLitModule",
-    ) -> tuple[Optimizer, LRSchedulerConfig]:
+    ) -> OptimizerLRSchedulerConfig:
         """Returns a dict with :attr:`optimizer` and :attr:`scheduler`.
 
         Returns:
-            A tuple containing this instance's\
-            :class:`~torch.optim.Optimizer` and\
-            :class:`~torch.optim.lr_scheduler.LRScheduler`\
-            attributes.
+            This instance's :class:`~torch.optim.Optimizer` and\
+            :class:`~torch.optim.lr_scheduler.LRScheduler`.
         """
         self.optimizer = self.optimizer_partial(params=self.parameters())
         self.scheduler = self.scheduler_partial(optimizer=self.optimizer)
-        return self.optimizer, LRSchedulerConfig(
-            scheduler=self.scheduler,
-            interval="step",
+        return OptimizerLRSchedulerConfig(
+            optimizer=self.optimizer,
+            lr_scheduler=LRSchedulerConfig(
+                scheduler=self.scheduler,
+                interval="step",
+            ),
         )
