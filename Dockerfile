@@ -13,6 +13,8 @@ ENV PYTHONPYCACHEPREFIX=/.cache/python/
 ENV SETUPTOOLS_USE_DISTUTILS=local
 # Install system packages
 RUN apt update && apt install -y \
+    # For git pip install
+    git \
     # OpenMPI
     libopenmpi-dev \
     # UCX for InfiniBand
