@@ -373,6 +373,10 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">final</span>
 
 <span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Num</span>
+<span class="kn">from</span> <span class="nn">lightning.pytorch.utilities.types</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">LRSchedulerConfigType</span><span class="p">,</span>
+    <span class="n">OptimizerLRSchedulerConfig</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
 <span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
@@ -572,20 +576,25 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.configure_optimizers">[docs]</a>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Optimizer</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">LRScheduler</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="nb">int</span><span class="p">]]]:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerLRSchedulerConfig</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dict with :attr:`optimizer` and :attr:`scheduler`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A tuple containing this instance&#39;s\</span>
-<span class="sd">            :class:`~torch.optim.Optimizer` and\</span>
-<span class="sd">            :class:`~torch.optim.lr_scheduler.LRScheduler`\</span>
-<span class="sd">            attributes.</span>
+<span class="sd">            This instance&#39;s :class:`~torch.optim.Optimizer` and\</span>
+<span class="sd">            :class:`~torch.optim.lr_scheduler.LRScheduler`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_partial</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler_partial</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">],</span> <span class="p">[</span>
-            <span class="p">{</span><span class="s2">&quot;scheduler&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="p">,</span> <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="s2">&quot;step&quot;</span><span class="p">,</span> <span class="s2">&quot;frequency&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-        <span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">OptimizerLRSchedulerConfig</span><span class="p">(</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span>
+            <span class="n">lr_scheduler</span><span class="o">=</span><span class="n">LRSchedulerConfigType</span><span class="p">(</span>
+                <span class="n">scheduler</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span><span class="p">,</span>
+                <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+                <span class="n">frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">reduce_on_plateau</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">scrict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># :facepalm:</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
 </div>
 
 </pre></div>
