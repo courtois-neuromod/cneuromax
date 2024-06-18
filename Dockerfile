@@ -12,12 +12,7 @@ ENV PYTHONPYCACHEPREFIX=/.cache/python/
 # Fixes a bug where the container fails building the wheel for mpi4py
 ENV SETUPTOOLS_USE_DISTUTILS=local
 # Install system packages
-#                                Enable add-apt-repository
-RUN apt update && apt install -y software-properties-common && \
-    #                  To upgrade Git
-    add-apt-repository ppa:git-core/ppa && apt install -y \
-    # To run the follow-up `git config` commands
-    git \
+RUN apt update && apt install -y \
     # OpenMPI
     libopenmpi-dev \
     # UCX for InfiniBand
@@ -38,10 +33,6 @@ RUN apt update && apt install -y software-properties-common && \
     # Clean up
     && rm -rf /var/lib/apt/lists/*
 RUN ln -s /usr/bin/python3 /usr/bin/python
-# To not have to specify `-u origin <BRANCH_NAME>` when pushing
-RUN git config --global push.autoSetupRemote true
-# To push the current branch to the existing same name branch
-RUN git config --global push.default current
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
