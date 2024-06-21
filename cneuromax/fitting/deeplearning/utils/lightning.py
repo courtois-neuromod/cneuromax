@@ -34,7 +34,7 @@ def instantiate_trainer(
     logger_partial: partial[WandbLogger],
     device: An[str, one_of("cpu", "gpu")],
     output_dir: str,
-    save_every_n_epochs: int,
+    save_every_n_train_steps: int | None,
 ) -> Trainer:
     """Instantiates a :class:`~lightning.pytorch.Trainer`.
 
@@ -44,8 +44,8 @@ def instantiate_trainer(
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
-        save_every_n_epochs: See\
-            :paramref:`~.DeepLearningSubtaskConfig.save_every_n_epochs`.
+        save_every_n_train_steps: See\
+            :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.
 
     Returns:
         A :class:`~lightning.pytorch.Trainer` instance.
@@ -64,9 +64,10 @@ def instantiate_trainer(
     callbacks.append(
         ModelCheckpoint(
             dirpath=trainer_partial.keywords["default_root_dir"],
-            every_n_epochs=save_every_n_epochs,
+            monitor="val/loss",
             save_last=True,
             save_top_k=1,
+            every_n_train_steps=save_every_n_train_steps,
         ),
     )
     # Instantiate the :class:`WandbLogger`.`
