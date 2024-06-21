@@ -398,12 +398,14 @@
 <span class="sd">            before training. Requires\</span>
 <span class="sd">            :paramref:`FittingSubtaskConfig.device` to be set to\</span>
 <span class="sd">            ``&quot;gpu&quot;`` &amp; a CUDA 7+ compatible GPU.</span>
-<span class="sd">        save_every_n_epochs: The frequency at which to save training\</span>
-<span class="sd">            checkpoints.</span>
+<span class="sd">        save_every_n_train_steps: The frequency at which to save\</span>
+<span class="sd">            training checkpoints.</span>
+<span class="sd">        ckpt_path: The path to a checkpoint to resume training from.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="nb">compile</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-    <span class="n">save_every_n_epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span></div>
+    <span class="n">save_every_n_train_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">ckpt_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;last&quot;</span></div>
 
 
 
