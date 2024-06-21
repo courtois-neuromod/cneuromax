@@ -9,7 +9,7 @@ from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
     BaseDataModuleConfig,
 )
-from cneuromax.utils.beartype import ge, lt, one_of
+from cneuromax.utils.beartype import ge, le, one_of
 
 from .dataset import KWPredDataset
 
@@ -23,7 +23,7 @@ class KWPredDatamoduleConfig(BaseDataModuleConfig):
             validation.
     """
 
-    val_percentage: An[float, ge(0), lt(1)] = 0.1
+    val_percentage: An[float, ge(0), le(1)] = 0.1
 
 
 class KWPredDataModule(BaseDataModule):
@@ -57,14 +57,14 @@ class KWPredDataModule(BaseDataModule):
 
     def setup(
         self: "KWPredDataModule",
-        stage: An[str, one_of("fit", "validate", "test")],
+        stage: An[str, one_of("fit", "validate", "test", "predict")],
     ) -> None:
         """Creates the train/val/test datasets.
 
         Args:
             stage: Current stage type.
         """
-        if stage == "fit":
+        if stage in ["fit", "validate"]:
             last_train_idx = int(
                 len(self.dataset) * (1 - self.config.val_percentage),
             )
@@ -76,9 +76,8 @@ class KWPredDataModule(BaseDataModule):
                 self.dataset,
                 indices=range(last_train_idx, len(self.dataset)),
             )
-        else:  # stage == "test":
-            try:
-                self.datasets.test = self.datasets.val
-            except AttributeError as e:
-                error_msg = "No test dataset available."
-                raise AttributeError(error_msg) from e
+        elif stage == "test":
+            error_msg = "No test logic implemented."
+            raise NotImplementedError(error_msg)
+        else:  # stage == "predict"
+            self.datasets.predict = self.dataset

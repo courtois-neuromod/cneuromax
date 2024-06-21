@@ -1,12 +1,10 @@
 """:func:`load_data` and its helper functions."""
 
-import logging
 from pathlib import Path
 
 import torch
-import torch.nn.functional as f
 import torchaudio
-from einops import rearrange, reduce
+from einops import reduce
 from jaxtyping import Float32
 from torch import Tensor
 
@@ -17,10 +15,9 @@ def load_data(
     paths: KWPredDatasetPaths,
     content_id: int,
     starting_time: float,
-    duration_second: int,
     num_klk_wav_corners: int,
 ) -> dict[str, Tensor]:
-    """Loads :paramref:`duration_second` seconds of data.
+    """Loads 10 seconds of data.
 
     NAE: Number of audio embeddings (time dimension)
     AEFB: Audio embeddings frequency bin
@@ -34,8 +31,6 @@ def load_data(
         paths: See :class:`.KWPredDatasetPaths`.
         content_id: See :mod:`.kw_pred` terminology.
         starting_time: Self-explanatory.
-        duration_second: See\
-            :paramref:`~.KWPredDatasetConfig.duration_second`.
         num_klk_wav_corners: See\
             :paramref:`~.KWPredDatasetConfig.num_klk_wav_corners`.
 
@@ -84,7 +79,6 @@ def load_data(
         kw_dir=paths.kw_dir,
         content_id=content_id,
         starting_time=starting_time,
-        duration_second=duration_second,
         num_klk_wav_corners=num_klk_wav_corners,
     )
     return {**transformed_data_dict, **kw_data}
@@ -165,36 +159,10 @@ def load_transformed_data(
     return data
 
 
-def interpolate_transformed_data(
-    data: Float32[Tensor, " num_samples num_features"],
-) -> Float32[Tensor, " 4000 data_dim"]:
-    """Interpolates the 10 second data to 400 Hz.
-
-    Args:
-        data: The data to interpolate.
-
-    Returns:
-        The interpolated data.
-    """
-    data: Float32[Tensor, " 1 num_features num_samples"] = rearrange(
-        tensor=data,
-        pattern="num_samples num_features -> 1 num_features num_samples",
-    )
-    data: Float32[Tensor, " 1 num_features 4000"] = f.interpolate(
-        input=data,
-        size=4000,
-    )
-    return rearrange(
-        tensor=data,
-        pattern="1 num_features 4000 -> 4000 num_features",
-    )
-
-
 def load_kw_data(
     kw_dir: Path,
     content_id: int,
     starting_time: float,
-    duration_second: int,
     num_klk_wav_corners: int,
 ) -> dict[str, Float32[Tensor, " num_samples"]]:
     """Loads ``.klk`` ``.wav`` data.
@@ -203,15 +171,13 @@ def load_kw_data(
         kw_dir: See :paramref:`~.KWPredDatasetPaths.kw_dir`.
         content_id: See :mod:`.kw_pred` terminology.
         starting_time: See :paramref:`~load_data.starting_time`.
-        duration_second: See\
-            :paramref:`~.KWPredDatasetConfig.duration_second`.
         num_klk_wav_corners: See\
             :paramref:`~.KWPredDatasetConfig.num_klk_wav_corners`.
 
     Returns:
         The ``.klk`` ``.wav`` data for the :paramref:`content_id` from\
             :paramref:`starting_time` to :paramref:`starting_time`\
-            + :paramref:`duration_second`.
+            + 10 seconds.
     """
     data: dict[str, Float32[Tensor, " num_samples"]] = {}
     kw_content_id_dir = kw_dir / f"ID{content_id}/"
@@ -222,7 +188,7 @@ def load_kw_data(
         pos_data, _ = torchaudio.load(
             uri=data_file,
             frame_offset=int(starting_time * 400),
-            num_frames=duration_second * 400,
+            num_frames=4000,
         )
         pos_data: Float32[Tensor, " num_samples"] = pos_data.squeeze(0)
         data[f"KW {pos}"] = pos_data

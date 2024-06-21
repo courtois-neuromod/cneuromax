@@ -1,11 +1,11 @@
 """:class:`KWPredDataset` + its config."""
 
 import logging
+import random
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Annotated as An
 
-import torch
 from torch import Tensor
 from torch.utils.data import Dataset
 
@@ -83,10 +83,6 @@ class KWPredDatasetConfig:
             :paramref:`root_data_dir` to the directory containing\
             precomputed video embeddings. See :mod:`.kw_pred` for more\
             details on video embeddings (VE).
-        annot_rel_dir: Relative path with respect to\
-            :paramref:`root_data_dir` to the directory containing\
-            ``.csv`` files with annotations of the\
-            ``ISD-Sust-006-Engine`` category for each movie.
         klk_wavs_rel_dir: Relative path with respect to\
             :paramref:`root_data_dir` to the directory containing\
             ``.wav`` files extracted from ``.klk`` files. See\
@@ -94,8 +90,8 @@ class KWPredDatasetConfig:
             predictions (KW).
         num_klk_wavs_corners: Number of corners in the ``.klk``\
             ``.wav`` files to model.
-        duration_seconds: Length of each data point in seconds.
-        dataset_percentage: Percentage of the dataset to use.
+        content_id: Singular content ID to use for the dataset. If set,\
+            the dataset will be used for model predictions.
     """
 
     root_data_dir: str = "/media/DATA/"
@@ -104,11 +100,9 @@ class KWPredDatasetConfig:
     video_embeddings_rel_dir: str | None = (
         "video_embeddings/dinov2/dinov2_vitl14/"
     )
-    annot_rel_dir: str | None = "ISD-Sust-006-Engine/"
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
     num_klk_wavs_corners: An[int, ge(1), le(4)] = 1
-    duration_seconds: An[int, ge(1)] = 10
-    dataset_percentage: An[float, ge(0), le(1)] = 1.0
+    content_id: int | None = None
 
 
 class KWPredDataset(Dataset[dict[str, Tensor]]):
@@ -148,21 +142,15 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                 if config.video_embeddings_rel_dir
                 else None
             ),
-            an_dir=(
-                Path(config.root_data_dir + config.annot_rel_dir)
-                if config.annot_rel_dir
-                else None
-            ),
             kw_dir=(Path(config.root_data_dir + config.klk_wavs_rel_dir)),
         )
         self.load_data_fn, self.num_data_points = create_load_function(
             paths=paths,
-            duration_second=config.duration_seconds,
         )
 
     def __len__(self: "KWPredDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
-        return int(self.num_data_points * self.config.dataset_percentage)
+        return self.num_data_points
 
     def __getitem__(self: "KWPredDataset", idx: int) -> dict[str, Tensor]:
         """See :meth:`torch.utils.data.Dataset.__getitem__`."""
@@ -170,13 +158,10 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
             try:
                 data: dict[str, Tensor] = self.load_data_fn(
                     idx,
-                    self.config.duration_seconds,
                     self.config.num_klk_wavs_corners,
                 )
                 return data  # noqa: TRY300
             except Exception as e:  # noqa: PERF203, BLE001
                 logging.debug(f"Error class: {e.__class__.__name__}")
                 logging.debug(f"Error: {e}, re-sampling index.")
-                idx = int(
-                    torch.randint(low=0, high=len(self), size=(1,)),
-                )
+                idx = random.randint(0, len(self) - 1)  # noqa: S311

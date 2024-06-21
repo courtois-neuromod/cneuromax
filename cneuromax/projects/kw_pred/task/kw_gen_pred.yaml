@@ -12,21 +12,13 @@ hydra:
     cpus_per_task: 12
     tasks_per_node: 1 #2
     gpus_per_node: 1 #2
-  #sweeper:
-    #params:
-      #datamodule.dataset.config.dataset_percentage: 0.1, 0.5, 0.75, 1.0
-      #litmodule.nnmodule.depth: 8,12
 
 config:
   device: gpu
-  save_every_n_epochs: 5
 datamodule:
   config:
-    val_percentage: 1.0 #0.05
-    #max_per_device_batch_size: 256
     fixed_per_device_batch_size: 90 #128
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
-    shuffle_val_data: False
   dataset:
     config:
       root_data_dir: /data/
@@ -34,16 +26,6 @@ datamodule:
       audio_embeddings_rel_dir: null
       video_embeddings_rel_dir: null
       klk_wavs_rel_dir: HEMC_klk_wavs_9hz_accel/
-      dataset_percentage: 1.0
-trainer:
-  max_steps: 0 #100000
-  #max_time: 00:01:00:00
-  #max_epochs: 2
-  #accumulate_grad_batches: 2
-  precision: bf16
-  val_check_interval: 200
-  check_val_every_n_epoch: null
-  num_sanity_val_steps: 0
 litmodule:
   optimizer:
     lr: 1e-4

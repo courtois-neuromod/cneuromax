@@ -1,11 +1,10 @@
 """:func:`create_load_function` and its helper functions."""
 
+import logging
 import random
 from collections.abc import Callable
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
 from torch import Tensor
 
 from .load import get_transformed_data_path, load_data
@@ -15,42 +14,32 @@ from .paths import KWPredDatasetPaths
 
 def create_load_function(
     paths: KWPredDatasetPaths,
-    duration_second: int,
-) -> tuple[Callable[[int, int, int], dict[str, Tensor]], int]:
+    content_id: int | None = None,
+) -> tuple[Callable[[int, int], dict[str, Tensor]], int]:
     """Creates a function to load data given an index.
 
     Args:
         paths: See :class:`.KWPredDatasetPaths`.
-        num_klk_wavs_corners: See\
-            :paramref:`~.KWPredDatasetConfig.num_klk_wavs_corners`.
-        duration_second: See\
-            :paramref:`~.KWPredDatasetConfig.duration_second`.
+        content_id: See :paramref:`.KWPredDatasetConfig.content_id`.
 
     Returns:
         A function that inputs an index and returns the corresponding\
             data.
     """
-    overlapping_content_ids = get_overlapping_content_ids(
+    if content_id:
+        overlapping_content_ids = [content_id]
+    else:
+        overlapping_content_ids = get_overlapping_content_ids(paths=paths)
+        random.shuffle(overlapping_content_ids)
+        logging.info("First 10 content IDs: %s", overlapping_content_ids[:10])
+        logging.info("Last 10 content IDs: %s", overlapping_content_ids[-10:])
+    data_map = create_data_map(
         paths=paths,
-    )
-    random.shuffle(overlapping_content_ids)
-    data_map = (
-        create_conditional_generation_data_map(
-            paths=paths,
-            overlapping_content_ids=overlapping_content_ids,
-            duration_second=duration_second,
-        )
-        if paths.ae_dir or paths.af_dir or paths.ve_dir
-        else create_unconditional_generation_data_map(
-            paths=paths,
-            overlapping_content_ids=overlapping_content_ids,
-            duration_second=duration_second,
-        )
+        overlapping_content_ids=overlapping_content_ids,
     )
 
     def load_fn(
         idx: int,
-        duration_second: int,
         num_klk_wav_corners: int,
     ) -> dict[str, Tensor]:
 
@@ -59,78 +48,15 @@ def create_load_function(
             paths=paths,
             content_id=content_id,
             starting_time=starting_time,
-            duration_second=duration_second,
             num_klk_wav_corners=num_klk_wav_corners,
         )
 
     return load_fn, len(data_map)
 
 
-def create_unconditional_generation_data_map(
+def create_data_map(
     paths: KWPredDatasetPaths,
     overlapping_content_ids: list[int],
-    duration_second: int,
-) -> list[tuple[int, float]]:
-    """:func:`create_load_function` for unconditional generation.
-
-    Args:
-        paths: See :class:`.KWPredDatasetPaths`.
-        overlapping_content_ids: See\
-            :func:`.get_overlapping_content_ids`.
-        num_klk_wavs_corners: See\
-            :paramref:`~.KWPredDatasetConfig.num_klk_wavs_corners`.
-        duration_second: See\
-            :paramref:`~.KWPredDatasetConfig.duration_second`.
-
-    Returns:
-        A list of tuples, each containing a content ID and a starting\
-            second.
-    """
-    if not isinstance(paths.an_dir, Path):
-        error_msg = "`an_dir` is missing."
-        raise TypeError(error_msg)
-    data_map: list[tuple[int, float]] = []
-    for content_id in overlapping_content_ids:
-        # Find and load the annotation file
-        matching_files = list(paths.an_dir.glob(f"ID{content_id}*.csv"))
-        if len(list(matching_files)) != 1:
-            continue
-        file = matching_files[0]
-        data_df = pd.read_csv(file)
-        # Find all annotation blocks
-        time_tuples: list[tuple[float, float]] = []
-        for row in data_df.iterrows():
-            confidence = row[1]["Confidence"]
-            if confidence == "Unclear":
-                continue
-            time_on = row[1]["TimeOn"]
-            time_off = row[1]["TimeOff"]
-            # If an annotation block is immediately followed by another
-            # annotation block, we merge them
-            if len(time_tuples) > 0 and np.allclose(
-                a=time_on,
-                b=time_tuples[-1][1],
-                # >>> np.allclose(0.93301, 0.9318,atol=1.1e-3) -> False
-                # >>> np.allclose(0.93301, 0.93199,atol=1.1e-3) -> True
-                atol=1.1e-3,
-            ):
-                time_tuples[-1] = (time_tuples[-1][0], time_off)
-                continue
-            time_tuples.append((time_on, time_off))
-        for time_tuple in time_tuples:
-            duration = time_tuple[1] - time_tuple[0]
-            num_segments = int(duration / duration_second)
-            for i in range(num_segments):
-                start = time_tuple[0] + i * duration_second
-                data_map.append((content_id, start))
-
-    return data_map
-
-
-def create_conditional_generation_data_map(
-    paths: KWPredDatasetPaths,
-    overlapping_content_ids: list[int],
-    duration_second: int,
 ) -> list[tuple[int, float]]:
     """Self-explanatory.
 
@@ -138,12 +64,10 @@ def create_conditional_generation_data_map(
         paths: See :class:`.KWPredDatasetPaths`.
         overlapping_content_ids: See\
             :func:`.get_overlapping_content_ids`.
-        duration_second: See\
-            :paramref:`~.KWPredDatasetConfig.duration_second`.
 
     Returns:
-        See return value of\
-            :func:`.create_unconditional_generation_data_map`.
+        A function that inputs an index and returns the corresponding\
+            data.
     """
     data_dir = paths.ae_dir or paths.af_dir or paths.ve_dir
     if not isinstance(data_dir, Path):
@@ -162,5 +86,5 @@ def create_conditional_generation_data_map(
             starting_second=starting_second,
         ).exists():
             data_map.append((content_id, starting_second))
-            starting_second += duration_second
+            starting_second += 10
     return data_map
