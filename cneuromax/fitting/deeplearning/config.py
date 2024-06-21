@@ -30,12 +30,14 @@ class DeepLearningSubtaskConfig(FittingSubtaskConfig):
             before training. Requires\
             :paramref:`FittingSubtaskConfig.device` to be set to\
             ``"gpu"`` & a CUDA 7+ compatible GPU.
-        save_every_n_epochs: The frequency at which to save training\
-            checkpoints.
+        save_every_n_train_steps: The frequency at which to save\
+            training checkpoints.
+        ckpt_path: The path to a checkpoint to resume training from.
     """
 
     compile: bool = False
-    save_every_n_epochs: int = 1
+    save_every_n_train_steps: int | None = 1
+    ckpt_path: str = "last"
 
 
 @dataclass
