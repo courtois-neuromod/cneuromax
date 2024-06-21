@@ -53,7 +53,7 @@ def train(
         logger_partial=logger,
         device=config.device,
         output_dir=config.output_dir,
-        save_every_n_epochs=config.save_every_n_epochs,
+        save_every_n_train_steps=config.save_every_n_train_steps,
     )
     """TODO: Add logic for HPO"""
     set_batch_size_and_num_workers(
@@ -72,7 +72,11 @@ def train(
         litmodule = torch.compile(  # type: ignore [assignment]
             litmodule,  # mypy: `torch.compile`` not typed for `BaseLitModule`.
         )
-    trainer.fit(model=litmodule, datamodule=datamodule, ckpt_path="last")
+    trainer.fit(
+        model=litmodule,
+        datamodule=datamodule,
+        ckpt_path=config.ckpt_path,
+    )
     """TODO: Add logic for HPO"""
     return trainer.validate(model=litmodule, datamodule=datamodule)[0][
         "val/loss"
