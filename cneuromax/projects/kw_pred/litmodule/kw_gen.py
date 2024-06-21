@@ -1,5 +1,6 @@
 """:class:`KWGenerationLitModule."""
 
+import sys
 from abc import ABCMeta
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -8,6 +9,7 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
+import torchaudio
 import wandb
 from einops import rearrange
 from ema_pytorch import EMA
@@ -33,9 +35,12 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
     Args:
         num_val_wandb_samples: The number of samples to log to\
             :mod:`wandb`.
+        predicting: Whether the model is predicting rather than\
+            fitting.
     """
 
     num_val_wandb_samples: An[int, ge(1)] = 3
+    predicting: bool = False
 
 
 class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
@@ -164,6 +169,14 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 device=self.device,
             )
             x_zero_hat = x_zero_hat.squeeze().cpu()
+            if self.config.predicting:
+                torchaudio.save(
+                    uri="pred.wav",
+                    src=x_zero_hat.view(1, -1) / 1000,
+                    sample_rate=400,
+                    format="wav",
+                )
+                sys.exit()
             for val_wandb_data_i, x_hat_i in zip(
                 self.val_wandb_data,
                 x_zero_hat,
