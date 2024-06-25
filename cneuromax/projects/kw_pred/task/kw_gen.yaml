@@ -50,6 +50,7 @@ litmodule:
   config:
     log_val_wandb: True
     num_val_wandb_samples: 90
+    #predicting: True
   nnmodule:
     klk_seq_len: 4000
     patch_size: 10

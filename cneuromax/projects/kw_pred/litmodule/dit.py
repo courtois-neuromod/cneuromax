@@ -455,3 +455,26 @@ class CustomDiT(nn.Module):
         x: Float[Tensor, " BS NP PSxOC"] = self.final_layer(x, c)
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
         return x
+
+    def forward_with_cfg(  # noqa: D102
+        self: "CustomDiT",
+        x: Float[Tensor, " BS IC SL"],
+        t: Int[Tensor, " BS"],
+        y: (
+            Float[Tensor, " BS AES"]
+            | Float[Tensor, " BS NAE AES"]
+            | Float[Tensor, " BS ES"]
+        ),
+        cfg_scale: int,
+    ) -> Tensor:
+        half = x[: len(x) // 2]
+        combined = torch.cat([half, half], dim=0)
+        model_out = self.forward(combined, t, y)
+        eps, rest = (
+            model_out[:, : self.num_klk_corners],
+            model_out[:, self.num_klk_corners :],
+        )
+        cond_eps, uncond_eps = torch.split(eps, len(eps) // 2, dim=0)
+        half_eps = uncond_eps + cfg_scale * (cond_eps - uncond_eps)
+        eps = torch.cat([half_eps, half_eps], dim=0)
+        return torch.cat([eps, rest], dim=1)

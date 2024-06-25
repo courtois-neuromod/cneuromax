@@ -91,7 +91,11 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             * 1000
         )
         y = data["AE"] if "AE" in data else data["AF"]
-        if stage == "val" and self.config.log_val_wandb:
+        if (
+            stage == "val"
+            and self.global_rank == 0
+            and self.config.log_val_wandb
+        ):
             self.save_val_data(x=x, y=y)
         t = torch.randint(
             low=0,
@@ -143,7 +147,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         self: "KWGenerationLitModule",
     ) -> None:
         """Called at the end of the validation epoch."""
-        if self.config.log_val_wandb:
+        if self.config.log_val_wandb and self.global_rank == 0:
             x_big_t = torch.randn(
                 self.config.num_val_wandb_samples,
                 self.nnmodule.num_klk_corners,
@@ -160,7 +164,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 y[i] = self.val_wandb_data[i]["y"]
             y = y.to(self.device)
             x_zero_hat = self.diffusion.p_sample_loop(
-                self.ema_nnmodule.ema_model.forward,
+                self.ema_nnmodule.ema_model.forward_with_cfg,
                 x_big_t.shape,
                 x_big_t,
                 clip_denoised=False,
