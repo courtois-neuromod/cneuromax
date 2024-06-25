@@ -72,6 +72,7 @@ def train(
         litmodule = torch.compile(  # type: ignore [assignment]
             litmodule,  # mypy: `torch.compile`` not typed for `BaseLitModule`.
         )
+    litmodule.trainer = trainer
     trainer.fit(
         model=litmodule,
         datamodule=datamodule,
