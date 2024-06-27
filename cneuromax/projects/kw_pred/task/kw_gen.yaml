@@ -19,12 +19,12 @@ hydra:
 
 config:
   device: gpu
-  save_every_n_epochs: 5
+  save_every_n_train_steps: 200
 datamodule:
   config:
-    val_percentage: 1.0 #0.05
+    val_percentage: 0.01
     #max_per_device_batch_size: 256
-    fixed_per_device_batch_size: 90 #128
+    fixed_per_device_batch_size: 256
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
     shuffle_val_data: False
   dataset:
@@ -33,10 +33,9 @@ datamodule:
       #audio_stft_rel_dir: null
       audio_embeddings_rel_dir: null
       video_embeddings_rel_dir: null
-      klk_wavs_rel_dir: HEMC_klk_wavs_9hz_accel/
-      dataset_percentage: 1.0
+      klk_wavs_rel_dir: KLK_corners_filtered/
 trainer:
-  max_steps: 0 #100000
+  max_steps: 10000000
   #max_time: 00:01:00:00
   #max_epochs: 2
   #accumulate_grad_batches: 2
@@ -49,13 +48,13 @@ litmodule:
     lr: 1e-4
   config:
     log_val_wandb: True
-    num_val_wandb_samples: 90
+    num_val_wandb_samples: 3
     #predicting: True
   nnmodule:
     klk_seq_len: 4000
     patch_size: 10
     num_klk_corners: 1
-    depth: 6 #6
+    depth: 3 #6
     audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
     # yamllint disable-line rule:line-length
     audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}

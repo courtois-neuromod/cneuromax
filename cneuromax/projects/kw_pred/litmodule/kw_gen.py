@@ -164,7 +164,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 y[i] = self.val_wandb_data[i]["y"]
             y = y.to(self.device)
             x_zero_hat = self.diffusion.p_sample_loop(
-                self.ema_nnmodule.ema_model.forward_with_cfg,
+                self.ema_nnmodule.ema_model.forward,
                 x_big_t.shape,
                 x_big_t,
                 clip_denoised=False,

@@ -434,7 +434,7 @@ class CustomDiT(nn.Module):
             | Float[Tensor, " BS NAE AES"]
             | Float[Tensor, " BS ES"]
         ),
-    ) -> Float[Tensor, " BS SL OC"]:
+    ) -> Float[Tensor, " BS OC SL"]:
         """.
 
         BS: Batch size
@@ -456,7 +456,7 @@ class CustomDiT(nn.Module):
         x: Float[Tensor, " BS OC SL"] = self.unpatchify(x)
         return x
 
-    def forward_with_cfg(  # noqa: D102
+    def forward_with_cfg(
         self: "CustomDiT",
         x: Float[Tensor, " BS IC SL"],
         t: Int[Tensor, " BS"],
@@ -466,15 +466,39 @@ class CustomDiT(nn.Module):
             | Float[Tensor, " BS ES"]
         ),
         cfg_scale: int,
-    ) -> Tensor:
-        half = x[: len(x) // 2]
-        combined = torch.cat([half, half], dim=0)
-        model_out = self.forward(combined, t, y)
-        eps, rest = (
-            model_out[:, : self.num_klk_corners],
-            model_out[:, self.num_klk_corners :],
+    ) -> Float[Tensor, " BS OC SL"]:
+        """.
+
+        BS: Batch size
+        BSDT: Batch size divided by two
+        IC: Number of input `.klk` channels (number of chair corners)
+        SL: `.klk` sequence length
+        ES: Embedding size (a.k.a. hidden size)
+        OC: Output channels
+        OCDT: Output channels divided by two
+        NP: Number of patches
+        AES: Audio embeddings size
+        NAE: Number of audio embeddings (time dimension)
+        """
+        half: Float[Tensor, " BSDT IC SL"] = x[: len(x) // 2]
+        combined: Float[Tensor, " BS IC SL"] = torch.cat([half, half], dim=0)
+        model_out: Float[Tensor, " BS OC SL"] = self.forward(combined, t, y)
+        eps: Float[Tensor, " BS OCDT SL"] = model_out[
+            :,
+            : self.num_klk_corners,
+        ]
+        rest: Float[Tensor, " BS OCDT SL"] = model_out[
+            :,
+            self.num_klk_corners :,
+        ]
+        cond_eps: Float[Tensor, " BSDT OCDT SL"] = eps[: len(eps) // 2]
+        uncond_eps: Float[Tensor, " BSDT OCDT SL"] = eps[len(eps) // 2 :]
+        half_eps: Float[Tensor, " BSDT OCDT SL"] = uncond_eps + cfg_scale * (
+            cond_eps - uncond_eps
         )
-        cond_eps, uncond_eps = torch.split(eps, len(eps) // 2, dim=0)
-        half_eps = uncond_eps + cfg_scale * (cond_eps - uncond_eps)
-        eps = torch.cat([half_eps, half_eps], dim=0)
-        return torch.cat([eps, rest], dim=1)
+        eps: Float[Tensor, " BS OCDT SL"] = torch.cat(
+            [half_eps, half_eps],
+            dim=0,
+        )
+        out: Float[Tensor, " BS OC SL"] = torch.cat([eps, rest], dim=1)
+        return out

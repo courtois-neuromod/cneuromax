@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Annotated as An
 
+import torch
 from torch import Tensor
 from torch.utils.data import Dataset
 
@@ -160,6 +161,12 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                     idx,
                     self.config.num_klk_wavs_corners,
                 )
+                if data["KW BL"].shape != torch.Size([4000]):
+                    logging.info(data["KW BL"].shape)
+                    raise
+                if data["AF"].shape != torch.Size([311, 513]):
+                    logging.info(data["AF"].shape)
+                    raise
                 return data  # noqa: TRY300
             except Exception as e:  # noqa: PERF203, BLE001
                 logging.debug(f"Error class: {e.__class__.__name__}")
