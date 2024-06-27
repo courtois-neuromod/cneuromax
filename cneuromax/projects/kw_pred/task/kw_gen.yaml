@@ -26,7 +26,7 @@ datamodule:
     #max_per_device_batch_size: 256
     fixed_per_device_batch_size: 256
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
-    shuffle_val_data: False
+    #shuffle_val_data: False # comment when training
   dataset:
     config:
       root_data_dir: /data/
