@@ -437,9 +437,7 @@
         <span class="ow">and</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_capability</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
         <span class="o">&gt;=</span> <span class="n">TORCH_COMPILE_MINIMUM_CUDA_VERSION</span>
     <span class="p">):</span>
-        <span class="n">litmodule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>  <span class="c1"># type: ignore [assignment]</span>
-            <span class="n">litmodule</span><span class="p">,</span>  <span class="c1"># mypy: `torch.compile`` not typed for `BaseLitModule`.</span>
-        <span class="p">)</span>
+        <span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]</span>
     <span class="n">litmodule</span><span class="o">.</span><span class="n">trainer</span> <span class="o">=</span> <span class="n">trainer</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
         <span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
