@@ -40,8 +40,6 @@ class BaseDataModuleConfig:
     Args:
         data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        shuffle_val_data: Whether to shuffle the validation data\
-            during training.
         max_per_device_batch_size: See\
             :attr:`~BaseDataModule.per_device_batch_size`. Sets an\
             upper bound on the aforementioned attribute.
@@ -59,7 +57,6 @@ class BaseDataModuleConfig:
 
     data_dir: An[str, not_empty()] = "${config.data_dir}"
     device: An[str, one_of("cpu", "gpu")] = "${config.device}"
-    shuffle_val_data: bool = True
     max_per_device_batch_size: An[int, ge(1)] | None = None
     fixed_per_device_batch_size: An[int, ge(1)] | None = None
     fixed_per_device_num_workers: An[int, ge(0)] | None = None
@@ -183,10 +180,7 @@ class BaseDataModule(LightningDataModule, ABC):
             A new validation :class:`~torch.utils.data.DataLoader`\
                 instance.
         """
-        return self.x_dataloader(
-            dataset=self.datasets.val,
-            shuffle=self.config.shuffle_val_data,
-        )
+        return self.x_dataloader(dataset=self.datasets.val, shuffle=False)
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
