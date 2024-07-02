@@ -48,6 +48,10 @@
         }
       }
     },
+    "runArgs": [
+    "--gpus",
+    "all"
+    ],
     "postAttachCommand": "pre-commit install",
     "containerEnv": {
       "PYTHONPATH": "/workspaces/cneuromax",

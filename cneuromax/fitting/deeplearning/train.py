@@ -69,9 +69,7 @@ def train(
         and torch.cuda.get_device_capability()[0]
         >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
     ):
-        litmodule = torch.compile(  # type: ignore [assignment]
-            litmodule,  # mypy: `torch.compile`` not typed for `BaseLitModule`.
-        )
+        litmodule.nnmodule = torch.compile(litmodule.nnmodule)  # type: ignore [assignment]
     litmodule.trainer = trainer
     trainer.fit(
         model=litmodule,

@@ -19,7 +19,9 @@ hydra:
 
 config:
   device: gpu
+  compile: True
   save_every_n_train_steps: 200
+  #ckpt_path: ${oc.env:CNEUROMAX_PATH}/data/kw_pred/kw_gen/overrides#/lightning/epoch=3-step=16800.ckpt
 datamodule:
   config:
     val_percentage: 0.01

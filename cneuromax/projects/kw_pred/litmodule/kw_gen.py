@@ -188,7 +188,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             ):
                 val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
                 val_wandb_data_i.pop("y")
-        super().on_validation_epoch_end()
+            super().on_validation_epoch_end()
 
 
 def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
