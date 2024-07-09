@@ -91,6 +91,7 @@ class KWPredDatasetConfig:
             predictions (KW).
         num_klk_wavs_corners: Number of corners in the ``.klk``\
             ``.wav`` files to model.
+        stats_path: Path to the dataset statistics file.
         content_id: Singular content ID to use for the dataset. If set,\
             the dataset will be used for model predictions.
     """
@@ -102,6 +103,7 @@ class KWPredDatasetConfig:
         "video_embeddings/dinov2/dinov2_vitl14/"
     )
     klk_wavs_rel_dir: str = "HEMC_klk_wavs/"
+    stats_path: str = "/media/DATA/dataset_stats.pt"
     num_klk_wavs_corners: An[int, ge(1), le(4)] = 1
     content_id: int | None = None
 
@@ -148,6 +150,7 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
         self.load_data_fn, self.num_data_points = create_load_function(
             paths=paths,
         )
+        self.stats = torch.load(config.stats_path)
 
     def __len__(self: "KWPredDataset") -> int:
         """See :meth:`torch.utils.data.Dataset.__len__`."""
@@ -167,6 +170,12 @@ class KWPredDataset(Dataset[dict[str, Tensor]]):
                 if data["AF"].shape != torch.Size([311, 513]):
                     logging.info(data["AF"].shape)
                     raise
+                data["AF"] = (data["AF"] - self.stats["AF mean"]) / self.stats[
+                    "AF std"
+                ]
+                data["KW BL"] = (
+                    data["KW BL"] - self.stats["KW BL mean"]
+                ) / self.stats["KW BL std"]
                 return data  # noqa: TRY300
             except Exception as e:  # noqa: PERF203, BLE001
                 logging.debug(f"Error class: {e.__class__.__name__}")

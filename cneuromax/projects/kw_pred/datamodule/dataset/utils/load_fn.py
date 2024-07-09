@@ -30,6 +30,7 @@ def create_load_function(
         overlapping_content_ids = [content_id]
     else:
         overlapping_content_ids = get_overlapping_content_ids(paths=paths)
+        random.seed(0)
         random.shuffle(overlapping_content_ids)
         logging.info("First 10 content IDs: %s", overlapping_content_ids[:10])
         logging.info("Last 10 content IDs: %s", overlapping_content_ids[-10:])

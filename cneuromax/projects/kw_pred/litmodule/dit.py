@@ -117,10 +117,12 @@ class TransformerEncode1D(nn.Module):
         embd_size: int,
         target_num_patches: int,
         encoder: AttentionLayers,
+        dropout_prob: float = 0.1,
     ) -> None:
         super().__init__()
         self.seq_len = seq_len
         self.embd_size = embd_size
+        self.dropout_prob = dropout_prob
         patch_size = seq_len // target_num_patches or 1
         self.patch_embed = PatchEmbed1D(
             seq_len=seq_len,
@@ -150,7 +152,9 @@ class TransformerEncode1D(nn.Module):
         ES: Embedding size
         NP: Number of patches
         """
-        x: Float[Tensor, " BS NS SL"] = rearrange(x, "BS SL NS -> BS NS SL")
+        if self.training:
+            x[: int(len(x) * self.dropout_prob)] = 0
+        x: Float[Tensor, " BS 1 NS SL"] = rearrange(x, "BS SL NS -> BS NS SL")
         x: Float[Tensor, " BS NP ES"] = self.patch_embed(x) + self.pos_embed
         x: Float[Tensor, " BS NP ES"] = self.encoder(x)
         x: Float[Tensor, " BS NPxES"] = rearrange(x, "BS NP ES -> BS (NP ES)")
@@ -245,16 +249,16 @@ class CustomDiT(nn.Module):
         self: "CustomDiT",
         ### NEW ###
         klk_seq_len: int = 4000,  # replaces `input_size: int = 32,`
-        num_klk_corners: int = 1,  # replaces `in_channels: int = 4,`
+        num_klk_corners: int = 1,  # replaces `in_channels: int = 4`
         audio_stft_rel_dir: str | None = None,
         audio_embeddings_rel_dir: str | None = None,
         ###########
         patch_size: int = 2,
-        # hidden_size: int = 1152, now `embd_size` & computed w/ `depth`
+        embd_size: int = 512,  # replaces `hidden_size: int = 1152`
         depth: int = 28,
         num_heads: int = 16,
         mlp_ratio: float = 4.0,
-        # class_dropout_prob: float = 0.1,  # noqa: ERA001
+        cond_dropout_prob: float = 0.1,  # replaces `class_dropout_prob`
         # num_classes: int = 1000,  # noqa: ERA001
         *,
         learn_sigma: bool = True,
@@ -269,7 +273,7 @@ class CustomDiT(nn.Module):
         self.num_heads = num_heads
         ### NEW ###
         self.klk_seq_len = klk_seq_len
-        self.embd_size = 64 * depth  # As in MM-DiT paper (old `hidden_size`)
+        self.embd_size = embd_size
         if bool(audio_embeddings_rel_dir) == bool(audio_stft_rel_dir):
             error_msg = (
                 "Exactly one of `audio_embeddings_rel_dir` and "
@@ -311,7 +315,10 @@ class CustomDiT(nn.Module):
                 dim=self.embd_size,
                 depth=depth,
                 heads=num_heads,
+                attn_flash=True,
+                ff_glu=True,
             ),
+            dropout_prob=cond_dropout_prob,
         )
         ###########
         num_patches = self.x_embedder.num_patches
@@ -429,11 +436,7 @@ class CustomDiT(nn.Module):
         self: "CustomDiT",
         x: Float[Tensor, " BS IC SL"],
         t: Int[Tensor, " BS"],
-        y: (
-            Float[Tensor, " BS AES"]
-            | Float[Tensor, " BS NAE AES"]
-            | Float[Tensor, " BS ES"]
-        ),
+        y: Float[Tensor, " BS NAE AES"],
     ) -> Float[Tensor, " BS OC SL"]:
         """.
 
@@ -460,45 +463,29 @@ class CustomDiT(nn.Module):
         self: "CustomDiT",
         x: Float[Tensor, " BS IC SL"],
         t: Int[Tensor, " BS"],
-        y: (
-            Float[Tensor, " BS AES"]
-            | Float[Tensor, " BS NAE AES"]
-            | Float[Tensor, " BS ES"]
-        ),
-        cfg_scale: int,
+        y: Float[Tensor, " BS NAE AES"],
+        cfg_scale: Float[Tensor, " BS"],
     ) -> Float[Tensor, " BS OC SL"]:
         """.
 
         BS: Batch size
-        BSDT: Batch size divided by two
+        BSx2: Batch size divided by two
         IC: Number of input `.klk` channels (number of chair corners)
         SL: `.klk` sequence length
         ES: Embedding size (a.k.a. hidden size)
         OC: Output channels
-        OCDT: Output channels divided by two
-        NP: Number of patches
         AES: Audio embeddings size
         NAE: Number of audio embeddings (time dimension)
         """
-        half: Float[Tensor, " BSDT IC SL"] = x[: len(x) // 2]
-        combined: Float[Tensor, " BS IC SL"] = torch.cat([half, half], dim=0)
-        model_out: Float[Tensor, " BS OC SL"] = self.forward(combined, t, y)
-        eps: Float[Tensor, " BS OCDT SL"] = model_out[
-            :,
-            : self.num_klk_corners,
-        ]
-        rest: Float[Tensor, " BS OCDT SL"] = model_out[
-            :,
-            self.num_klk_corners :,
-        ]
-        cond_eps: Float[Tensor, " BSDT OCDT SL"] = eps[: len(eps) // 2]
-        uncond_eps: Float[Tensor, " BSDT OCDT SL"] = eps[len(eps) // 2 :]
-        half_eps: Float[Tensor, " BSDT OCDT SL"] = uncond_eps + cfg_scale * (
-            cond_eps - uncond_eps
+        BS: int = len(x)  # noqa: N806
+        x: Float[Tensor, " BSx2 IC SL"] = x.repeat(2, 1, 1)
+        y: Float[Tensor, " BSx2 NAE AES"] = y.repeat(2, 1, 1)
+        y[BS:] = 0
+        t: Int[Tensor, " BSx2"] = t.repeat(2)
+        model_out: Float[Tensor, " BSx2 OC SL"] = self.forward(x, t, y)
+        cond_out: Float[Tensor, " BS OC SL"] = model_out[:BS]
+        uncond_out: Float[Tensor, " BS OC SL"] = model_out[BS:]
+        out: Float[Tensor, " BS OC SL"] = uncond_out + cfg_scale * (
+            cond_out - uncond_out
         )
-        eps: Float[Tensor, " BS OCDT SL"] = torch.cat(
-            [half_eps, half_eps],
-            dim=0,
-        )
-        out: Float[Tensor, " BS OC SL"] = torch.cat([eps, rest], dim=1)
         return out

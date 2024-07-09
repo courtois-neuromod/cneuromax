@@ -2,7 +2,7 @@
 
 import sys
 from abc import ABCMeta
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
@@ -33,13 +33,18 @@ class KWGenerationLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`KWGenerationLitModule` config values.
 
     Args:
-        num_val_wandb_samples: The number of samples to log to\
+        num_val_samples_wandb: The number of samples to log to\
             :mod:`wandb`.
+        cfg_scales: The classifier-free guidance scales to use\
+            when sampling.
         predicting: Whether the model is predicting rather than\
             fitting.
     """
 
-    num_val_wandb_samples: An[int, ge(1)] = 3
+    num_val_samples_wandb: An[int, ge(1)] = 3
+    cfg_scales: list[float] = field(
+        default_factory=lambda: [1.0, 1.5, 2.0, 4.0],
+    )
     predicting: bool = False
 
 
@@ -59,7 +64,14 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             self.wandb_x_wrapper = wandb.Image
             self.val_wandb_data: list[dict[str, Any]]
         self.diffusion = create_diffusion(timestep_respacing="")  # type: ignore [no-untyped-call]
-        self.ema_nnmodule = EMA(model=self.nnmodule)
+        self.ema_nnmodule = EMA(
+            model=self.nnmodule,
+            include_online_model=False,
+        )
+        self.ema_nnmodule.ema_model = torch.compile(
+            self.ema_nnmodule.ema_model,
+        )
+        self.ema_nnmodule.ema_model.eval()  # type: ignore [attr-defined]
 
     def step(
         self: "KWGenerationLitModule",
@@ -83,12 +95,9 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         Returns:
             The cross entropy loss.
         """
-        x: Float[Tensor, " BS 1 4000"] = (
-            rearrange(
-                tensor=data["KW BL"],
-                pattern="BS SL -> BS 1 SL",
-            )
-            * 1000
+        x: Float[Tensor, " BS 1 4000"] = rearrange(
+            tensor=data["KW BL"],
+            pattern="BS SL -> BS 1 SL",
         )
         y = data["AE"] if "AE" in data else data["AF"]
         if (
@@ -132,12 +141,13 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             return
         x: Float[Tensor, " batch_size seq_len"] = x.squeeze().cpu()
         y: Tensor = y.squeeze().cpu()
-        for i, (x_i, y_i) in enumerate(zip(x, y, strict=True)):
+        for i in range(self.config.num_val_samples_wandb):
+            index = (
+                self.curr_val_epoch * self.config.num_val_samples_wandb + i
+            ) % len(x)
             self.val_wandb_data.append(
-                {"x": to_wandb_image(x_i), "y": y_i},
+                {"x": to_wandb_image(x[index]), "y": to_wandb_image(y[index])},
             )
-            if i + 1 == self.config.num_val_wandb_samples:
-                break
 
     def on_after_backward(self: "KWGenerationLitModule") -> None:
         """Called after loss computation and backward pass."""
@@ -148,50 +158,67 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
     ) -> None:
         """Called at the end of the validation epoch."""
         if self.config.log_val_wandb and self.global_rank == 0:
+            num_cfg_scales = len(self.config.cfg_scales)
+            cfg_scale = (
+                torch.tensor(self.config.cfg_scales)
+                .repeat(
+                    self.config.num_val_samples_wandb,
+                )
+                .to(self.device)
+            )
             x_big_t = torch.randn(
-                self.config.num_val_wandb_samples,
+                self.config.num_val_samples_wandb * num_cfg_scales,
                 self.nnmodule.num_klk_corners,
                 self.nnmodule.klk_seq_len,
                 device=self.device,
-            )
-            y = torch.empty(
+            ).to(self.device)
+            y = torch.zeros(
                 (
-                    self.config.num_val_wandb_samples,
+                    self.config.num_val_samples_wandb * num_cfg_scales,
                     *self.val_wandb_data[0]["y"].shape,
                 ),
             )
-            for i in range(self.config.num_val_wandb_samples):
-                y[i] = self.val_wandb_data[i]["y"]
+            for i in range(self.config.num_val_samples_wandb):
+                y[i * num_cfg_scales : (i + 1) * num_cfg_scales] = (
+                    self.val_wandb_data[i]["y"]
+                )
             y = y.to(self.device)
-            x_zero_hat = self.diffusion.p_sample_loop(
-                self.ema_nnmodule.ema_model.forward,
-                x_big_t.shape,
-                x_big_t,
-                clip_denoised=False,
-                model_kwargs={"y": y},
-                progress=True,
-                device=self.device,
+            x_hat = (
+                self.diffusion.p_sample_loop(
+                    self.ema_nnmodule.ema_model.forward_with_cfg,
+                    x_big_t.shape,
+                    x_big_t,
+                    clip_denoised=False,
+                    model_kwargs={"y": y, "cfg_scale": cfg_scale},
+                    progress=True,
+                    device=self.device,
+                )
+                .squeeze()
+                .cpu()
             )
-            x_zero_hat = x_zero_hat.squeeze().cpu()
             if self.config.predicting:
                 torchaudio.save(
                     uri="pred.wav",
-                    src=x_zero_hat.view(1, -1) / 1000,
+                    src=x_hat.view(1, -1),
                     sample_rate=400,
                     format="wav",
                 )
                 sys.exit()
-            for val_wandb_data_i, x_hat_i in zip(
-                self.val_wandb_data,
-                x_zero_hat,
-                strict=True,
-            ):
-                val_wandb_data_i.update({"x_hat": to_wandb_image(x_hat_i)})
-                val_wandb_data_i.pop("y")
+            for i, val_wandb_data_i in enumerate(self.val_wandb_data):
+                for j, cfg_scale_j in enumerate(self.config.cfg_scales):
+                    val_wandb_data_i.update(
+                        {
+                            f"x_hat_{cfg_scale_j}": to_wandb_image(
+                                x_hat[i * num_cfg_scales + j],
+                            ),
+                        },
+                    )
             super().on_validation_epoch_end()
 
 
-def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
+def to_wandb_image(
+    data: Float[Tensor, " seq_len"] | Float[Tensor, " seq_len dim_2"],
+) -> wandb.Image:
     """Converts data to a buffer.
 
     Args:
@@ -201,9 +228,12 @@ def to_wandb_image(data: Float[Tensor, " seq_len"]) -> wandb.Image:
         The buffer containing the data.
     """
     plt.figure()
-    plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
+    if data.ndim == 1:
+        plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
+        plt.ylim(-4, 4)
+    else:
+        plt.imshow(data)
     plt.axis("off")
-    plt.ylim(-1, 1)
     canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
     canvas.draw()
     data = np.frombuffer(canvas.tostring_rgb(), dtype=np.uint8)  # type: ignore [union-attr]

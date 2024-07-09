@@ -20,13 +20,14 @@ hydra:
 config:
   device: gpu
   compile: True
-  save_every_n_train_steps: 200
+  save_every_n_train_steps: 10000
+  ckpt_path: null
   #ckpt_path: ${oc.env:CNEUROMAX_PATH}/data/kw_pred/kw_gen/overrides#/lightning/epoch=3-step=16800.ckpt
 datamodule:
   config:
     val_percentage: 0.01
     #max_per_device_batch_size: 256
-    fixed_per_device_batch_size: 128
+    fixed_per_device_batch_size: 64
     fixed_per_device_num_workers: ${hydra:launcher.cpus_per_task}
     #shuffle_val_data: False # comment when training
   dataset:
@@ -36,27 +37,33 @@ datamodule:
       audio_embeddings_rel_dir: null
       video_embeddings_rel_dir: null
       klk_wavs_rel_dir: KLK_corners_filtered/
+      stats_path: ${oc.env:CNEUROMAX_PATH}/cneuromax/projects/kw_pred/dataset_stats.pt
 trainer:
   max_steps: 10000000
   #max_time: 00:01:00:00
   #max_epochs: 2
-  #accumulate_grad_batches: 2
+  accumulate_grad_batches: 2
   precision: bf16
-  val_check_interval: 200
+  val_check_interval: 100000
   check_val_every_n_epoch: null
   num_sanity_val_steps: 0
+  devices:
+    - 2
+    - 3
 litmodule:
   optimizer:
     lr: 1e-4
   config:
     log_val_wandb: True
-    num_val_wandb_samples: 3
+    num_val_samples_wandb: 3
     #predicting: True
   nnmodule:
     klk_seq_len: 4000
     patch_size: 10
     num_klk_corners: 1
-    depth: 6
+    depth: 12
+    embd_size: 384
+    num_heads: 6
     audio_stft_rel_dir: ${datamodule.dataset.config.audio_stft_rel_dir}
     # yamllint disable-line rule:line-length
     audio_embeddings_rel_dir: ${datamodule.dataset.config.audio_embeddings_rel_dir}
