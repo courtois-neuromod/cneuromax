@@ -60,7 +60,9 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
         self.config: KWGenerationLitModuleConfig
         self.nnmodule: CustomDiT
         if self.config.log_val_wandb:
-            self.wandb_columns = ["x", "x_hat"]
+            self.wandb_columns = ["x", "y"] + [
+                f"x_hat_{cfg_scale}" for cfg_scale in self.config.cfg_scales
+            ]
             self.wandb_x_wrapper = wandb.Image
             self.val_wandb_data: list[dict[str, Any]]
         self.diffusion = create_diffusion(timestep_respacing="")  # type: ignore [no-untyped-call]
@@ -68,9 +70,9 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             model=self.nnmodule,
             include_online_model=False,
         )
-        self.ema_nnmodule.ema_model = torch.compile(
-            self.ema_nnmodule.ema_model,
-        )
+        # self.ema_nnmodule.ema_model = torch.compile(
+        #     self.ema_nnmodule.ema_model,
+        # )
         self.ema_nnmodule.ema_model.eval()  # type: ignore [attr-defined]
 
     def step(
@@ -146,7 +148,11 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                 self.curr_val_epoch * self.config.num_val_samples_wandb + i
             ) % len(x)
             self.val_wandb_data.append(
-                {"x": to_wandb_image(x[index]), "y": to_wandb_image(y[index])},
+                {
+                    "x": to_wandb_image(x[index]),
+                    "y": to_wandb_image(y[index]),
+                    "y_raw": y[index],
+                },
             )
 
     def on_after_backward(self: "KWGenerationLitModule") -> None:
@@ -175,12 +181,12 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
             y = torch.zeros(
                 (
                     self.config.num_val_samples_wandb * num_cfg_scales,
-                    *self.val_wandb_data[0]["y"].shape,
+                    *self.val_wandb_data[0]["y_raw"].shape,
                 ),
             )
             for i in range(self.config.num_val_samples_wandb):
                 y[i * num_cfg_scales : (i + 1) * num_cfg_scales] = (
-                    self.val_wandb_data[i]["y"]
+                    self.val_wandb_data[i]["y_raw"]
                 )
             y = y.to(self.device)
             x_hat = (
@@ -213,6 +219,7 @@ class KWGenerationLitModule(BaseLitModule, metaclass=ABCMeta):
                             ),
                         },
                     )
+                val_wandb_data_i.pop("y_raw")
             super().on_validation_epoch_end()
 
 
@@ -230,9 +237,9 @@ def to_wandb_image(
     plt.figure()
     if data.ndim == 1:
         plt.plot(np.linspace(0, len(data) - 1, len(data)), data)
-        plt.ylim(-4, 4)
+        plt.ylim(-6, 6)
     else:
-        plt.imshow(data)
+        plt.imshow(data.T)
     plt.axis("off")
     canvas = plt.gca().figure.canvas  # type: ignore [union-attr]
     canvas.draw()

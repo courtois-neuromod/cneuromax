@@ -485,7 +485,8 @@ class CustomDiT(nn.Module):
         model_out: Float[Tensor, " BSx2 OC SL"] = self.forward(x, t, y)
         cond_out: Float[Tensor, " BS OC SL"] = model_out[:BS]
         uncond_out: Float[Tensor, " BS OC SL"] = model_out[BS:]
-        out: Float[Tensor, " BS OC SL"] = uncond_out + cfg_scale * (
-            cond_out - uncond_out
-        )
+        out: Float[Tensor, " BS OC SL"] = uncond_out + rearrange(
+            cfg_scale,
+            "BS -> BS 1 1",
+        ) * (cond_out - uncond_out)
         return out
