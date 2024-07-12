@@ -36,7 +36,7 @@ dependencies = [
     #989206cd0b03d59bdac4a4d82402ceb2fa8f43aa""", # Hyperparameter optimization
     # CNeuroMod fork that strips components preventing the use of newer Python.
     # Wait for https://github.com/SheffieldML/GPy/issues/1071 to pass
-    "jaxtyping==0.2.31", # Torch tensor annotations
+    "jaxtyping==0.2.33", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.8.0", # Makes shape transformations more readable
     "jupyterlab==4.2.3", # Jupyter notebook
