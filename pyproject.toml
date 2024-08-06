@@ -54,7 +54,7 @@ dependencies = [
     "torchvision==0.18.1", # Tensor manipulation on vision data
     "transformers==4.42.4", # Pre-trained models published on Hugging Face
     "diffusers==0.29.2", # Diffusion models published on Hugging Face
-    "timm==1.0.7", # Image models
+    "timm==1.0.8", # Image models
     "datasets==2.20.0", # Datasets published on Hugging Face
     "x-transformers==1.31.12", # Transformer utils
     "denoising-diffusion-pytorch==2.0.12", # Diffusion models
