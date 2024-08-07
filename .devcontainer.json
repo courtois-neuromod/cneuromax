@@ -48,18 +48,18 @@
         }
       }
     },
-    "runArgs": [
-    "--gpus",
-    "all",
+    //"runArgs": [
+    //"--gpus",
+    //"all",
     // "--cpus",
     // "30"
-    ],
+    //],
     "postAttachCommand": "pre-commit install",
     "containerEnv": {
       "PYTHONPATH": "/workspaces/cneuromax",
       "CNEUROMAX_PATH": "/workspaces/cneuromax"
-    },
-     "mounts": [
-       "source=/mnt/disks/kw-pred-data2,target=/data,type=bind,consistency=cached"
-    ]
+    }//,
+    //"mounts": [
+       //"source=/mnt/disks/kw-pred-data2,target=/data,type=bind,consistency=cached"
+    //]
   }
