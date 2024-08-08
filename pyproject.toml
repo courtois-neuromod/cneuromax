@@ -48,7 +48,7 @@ dependencies = [
     "h5py==3.11.0", # HDF5 file format load/save
     "opencv-python==4.10.0.84", # Image processing
     # MANDATORY for cneuromax/fitting/deeplearning/
-    "lightning==2.3.3", # PyTorch wrapper to decrease boilerplate
+    "lightning==2.4.0", # PyTorch wrapper to decrease boilerplate
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "torchaudio==2.3.1", # Tensor manipulation on audio data
     "torchvision==0.18.1", # Tensor manipulation on vision data
