@@ -70,7 +70,7 @@ dependencies = [
     "gymnasium[mujoco]==1.0.0a2", # RL/IL environments
     "ordered-set==4.1.0", # Sets w/ deterministic order
     # MANDATORY for docs/
-    "sphinx==7.3.7", # Documentation generator
+    "sphinx==7.4.7", # Documentation generator
     "esbonio==0.16.4", # Language server to render sphinx
     "furo==2024.8.6", # Documentation theme
     "sphinx-copybutton==0.5.2", # Copy button for code blocks
