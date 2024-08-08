@@ -59,7 +59,7 @@ dependencies = [
     "x-transformers==1.31.12", # Transformer utils
     "denoising-diffusion-pytorch==2.0.12", # Diffusion models
     "vector-quantize-pytorch==1.15.6", # Vector quantization utils
-    "accelerate==0.32.1", # PEFT crashing w/ 0.30.0
+    "accelerate==0.33.0", # PEFT crashing w/ 0.30.0
     "peft==0.11.1", # Fine-tuning
     # fMRI libraries
     "nibabel==5.2.1", # Neuroimaging format accessor
