@@ -29,7 +29,7 @@ dependencies = [
     # `submitit`'s `python` option. Also modifies the `local` launcher
     # so that it queues the jobs sequentially rather than in parallel.
     # OPTIONAL for cneuromax/
-    "matplotlib==3.9.1", # Plotting
+    "matplotlib==3.9.1.post1", # Plotting
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
     #"""
     #autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
