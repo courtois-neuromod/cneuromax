@@ -1,4 +1,5 @@
 """Typing for various Neuroevolution fitting variables."""
+
 # mypy: ignore-errors
 import numpy as np
 from nptyping import Shape
