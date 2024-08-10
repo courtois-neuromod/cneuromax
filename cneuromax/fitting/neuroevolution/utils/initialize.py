@@ -133,7 +133,7 @@ def initialize_gpu_comm() -> MPI.Comm:
         start=gpu_idx * tasks_per_gpu,
         stop=(gpu_idx + 1) * tasks_per_gpu,
     ).tolist()
-    return comm.Create_group(comm.group.Incl(ith_gpu_comm_task_list))
+    return comm.Create(comm.group.Incl(ith_gpu_comm_task_list))
 
 
 def initialize_agents(
