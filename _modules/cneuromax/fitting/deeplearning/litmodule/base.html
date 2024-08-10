@@ -365,7 +365,7 @@
     <span class="n">OptimizerLRSchedulerConfig</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>  <span class="c1"># type: ignore[attr-defined]</span>
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
 
 <span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.utils.type</span> <span class="kn">import</span> <span class="n">Batched_data_type</span>
@@ -579,7 +579,6 @@
                 <span class="n">interval</span><span class="o">=</span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
                 <span class="n">frequency</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                 <span class="n">reduce_on_plateau</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                <span class="n">scrict</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># :facepalm:</span>
             <span class="p">),</span>
         <span class="p">)</span></div>
 </div>
