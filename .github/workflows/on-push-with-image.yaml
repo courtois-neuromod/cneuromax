@@ -56,6 +56,8 @@ jobs:
   apptainer-build:
     needs: docker-push
     runs-on: self-hosted
+    env:
+      APPTAINER_CACHEDIR: /scratch/cneuromax/.apptainer/
     steps:
       - name: Build the CNeuroMax Apptainer Image
         run: >
