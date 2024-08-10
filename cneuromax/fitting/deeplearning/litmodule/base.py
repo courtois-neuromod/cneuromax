@@ -12,7 +12,7 @@ from lightning.pytorch.utilities.types import (
     OptimizerLRSchedulerConfig,
 )
 from torch import Tensor, nn
-from torch.optim import Optimizer
+from torch.optim import Optimizer  # type: ignore[attr-defined]
 from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.fitting.deeplearning.utils.type import Batched_data_type
@@ -207,6 +207,5 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
                 interval="step",
                 frequency=1,
                 reduce_on_plateau=False,
-                scrict=True,  # :facepalm:
             ),
         )

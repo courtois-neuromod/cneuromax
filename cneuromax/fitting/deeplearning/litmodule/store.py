@@ -1,7 +1,7 @@
 """:class:`.BaseLitModule` :mod:`hydra` config store."""
 
 from hydra_zen import ZenStore
-from torch.optim import SGD, Adam, AdamW
+from torch.optim import SGD, Adam, AdamW  # type: ignore[attr-defined]
 from transformers import (
     get_constant_schedule,
     get_constant_schedule_with_warmup,
