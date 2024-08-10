@@ -14,13 +14,13 @@
    :template: module.rst
    :recursive:
    
-      cneuromax.config
-      cneuromax.fitting
-      cneuromax.projects
-      cneuromax.runner
-      cneuromax.serving
-      cneuromax.store
-      cneuromax.testing
-      cneuromax.utils
+      config
+      fitting
+      projects
+      runner
+      serving
+      store
+      testing
+      utils
 
 

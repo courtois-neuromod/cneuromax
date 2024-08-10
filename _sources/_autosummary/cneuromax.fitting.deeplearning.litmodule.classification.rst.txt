@@ -14,6 +14,6 @@ classification
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.deeplearning.litmodule.classification.base
+      base
 
 

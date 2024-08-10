@@ -14,6 +14,6 @@ static
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc
+      rnnfc
 
 

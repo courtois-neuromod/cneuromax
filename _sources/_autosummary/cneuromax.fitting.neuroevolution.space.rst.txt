@@ -14,7 +14,7 @@ space
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.neuroevolution.space.base
-      cneuromax.fitting.neuroevolution.space.reinforcement
+      base
+      reinforcement
 
 

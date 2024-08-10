@@ -14,13 +14,13 @@ utils
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.neuroevolution.utils.compute
-      cneuromax.fitting.neuroevolution.utils.evolve
-      cneuromax.fitting.neuroevolution.utils.exchange
-      cneuromax.fitting.neuroevolution.utils.initialize
-      cneuromax.fitting.neuroevolution.utils.readwrite
-      cneuromax.fitting.neuroevolution.utils.type
-      cneuromax.fitting.neuroevolution.utils.validate
-      cneuromax.fitting.neuroevolution.utils.wandb
+      compute
+      evolve
+      exchange
+      initialize
+      readwrite
+      type
+      validate
+      wandb
 
 

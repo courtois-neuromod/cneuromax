@@ -14,13 +14,13 @@ utils
    :template: module.rst
    :recursive:
    
-      cneuromax.utils.beartype
-      cneuromax.utils.gymnasium_test
-      cneuromax.utils.hydra_zen
-      cneuromax.utils.misc
-      cneuromax.utils.mpi4py
-      cneuromax.utils.runner
-      cneuromax.utils.torch
-      cneuromax.utils.wandb
+      beartype
+      gymnasium_test
+      hydra_zen
+      misc
+      mpi4py
+      runner
+      torch
+      wandb
 
 

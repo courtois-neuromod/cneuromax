@@ -14,12 +14,12 @@ fitting
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.config
-      cneuromax.fitting.deeplearning
-      cneuromax.fitting.deeplneuroevo
-      cneuromax.fitting.neuroevolution
-      cneuromax.fitting.runner
-      cneuromax.fitting.store
-      cneuromax.fitting.utils
+      config
+      deeplearning
+      deeplneuroevo
+      neuroevolution
+      runner
+      store
+      utils
 
 

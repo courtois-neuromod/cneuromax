@@ -14,7 +14,7 @@ neuroevorl\_control
    :template: module.rst
    :recursive:
    
-      cneuromax.projects.neuroevorl_control.agent
-      cneuromax.projects.neuroevorl_control.space
+      agent
+      space
 
 

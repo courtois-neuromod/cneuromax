@@ -14,8 +14,8 @@ classify\_mnist
    :template: module.rst
    :recursive:
    
-      cneuromax.projects.classify_mnist.datamodule
-      cneuromax.projects.classify_mnist.datamodule_test
-      cneuromax.projects.classify_mnist.litmodule
+      datamodule
+      datamodule_test
+      litmodule
 
 

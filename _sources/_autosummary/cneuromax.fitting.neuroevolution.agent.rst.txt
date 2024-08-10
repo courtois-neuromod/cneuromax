@@ -14,6 +14,6 @@ agent
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.neuroevolution.agent.base
+      base
 
 

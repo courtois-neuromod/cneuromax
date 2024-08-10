@@ -14,12 +14,12 @@ deeplearning
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.deeplearning.config
-      cneuromax.fitting.deeplearning.datamodule
-      cneuromax.fitting.deeplearning.litmodule
-      cneuromax.fitting.deeplearning.runner
-      cneuromax.fitting.deeplearning.store
-      cneuromax.fitting.deeplearning.train
-      cneuromax.fitting.deeplearning.utils
+      config
+      datamodule
+      litmodule
+      runner
+      store
+      train
+      utils
 
 

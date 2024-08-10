@@ -14,10 +14,10 @@ litmodule
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.deeplearning.litmodule.base
-      cneuromax.fitting.deeplearning.litmodule.classification
-      cneuromax.fitting.deeplearning.litmodule.nnmodule
-      cneuromax.fitting.deeplearning.litmodule.store
-      cneuromax.fitting.deeplearning.litmodule.wandb_val_logging
+      base
+      classification
+      nnmodule
+      store
+      wandb_val_logging
 
 

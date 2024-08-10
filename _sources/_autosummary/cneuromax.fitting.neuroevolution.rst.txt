@@ -14,12 +14,12 @@ neuroevolution
    :template: module.rst
    :recursive:
    
-      cneuromax.fitting.neuroevolution.agent
-      cneuromax.fitting.neuroevolution.config
-      cneuromax.fitting.neuroevolution.fit
-      cneuromax.fitting.neuroevolution.net
-      cneuromax.fitting.neuroevolution.runner
-      cneuromax.fitting.neuroevolution.space
-      cneuromax.fitting.neuroevolution.utils
+      agent
+      config
+      fit
+      net
+      runner
+      space
+      utils
 
 
