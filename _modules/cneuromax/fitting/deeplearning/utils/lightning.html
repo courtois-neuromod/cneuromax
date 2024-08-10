@@ -669,7 +669,7 @@
         <span class="c1"># If the time taken is not decreasing, stop the search.</span>
         <span class="k">if</span> <span class="p">(</span>
             <span class="c1"># Not after the first iteration.</span>
-            <span class="n">num_workers</span> <span class="o">!=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span>
+            <span class="n">num_workers</span> <span class="o">!=</span> <span class="n">launcher_config</span><span class="o">.</span><span class="n">cpus_per_task</span>  <span class="c1"># noqa: PLR1714</span>
             <span class="c1"># Still want to attempt `num_workers` = 0.</span>
             <span class="ow">and</span> <span class="n">num_workers</span> <span class="o">!=</span> <span class="mi">1</span>
             <span class="ow">and</span> <span class="n">times</span><span class="p">[</span><span class="n">num_workers</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">times</span><span class="p">[</span><span class="n">num_workers</span><span class="p">]</span>
