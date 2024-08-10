@@ -58,7 +58,7 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         store(DeepLearningTaskConfig, name="config")
 
     @classmethod
-    def run_subtask(  # noqa: PLR0913
+    def run_subtask(
         cls: type["DeepLearningTaskRunner"],
         trainer: partial[Trainer],
         datamodule: BaseDataModule,

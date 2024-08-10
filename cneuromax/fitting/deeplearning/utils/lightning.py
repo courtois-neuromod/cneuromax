@@ -305,7 +305,7 @@ def find_good_per_device_num_workers(
         # If the time taken is not decreasing, stop the search.
         if (
             # Not after the first iteration.
-            num_workers != launcher_config.cpus_per_task
+            num_workers != launcher_config.cpus_per_task  # noqa: PLR1714
             # Still want to attempt `num_workers` = 0.
             and num_workers != 1
             and times[num_workers + 1] <= times[num_workers]
