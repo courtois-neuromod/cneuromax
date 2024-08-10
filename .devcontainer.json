@@ -6,7 +6,7 @@
           "ms-python.python",
           "ms-python.black-formatter",
           "charliermarsh.ruff",
-          "lextudio.restructuredtext@190.3.0",
+          "lextudio.restructuredtext@189.3.0",
           "fnando.linter",
           "tamasfe.even-better-toml",
           "GitHub.copilot",
