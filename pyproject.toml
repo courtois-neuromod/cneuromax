@@ -40,7 +40,7 @@ dependencies = [
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.8.0", # Makes shape transformations more readable
     "jupyterlab==4.2.4", # Jupyter notebook
-    "jupyterlab-code-formatter==3.0.1", # Jupyter code formatter
+    "jupyterlab-code-formatter==3.0.2", # Jupyter code formatter
     "ipywidgets==8.1.3", # Jupyter widgets
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
     # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
