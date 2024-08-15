@@ -58,7 +58,7 @@ dependencies = [
     "datasets==2.21.0", # Datasets published on Hugging Face
     "x-transformers==1.32.14", # Transformer utils
     "denoising-diffusion-pytorch==2.0.12", # Diffusion models
-    "vector-quantize-pytorch==1.15.6", # Vector quantization utils
+    "vector-quantize-pytorch==1.16.1", # Vector quantization utils
     "accelerate==0.33.0", # PEFT crashing w/ 0.30.0
     "peft==0.12.0", # Fine-tuning
     # fMRI libraries
