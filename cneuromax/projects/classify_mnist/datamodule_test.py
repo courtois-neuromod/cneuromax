@@ -12,7 +12,7 @@ from . import (
 )
 
 
-@pytest.fixture()
+@pytest.fixture
 def datamodule(tmp_path: Path) -> MNISTDataModule:
     """:class:`~.MNISTDataModule` fixture.
 
