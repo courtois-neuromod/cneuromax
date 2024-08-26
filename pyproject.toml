@@ -56,7 +56,7 @@ dependencies = [
     "diffusers==0.30.1", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
     "datasets==2.21.0", # Datasets published on Hugging Face
-    "x-transformers==1.32.14", # Transformer utils
+    "x-transformers==1.32.15", # Transformer utils
     "denoising-diffusion-pytorch==2.0.16", # Diffusion models
     "vector-quantize-pytorch==1.16.1", # Vector quantization utils
     "accelerate==0.33.0", # PEFT crashing w/ 0.30.0
