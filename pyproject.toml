@@ -167,7 +167,7 @@ max-line-length = 79
 # docs/index.rst:1: D000 Error in "include" directive:
 # invalid option value: (option: "parser"; value: 'myst_parser.sphinx_')
 # Parser "myst_parser.sphinx_" not found. No module named 'myst_parser'.
-ignore-path-errors = ["docs/index.rst;D000"]
+ignore = ["D000"]
 
 [tool.mypy]
 strict = true
