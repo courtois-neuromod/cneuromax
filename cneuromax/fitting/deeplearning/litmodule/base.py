@@ -56,40 +56,40 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
             ...
 
     Note:
-        ``data`` and loss value(s) type hints in this class are not
-        rendered properly in the documentation due to an\
-        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\
-        Refer to the source code available next to the method\
+        ``data`` and loss value(s) type hints in this class are not \
+        rendered properly in the documentation due to an \
+        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`. \
+        Refer to the source code available next to the method \
         signatures to find the correct types.
 
     Args:
         config: See :class:`BaseLitModuleConfig`.
-        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\
+        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this
             instance.
-        optimizer: A :mod:`torch` ``Optimizer`` to be used by this\
-            instance. It is partial as an argument as the\
-            :paramref:`nnmodule` parameters are required for its\
+        optimizer: A :mod:`torch` ``Optimizer`` to be used by this
+            instance. It is partial as an argument as the
+            :paramref:`nnmodule` parameters are required for its
             initialization.
-        scheduler: A :mod:`torch` ``Scheduler`` to be used by this\
-            instance. It is partial as an argument as the\
+        scheduler: A :mod:`torch` ``Scheduler`` to be used by this
+            instance. It is partial as an argument as the
             :paramref:`optimizer` is required for its initialization.
 
     Attributes:
-        config (:class:`BaseLitModuleConfig`): See\
+        config (:class:`BaseLitModuleConfig`): See
             :paramref:`~BaseLitModule.config`.
-        nnmodule (:class:`torch.nn.Module`): See\
+        nnmodule (:class:`torch.nn.Module`): See
             :paramref:`~BaseLitModule.nnmodule`.
-        optimizer_partial (:class:`functools.partial`): See\
+        optimizer_partial (:class:`functools.partial`): See
             :paramref:`~BaseLitModule.optimizer`.
-        scheduler_partial (:class:`functools.partial`): See\
+        scheduler_partial (:class:`functools.partial`): See
             :paramref:`~BaseLitModule.scheduler`.
-        optimizer (:class:`torch.optim.Optimizer`):\
+        optimizer (:class:`torch.optim.Optimizer`):
             :paramref:`~BaseLitModule.optimizer` instantiated.
-        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \
+        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`):
             :paramref:`~BaseLitModule.scheduler` instantiated.
 
     Raises:
-        NotImplementedError: If the :meth:`step` method is not\
+        NotImplementedError: If the :meth:`step` method is not
             defined or callable.
     """
 
@@ -125,7 +125,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
 
         Args:
             data: The batched input data.
-            stage: The current stage (``train``, ``val``, ``test`` or\
+            stage: The current stage (``train``, ``val``, ``test`` or
                 ``predict``).
 
         Returns:
@@ -195,8 +195,9 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         """Returns a dict with :attr:`optimizer` and :attr:`scheduler`.
 
         Returns:
-            This instance's :class:`~torch.optim.Optimizer` and\
-            :class:`~torch.optim.lr_scheduler.LRScheduler`.
+            This instance's
+                :attr:`~torch.optim.Optimizer` and
+                :class:`~torch.optim.lr_scheduler.LRScheduler`.
         """
         self.optimizer = self.optimizer_partial(params=self.parameters())
         self.scheduler = self.scheduler_partial(optimizer=self.optimizer)

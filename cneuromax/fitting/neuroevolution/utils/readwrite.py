@@ -18,7 +18,7 @@ def find_existing_save_points(output_dir: str) -> list[int]:
     """Returns a list of existing save points.
 
     Args:
-        output_dir: See\
+        output_dir: See
             :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
@@ -47,18 +47,18 @@ def load_state(
     """Load a previous experiment state from disk.
 
     Args:
-        prev_num_gens: See\
+        prev_num_gens: See
             :paramref:`~.NeuroevolutionSubtaskConfig.prev_num_gens`.
-        len_agents_batch: See\
+        len_agents_batch: See
             :paramref:`~.initialize_agents.len_agents_batch`.
-        output_dir: See\
+        output_dir: See
             :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
         * See ~.compute_generation_results.agents_batch`.
-        * See\
+        * See
             :paramref:`~.compute_generation_results.generation_results`.
-        * See\
+        * See
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
     comm, rank, size = get_mpi_variables()
@@ -97,14 +97,14 @@ def save_state(
     """Dump the current experiment state to disk.
 
     Args:
-        agents_batch: See\
+        agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
-        generation_results: See\
+        generation_results: See
             :paramref:`~.compute_generation_results.generation_results`.
-        total_num_env_steps: See\
+        total_num_env_steps: See
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
-        output_dir: See\
+        output_dir: See
             :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
     comm, rank, _ = get_mpi_variables()

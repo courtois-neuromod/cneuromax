@@ -43,7 +43,7 @@ class DeepLearningTaskRunner(FittingTaskRunner):
             Make sure to call this method if you are overriding it.
 
         Args:
-            store:\
+            store:
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
         super().store_configs(store)

@@ -38,24 +38,20 @@ def initialize_common_variables(
     """Initializes variables common to all execution modes.
 
     Args:
-        agents_per_task: See\
+        agents_per_task: See
             :paramref:`~.NeuroevolutionSubtaskConfig.agents_per_task`.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
 
     Returns:
-        * See :paramref:`~.compute_start_time_and_seeds.pop_size`.
-        * See :paramref:`~initialize_agents.len_agents_batch`.
-        * See\
-            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`.
-        * See :paramref:`~.mutate.exchange_and_mutate_info_batch`.
-        * An array used as a buffer by all processes to receive the\
-            seeds from the primary process during the first generation\
+        :paramref:`~.compute_start_time_and_seeds.pop_size`,
+            :paramref:`~initialize_agents.len_agents_batch`,
+            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`,
+            :paramref:`~.mutate.exchange_and_mutate_info_batch`,
+            An array used as a buffer by all processes to receive the
+            seeds from the primary process during the first generation
             only.
-        * See\
-            :paramref:`~.compute_generation_results.generation_results`.
-        * See\
-            :paramref:`~.compute_generation_results.generation_results_batch`.
-        * See\
+            :paramref:`~.compute_generation_results.generation_results`,
+            :paramref:`~.compute_generation_results.generation_results_batch`,
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
     """
     comm, rank, size = get_mpi_variables()
@@ -147,13 +143,13 @@ def initialize_agents(
 
     Args:
         agent: See :class:`~.BaseAgent`.
-        len_agents_batch: The number of agents per population\
-            maintained in\
-            :paramref:`~.compute_generation_results.agents_batch`\
-            by the process calling this function during a\
+        len_agents_batch: The number of agents per population
+            maintained in
+            :paramref:`~.compute_generation_results.agents_batch`
+            by the process calling this function during a
             given generation.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
-        pop_merge: See\
+        pop_merge: See
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:

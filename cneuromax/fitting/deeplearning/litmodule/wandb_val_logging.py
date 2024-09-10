@@ -13,27 +13,27 @@ from wandb.sdk.data_types.base_types.wb_value import WBValue
 class WandbValLoggingLightningModule(LightningModule):
     """:class:`.LightningModule` that logs val data to :mod:`wandb`.
 
-    Args:
-        logs_val: Whether to activate :mod:`wandb` validation\
-            data logging.
-
     TODO: Save/load attributes to/from checkpoint.
 
+    Args:
+        logs_val: Whether to activate :mod:`wandb` validation
+            data logging.
+
     Attributes:
-        logs_val (`bool`): See\
+        logs_val (`bool`): See
             :paramref:`~WandbValLoggingMixin.logs_val`.
-        curr_val_epoch (`int`): The current validation epoch (can be\
-            different from training epoch if validation is called\
+        curr_val_epoch (`int`): The current validation epoch (can be
+            different from training epoch if validation is called
             multiple times per training epoch).
-        val_wandb_data (`list[list[Any]]`): A list of dictionaries\
-            containing validation data relating to one specific example\
-            (ex: `input_data`, `logits`, ...) meant to be logged to\
+        val_wandb_data (`list[list[Any]]`): A list of dictionaries
+            containing validation data relating to one specific example
+            (ex: `input_data`, `logits`, ...) meant to be logged to
             :mod:`wandb`.
-        wandb_columns (`list[str]`): A list of strings representing\
+        wandb_columns (`list[str]`): A list of strings representing
             the keys of the dictionaries in :attr:`val_wandb_data`.
-        wandb_table (:class:`~wandb.Table`): A table to upload to W&B\
+        wandb_table (:class:`~wandb.Table`): A table to upload to W&B
             containing validation data.
-        wandb_x_wrapper (`Callable`): A callable that wraps the input\
+        wandb_x_wrapper (`Callable`): A callable that wraps the input
             data before logging it to W&B.
     """
 

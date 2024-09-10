@@ -37,20 +37,20 @@ def update_exchange_and_mutate_info(
 
     Args:
         num_pops: See :meth:`~.BaseSpace.num_pops`.
-        pop_size: See\
+        pop_size: See
             :paramref:`~.compute_start_time_and_seeds.pop_size`.
-        exchange_and_mutate_info: An array maintained only by\
-            the primary process (secondary processes set this to\
-            ``None``) containing information for all processes on\
-            how to exchange and mutate agents. Precisions on the 3rd\
-            dimension: 0) The size of the agent when serialized, 1)\
-            The position of the agent paired for with the current\
-            agent, 2) Whether to send or receive the agent, 3) The\
-            seed to randomize the mutation and evaluation of the\
+        exchange_and_mutate_info: An array maintained only by
+            the primary process (secondary processes set this to
+            ``None``) containing information for all processes on
+            how to exchange and mutate agents. Precisions on the 3rd
+            dimension: 0) The size of the agent when serialized, 1)
+            The position of the agent paired for with the current
+            agent, 2) Whether to send or receive the agent, 3) The
+            seed to randomize the mutation and evaluation of the
             agent.
-        generation_results: See\
+        generation_results: See
             :paramref:`~.compute_generation_results.generation_results`.
-        seeds: The seeds to set the mutation and evaluation randomness\
+        seeds: The seeds to set the mutation and evaluation randomness
             for the current generation.
     """
     _, rank, _ = get_mpi_variables()
@@ -110,11 +110,11 @@ def exchange_agents(
 
     Args:
         num_pops: See :meth:`~.BaseSpace.num_pops`.
-        pop_size: See\
+        pop_size: See
             :paramref:`~.compute_start_time_and_seeds.pop_size`.
-        agents_batch: See\
+        agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
-        exchange_and_mutate_info_batch: See\
+        exchange_and_mutate_info_batch: See
             :paramref:`~.mutate.exchange_and_mutate_info_batch`.
     """
     comm, rank, _ = get_mpi_variables()

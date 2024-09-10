@@ -26,11 +26,11 @@ class DeepLearningSubtaskConfig(FittingSubtaskConfig):
     """Deep Learning ``subtask`` config.
 
     Args:
-        compile: Whether to compile the :class:`.BaseLitModule`\
-            before training. Requires\
-            :paramref:`FittingSubtaskConfig.device` to be set to\
+        compile: Whether to compile the :class:`.BaseLitModule`
+            before training. Requires
+            :paramref:`FittingSubtaskConfig.device` to be set to
             ``"gpu"`` & a CUDA 7+ compatible GPU.
-        save_every_n_train_steps: The frequency at which to save\
+        save_every_n_train_steps: The frequency at which to save
             training checkpoints.
         ckpt_path: The path to a checkpoint to resume training from.
     """
@@ -57,7 +57,7 @@ class DeepLearningTaskConfig(
         trainer: See :class:`~lightning.pytorch.Trainer`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
-        logger: See\
+        logger: See
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         config: See :class:`DeepLearningSubtaskConfig`.
     """

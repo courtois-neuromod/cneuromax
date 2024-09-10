@@ -8,7 +8,8 @@ def not_empty() -> BeartypeValidator:
     """Makes sure the string is not empty.
 
     Returns:
-        A :mod:`beartype` object that raises an exception if the\
+        A
+            :mod:`beartype` object that raises an exception if the
             annotated value does not satisfy the condition.
     """
 

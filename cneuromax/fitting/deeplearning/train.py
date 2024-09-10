@@ -40,7 +40,7 @@ def train(
         trainer: See :class:`~lightning.pytorch.Trainer`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
-        logger: See\
+        logger: See
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         config: See :paramref:`.DeepLearningSubtaskConfig`.
 

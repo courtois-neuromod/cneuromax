@@ -45,10 +45,10 @@ def gather(
     """Gathers logged scores from all MPI processes.
 
     Args:
-        logged_score: A value logged during evaluation. If ``None``,\
+        logged_score: A value logged during evaluation. If ``None``,
             then no value was logged during evaluation.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
-        agent_total_num_steps: See\
+        agent_total_num_steps: See
             :attr:`~.BaseAgent.total_num_steps`.
     """
     comm, rank, _ = get_mpi_variables()

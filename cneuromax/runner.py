@@ -19,7 +19,7 @@ class BaseTaskRunner(ABC):
     Stores configs and runs the ``task``.
 
     Attributes:
-        hydra_config: The structured :class:`hydra.HydraConf` config\
+        hydra_config: The structured :class:`hydra.HydraConf` config
             used during the ``task`` execution.
     """
 
@@ -31,7 +31,7 @@ class BaseTaskRunner(ABC):
         """Stores various configs and runs the ``task``.
 
         Args:
-            cls: The :class:`BaseTaskRunner` subclass calling this\
+            cls: The :class:`BaseTaskRunner` subclass calling this
                 method.
         """
         store = ZenStore()
@@ -59,7 +59,7 @@ class BaseTaskRunner(ABC):
 
         Args:
             cls: See :paramref:`~store_configs_and_run_task.cls`.
-            store: A :class:`hydra_zen.ZenStore` instance that manages\
+            store: A :class:`hydra_zen.ZenStore` instance that manages
                 the :mod:`hydra` configuration store.
         """
 

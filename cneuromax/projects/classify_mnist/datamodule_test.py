@@ -39,7 +39,7 @@ def test_setup_fit(datamodule: MNISTDataModule) -> None:
     ``"fit"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTDataModule`\
+        datamodule: A generic :class:`~.MNISTDataModule`
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()
@@ -60,7 +60,7 @@ def test_setup_test(datamodule: MNISTDataModule) -> None:
     ``"test"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTDataModule`\
+        datamodule: A generic :class:`~.MNISTDataModule`
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()

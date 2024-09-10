@@ -19,7 +19,7 @@ class MNISTDataModuleConfig(BaseDataModuleConfig):
     """Holds :class:`MNISTDataModule` config values.
 
     Args:
-        val_percentage: Percentage of the training dataset to use for\
+        val_percentage: Percentage of the training dataset to use for
             validation.
     """
 
@@ -33,9 +33,9 @@ class MNISTDataModule(BaseDataModule):
         config: See :class:`MNISTDataModuleConfig`.
 
     Attributes:
-        train_val_split (`tuple[float, float]`): The train/validation\
+        train_val_split (`tuple[float, float]`): The train/validation
             split (sums to `1`).
-        transform (:class:`~transforms.Compose`): The\
+        transform (:class:`~transforms.Compose`): The
             :mod:`torchvision` dataset transformations.
     """
 

@@ -11,7 +11,7 @@ def get_project_and_task_names() -> tuple[str, str]:
     """Retrieves ``project`` and ``task`` from script arguments.
 
     Raises:
-        RuntimeError: If ``project`` or ``task`` arguments are\
+        RuntimeError: If ``project`` or ``task`` arguments are
             missing.
 
     Returns:
@@ -54,7 +54,7 @@ def get_project_module() -> ModuleType:
     """Retrieves the ``project`` module.
 
     Raises:
-        RuntimeError: If the ``project`` argument is invalid or\
+        RuntimeError: If the ``project`` argument is invalid or
             the ``project`` module does not exist.
 
     Returns:
@@ -78,7 +78,7 @@ def get_task_runner_class() -> Any:  # noqa: ANN401
     """.
 
     Raises:
-        RuntimeError: If the ``project`` module does not define a\
+        RuntimeError: If the ``project`` module does not define a
             :mod:`~cneuromax.runner.BaseTaskRunner` class.
 
     Returns:

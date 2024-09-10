@@ -9,7 +9,7 @@ def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:
 
     Args:
         space: See :paramref:`~.evaluate_on_cpu.space`.
-        pop_merge: See\
+        pop_merge: See
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
     """
     launcher_config = get_launcher_config()

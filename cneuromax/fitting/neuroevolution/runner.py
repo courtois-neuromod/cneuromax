@@ -34,7 +34,7 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             Make sure to call this method if you are overriding it.
 
         Args:
-            store:\
+            store:
                 See :paramref:`~.FittingTaskRunner.store_configs.store`.
         """
         super().store_configs(store=store)
@@ -50,8 +50,8 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             config: See :class:`~.NeuroevolutionSubtaskConfig`.
 
         Raises:
-            RuntimeError: If\
-                :paramref:`~.NeuroevolutionSubtaskConfig.device` is\
+            RuntimeError: If
+                :paramref:`~.NeuroevolutionSubtaskConfig.device` is
                 set to ``gpu`` but CUDA is not available.
         """
         if config.eval_num_steps == 0 and config.env_transfer:

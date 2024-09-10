@@ -37,22 +37,22 @@ def compute_generation_results(
     :paramref:`generation_results`.
 
     Args:
-        generation_results: An array maintained solely by the\
-            primary process (secondary processes have this variable\
-            set to ``None``) containing several pieces of information\
-            about the results of a given generation. The 3rd\
-            dimension contains the following information at the\
-            following indices: 0) Agent fitness, 1) Number of\
-            environment steps taken by the agent during the\
+        generation_results: An array maintained solely by the
+            primary process (secondary processes have this variable
+            set to ``None``) containing several pieces of information
+            about the results of a given generation. The 3rd
+            dimension contains the following information at the
+            following indices: 0) Agent fitness, 1) Number of
+            environment steps taken by the agent during the
             evaluation, 2) Size of the agent when serialized.
-        generation_results_batch: A sub-array of\
-            :paramref:`generation_results` maintained by the process\
+        generation_results_batch: A sub-array of
+            :paramref:`generation_results` maintained by the process
             calling this function.
-        fitnesses_and_num_env_steps_batch: The output values of\
-            the evaluation performed in :func:`.evaluate_on_cpu`\
-            or :func:`.evaluate_on_gpu` on the agents maintained\
+        fitnesses_and_num_env_steps_batch: The output values of
+            the evaluation performed in :func:`.evaluate_on_cpu`
+            or :func:`.evaluate_on_gpu` on the agents maintained
             by the process calling this function.
-        agents_batch: A 2D list of agents maintained by the process\
+        agents_batch: A 2D list of agents maintained by the process
             calling this function.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
     """
@@ -85,15 +85,15 @@ def compute_save_points(
 
     Args:
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
-        total_num_gens: See\
+        total_num_gens: See
             :paramref:`~.NeuroevolutionSubtaskConfig.total_num_gens`.
-        save_interval: See\
+        save_interval: See
             :paramref:`~.NeuroevolutionSubtaskConfig.save_interval`.
-        save_first_gen: See\
+        save_first_gen: See
             :paramref:`~.NeuroevolutionSubtaskConfig.save_first_gen`.
 
     Returns:
-        The largest previous number of generations and\
+        The largest previous number of generations and
             a list of generations at which to save the state.
     """
     existing_save_points = find_existing_save_points(output_dir=output_dir)
@@ -124,22 +124,21 @@ def compute_start_time_and_seeds(
 ) -> tuple[float | None, Seeds_type | None]:  # start_time, seeds
     """Compute the start time and seeds for the current generation.
 
-    Fetches the start time and generates the seeds for the current\
-    generation. If :paramref:`pop_merge` is ``True``, the seeds are\
+    Fetches the start time and generates the seeds for the current
+    generation. If :paramref:`pop_merge` is ``True``, the seeds are
     shared between the populations.
 
     Args:
-        generation_results: See\
+        generation_results: See
             :paramref:`~compute_generation_results.generation_results`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: Total number of agent per population.
-        pop_merge: See\
+        pop_merge: See
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:
-        * The start time for the current generation.
-        * See\
+        The start time for the current generation,
             :paramref:`~.update_exchange_and_mutate_info.seeds`.
     """
     comm, rank, size = get_mpi_variables()
@@ -196,15 +195,15 @@ def compute_total_num_env_steps_and_process_fitnesses(
     """Processes the generation results.
 
     Args:
-        generation_results: See\
+        generation_results: See
             :paramref:`~.compute_generation_results.generation_results`.
-        total_num_env_steps: The total number of environment\
-            steps taken by all agents during the entire experiment.\
-            This variable is maintained solely by the primary process\
+        total_num_env_steps: The total number of environment
+            steps taken by all agents during the entire experiment.
+            This variable is maintained solely by the primary process
             (secondary processes set this to ``None``).
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         start_time: Generation start time.
-        pop_merge: See\
+        pop_merge: See
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Returns:

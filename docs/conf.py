@@ -22,6 +22,7 @@ extensions = [
     "sphinx_paramlinks",
 ]
 autodoc_default_options = {
+    "ignore-module-all": True,
     "private-members": True,
     "show-inheritance": True,
     "special-members": "__main__",

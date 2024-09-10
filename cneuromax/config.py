@@ -30,11 +30,11 @@ class BaseSubtaskConfig:
     """Base ``subtask`` config.
 
     Args:
-        output_dir: Path to the ``subtask`` output directory. Every\
-            artifact generated during the ``subtask`` will be stored\
+        output_dir: Path to the ``subtask`` output directory. Every
+            artifact generated during the ``subtask`` will be stored
             in this directory.
-        data_dir: Path to the data directory. This directory is\
-            shared between ``task`` runs. It is used to store\
+        data_dir: Path to the data directory. This directory is
+            shared between ``task`` runs. It is used to store
             datasets, pre-trained models, etc.
         seed: Random seed to use for reproducibility.
     """

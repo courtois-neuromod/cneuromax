@@ -32,11 +32,11 @@ class MLP(nn.Module):
 
     Args:
         config: See :class:`MLPConfig`.
-        activation_fn: The singular activation function to use in\
+        activation_fn: The singular activation function to use in
             between each layer.
 
     Attributes:
-        model (:class:`torch.nn.Sequential`): The internal\
+        model (:class:`torch.nn.Sequential`): The internal
             :class:`~torch.nn.Module` that holds the MLP's layers.
     """
 
@@ -67,10 +67,10 @@ class MLP(nn.Module):
         """Flattens input's dimensions and passes it through the model.
 
         Note:
-            This MLP is currently only capable of returning 1D\
+            This MLP is currently only capable of returning 1D \
                 :class:`torch.Tensor` batches.
 
-        TODO: Add support for returning 2D+ :class:`torch.Tensor`\
+        TODO: Add support for returning 2D+ :class:`torch.Tensor`
         batches.
 
         Args:

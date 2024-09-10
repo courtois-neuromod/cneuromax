@@ -24,7 +24,7 @@ def get_launcher_config() -> LocalQueueConf | SlurmQueueConf:
         The :mod:`hydra` launcher config.
 
     Raises:
-        TypeError: If the launcher config is not a dict or if the\
+        TypeError: If the launcher config is not a dict or if the
             launcher is not supported.
     """
     launcher_dict_config: DictConfig = HydraConfig.get().launcher

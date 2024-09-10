@@ -39,9 +39,10 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         scheduler: See :paramref:`~.BaseLitModule.scheduler`.
 
     Attributes:
-        accuracy\
-            (:class:`~torchmetrics.classification.MulticlassAccuracy`)
-        wandb_table (:class:`~wandb.Table`): A table to upload to W&B\
+        accuracy
+            (:class:`~torchmetrics.classification.MulticlassAccuracy`):
+            The accuracy metric.
+        wandb_table (:class:`~wandb.Table`): A table to upload to W&B
             containing validation data.
     """
 
@@ -69,9 +70,9 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         """Computes the model accuracy and cross entropy loss.
 
         Args:
-            data: A tuple ``(x, y)`` where ``x`` is the input data and\
+            data: A tuple ``(x, y)`` where ``x`` is the input data and
                 ``y`` is the target data.
-            stage: See\
+            stage: See
                 :paramref:`~.BaseLitModule.stage_step.stage`.
 
         Returns:
@@ -96,7 +97,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     ) -> None:
         """Saves data computed during validation for later use.
 
-        Make sure to define the :attr:`wandb_x_wrapper` attribute in\
+        Make sure to define the :attr:`wandb_x_wrapper` attribute in
         the subclass to log in the correct format.
 
         Args:

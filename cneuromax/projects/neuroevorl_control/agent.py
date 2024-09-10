@@ -24,7 +24,7 @@ class GymAgentConfig(BaseAgentConfig):
     """Holds :class:`GymAgent` config values.
 
     Args:
-        env_name: See\
+        env_name: See
             :paramref:`~.GymReinforcementSpaceConfig.env_name`.
         hidden_size: Size of the RNN hidden state.
         mutation_std: Standard deviation of the mutation noise.

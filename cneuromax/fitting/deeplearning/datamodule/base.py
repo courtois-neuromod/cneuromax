@@ -40,18 +40,18 @@ class BaseDataModuleConfig:
     Args:
         data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        max_per_device_batch_size: See\
-            :attr:`~BaseDataModule.per_device_batch_size`. Sets an\
+        max_per_device_batch_size: See
+            :attr:`~BaseDataModule.per_device_batch_size`. Sets an
             upper bound on the aforementioned attribute.
-        fixed_per_device_batch_size: See\
-            :attr:`~BaseDataModule.per_device_batch_size`. Setting this\
-            value skips the batch size search in\
-            :func:`.find_good_per_device_batch_size` which is\
+        fixed_per_device_batch_size: See
+            :attr:`~BaseDataModule.per_device_batch_size`. Setting this
+            value skips the batch size search in
+            :func:`.find_good_per_device_batch_size` which is
             not recommended for resource efficiency.
-        fixed_per_device_num_workers: See\
-            :attr:`~BaseDataModule.per_device_num_workers`. Setting\
-            this value skips the num workers search in\
-            :func:`.find_good_per_device_num_workers` which is\
+        fixed_per_device_num_workers: See
+            :attr:`~BaseDataModule.per_device_num_workers`. Setting
+            this value skips the num workers search in
+            :func:`.find_good_per_device_num_workers` which is
             not recommended for resource efficiency.
     """
 
@@ -73,21 +73,21 @@ class BaseDataModule(LightningDataModule, ABC):
         config: See :class:`BaseDataModuleConfig`.
 
     Attributes:
-        config (:class:`BaseDataModuleConfig`)
-        datasets (:class:`Datasets`)
-        collate_fn (``callable``): See \
+        config (:class:`BaseDataModuleConfig`): Self-explanatory.
+        datasets (:class:`Datasets`): Self-explanatory.
+        collate_fn (``callable``): See
             :paramref:`torch.utils.data.DataLoader.collate_fn`.
-        pin_memory (``bool``): Whether to copy tensors into device\
-            pinned memory before returning them (is set to ``True`` by\
-            default if :paramref:`~BaseDataModuleConfig.device` is\
+        pin_memory (``bool``): Whether to copy tensors into device
+            pinned memory before returning them (is set to ``True`` by
+            default if :paramref:`~BaseDataModuleConfig.device` is
             ``"gpu"``).
-        per_device_batch_size (``int``): Per-device number of samples\
-            to load per iteration. Temporary value (``1``) is\
+        per_device_batch_size (``int``): Per-device number of samples
+            to load per iteration. Temporary value (``1``) is
             overwritten in :func:`.set_batch_size_and_num_workers`.
-        per_device_num_workers (``int``): Per-device number of CPU\
-            processes to use for data loading (``0`` means that the\
-            data will be loaded by each device's assigned CPU\
-            process). Temporary value (``0``) is later overwritten\
+        per_device_num_workers (``int``): Per-device number of CPU
+            processes to use for data loading (``0`` means that the
+            data will be loaded by each device's assigned CPU
+            process). Temporary value (``0``) is later overwritten
             in :func:`.set_batch_size_and_num_workers`.
     """
 
@@ -108,8 +108,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Replace instance attrib vals w/ :paramref:`state_dict` vals.
 
         Args:
-            state_dict: Dictionary containing values to override\
-                :attr:`per_device_batch_size` &\
+            state_dict: Dictionary containing values to override
+                :attr:`per_device_batch_size` &
                 :attr:`per_device_num_workers`.
         """
         self.per_device_batch_size = state_dict["per_device_batch_size"]
@@ -120,8 +120,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Returns instance attribute values.
 
         Returns:
-            A new dictionary containing attribute values\
-                :attr:`per_device_batch_size` &\
+            A new dictionary containing attribute values
+                :attr:`per_device_batch_size` &
                 :attr:`per_device_num_workers`.
         """
         return {
@@ -139,16 +139,17 @@ class BaseDataModule(LightningDataModule, ABC):
         """Generic :class:`~torch.utils.data.DataLoader` factory method.
 
         Args:
-            dataset: A :mod:`torch` ``Dataset`` to wrap with a\
+            dataset: A :mod:`torch` ``Dataset`` to wrap with a
                 :class:`~torch.utils.data.DataLoader`
-            shuffle: Whether to shuffle the dataset when iterating\
+            shuffle: Whether to shuffle the dataset when iterating
                 over it.
 
         Raises:
             AttributeError: If :paramref:`dataset` is ``None``.
 
         Returns:
-            A new :class:`~torch.utils.data.DataLoader` instance\
+            A new
+                :class:`~torch.utils.data.DataLoader` instance
                 wrapping the :paramref:`dataset` argument.
         """
         if dataset is None:
@@ -167,8 +168,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.train``.
 
         Returns:
-            A new training :class:`torch.utils.data.DataLoader`\
-                instance.
+            A new training
+                :class:`torch.utils.data.DataLoader` instance.
         """
         return self.x_dataloader(dataset=self.datasets.train)
 
@@ -177,8 +178,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.val``.
 
         Returns:
-            A new validation :class:`~torch.utils.data.DataLoader`\
-                instance.
+            A new validation
+                :class:`~torch.utils.data.DataLoader` instance.
         """
         return self.x_dataloader(dataset=self.datasets.val, shuffle=False)
 
@@ -187,8 +188,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.test``.
 
         Returns:
-            A new testing :class:`~torch.utils.data.DataLoader`\
-                instance.
+            A new testing
+                :class:`~torch.utils.data.DataLoader` instance.
         """
         return self.x_dataloader(dataset=self.datasets.test, shuffle=False)
 
@@ -197,7 +198,8 @@ class BaseDataModule(LightningDataModule, ABC):
         """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.predict``.
 
         Returns:
-            A new prediction :class:`~torch.utils.data.DataLoader`\
-                instance that does not shuffle the dataset.
+            A new prediction
+                :class:`~torch.utils.data.DataLoader` instance that does
+                not shuffle the dataset.
         """
         return self.x_dataloader(dataset=self.datasets.predict, shuffle=False)

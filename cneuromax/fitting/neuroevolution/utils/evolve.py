@@ -30,9 +30,9 @@ def mutate(
     """Mutate :paramref:`agents_batch`.
 
     Args:
-        agents_batch: See\
+        agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
-        exchange_and_mutate_info_batch: A sub-array of\
+        exchange_and_mutate_info_batch: A sub-array of
             :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`
             maintained by this process.
         num_pops: See :meth:`~.BaseSpace.num_pops`.
@@ -57,16 +57,16 @@ def evaluate_on_cpu(
     """Evaluate :paramref:`agents_batch`.
 
     Args:
-        agents_batch: See\
+        agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
-        space: The :class:`~.BaseSpace` instance used throughout the\
+        space: The :class:`~.BaseSpace` instance used throughout the
             execution.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 
     Returns:
-        The output of agent evaluation performed by the process calling\
-            this function on the agents it maintains\
-            (:paramref:`agents_batch`). See\
+        The output of agent evaluation performed by the process calling
+            this function on the agents it maintains
+            (:paramref:`agents_batch`). See
             :meth:`~.BaseSpace.evaluate`.
     """
     fitnesses_and_num_env_steps_batch = np.zeros(
@@ -98,21 +98,21 @@ def evaluate_on_gpu(
     """Gather :paramref:`agents_batch` on process subset & evaluate.
 
     Args:
-        ith_gpu_comm: A :mod:`mpi4py` communicator used by existing CPU\
+        ith_gpu_comm: A :mod:`mpi4py` communicator used by existing CPU
             processes to exchange agents for GPU work queueing.
-        agents_batch: See\
+        agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
         space: See :paramref:`~.evaluate_on_cpu.space`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
-        transfer: Whether any of\
-            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,\
-            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`\
-            or\
-            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`\
+        transfer: Whether any of
+            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,
+            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`
+            or
+            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`
             is ``True``.
 
     Returns:
-        The output of agent evaluation by this process. See\
+        The output of agent evaluation by this process. See
             :meth:`~.BaseSpace.evaluate`.
     """
     comm, rank, size = get_mpi_variables()

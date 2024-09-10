@@ -16,7 +16,7 @@ class BaseSpaceConfig:
     """Holds :class:`BaseSpace` config values.
 
     Args:
-        eval_num_steps: See\
+        eval_num_steps: See
             :paramref:`~.NeuroevolutionSubtaskConfig.eval_num_steps`.
         logging: See :paramref:`~.NeuroevolutionSubtaskConfig.logging`.
     """
@@ -33,9 +33,9 @@ class BaseSpace(ABC):
 
     Args:
         config: See :class:`~.BaseSpaceConfig`.
-        num_pops: Number of agents interacting with each other in a\
+        num_pops: Number of agents interacting with each other in a
             given space.
-        evaluates_on_gpu: Whether GPU devices are used to evaluate\
+        evaluates_on_gpu: Whether GPU devices are used to evaluate
             agents.
     """
 

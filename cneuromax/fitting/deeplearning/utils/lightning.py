@@ -40,11 +40,11 @@ def instantiate_trainer(
 
     Args:
         trainer_partial: See :class:`~lightning.pytorch.Trainer`.
-        logger_partial: See\
+        logger_partial: See
             :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
         device: See :paramref:`~.FittingSubtaskConfig.device`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
-        save_every_n_train_steps: See\
+        save_every_n_train_steps: See
             :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.
 
     Returns:
@@ -159,17 +159,17 @@ def find_good_per_device_batch_size(
     This functionality makes the following, not always correct, but
     generally reasonable assumptions:
 
-    - As long as the ``total_batch_size / dataset_size`` ratio remains\
-    small (e.g. ``< 0.01`` so as to benefit from the stochasticity of\
-    gradient updates), running the same number of gradient updates with\
-    a larger batch size will yield better training performance than\
-    running the same number of gradient updates with a smaller batch\
+    - As long as the ``total_batch_size / dataset_size`` ratio remains
+    small (e.g. ``< 0.01`` so as to benefit from the stochasticity of
+    gradient updates), running the same number of gradient updates with
+    a larger batch size will yield better training performance than
+    running the same number of gradient updates with a smaller batch
     size.
 
-    - Loading data from disk to RAM is a larger bottleneck than loading\
+    - Loading data from disk to RAM is a larger bottleneck than loading
     data from RAM to GPU VRAM.
 
-    - If you are training on multiple GPUs, each GPU has roughly the\
+    - If you are training on multiple GPUs, each GPU has roughly the
     same amount of VRAM.
 
     Args:
@@ -266,9 +266,9 @@ def find_good_per_device_num_workers(
 
     Args:
         datamodule: See :class:`.BaseDataModule`.
-        per_device_batch_size: The return value of\
+        per_device_batch_size: The return value of
             :func:`find_good_per_device_batch_size`.
-        max_num_data_passes: Maximum number of data passes to iterate\
+        max_num_data_passes: Maximum number of data passes to iterate
             through.
 
     Returns:

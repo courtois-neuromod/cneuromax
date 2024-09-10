@@ -19,29 +19,29 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
     """Neuroevolution ``subtask`` config.
 
     Args:
-        agents_per_task: Number of agents per task (``num_tasks`` =\
+        agents_per_task: Number of agents per task (``num_tasks`` =
             ``num_nodes`` x ``tasks_per_node``).
-        total_num_gens: Number of generations to run the experiment for\
+        total_num_gens: Number of generations to run the experiment for
             (including the previous number of generations).
-        save_interval: Number of generations between each save point.\
+        save_interval: Number of generations between each save point.
             `0` means no save point except for the last generation.
-        save_first_gen: Whether to save the state of the experiment\
+        save_first_gen: Whether to save the state of the experiment
             after the first generation (usually for plotting purposes).
-        pop_merge: Whether to merge both generator and discriminator\
-            populations into a single population. This means that each\
-            agent will be evaluated on both its generative and\
+        pop_merge: Whether to merge both generator and discriminator
+            populations into a single population. This means that each
+            agent will be evaluated on both its generative and
             discriminative abilities.
-        env_transfer: Whether an agent's environment state\
-            (position, velocity, ...) is transferred to its children\
+        env_transfer: Whether an agent's environment state
+            (position, velocity, ...) is transferred to its children
             if it passes through the selection process.
-        fit_transfer: Whether an agent's fitness is transferred to\
+        fit_transfer: Whether an agent's fitness is transferred to
             its children if it passes through the selection process.
-        mem_transfer: Whether an agent's memory (hidden state) is\
-            transferred to its children if it passes through the\
+        mem_transfer: Whether an agent's memory (hidden state) is
+            transferred to its children if it passes through the
             selection process.
-        eval_num_steps: Number of environment steps to run each agent\
-            for during evaluation. ``0`` means that the agent will run\
-            until the environment terminates (``eval_num_steps = 0`` is\
+        eval_num_steps: Number of environment steps to run each agent
+            for during evaluation. ``0`` means that the agent will run
+            until the environment terminates (``eval_num_steps = 0`` is
             not supported for ``env_transfer = True``).
         logging: Whether to log the experiment to Weights & Biases.
     """
@@ -64,8 +64,8 @@ class NeuroevolutionSubtaskTestConfig(NeuroevolutionSubtaskConfig):
 
     Args:
         num_tests: Number of episodes to evaluate each agent on.
-        test_num_steps: Number of environment steps to run each agent\
-            for during testing. ``0`` means that the agent will run\
+        test_num_steps: Number of environment steps to run each agent
+            for during testing. ``0`` means that the agent will run
             until the environment terminates.
         logging: See :paramref:`.NeuroevolutionSubtaskConfig.logging`.
     """
