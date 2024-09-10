@@ -31,11 +31,10 @@ dependencies = [
     # OPTIONAL for cneuromax/
     "matplotlib==3.9.2", # Plotting
     "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
-    #"""
-    #autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
-    #989206cd0b03d59bdac4a4d82402ceb2fa8f43aa""", # Hyperparameter optimization
-    # CNeuroMod fork that strips components preventing the use of newer Python.
-    # Wait for https://github.com/SheffieldML/GPy/issues/1071 to pass
+    "hydra-optuna-sweeper==1.2.0", # Hyperparameter optimization
+    """
+    autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
+    23550d57d7010f28336a4bacbba94228c23214a9""", # Hyperparameter optimization
     "jaxtyping==0.2.34", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.8.0", # Makes shape transformations more readable
