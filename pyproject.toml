@@ -50,8 +50,8 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.4.0", # PyTorch wrapper to decrease boilerplate
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "torchaudio==2.4.0", # Tensor manipulation on audio data
-    "torchvision==0.19.0", # Tensor manipulation on vision data
+    "torchaudio==2.4.1", # Tensor manipulation on audio data
+    "torchvision==0.19.1", # Tensor manipulation on vision data
     "transformers==4.44.2", # Pre-trained models published on Hugging Face
     "diffusers==0.30.2", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
