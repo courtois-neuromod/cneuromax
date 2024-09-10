@@ -89,6 +89,9 @@ dependencies = [
     "pytest-cov==5.0.0", # Test coverage
 ]
 
+[tool.uv]
+no-build-isolation-package = ["mamba-ssm"]
+
 [tool.uv.sources]
 torch = { index = "torch-cu121" }
 torchaudio = { index = "torch-cu121" }
