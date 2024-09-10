@@ -181,7 +181,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -351,7 +351,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -360,235 +360,12 @@
           <section id="module-cneuromax.fitting.deeplearning.datamodule">
 <span id="datamodule"></span><h1>datamodule<a class="headerlink" href="#module-cneuromax.fitting.deeplearning.datamodule" title="Link to this heading">¶</a></h1>
 <p><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningDataModule</span></code>s.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.Datasets">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.datamodule.</span></span><span class="sig-name descname"><span class="pre">Datasets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#Datasets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.Datasets" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Holds phase-specific <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code> objects.</p>
-<p>Using the word <code class="docutils literal notranslate"><span class="pre">phase</span></code> to not overload <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> <code class="docutils literal notranslate"><span class="pre">stage</span></code>
-terminology used for <code class="docutils literal notranslate"><span class="pre">fit</span></code>, <code class="docutils literal notranslate"><span class="pre">validate</span></code> and <code class="docutils literal notranslate"><span class="pre">test</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.Datasets.params.train"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets.params.train"><strong>train</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Training dataset.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.Datasets.params.val"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets.params.val"><strong>val</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Validation dataset.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.Datasets.params.test"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets.params.test"><strong>test</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Testing dataset.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.Datasets.params.predict"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets.params.predict"><strong>predict</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Prediction dataset.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.datamodule.</span></span><span class="sig-name descname"><span class="pre">BaseDataModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.data_dir}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'${config.device}'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_per_device_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_per_device_batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_per_device_num_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModuleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Holds <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a> config values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.data_dir"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.data_dir"><strong>data_dir</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'${config.data_dir}'</span></code>) – See <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.data_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data_dir</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'${config.device}'</span></code>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.max_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.max_per_device_batch_size"><strong>max_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Sets an            upper bound on the aforementioned attribute.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.fixed_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.fixed_per_device_batch_size"><strong>fixed_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Setting this            value skips the batch size search in            <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a> which is            not recommended for resource efficiency.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.fixed_per_device_num_workers"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.fixed_per_device_num_workers"><strong>fixed_per_device_num_workers</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>. Setting            this value skips the num workers search in            <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a> which is            not recommended for resource efficiency.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.datamodule.</span></span><span class="sig-name descname"><span class="pre">BaseDataModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningDataModule</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Base <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> <code class="docutils literal notranslate"><span class="pre">DataModule</span></code>.</p>
-<p>With <code class="docutils literal notranslate"><span class="pre">&lt;phase&gt;</span></code> being any of <code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">val</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code> or
-<code class="docutils literal notranslate"><span class="pre">predict</span></code>, subclasses need to properly define the
-<code class="docutils literal notranslate"><span class="pre">datasets.&lt;phase&gt;</span></code> attribute(s) for each desired phase.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a>.</p>
-</dd>
-</dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.config">
-<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.config" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets">
-<span class="sig-name descname"><span class="pre">datasets</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets" title="cneuromax.fitting.deeplearning.datamodule.Datasets"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datasets</span></code></a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.collate_fn">
-<span class="sig-name descname"><span class="pre">collate_fn</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.collate_fn" title="Link to this definition">¶</a></dt>
-<dd><p>See             <code class="xref py py-paramref docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader.collate_fn</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.pin_memory">
-<span class="sig-name descname"><span class="pre">pin_memory</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.pin_memory" title="Link to this definition">¶</a></dt>
-<dd><p>Whether to copy tensors into device            pinned memory before returning them (is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by            default if <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig.params.device" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a> is            <code class="docutils literal notranslate"><span class="pre">&quot;gpu&quot;</span></code>).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size">
-<span class="sig-name descname"><span class="pre">per_device_batch_size</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="Link to this definition">¶</a></dt>
-<dd><p>Per-device number of samples            to load per iteration. Temporary value (<code class="docutils literal notranslate"><span class="pre">1</span></code>) is            overwritten in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers">
-<span class="sig-name descname"><span class="pre">per_device_num_workers</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers" title="Link to this definition">¶</a></dt>
-<dd><p>Per-device number of CPU            processes to use for data loading (<code class="docutils literal notranslate"><span class="pre">0</span></code> means that the            data will be loaded by each device’s assigned CPU            process). Temporary value (<code class="docutils literal notranslate"><span class="pre">0</span></code>) is later overwritten            in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_state_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.load_state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Replace instance attrib vals w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict.params.state_dict" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">state_dict</span></code></a> vals.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict.params.state_dict"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict.params.state_dict"><strong>state_dict</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Dictionary containing values to override                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.state_dict">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">state_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.state_dict" title="Link to this definition">¶</a></dt>
-<dd><p>Returns instance attribute values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new dictionary containing attribute values                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_dataloader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.x_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader" title="Link to this definition">¶</a></dt>
-<dd><p>Generic <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> factory method.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.dataset"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.dataset"><strong>dataset</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> to wrap with a                <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.shuffle"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.shuffle"><strong>shuffle</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether to shuffle the dataset when iterating                over it.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>AttributeError</strong> – If <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.dataset" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">dataset</span></code></a> is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance                wrapping the <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader.params.dataset" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">dataset</span></code></a> argument.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.train_dataloader">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">train_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.train_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.train_dataloader" title="Link to this definition">¶</a></dt>
-<dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">x_dataloader()</span></code></a> w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets"><code class="xref py py-attr docutils literal notranslate"><span class="pre">datasets</span></code></a> <code class="docutils literal notranslate"><span class="pre">.train</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new training <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code>                instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.val_dataloader">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">val_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.val_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.val_dataloader" title="Link to this definition">¶</a></dt>
-<dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">x_dataloader()</span></code></a> w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets"><code class="xref py py-attr docutils literal notranslate"><span class="pre">datasets</span></code></a> <code class="docutils literal notranslate"><span class="pre">.val</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new validation <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.test_dataloader">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">test_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.test_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.test_dataloader" title="Link to this definition">¶</a></dt>
-<dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">x_dataloader()</span></code></a> w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets"><code class="xref py py-attr docutils literal notranslate"><span class="pre">datasets</span></code></a> <code class="docutils literal notranslate"><span class="pre">.test</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new testing <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.predict_dataloader">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predict_dataloader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/datamodule/base.html#BaseDataModule.predict_dataloader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.predict_dataloader" title="Link to this definition">¶</a></dt>
-<dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="xref py py-meth docutils literal notranslate"><span class="pre">x_dataloader()</span></code></a> w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets"><code class="xref py py-attr docutils literal notranslate"><span class="pre">datasets</span></code></a> <code class="docutils literal notranslate"><span class="pre">.predict</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new prediction <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance that does not shuffle the dataset.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <p class="rubric">Submodules</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#module-cneuromax.fitting.deeplearning.datamodule.base" title="cneuromax.fitting.deeplearning.datamodule.base"><code class="xref py py-obj docutils literal notranslate"><span class="pre">base</span></code></a></p></td>
-<td><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a> + its datasets/config classes.</p></td>
+<td><p><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code> + its datasets/config classes.</p></td>
 </tr>
 </tbody>
 </table>
@@ -638,44 +415,8 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">datamodule</a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.Datasets"><code class="docutils literal notranslate"><span class="pre">Datasets</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig"><code class="docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.config"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.config</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.datasets"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.datasets</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.collate_fn"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.collate_fn</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.pin_memory"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.pin_memory</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_batch_size"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.per_device_batch_size</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.per_device_num_workers"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.per_device_num_workers</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.load_state_dict()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.state_dict"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.state_dict()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.x_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.train_dataloader"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.train_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.val_dataloader"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.val_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.test_dataloader"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.test_dataloader()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.predict_dataloader"><code class="docutils literal notranslate"><span class="pre">BaseDataModule.predict_dataloader()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

@@ -375,7 +375,7 @@
 
 
 <div class="viewcode-block" id="BaseLitModuleConfig">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModuleConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BaseLitModuleConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseLitModule` config values.</span>
@@ -389,7 +389,7 @@
 
 
 <div class="viewcode-block" id="BaseLitModule">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">WandbValLoggingLightningModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :mod:`lightning` ``LitModule``.</span>
 
@@ -414,40 +414,40 @@
 <span class="sd">            ...</span>
 
 <span class="sd">    Note:</span>
-<span class="sd">        ``data`` and loss value(s) type hints in this class are not</span>
-<span class="sd">        rendered properly in the documentation due to an\</span>
-<span class="sd">        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`.\</span>
-<span class="sd">        Refer to the source code available next to the method\</span>
+<span class="sd">        ``data`` and loss value(s) type hints in this class are not \</span>
+<span class="sd">        rendered properly in the documentation due to an \</span>
+<span class="sd">        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`. \</span>
+<span class="sd">        Refer to the source code available next to the method \</span>
 <span class="sd">        signatures to find the correct types.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        config: See :class:`BaseLitModuleConfig`.</span>
-<span class="sd">        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this\</span>
+<span class="sd">        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this</span>
 <span class="sd">            instance.</span>
-<span class="sd">        optimizer: A :mod:`torch` ``Optimizer`` to be used by this\</span>
-<span class="sd">            instance. It is partial as an argument as the\</span>
-<span class="sd">            :paramref:`nnmodule` parameters are required for its\</span>
+<span class="sd">        optimizer: A :mod:`torch` ``Optimizer`` to be used by this</span>
+<span class="sd">            instance. It is partial as an argument as the</span>
+<span class="sd">            :paramref:`nnmodule` parameters are required for its</span>
 <span class="sd">            initialization.</span>
-<span class="sd">        scheduler: A :mod:`torch` ``Scheduler`` to be used by this\</span>
-<span class="sd">            instance. It is partial as an argument as the\</span>
+<span class="sd">        scheduler: A :mod:`torch` ``Scheduler`` to be used by this</span>
+<span class="sd">            instance. It is partial as an argument as the</span>
 <span class="sd">            :paramref:`optimizer` is required for its initialization.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        config (:class:`BaseLitModuleConfig`): See\</span>
+<span class="sd">        config (:class:`BaseLitModuleConfig`): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.config`.</span>
-<span class="sd">        nnmodule (:class:`torch.nn.Module`): See\</span>
+<span class="sd">        nnmodule (:class:`torch.nn.Module`): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.nnmodule`.</span>
-<span class="sd">        optimizer_partial (:class:`functools.partial`): See\</span>
+<span class="sd">        optimizer_partial (:class:`functools.partial`): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.optimizer`.</span>
-<span class="sd">        scheduler_partial (:class:`functools.partial`): See\</span>
+<span class="sd">        scheduler_partial (:class:`functools.partial`): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.scheduler`.</span>
-<span class="sd">        optimizer (:class:`torch.optim.Optimizer`):\</span>
+<span class="sd">        optimizer (:class:`torch.optim.Optimizer`):</span>
 <span class="sd">            :paramref:`~BaseLitModule.optimizer` instantiated.</span>
-<span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`): \</span>
+<span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`):</span>
 <span class="sd">            :paramref:`~BaseLitModule.scheduler` instantiated.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        NotImplementedError: If the :meth:`step` method is not\</span>
+<span class="sd">        NotImplementedError: If the :meth:`step` method is not</span>
 <span class="sd">            defined or callable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -471,7 +471,7 @@
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseLitModule.stage_step">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.stage_step">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">stage_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
@@ -485,7 +485,7 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            data: The batched input data.</span>
-<span class="sd">            stage: The current stage (``train``, ``val``, ``test`` or\</span>
+<span class="sd">            stage: The current stage (``train``, ``val``, ``test`` or</span>
 <span class="sd">                ``predict``).</span>
 
 <span class="sd">        Returns:</span>
@@ -499,7 +499,7 @@
 
 
 <div class="viewcode-block" id="BaseLitModule.training_step">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.training_step">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
@@ -517,7 +517,7 @@
 
 
 <div class="viewcode-block" id="BaseLitModule.validation_step">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.validation_step">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
@@ -542,7 +542,7 @@
 
 
 <div class="viewcode-block" id="BaseLitModule.test_step">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.test_step">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
@@ -560,15 +560,16 @@
 
 
 <div class="viewcode-block" id="BaseLitModule.configure_optimizers">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.BaseLitModule.configure_optimizers">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers">[docs]</a>
     <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerLRSchedulerConfig</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dict with :attr:`optimizer` and :attr:`scheduler`.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            This instance&#39;s :class:`~torch.optim.Optimizer` and\</span>
-<span class="sd">            :class:`~torch.optim.lr_scheduler.LRScheduler`.</span>
+<span class="sd">            This instance&#39;s</span>
+<span class="sd">                :attr:`~torch.optim.Optimizer` and</span>
+<span class="sd">                :class:`~torch.optim.lr_scheduler.LRScheduler`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_partial</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler_partial</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>

@@ -386,14 +386,16 @@ dropout probability.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLPConfig" title="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLPConfig" title="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLPConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MLPConfig</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.activation_fn"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.activation_fn"><strong>activation_fn</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></span>) – The singular activation function to use in            between each layer.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.activation_fn"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.params.activation_fn"><strong>activation_fn</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></span>) – The singular activation function to use in
+between each layer.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.model">
 <span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.model" title="Link to this definition">¶</a></dt>
-<dd><p>The internal            <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> that holds the MLP’s layers.</p>
+<dd><p>The internal
+<code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> that holds the MLP’s layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Sequential</span></code></p>
@@ -407,9 +409,10 @@ dropout probability.</p>
 <dd><p>Flattens input’s dimensions and passes it through the model.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This MLP is currently only capable of returning 1D                <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code> batches.</p>
+<p>This MLP is currently only capable of returning 1D                 <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code> batches.</p>
 </div>
-<p>TODO: Add support for returning 2D+ <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code>        batches.</p>
+<p>TODO: Add support for returning 2D+ <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code>
+batches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.forward.params.x"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.forward.params.x"><strong>x</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Float[Tensor,</span> <span class="pre">'batch_size</span> <span class="pre">*d_input']</span></code></span>) – The input data batch.</p>

@@ -393,24 +393,20 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes variables common to all execution modes.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        agents_per_task: See\</span>
+<span class="sd">        agents_per_task: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.agents_per_task`.</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        * See :paramref:`~.compute_start_time_and_seeds.pop_size`.</span>
-<span class="sd">        * See :paramref:`~initialize_agents.len_agents_batch`.</span>
-<span class="sd">        * See\</span>
-<span class="sd">            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`.</span>
-<span class="sd">        * See :paramref:`~.mutate.exchange_and_mutate_info_batch`.</span>
-<span class="sd">        * An array used as a buffer by all processes to receive the\</span>
-<span class="sd">            seeds from the primary process during the first generation\</span>
+<span class="sd">        :paramref:`~.compute_start_time_and_seeds.pop_size`,</span>
+<span class="sd">            :paramref:`~initialize_agents.len_agents_batch`,</span>
+<span class="sd">            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`,</span>
+<span class="sd">            :paramref:`~.mutate.exchange_and_mutate_info_batch`,</span>
+<span class="sd">            An array used as a buffer by all processes to receive the</span>
+<span class="sd">            seeds from the primary process during the first generation</span>
 <span class="sd">            only.</span>
-<span class="sd">        * See\</span>
-<span class="sd">            :paramref:`~.compute_generation_results.generation_results`.</span>
-<span class="sd">        * See\</span>
-<span class="sd">            :paramref:`~.compute_generation_results.generation_results_batch`.</span>
-<span class="sd">        * See\</span>
+<span class="sd">            :paramref:`~.compute_generation_results.generation_results`,</span>
+<span class="sd">            :paramref:`~.compute_generation_results.generation_results_batch`,</span>
 <span class="sd">            :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
@@ -508,13 +504,13 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        agent: See :class:`~.BaseAgent`.</span>
-<span class="sd">        len_agents_batch: The number of agents per population\</span>
-<span class="sd">            maintained in\</span>
-<span class="sd">            :paramref:`~.compute_generation_results.agents_batch`\</span>
-<span class="sd">            by the process calling this function during a\</span>
+<span class="sd">        len_agents_batch: The number of agents per population</span>
+<span class="sd">            maintained in</span>
+<span class="sd">            :paramref:`~.compute_generation_results.agents_batch`</span>
+<span class="sd">            by the process calling this function during a</span>
 <span class="sd">            given generation.</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
-<span class="sd">        pop_merge: See\</span>
+<span class="sd">        pop_merge: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.</span>
 
 <span class="sd">    Returns:</span>

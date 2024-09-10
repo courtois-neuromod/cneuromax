@@ -392,20 +392,20 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
-<span class="sd">        pop_size: See\</span>
+<span class="sd">        pop_size: See</span>
 <span class="sd">            :paramref:`~.compute_start_time_and_seeds.pop_size`.</span>
-<span class="sd">        exchange_and_mutate_info: An array maintained only by\</span>
-<span class="sd">            the primary process (secondary processes set this to\</span>
-<span class="sd">            ``None``) containing information for all processes on\</span>
-<span class="sd">            how to exchange and mutate agents. Precisions on the 3rd\</span>
-<span class="sd">            dimension: 0) The size of the agent when serialized, 1)\</span>
-<span class="sd">            The position of the agent paired for with the current\</span>
-<span class="sd">            agent, 2) Whether to send or receive the agent, 3) The\</span>
-<span class="sd">            seed to randomize the mutation and evaluation of the\</span>
+<span class="sd">        exchange_and_mutate_info: An array maintained only by</span>
+<span class="sd">            the primary process (secondary processes set this to</span>
+<span class="sd">            ``None``) containing information for all processes on</span>
+<span class="sd">            how to exchange and mutate agents. Precisions on the 3rd</span>
+<span class="sd">            dimension: 0) The size of the agent when serialized, 1)</span>
+<span class="sd">            The position of the agent paired for with the current</span>
+<span class="sd">            agent, 2) Whether to send or receive the agent, 3) The</span>
+<span class="sd">            seed to randomize the mutation and evaluation of the</span>
 <span class="sd">            agent.</span>
-<span class="sd">        generation_results: See\</span>
+<span class="sd">        generation_results: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.generation_results`.</span>
-<span class="sd">        seeds: The seeds to set the mutation and evaluation randomness\</span>
+<span class="sd">        seeds: The seeds to set the mutation and evaluation randomness</span>
 <span class="sd">            for the current generation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
@@ -468,11 +468,11 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
-<span class="sd">        pop_size: See\</span>
+<span class="sd">        pop_size: See</span>
 <span class="sd">            :paramref:`~.compute_start_time_and_seeds.pop_size`.</span>
-<span class="sd">        agents_batch: See\</span>
+<span class="sd">        agents_batch: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.agents_batch`.</span>
-<span class="sd">        exchange_and_mutate_info_batch: See\</span>
+<span class="sd">        exchange_and_mutate_info_batch: See</span>
 <span class="sd">            :paramref:`~.mutate.exchange_and_mutate_info_batch`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>

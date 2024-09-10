@@ -372,7 +372,7 @@
 
 
 <div class="viewcode-block" id="BaseClassificationLitModuleConfig">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModuleConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BaseClassificationLitModuleConfig</span><span class="p">(</span><span class="n">BaseLitModuleConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseClassificationLitModule` config values.</span>
@@ -386,7 +386,7 @@
 
 
 <div class="viewcode-block" id="BaseClassificationLitModule">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseClassificationLitModule</span><span class="p">(</span><span class="n">BaseLitModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Classification :mod:`lightning` ``LitModule``.</span>
 
@@ -397,9 +397,10 @@
 <span class="sd">        scheduler: See :paramref:`~.BaseLitModule.scheduler`.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        accuracy\</span>
-<span class="sd">            (:class:`~torchmetrics.classification.MulticlassAccuracy`)</span>
-<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B\</span>
+<span class="sd">        accuracy</span>
+<span class="sd">            (:class:`~torchmetrics.classification.MulticlassAccuracy`):</span>
+<span class="sd">            The accuracy metric.</span>
+<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B</span>
 <span class="sd">            containing validation data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -417,7 +418,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">wandb_columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;y_hat&quot;</span><span class="p">,</span> <span class="s2">&quot;logits&quot;</span><span class="p">]</span>
 
 <div class="viewcode-block" id="BaseClassificationLitModule.step">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.step">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.step">[docs]</a>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span>
@@ -429,9 +430,9 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes the model accuracy and cross entropy loss.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            data: A tuple ``(x, y)`` where ``x`` is the input data and\</span>
+<span class="sd">            data: A tuple ``(x, y)`` where ``x`` is the input data and</span>
 <span class="sd">                ``y`` is the target data.</span>
-<span class="sd">            stage: See\</span>
+<span class="sd">            stage: See</span>
 <span class="sd">                :paramref:`~.BaseLitModule.stage_step.stage`.</span>
 
 <span class="sd">        Returns:</span>
@@ -449,7 +450,7 @@
 
 
 <div class="viewcode-block" id="BaseClassificationLitModule.save_val_data">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.BaseClassificationLitModule.save_val_data">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data">[docs]</a>
     <span class="k">def</span> <span class="nf">save_val_data</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseClassificationLitModule&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *x_dim&quot;</span><span class="p">],</span>
@@ -459,7 +460,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Saves data computed during validation for later use.</span>
 
-<span class="sd">        Make sure to define the :attr:`wandb_x_wrapper` attribute in\</span>
+<span class="sd">        Make sure to define the :attr:`wandb_x_wrapper` attribute in</span>
 <span class="sd">        the subclass to log in the correct format.</span>
 
 <span class="sd">        Args:</span>

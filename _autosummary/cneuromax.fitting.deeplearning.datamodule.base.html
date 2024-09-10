@@ -389,9 +389,19 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.data_dir"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.data_dir"><strong>data_dir</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'${config.data_dir}'</span></code>) – See <a class="reference internal" href="cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.data_dir" title="cneuromax.config.BaseSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data_dir</span></code></a>.</p></li>
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.device"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.device"><strong>device</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'${config.device}'</span></code>) – See <a class="reference internal" href="cneuromax.fitting.config.html#cneuromax.fitting.config.FittingSubtaskConfig.params.device" title="cneuromax.fitting.config.FittingSubtaskConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.max_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.max_per_device_batch_size"><strong>max_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Sets an            upper bound on the aforementioned attribute.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_batch_size"><strong>fixed_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Setting this            value skips the batch size search in            <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a> which is            not recommended for resource efficiency.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_num_workers"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_num_workers"><strong>fixed_per_device_num_workers</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>. Setting            this value skips the num workers search in            <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a> which is            not recommended for resource efficiency.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.max_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.max_per_device_batch_size"><strong>max_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Sets an
+upper bound on the aforementioned attribute.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_batch_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_batch_size"><strong>fixed_per_device_batch_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a>. Setting this
+value skips the batch size search in
+<a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_batch_size"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_batch_size()</span></code></a> which is
+not recommended for resource efficiency.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_num_workers"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.fixed_per_device_num_workers"><strong>fixed_per_device_num_workers</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>. Setting
+this value skips the num workers search in
+<a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.find_good_per_device_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_good_per_device_num_workers()</span></code></a> which is
+not recommended for resource efficiency.</p></li>
 </ul>
 </dd>
 </dl>
@@ -413,7 +423,8 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.config">
 <span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.config" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Self-explanatory.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModuleConfig</span></code></a></p>
 </dd>
@@ -423,7 +434,8 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.datasets">
 <span class="sig-name descname"><span class="pre">datasets</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.datasets" title="Link to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Self-explanatory.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.Datasets" title="cneuromax.fitting.deeplearning.datamodule.base.Datasets"><code class="xref py py-class docutils literal notranslate"><span class="pre">Datasets</span></code></a></p>
 </dd>
@@ -433,7 +445,8 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.collate_fn">
 <span class="sig-name descname"><span class="pre">collate_fn</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.collate_fn" title="Link to this definition">¶</a></dt>
-<dd><p>See             <code class="xref py py-paramref docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader.collate_fn</span></code>.</p>
+<dd><p>See
+<code class="xref py py-paramref docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader.collate_fn</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">callable</span></code></p>
@@ -444,7 +457,10 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.pin_memory">
 <span class="sig-name descname"><span class="pre">pin_memory</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.pin_memory" title="Link to this definition">¶</a></dt>
-<dd><p>Whether to copy tensors into device            pinned memory before returning them (is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by            default if <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.device" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a> is            <code class="docutils literal notranslate"><span class="pre">&quot;gpu&quot;</span></code>).</p>
+<dd><p>Whether to copy tensors into device
+pinned memory before returning them (is set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by
+default if <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig.params.device" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">device</span></code></a> is
+<code class="docutils literal notranslate"><span class="pre">&quot;gpu&quot;</span></code>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">bool</span></code></p>
@@ -455,7 +471,9 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size">
 <span class="sig-name descname"><span class="pre">per_device_batch_size</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="Link to this definition">¶</a></dt>
-<dd><p>Per-device number of samples            to load per iteration. Temporary value (<code class="docutils literal notranslate"><span class="pre">1</span></code>) is            overwritten in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
+<dd><p>Per-device number of samples
+to load per iteration. Temporary value (<code class="docutils literal notranslate"><span class="pre">1</span></code>) is
+overwritten in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
@@ -466,7 +484,11 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers">
 <span class="sig-name descname"><span class="pre">per_device_num_workers</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="Link to this definition">¶</a></dt>
-<dd><p>Per-device number of CPU            processes to use for data loading (<code class="docutils literal notranslate"><span class="pre">0</span></code> means that the            data will be loaded by each device’s assigned CPU            process). Temporary value (<code class="docutils literal notranslate"><span class="pre">0</span></code>) is later overwritten            in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
+<dd><p>Per-device number of CPU
+processes to use for data loading (<code class="docutils literal notranslate"><span class="pre">0</span></code> means that the
+data will be loaded by each device’s assigned CPU
+process). Temporary value (<code class="docutils literal notranslate"><span class="pre">0</span></code>) is later overwritten
+in <a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers" title="cneuromax.fitting.deeplearning.utils.lightning.set_batch_size_and_num_workers"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_batch_size_and_num_workers()</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p>
@@ -480,7 +502,9 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd><p>Replace instance attrib vals w/ <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict.params.state_dict" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">state_dict</span></code></a> vals.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict.params.state_dict"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict.params.state_dict"><strong>state_dict</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Dictionary containing values to override                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict.params.state_dict"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict.params.state_dict"><strong>state_dict</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – Dictionary containing values to override
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
@@ -497,7 +521,12 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new dictionary containing attribute values                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;                <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new dictionary containing attribute values</dt><dd><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_batch_size"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_batch_size</span></code></a> &amp;
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.per_device_num_workers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">per_device_num_workers</span></code></a>.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -509,8 +538,10 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset"><strong>dataset</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> to wrap with a                <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.shuffle"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.shuffle"><strong>shuffle</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether to shuffle the dataset when iterating                over it.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset"><strong>dataset</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> to wrap with a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.shuffle"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.shuffle"><strong>shuffle</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – Whether to shuffle the dataset when iterating
+over it.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -520,7 +551,12 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance                wrapping the <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">dataset</span></code></a> argument.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance
+wrapping the <a class="reference internal" href="#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader.params.dataset" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">dataset</span></code></a> argument.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -534,7 +570,11 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new training <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code>                instance.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new training</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.DataLoader</span></code> instance.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -548,7 +588,11 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new validation <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new validation</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -562,7 +606,11 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new testing <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new testing</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -576,7 +624,12 @@ terminology used for <code class="docutils literal notranslate"><span class="pre
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new prediction <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code>                instance that does not shuffle the dataset.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>A new prediction</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code> instance that does
+not shuffle the dataset.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>

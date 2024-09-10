@@ -395,23 +395,29 @@ a <code class="xref py py-class docutils literal notranslate"><span class="pre">
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">data</span></code> and loss value(s) type hints in this class are not
-rendered properly in the documentation due to an        incompatibility between <code class="xref py py-mod docutils literal notranslate"><span class="pre">sphinx</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">jaxtyping</span></code>.        Refer to the source code available next to the method        signatures to find the correct types.</p>
+<p><code class="docutils literal notranslate"><span class="pre">data</span></code> and loss value(s) type hints in this class are not         rendered properly in the documentation due to an         incompatibility between <code class="xref py py-mod docutils literal notranslate"><span class="pre">sphinx</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">jaxtyping</span></code>.         Refer to the source code available next to the method         signatures to find the correct types.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModuleConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModuleConfig</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"><strong>nnmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> to be used by this            instance.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"><strong>optimizer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Optimizer</span></code> to be used by this            instance. It is partial as an argument as the            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a> parameters are required for its            initialization.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"><strong>scheduler</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> to be used by this            instance. It is partial as an argument as the            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a> is required for its initialization.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"><strong>nnmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> to be used by this
+instance.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"><strong>optimizer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Optimizer</span></code> to be used by this
+instance. It is partial as an argument as the
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a> parameters are required for its
+initialization.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"><strong>scheduler</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code>]</span>) – A <code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code> <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> to be used by this
+instance. It is partial as an argument as the
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a> is required for its initialization.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.config">
 <span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.config" title="Link to this definition">¶</a></dt>
-<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">config</span></code></a>.</p>
+<dd><p>See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">config</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModuleConfig</span></code></a></p>
@@ -422,7 +428,8 @@ rendered properly in the documentation due to an        incompatibility between 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule">
 <span class="sig-name descname"><span class="pre">nnmodule</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule" title="Link to this definition">¶</a></dt>
-<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a>.</p>
+<dd><p>See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.Module</span></code></p>
@@ -433,7 +440,8 @@ rendered properly in the documentation due to an        incompatibility between 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial">
 <span class="sig-name descname"><span class="pre">optimizer_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial" title="Link to this definition">¶</a></dt>
-<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a>.</p>
+<dd><p>See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">functools.partial</span></code></p>
@@ -444,7 +452,8 @@ rendered properly in the documentation due to an        incompatibility between 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial">
 <span class="sig-name descname"><span class="pre">scheduler_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial" title="Link to this definition">¶</a></dt>
-<dd><p>See            <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
+<dd><p>See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">functools.partial</span></code></p>
@@ -476,7 +485,8 @@ rendered properly in the documentation due to an        incompatibility between 
 
 <dl class="field-list simple">
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method is not            defined or callable.</p>
+<dd class="field-odd"><p><strong>NotImplementedError</strong> – If the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method is not
+    defined or callable.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -489,7 +499,8 @@ calls it and logs the loss value(s).</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">']</span></code> | <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">']</span></code>, <code class="xref py py-data docutils literal notranslate"><span class="pre">...</span></code>] | <code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">']</span></code>] | <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">']</span></code>] | <code class="xref py py-class docutils literal notranslate"><span class="pre">BatchEncoding</span></code></span>) – The batched input data.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The current stage (<code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">val</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code> or                <code class="docutils literal notranslate"><span class="pre">predict</span></code>).</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – The current stage (<code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">val</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code> or
+<code class="docutils literal notranslate"><span class="pre">predict</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -565,7 +576,12 @@ calls it and logs the loss value(s).</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimizerLRSchedulerConfig</span></code></span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>This instance’s <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code> and            <code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code>.</p>
+<dd class="field-even"><p><dl class="simple">
+<dt>This instance’s</dt><dd><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">Optimizer</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code>.</p>
+</dd>
+</dl>
+</p>
 </dd>
 </dl>
 </dd></dl>

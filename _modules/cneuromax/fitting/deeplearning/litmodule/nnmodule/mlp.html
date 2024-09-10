@@ -365,7 +365,7 @@
 
 
 <div class="viewcode-block" id="MLPConfig">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.MLPConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLPConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MLPConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`MLP` config values.</span>
@@ -381,7 +381,7 @@
 
 
 <div class="viewcode-block" id="MLP">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.MLP">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP">[docs]</a>
 <span class="k">class</span> <span class="nc">MLP</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Multi-layer perceptron (MLP).</span>
 
@@ -390,11 +390,11 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        config: See :class:`MLPConfig`.</span>
-<span class="sd">        activation_fn: The singular activation function to use in\</span>
+<span class="sd">        activation_fn: The singular activation function to use in</span>
 <span class="sd">            between each layer.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        model (:class:`torch.nn.Sequential`): The internal\</span>
+<span class="sd">        model (:class:`torch.nn.Sequential`): The internal</span>
 <span class="sd">            :class:`~torch.nn.Module` that holds the MLP&#39;s layers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -419,7 +419,7 @@
                     <span class="p">)</span>
 
 <div class="viewcode-block" id="MLP.forward">
-<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.MLP.forward">[docs]</a>
+<a class="viewcode-back" href="../../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.forward">[docs]</a>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MLP&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; batch_size *d_input&quot;</span><span class="p">],</span>
@@ -427,10 +427,10 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Flattens input&#39;s dimensions and passes it through the model.</span>
 
 <span class="sd">        Note:</span>
-<span class="sd">            This MLP is currently only capable of returning 1D\</span>
+<span class="sd">            This MLP is currently only capable of returning 1D \</span>
 <span class="sd">                :class:`torch.Tensor` batches.</span>
 
-<span class="sd">        TODO: Add support for returning 2D+ :class:`torch.Tensor`\</span>
+<span class="sd">        TODO: Add support for returning 2D+ :class:`torch.Tensor`</span>
 <span class="sd">        batches.</span>
 
 <span class="sd">        Args:</span>

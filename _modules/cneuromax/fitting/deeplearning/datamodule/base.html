@@ -367,7 +367,7 @@
 
 
 <div class="viewcode-block" id="Datasets">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.Datasets">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.Datasets">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Datasets</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds phase-specific :class:`~torch.utils.data.Dataset` objects.</span>
@@ -390,7 +390,7 @@
 
 
 <div class="viewcode-block" id="BaseDataModuleConfig">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModuleConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">BaseDataModuleConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseDataModule` config values.</span>
@@ -398,18 +398,18 @@
 <span class="sd">    Args:</span>
 <span class="sd">        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
-<span class="sd">        max_per_device_batch_size: See\</span>
-<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Sets an\</span>
+<span class="sd">        max_per_device_batch_size: See</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Sets an</span>
 <span class="sd">            upper bound on the aforementioned attribute.</span>
-<span class="sd">        fixed_per_device_batch_size: See\</span>
-<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Setting this\</span>
-<span class="sd">            value skips the batch size search in\</span>
-<span class="sd">            :func:`.find_good_per_device_batch_size` which is\</span>
+<span class="sd">        fixed_per_device_batch_size: See</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_batch_size`. Setting this</span>
+<span class="sd">            value skips the batch size search in</span>
+<span class="sd">            :func:`.find_good_per_device_batch_size` which is</span>
 <span class="sd">            not recommended for resource efficiency.</span>
-<span class="sd">        fixed_per_device_num_workers: See\</span>
-<span class="sd">            :attr:`~BaseDataModule.per_device_num_workers`. Setting\</span>
-<span class="sd">            this value skips the num workers search in\</span>
-<span class="sd">            :func:`.find_good_per_device_num_workers` which is\</span>
+<span class="sd">        fixed_per_device_num_workers: See</span>
+<span class="sd">            :attr:`~BaseDataModule.per_device_num_workers`. Setting</span>
+<span class="sd">            this value skips the num workers search in</span>
+<span class="sd">            :func:`.find_good_per_device_num_workers` which is</span>
 <span class="sd">            not recommended for resource efficiency.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -422,7 +422,7 @@
 
 
 <div class="viewcode-block" id="BaseDataModule">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :mod:`lightning` ``DataModule``.</span>
 
@@ -434,21 +434,21 @@
 <span class="sd">        config: See :class:`BaseDataModuleConfig`.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        config (:class:`BaseDataModuleConfig`)</span>
-<span class="sd">        datasets (:class:`Datasets`)</span>
-<span class="sd">        collate_fn (``callable``): See \</span>
+<span class="sd">        config (:class:`BaseDataModuleConfig`): Self-explanatory.</span>
+<span class="sd">        datasets (:class:`Datasets`): Self-explanatory.</span>
+<span class="sd">        collate_fn (``callable``): See</span>
 <span class="sd">            :paramref:`torch.utils.data.DataLoader.collate_fn`.</span>
-<span class="sd">        pin_memory (``bool``): Whether to copy tensors into device\</span>
-<span class="sd">            pinned memory before returning them (is set to ``True`` by\</span>
-<span class="sd">            default if :paramref:`~BaseDataModuleConfig.device` is\</span>
+<span class="sd">        pin_memory (``bool``): Whether to copy tensors into device</span>
+<span class="sd">            pinned memory before returning them (is set to ``True`` by</span>
+<span class="sd">            default if :paramref:`~BaseDataModuleConfig.device` is</span>
 <span class="sd">            ``&quot;gpu&quot;``).</span>
-<span class="sd">        per_device_batch_size (``int``): Per-device number of samples\</span>
-<span class="sd">            to load per iteration. Temporary value (``1``) is\</span>
+<span class="sd">        per_device_batch_size (``int``): Per-device number of samples</span>
+<span class="sd">            to load per iteration. Temporary value (``1``) is</span>
 <span class="sd">            overwritten in :func:`.set_batch_size_and_num_workers`.</span>
-<span class="sd">        per_device_num_workers (``int``): Per-device number of CPU\</span>
-<span class="sd">            processes to use for data loading (``0`` means that the\</span>
-<span class="sd">            data will be loaded by each device&#39;s assigned CPU\</span>
-<span class="sd">            process). Temporary value (``0``) is later overwritten\</span>
+<span class="sd">        per_device_num_workers (``int``): Per-device number of CPU</span>
+<span class="sd">            processes to use for data loading (``0`` means that the</span>
+<span class="sd">            data will be loaded by each device&#39;s assigned CPU</span>
+<span class="sd">            process). Temporary value (``0``) is later overwritten</span>
 <span class="sd">            in :func:`.set_batch_size_and_num_workers`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -462,7 +462,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">per_device_num_workers</span> <span class="o">=</span> <span class="mi">0</span>
 
 <div class="viewcode-block" id="BaseDataModule.load_state_dict">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.load_state_dict">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span>
@@ -471,8 +471,8 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace instance attrib vals w/ :paramref:`state_dict` vals.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state_dict: Dictionary containing values to override\</span>
-<span class="sd">                :attr:`per_device_batch_size` &amp;\</span>
+<span class="sd">            state_dict: Dictionary containing values to override</span>
+<span class="sd">                :attr:`per_device_batch_size` &amp;</span>
 <span class="sd">                :attr:`per_device_num_workers`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">per_device_batch_size</span> <span class="o">=</span> <span class="n">state_dict</span><span class="p">[</span><span class="s2">&quot;per_device_batch_size&quot;</span><span class="p">]</span>
@@ -480,14 +480,14 @@
 
 
 <div class="viewcode-block" id="BaseDataModule.state_dict">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.state_dict">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.state_dict">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns instance attribute values.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new dictionary containing attribute values\</span>
-<span class="sd">                :attr:`per_device_batch_size` &amp;\</span>
+<span class="sd">            A new dictionary containing attribute values</span>
+<span class="sd">                :attr:`per_device_batch_size` &amp;</span>
 <span class="sd">                :attr:`per_device_num_workers`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
@@ -497,7 +497,7 @@
 
 
 <div class="viewcode-block" id="BaseDataModule.x_dataloader">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.x_dataloader">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">x_dataloader</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span>
@@ -508,16 +508,17 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic :class:`~torch.utils.data.DataLoader` factory method.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            dataset: A :mod:`torch` ``Dataset`` to wrap with a\</span>
+<span class="sd">            dataset: A :mod:`torch` ``Dataset`` to wrap with a</span>
 <span class="sd">                :class:`~torch.utils.data.DataLoader`</span>
-<span class="sd">            shuffle: Whether to shuffle the dataset when iterating\</span>
+<span class="sd">            shuffle: Whether to shuffle the dataset when iterating</span>
 <span class="sd">                over it.</span>
 
 <span class="sd">        Raises:</span>
 <span class="sd">            AttributeError: If :paramref:`dataset` is ``None``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new :class:`~torch.utils.data.DataLoader` instance\</span>
+<span class="sd">            A new</span>
+<span class="sd">                :class:`~torch.utils.data.DataLoader` instance</span>
 <span class="sd">                wrapping the :paramref:`dataset` argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -533,53 +534,54 @@
 
 
 <div class="viewcode-block" id="BaseDataModule.train_dataloader">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.train_dataloader">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.train_dataloader">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.train``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new training :class:`torch.utils.data.DataLoader`\</span>
-<span class="sd">                instance.</span>
+<span class="sd">            A new training</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">train</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseDataModule.val_dataloader">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.val_dataloader">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.val_dataloader">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.val``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new validation :class:`~torch.utils.data.DataLoader`\</span>
-<span class="sd">                instance.</span>
+<span class="sd">            A new validation</span>
+<span class="sd">                :class:`~torch.utils.data.DataLoader` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseDataModule.test_dataloader">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.test_dataloader">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.test_dataloader">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.test``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new testing :class:`~torch.utils.data.DataLoader`\</span>
-<span class="sd">                instance.</span>
+<span class="sd">            A new testing</span>
+<span class="sd">                :class:`~torch.utils.data.DataLoader` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="BaseDataModule.predict_dataloader">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule.predict_dataloader">[docs]</a>
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.predict_dataloader">[docs]</a>
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">predict_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.predict``.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A new prediction :class:`~torch.utils.data.DataLoader`\</span>
-<span class="sd">                instance that does not shuffle the dataset.</span>
+<span class="sd">            A new prediction</span>
+<span class="sd">                :class:`~torch.utils.data.DataLoader` instance that does</span>
+<span class="sd">                not shuffle the dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 </div>

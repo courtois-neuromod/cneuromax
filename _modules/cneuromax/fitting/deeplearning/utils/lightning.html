@@ -395,11 +395,11 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        trainer_partial: See :class:`~lightning.pytorch.Trainer`.</span>
-<span class="sd">        logger_partial: See\</span>
+<span class="sd">        logger_partial: See</span>
 <span class="sd">            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
-<span class="sd">        save_every_n_train_steps: See\</span>
+<span class="sd">        save_every_n_train_steps: See</span>
 <span class="sd">            :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.</span>
 
 <span class="sd">    Returns:</span>
@@ -520,17 +520,17 @@
 <span class="sd">    This functionality makes the following, not always correct, but</span>
 <span class="sd">    generally reasonable assumptions:</span>
 
-<span class="sd">    - As long as the ``total_batch_size / dataset_size`` ratio remains\</span>
-<span class="sd">    small (e.g. ``&lt; 0.01`` so as to benefit from the stochasticity of\</span>
-<span class="sd">    gradient updates), running the same number of gradient updates with\</span>
-<span class="sd">    a larger batch size will yield better training performance than\</span>
-<span class="sd">    running the same number of gradient updates with a smaller batch\</span>
+<span class="sd">    - As long as the ``total_batch_size / dataset_size`` ratio remains</span>
+<span class="sd">    small (e.g. ``&lt; 0.01`` so as to benefit from the stochasticity of</span>
+<span class="sd">    gradient updates), running the same number of gradient updates with</span>
+<span class="sd">    a larger batch size will yield better training performance than</span>
+<span class="sd">    running the same number of gradient updates with a smaller batch</span>
 <span class="sd">    size.</span>
 
-<span class="sd">    - Loading data from disk to RAM is a larger bottleneck than loading\</span>
+<span class="sd">    - Loading data from disk to RAM is a larger bottleneck than loading</span>
 <span class="sd">    data from RAM to GPU VRAM.</span>
 
-<span class="sd">    - If you are training on multiple GPUs, each GPU has roughly the\</span>
+<span class="sd">    - If you are training on multiple GPUs, each GPU has roughly the</span>
 <span class="sd">    same amount of VRAM.</span>
 
 <span class="sd">    Args:</span>
@@ -630,9 +630,9 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        datamodule: See :class:`.BaseDataModule`.</span>
-<span class="sd">        per_device_batch_size: The return value of\</span>
+<span class="sd">        per_device_batch_size: The return value of</span>
 <span class="sd">            :func:`find_good_per_device_batch_size`.</span>
-<span class="sd">        max_num_data_passes: Maximum number of data passes to iterate\</span>
+<span class="sd">        max_num_data_passes: Maximum number of data passes to iterate</span>
 <span class="sd">            through.</span>
 
 <span class="sd">    Returns:</span>

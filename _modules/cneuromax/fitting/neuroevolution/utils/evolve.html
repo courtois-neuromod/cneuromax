@@ -385,9 +385,9 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Mutate :paramref:`agents_batch`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        agents_batch: See\</span>
+<span class="sd">        agents_batch: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.agents_batch`.</span>
-<span class="sd">        exchange_and_mutate_info_batch: A sub-array of\</span>
+<span class="sd">        exchange_and_mutate_info_batch: A sub-array of</span>
 <span class="sd">            :paramref:`~.update_exchange_and_mutate_info.exchange_and_mutate_info`</span>
 <span class="sd">            maintained by this process.</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
@@ -415,16 +415,16 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate :paramref:`agents_batch`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        agents_batch: See\</span>
+<span class="sd">        agents_batch: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.agents_batch`.</span>
-<span class="sd">        space: The :class:`~.BaseSpace` instance used throughout the\</span>
+<span class="sd">        space: The :class:`~.BaseSpace` instance used throughout the</span>
 <span class="sd">            execution.</span>
 <span class="sd">        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The output of agent evaluation performed by the process calling\</span>
-<span class="sd">            this function on the agents it maintains\</span>
-<span class="sd">            (:paramref:`agents_batch`). See\</span>
+<span class="sd">        The output of agent evaluation performed by the process calling</span>
+<span class="sd">            this function on the agents it maintains</span>
+<span class="sd">            (:paramref:`agents_batch`). See</span>
 <span class="sd">            :meth:`~.BaseSpace.evaluate`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">fitnesses_and_num_env_steps_batch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
@@ -459,21 +459,21 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Gather :paramref:`agents_batch` on process subset &amp; evaluate.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        ith_gpu_comm: A :mod:`mpi4py` communicator used by existing CPU\</span>
+<span class="sd">        ith_gpu_comm: A :mod:`mpi4py` communicator used by existing CPU</span>
 <span class="sd">            processes to exchange agents for GPU work queueing.</span>
-<span class="sd">        agents_batch: See\</span>
+<span class="sd">        agents_batch: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.agents_batch`.</span>
 <span class="sd">        space: See :paramref:`~.evaluate_on_cpu.space`.</span>
 <span class="sd">        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.</span>
-<span class="sd">        transfer: Whether any of\</span>
-<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,\</span>
-<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`\</span>
-<span class="sd">            or\</span>
-<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`\</span>
+<span class="sd">        transfer: Whether any of</span>
+<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,</span>
+<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`</span>
+<span class="sd">            or</span>
+<span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`</span>
 <span class="sd">            is ``True``.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The output of agent evaluation by this process. See\</span>
+<span class="sd">        The output of agent evaluation by this process. See</span>
 <span class="sd">            :meth:`~.BaseSpace.evaluate`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>

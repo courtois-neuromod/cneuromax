@@ -373,13 +373,13 @@
 
 
 <div class="viewcode-block" id="GymAgentConfig">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgentConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgentConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">GymAgentConfig</span><span class="p">(</span><span class="n">BaseAgentConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`GymAgent` config values.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        env_name: See\</span>
+<span class="sd">        env_name: See</span>
 <span class="sd">            :paramref:`~.GymReinforcementSpaceConfig.env_name`.</span>
 <span class="sd">        hidden_size: Size of the RNN hidden state.</span>
 <span class="sd">        mutation_std: Standard deviation of the mutation noise.</span>
@@ -392,7 +392,7 @@
 
 
 <div class="viewcode-block" id="GymAgent">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgent">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgent">[docs]</a>
 <span class="k">class</span> <span class="nc">GymAgent</span><span class="p">(</span><span class="n">BaseAgent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``project`` :class:`BaseAgent`.</span>
 
@@ -437,7 +437,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">standardizer</span> <span class="o">=</span> <span class="n">RunningStandardization</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">input_size</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GymAgent.mutate">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgent.mutate">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgent.mutate">[docs]</a>
     <span class="k">def</span> <span class="nf">mutate</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;GymAgent&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Mutates the agent.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
@@ -447,7 +447,7 @@
 
 
 <div class="viewcode-block" id="GymAgent.reset">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgent.reset">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgent.reset">[docs]</a>
     <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;GymAgent&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the agent&#39;s memory state.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
@@ -480,7 +480,7 @@
         <span class="k">return</span> <span class="n">x</span>
 
 <div class="viewcode-block" id="GymAgent.env_to_net">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgent.env_to_net">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgent.env_to_net">[docs]</a>
     <span class="k">def</span> <span class="nf">env_to_net</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;GymAgent&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; obs_size&quot;</span><span class="p">],</span>
@@ -498,7 +498,7 @@
 
 
 <div class="viewcode-block" id="GymAgent.net_to_env">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.GymAgent.net_to_env">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.neuroevorl_control.agent.html#cneuromax.projects.neuroevorl_control.agent.GymAgent.net_to_env">[docs]</a>
     <span class="k">def</span> <span class="nf">net_to_env</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;GymAgent&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; act_size&quot;</span><span class="p">],</span>

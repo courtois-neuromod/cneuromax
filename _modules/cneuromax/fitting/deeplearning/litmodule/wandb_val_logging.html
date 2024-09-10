@@ -368,27 +368,27 @@
 <span class="k">class</span> <span class="nc">WandbValLoggingLightningModule</span><span class="p">(</span><span class="n">LightningModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;:class:`.LightningModule` that logs val data to :mod:`wandb`.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        logs_val: Whether to activate :mod:`wandb` validation\</span>
-<span class="sd">            data logging.</span>
-
 <span class="sd">    TODO: Save/load attributes to/from checkpoint.</span>
 
+<span class="sd">    Args:</span>
+<span class="sd">        logs_val: Whether to activate :mod:`wandb` validation</span>
+<span class="sd">            data logging.</span>
+
 <span class="sd">    Attributes:</span>
-<span class="sd">        logs_val (`bool`): See\</span>
+<span class="sd">        logs_val (`bool`): See</span>
 <span class="sd">            :paramref:`~WandbValLoggingMixin.logs_val`.</span>
-<span class="sd">        curr_val_epoch (`int`): The current validation epoch (can be\</span>
-<span class="sd">            different from training epoch if validation is called\</span>
+<span class="sd">        curr_val_epoch (`int`): The current validation epoch (can be</span>
+<span class="sd">            different from training epoch if validation is called</span>
 <span class="sd">            multiple times per training epoch).</span>
-<span class="sd">        val_wandb_data (`list[list[Any]]`): A list of dictionaries\</span>
-<span class="sd">            containing validation data relating to one specific example\</span>
-<span class="sd">            (ex: `input_data`, `logits`, ...) meant to be logged to\</span>
+<span class="sd">        val_wandb_data (`list[list[Any]]`): A list of dictionaries</span>
+<span class="sd">            containing validation data relating to one specific example</span>
+<span class="sd">            (ex: `input_data`, `logits`, ...) meant to be logged to</span>
 <span class="sd">            :mod:`wandb`.</span>
-<span class="sd">        wandb_columns (`list[str]`): A list of strings representing\</span>
+<span class="sd">        wandb_columns (`list[str]`): A list of strings representing</span>
 <span class="sd">            the keys of the dictionaries in :attr:`val_wandb_data`.</span>
-<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B\</span>
+<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B</span>
 <span class="sd">            containing validation data.</span>
-<span class="sd">        wandb_x_wrapper (`Callable`): A callable that wraps the input\</span>
+<span class="sd">        wandb_x_wrapper (`Callable`): A callable that wraps the input</span>
 <span class="sd">            data before logging it to W&amp;B.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

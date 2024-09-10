@@ -367,7 +367,8 @@
 <p>Holds <a class="reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule" title="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModule</span></code></a> config values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0.005</span></code>) – Percentage of the training dataset to use for            validation.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0.005</span></code>) – Percentage of the training dataset to use for
+validation.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -376,7 +377,7 @@
 <dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.projects.classify_mnist.datamodule.</span></span><span class="sig-name descname"><span class="pre">MNISTDataModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/projects/classify_mnist/datamodule.html#MNISTDataModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a></p>
-<p><code class="docutils literal notranslate"><span class="pre">project</span></code> <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.html#cneuromax.fitting.deeplearning.datamodule.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">project</span></code> <a class="reference internal" href="cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule" title="cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseDataModule</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig" title="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModuleConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig" title="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModuleConfig</span></code></a>.</p>
@@ -385,7 +386,8 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.train_val_split">
 <span class="sig-name descname"><span class="pre">train_val_split</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.train_val_split" title="Link to this definition">¶</a></dt>
-<dd><p>The train/validation            split (sums to <cite>1</cite>).</p>
+<dd><p>The train/validation
+split (sums to <cite>1</cite>).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><cite>tuple[float, float]</cite></p>
@@ -396,7 +398,8 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.transform" title="Link to this definition">¶</a></dt>
-<dd><p>The            <code class="xref py py-mod docutils literal notranslate"><span class="pre">torchvision</span></code> dataset transformations.</p>
+<dd><p>The
+<code class="xref py py-mod docutils literal notranslate"><span class="pre">torchvision</span></code> dataset transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Compose</span></code></p>

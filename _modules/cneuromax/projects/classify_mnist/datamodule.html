@@ -368,13 +368,13 @@
 
 
 <div class="viewcode-block" id="MNISTDataModuleConfig">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModuleConfig">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">MNISTDataModuleConfig</span><span class="p">(</span><span class="n">BaseDataModuleConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`MNISTDataModule` config values.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        val_percentage: Percentage of the training dataset to use for\</span>
+<span class="sd">        val_percentage: Percentage of the training dataset to use for</span>
 <span class="sd">            validation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -383,7 +383,7 @@
 
 
 <div class="viewcode-block" id="MNISTDataModule">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">MNISTDataModule</span><span class="p">(</span><span class="n">BaseDataModule</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;``project`` :class:`.BaseDataModule`.</span>
 
@@ -391,9 +391,9 @@
 <span class="sd">        config: See :class:`MNISTDataModuleConfig`.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        train_val_split (`tuple[float, float]`): The train/validation\</span>
+<span class="sd">        train_val_split (`tuple[float, float]`): The train/validation</span>
 <span class="sd">            split (sums to `1`).</span>
-<span class="sd">        transform (:class:`~transforms.Compose`): The\</span>
+<span class="sd">        transform (:class:`~transforms.Compose`): The</span>
 <span class="sd">            :mod:`torchvision` dataset transformations.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -415,14 +415,14 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="MNISTDataModule.prepare_data">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule.prepare_data">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.prepare_data">[docs]</a>
     <span class="k">def</span> <span class="nf">prepare_data</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Downloads the MNIST dataset.&quot;&quot;&quot;</span>
         <span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">data_dir</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="MNISTDataModule.setup">
-<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.MNISTDataModule.setup">[docs]</a>
+<a class="viewcode-back" href="../../../../_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup">[docs]</a>
     <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;MNISTDataModule&quot;</span><span class="p">,</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;fit&quot;</span><span class="p">,</span> <span class="s2">&quot;validate&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">)],</span>

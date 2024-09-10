@@ -374,29 +374,29 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution ``subtask`` config.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        agents_per_task: Number of agents per task (``num_tasks`` =\</span>
+<span class="sd">        agents_per_task: Number of agents per task (``num_tasks`` =</span>
 <span class="sd">            ``num_nodes`` x ``tasks_per_node``).</span>
-<span class="sd">        total_num_gens: Number of generations to run the experiment for\</span>
+<span class="sd">        total_num_gens: Number of generations to run the experiment for</span>
 <span class="sd">            (including the previous number of generations).</span>
-<span class="sd">        save_interval: Number of generations between each save point.\</span>
+<span class="sd">        save_interval: Number of generations between each save point.</span>
 <span class="sd">            `0` means no save point except for the last generation.</span>
-<span class="sd">        save_first_gen: Whether to save the state of the experiment\</span>
+<span class="sd">        save_first_gen: Whether to save the state of the experiment</span>
 <span class="sd">            after the first generation (usually for plotting purposes).</span>
-<span class="sd">        pop_merge: Whether to merge both generator and discriminator\</span>
-<span class="sd">            populations into a single population. This means that each\</span>
-<span class="sd">            agent will be evaluated on both its generative and\</span>
+<span class="sd">        pop_merge: Whether to merge both generator and discriminator</span>
+<span class="sd">            populations into a single population. This means that each</span>
+<span class="sd">            agent will be evaluated on both its generative and</span>
 <span class="sd">            discriminative abilities.</span>
-<span class="sd">        env_transfer: Whether an agent&#39;s environment state\</span>
-<span class="sd">            (position, velocity, ...) is transferred to its children\</span>
+<span class="sd">        env_transfer: Whether an agent&#39;s environment state</span>
+<span class="sd">            (position, velocity, ...) is transferred to its children</span>
 <span class="sd">            if it passes through the selection process.</span>
-<span class="sd">        fit_transfer: Whether an agent&#39;s fitness is transferred to\</span>
+<span class="sd">        fit_transfer: Whether an agent&#39;s fitness is transferred to</span>
 <span class="sd">            its children if it passes through the selection process.</span>
-<span class="sd">        mem_transfer: Whether an agent&#39;s memory (hidden state) is\</span>
-<span class="sd">            transferred to its children if it passes through the\</span>
+<span class="sd">        mem_transfer: Whether an agent&#39;s memory (hidden state) is</span>
+<span class="sd">            transferred to its children if it passes through the</span>
 <span class="sd">            selection process.</span>
-<span class="sd">        eval_num_steps: Number of environment steps to run each agent\</span>
-<span class="sd">            for during evaluation. ``0`` means that the agent will run\</span>
-<span class="sd">            until the environment terminates (``eval_num_steps = 0`` is\</span>
+<span class="sd">        eval_num_steps: Number of environment steps to run each agent</span>
+<span class="sd">            for during evaluation. ``0`` means that the agent will run</span>
+<span class="sd">            until the environment terminates (``eval_num_steps = 0`` is</span>
 <span class="sd">            not supported for ``env_transfer = True``).</span>
 <span class="sd">        logging: Whether to log the experiment to Weights &amp; Biases.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -422,8 +422,8 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        num_tests: Number of episodes to evaluate each agent on.</span>
-<span class="sd">        test_num_steps: Number of environment steps to run each agent\</span>
-<span class="sd">            for during testing. ``0`` means that the agent will run\</span>
+<span class="sd">        test_num_steps: Number of environment steps to run each agent</span>
+<span class="sd">            for during testing. ``0`` means that the agent will run</span>
 <span class="sd">            until the environment terminates.</span>
 <span class="sd">        logging: See :paramref:`.NeuroevolutionSubtaskConfig.logging`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>

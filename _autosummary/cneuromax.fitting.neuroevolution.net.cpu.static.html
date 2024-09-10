@@ -181,7 +181,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -351,7 +351,7 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
@@ -360,62 +360,6 @@
           <section id="module-cneuromax.fitting.neuroevolution.net.cpu.static">
 <span id="static"></span><h1>static<a class="headerlink" href="#module-cneuromax.fitting.neuroevolution.net.cpu.static" title="Link to this heading">¶</a></h1>
 <p>Static architecture CPU-based Neural nets for neuroevolution.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.net.cpu.static.</span></span><span class="sig-name descname"><span class="pre">CPUStaticRNNFC</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/net/cpu/static/rnnfc.html#CPUStaticRNNFC"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
-<p>CPU-running static architecture RNN w/ a final FC layer.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html#cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFCConfig" title="cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFCConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">CPUStaticRNNFCConfig</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig" title="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">CPUStaticRNNFCConfig</span></code></a>.</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.reset">
-<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/net/cpu/static/rnnfc.html#CPUStaticRNNFC.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.reset" title="Link to this definition">¶</a></dt>
-<dd><p>Resets the hidden state of the RNN.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.forward">
-<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/net/cpu/static/rnnfc.html#CPUStaticRNNFC.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.forward" title="Link to this definition">¶</a></dt>
-<dd><p>Forward pass.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.forward.params.x"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.forward.params.x"><strong>x</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Float32[Tensor,</span> <span class="pre">'input_size']</span></code></span>) – Input tensor.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Output tensor.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.neuroevolution.net.cpu.static.</span></span><span class="sig-name descname"><span class="pre">CPUStaticRNNFCConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hidden_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/neuroevolution/net/cpu/static/rnnfc.html#CPUStaticRNNFCConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Config values for <a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC" title="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC"><code class="xref py py-class docutils literal notranslate"><span class="pre">CPUStaticRNNFC</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.input_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.input_size"><strong>input_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of the input tensor.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.hidden_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.hidden_size"><strong>hidden_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of the RNN hidden state.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.output_size"></span><a class="paramname reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig.params.output_size"><strong>output_size</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></span>) – Size of the output tensor.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Submodules</p>
 <div class="table-wrapper autosummary longtable docutils container">
 <table class="autosummary longtable docutils align-default">
@@ -471,32 +415,8 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">static</a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC"><code class="docutils literal notranslate"><span class="pre">CPUStaticRNNFC</span></code></a><ul>
-<li><a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.reset"><code class="docutils literal notranslate"><span class="pre">CPUStaticRNNFC.reset()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFC.forward"><code class="docutils literal notranslate"><span class="pre">CPUStaticRNNFC.forward()</span></code></a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#cneuromax.fitting.neuroevolution.net.cpu.static.CPUStaticRNNFCConfig"><code class="docutils literal notranslate"><span class="pre">CPUStaticRNNFCConfig</span></code></a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>

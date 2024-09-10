@@ -392,22 +392,22 @@
 <span class="sd">    :paramref:`generation_results`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        generation_results: An array maintained solely by the\</span>
-<span class="sd">            primary process (secondary processes have this variable\</span>
-<span class="sd">            set to ``None``) containing several pieces of information\</span>
-<span class="sd">            about the results of a given generation. The 3rd\</span>
-<span class="sd">            dimension contains the following information at the\</span>
-<span class="sd">            following indices: 0) Agent fitness, 1) Number of\</span>
-<span class="sd">            environment steps taken by the agent during the\</span>
+<span class="sd">        generation_results: An array maintained solely by the</span>
+<span class="sd">            primary process (secondary processes have this variable</span>
+<span class="sd">            set to ``None``) containing several pieces of information</span>
+<span class="sd">            about the results of a given generation. The 3rd</span>
+<span class="sd">            dimension contains the following information at the</span>
+<span class="sd">            following indices: 0) Agent fitness, 1) Number of</span>
+<span class="sd">            environment steps taken by the agent during the</span>
 <span class="sd">            evaluation, 2) Size of the agent when serialized.</span>
-<span class="sd">        generation_results_batch: A sub-array of\</span>
-<span class="sd">            :paramref:`generation_results` maintained by the process\</span>
+<span class="sd">        generation_results_batch: A sub-array of</span>
+<span class="sd">            :paramref:`generation_results` maintained by the process</span>
 <span class="sd">            calling this function.</span>
-<span class="sd">        fitnesses_and_num_env_steps_batch: The output values of\</span>
-<span class="sd">            the evaluation performed in :func:`.evaluate_on_cpu`\</span>
-<span class="sd">            or :func:`.evaluate_on_gpu` on the agents maintained\</span>
+<span class="sd">        fitnesses_and_num_env_steps_batch: The output values of</span>
+<span class="sd">            the evaluation performed in :func:`.evaluate_on_cpu`</span>
+<span class="sd">            or :func:`.evaluate_on_gpu` on the agents maintained</span>
 <span class="sd">            by the process calling this function.</span>
-<span class="sd">        agents_batch: A 2D list of agents maintained by the process\</span>
+<span class="sd">        agents_batch: A 2D list of agents maintained by the process</span>
 <span class="sd">            calling this function.</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -443,15 +443,15 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
-<span class="sd">        total_num_gens: See\</span>
+<span class="sd">        total_num_gens: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.total_num_gens`.</span>
-<span class="sd">        save_interval: See\</span>
+<span class="sd">        save_interval: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.save_interval`.</span>
-<span class="sd">        save_first_gen: See\</span>
+<span class="sd">        save_first_gen: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.save_first_gen`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        The largest previous number of generations and\</span>
+<span class="sd">        The largest previous number of generations and</span>
 <span class="sd">            a list of generations at which to save the state.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">existing_save_points</span> <span class="o">=</span> <span class="n">find_existing_save_points</span><span class="p">(</span><span class="n">output_dir</span><span class="o">=</span><span class="n">output_dir</span><span class="p">)</span>
@@ -485,22 +485,21 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">Seeds_type</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>  <span class="c1"># start_time, seeds</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute the start time and seeds for the current generation.</span>
 
-<span class="sd">    Fetches the start time and generates the seeds for the current\</span>
-<span class="sd">    generation. If :paramref:`pop_merge` is ``True``, the seeds are\</span>
+<span class="sd">    Fetches the start time and generates the seeds for the current</span>
+<span class="sd">    generation. If :paramref:`pop_merge` is ``True``, the seeds are</span>
 <span class="sd">    shared between the populations.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        generation_results: See\</span>
+<span class="sd">        generation_results: See</span>
 <span class="sd">            :paramref:`~compute_generation_results.generation_results`.</span>
 <span class="sd">        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.</span>
 <span class="sd">        num_pops: See :meth:`~.BaseSpace.num_pops`.</span>
 <span class="sd">        pop_size: Total number of agent per population.</span>
-<span class="sd">        pop_merge: See\</span>
+<span class="sd">        pop_merge: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        * The start time for the current generation.</span>
-<span class="sd">        * See\</span>
+<span class="sd">        The start time for the current generation,</span>
 <span class="sd">            :paramref:`~.update_exchange_and_mutate_info.seeds`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">comm</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">get_mpi_variables</span><span class="p">()</span>
@@ -560,15 +559,15 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Processes the generation results.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        generation_results: See\</span>
+<span class="sd">        generation_results: See</span>
 <span class="sd">            :paramref:`~.compute_generation_results.generation_results`.</span>
-<span class="sd">        total_num_env_steps: The total number of environment\</span>
-<span class="sd">            steps taken by all agents during the entire experiment.\</span>
-<span class="sd">            This variable is maintained solely by the primary process\</span>
+<span class="sd">        total_num_env_steps: The total number of environment</span>
+<span class="sd">            steps taken by all agents during the entire experiment.</span>
+<span class="sd">            This variable is maintained solely by the primary process</span>
 <span class="sd">            (secondary processes set this to ``None``).</span>
 <span class="sd">        curr_gen: See :paramref:`~.BaseSpace.curr_gen`.</span>
 <span class="sd">        start_time: Generation start time.</span>
-<span class="sd">        pop_merge: See\</span>
+<span class="sd">        pop_merge: See</span>
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.</span>
 
 <span class="sd">    Returns:</span>
