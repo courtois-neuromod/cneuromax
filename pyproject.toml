@@ -56,7 +56,7 @@ dependencies = [
     "timm==1.0.9", # Image models
     "datasets==2.21.0", # Datasets published on Hugging Face
     "x-transformers==1.35.0", # Transformer utils
-    "mambapy==1.2.0", # Mamba model
+    "mamba-ssm==2.2.2", # Mamba model
     "denoising-diffusion-pytorch==2.0.17", # Diffusion models
     "vector-quantize-pytorch==1.17.3", # Vector quantization utils
     "accelerate==0.34.2", # PEFT crashing w/ 0.30.0
@@ -87,6 +87,9 @@ dependencies = [
     "pytest==8.3.3", # Testing framework
     "pytest-cov==5.0.0", # Test coverage
 ]
+
+[tool.uv]
+no-build-isolation-package = ["mamba-ssm"]
 
 [tool.uv.sources]
 torch = { index = "torch-cu121" }
