@@ -66,11 +66,13 @@ def get_project_module() -> ModuleType:
             name=f"cneuromax.projects.{project_name}",
         )
     except ModuleNotFoundError as error:
-        error_msg = (
-            "Invalid project name. Make sure that "
-            f"`cneuromax/projects/{project_name}/__init__.py` exists."
-        )
-        raise RuntimeError(error_msg) from error
+        if str(error).startswith("No module named 'cneuromax."):
+            error_msg = (
+                "Invalid project name. Make sure that "
+                f"`cneuromax/projects/{project_name}/__init__.py` exists."
+            )
+            raise RuntimeError(error_msg) from error
+        raise
     return project_module
 
 
