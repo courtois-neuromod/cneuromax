@@ -427,11 +427,13 @@
             <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;cneuromax.projects.</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
-        <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="s2">&quot;Invalid project name. Make sure that &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;`cneuromax/projects/</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">/__init__.py` exists.&quot;</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;No module named &#39;cneuromax.&quot;</span><span class="p">):</span>
+            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;Invalid project name. Make sure that &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;`cneuromax/projects/</span><span class="si">{</span><span class="n">project_name</span><span class="si">}</span><span class="s2">/__init__.py` exists.&quot;</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">error</span>
+        <span class="k">raise</span>
     <span class="k">return</span> <span class="n">project_module</span></div>
 
 
