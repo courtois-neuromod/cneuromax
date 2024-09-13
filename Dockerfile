@@ -40,5 +40,6 @@ ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
 RUN pip install uv \
     && uv pip install --preview --system --no-cache-dir -e /cneuromax \
-    && uv pip install --preview --system --no-cache-dir --no-build-isolation mamba-ssm[causal-conv1d]==2.2.2 \
+    # These packages require PyTorch in their setup.py file
+    && uv pip install --preview --system --no-cache-dir --no-build-isolation mamba-ssm==2.2.2 causal-conv1d==1.4.0 \
     && uv pip uninstall --preview --system cneuromax
