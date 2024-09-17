@@ -52,7 +52,7 @@ dependencies = [
     "torchaudio==2.4.1", # Tensor manipulation on audio data
     "torchvision==0.19.1", # Tensor manipulation on vision data
     "transformers==4.44.2", # Pre-trained models published on Hugging Face
-    "diffusers==0.30.2", # Diffusion models published on Hugging Face
+    "diffusers==0.30.3", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
     "datasets==3.0.0", # Datasets published on Hugging Face
     "x-transformers==1.35.1", # Transformer utils
