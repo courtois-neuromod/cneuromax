@@ -55,7 +55,7 @@ dependencies = [
     "diffusers==0.30.3", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
     "datasets==3.0.0", # Datasets published on Hugging Face
-    "x-transformers==1.35.2", # Transformer utils
+    "x-transformers==1.36.0", # Transformer utils
     "mambapy==1.2.0", # Mamba
     "denoising-diffusion-pytorch==2.0.17", # Diffusion models
     "vector-quantize-pytorch==1.17.4", # Vector quantization utils
@@ -79,7 +79,7 @@ dependencies = [
     "myst-parser==4.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==24.8.0", # Python Formatter
-    "ruff==0.6.5", # Python Linter
+    "ruff==0.6.7", # Python Linter
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.35.1", # YAML linter
     "pre-commit==3.8.0", # Git commit hooks
