@@ -130,7 +130,7 @@ cneuromax/
 │  ├─ testing/               <-- Contains code for more complex testing of models
 │  ├─ utils/                 <-- CNeuroMax utilities
 │  ├─ __init__.py            <-- Sets up Beartype
-│  ├─ __init__.py            <-- Entry-point
+│  ├─ __main__.py            <-- Entry-point
 │  ├─ config.py              <-- Base structured configs
 │  ├─ runner.py              <-- Base task runner
 │  └─ store.py               <-- Base configs storing
