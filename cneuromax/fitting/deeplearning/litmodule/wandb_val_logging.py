@@ -1,13 +1,10 @@
 """:class:`WandbValLoggingLightningModule`."""
 
-import logging
-from collections.abc import Callable  # noqa: TCH003
 from copy import copy
 from typing import Any
 
 import wandb
 from lightning.pytorch import LightningModule
-from wandb.sdk.data_types.base_types.wb_value import WBValue
 
 
 class WandbValLoggingLightningModule(LightningModule):
@@ -25,16 +22,14 @@ class WandbValLoggingLightningModule(LightningModule):
         curr_val_epoch (`int`): The current validation epoch (can be
             different from training epoch if validation is called
             multiple times per training epoch).
-        val_wandb_data (`list[list[Any]]`): A list of dictionaries
-            containing validation data relating to one specific example
-            (ex: `input_data`, `logits`, ...) meant to be logged to
-            :mod:`wandb`.
-        wandb_columns (`list[str]`): A list of strings representing
-            the keys of the dictionaries in :attr:`val_wandb_data`.
         wandb_table (:class:`~wandb.Table`): A table to upload to W&B
             containing validation data.
-        wandb_x_wrapper (`Callable`): A callable that wraps the input
-            data before logging it to W&B.
+        wandb_columns (`list[str]`): A list of strings representing
+            the keys of the dictionaries in :attr:`val_wandb_data`.
+        val_wandb_data (`list[list[Any]]`): A list of dictionaries
+            containing validation data relating to one specific example
+            (ex: `input_data`, `logits`, ...) meant to be logged in
+            :attr:`val_wandb_data`.
     """
 
     def __init__(
@@ -60,15 +55,6 @@ class WandbValLoggingLightningModule(LightningModule):
             self.wandb_table = wandb.Table(  # type: ignore[no-untyped-call]
                 columns=["data_idx", "val_epoch", *wandb_columns],
             )
-            if not (
-                getattr(self, "wandb_x_wrapper")  # noqa: B009
-                and isinstance(self.wandb_x_wrapper, type(WBValue))
-            ):
-                logging.warning(
-                    "`wandb_x_wrapper` attribute not set/invalid. "
-                    "Defaulting to not wrapping the input data.",
-                )
-                self.wandb_x_wrapper: Callable[..., Any] = lambda x: x
 
     def on_validation_start(self: "WandbValLoggingLightningModule") -> None:
         """Resets :attr:`val_wandb_data` if :attr:`logs_val`."""

@@ -1,6 +1,7 @@
 """:class:`BaseClassificationLitModule` & its config."""
 
 from abc import ABC
+from collections.abc import Callable  # noqa: TCH003
 from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
@@ -32,6 +33,9 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
 class BaseClassificationLitModule(BaseLitModule, ABC):
     """Base Classification :mod:`lightning` ``LitModule``.
 
+    If logging validation data to W&B, make sure to define the
+    :attr:`wandb_columns` attribute in the subclass.
+
     Args:
         config: See :class:`BaseClassificationLitModuleConfig`.
         nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
@@ -58,6 +62,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         )
         if self.config.log_val_wandb:
             self.wandb_columns = ["x", "y", "y_hat", "logits"]
+            self.wandb_input_data_wrapper: Callable[..., Any] = lambda x: x
 
     def step(
         self: "BaseClassificationLitModule",
@@ -97,9 +102,6 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     ) -> None:
         """Saves data computed during validation for later use.
 
-        Make sure to define the :attr:`wandb_x_wrapper` attribute in
-        the subclass to log in the correct format.
-
         Args:
             x: The input data.
             y: The target class.
@@ -115,7 +117,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         ):
             self.val_wandb_data.append(
                 {
-                    "x": self.wandb_x_wrapper(x_i),
+                    "x": self.wandb_input_data_wrapper(x_i),
                     "y": y_i,
                     "y_hat": y_hat_i,
                     "logits": logits_i.tolist(),
