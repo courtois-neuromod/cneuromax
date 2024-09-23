@@ -377,6 +377,8 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.classification.base.</span></span><span class="sig-name descname"><span class="pre">BaseClassificationLitModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base Classification <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> <code class="docutils literal notranslate"><span class="pre">LitModule</span></code>.</p>
+<p>If logging validation data to W&amp;B, make sure to define the
+<code class="xref py py-attr docutils literal notranslate"><span class="pre">wandb_columns</span></code> attribute in the subclass.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -432,8 +434,6 @@ containing validation data.</p>
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data">
 <span class="sig-name descname"><span class="pre">save_val_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_hat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logits</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/classification/base.html#BaseClassificationLitModule.save_val_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data" title="Link to this definition">¶</a></dt>
 <dd><p>Saves data computed during validation for later use.</p>
-<p>Make sure to define the <code class="xref py py-attr docutils literal notranslate"><span class="pre">wandb_x_wrapper</span></code> attribute in
-the subclass to log in the correct format.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
