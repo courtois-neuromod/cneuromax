@@ -235,7 +235,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -351,7 +350,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for cneuromax.fitting.deeplearning.utils.lightning</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:mod:`lightning` utilities.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;`Lightning &lt;https://lightning.ai/&gt;`_ utilities.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">copy</span>
@@ -427,7 +426,7 @@
     <span class="p">)</span>
     <span class="c1"># Instantiate the :class:`WandbLogger`.`</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logger_partial</span><span class="p">(</span><span class="n">offline</span><span class="o">=</span><span class="n">offline</span><span class="p">)</span>
-    <span class="c1"># Feed the :mod:`hydra` config to :mod:`wandb`.</span>
+    <span class="c1"># Feed the Hydra (https://hydra.cc) config to W&amp;B (https://wandb.ai).</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
         <span class="n">OmegaConf</span><span class="o">.</span><span class="n">to_container</span><span class="p">(</span>
             <span class="n">OmegaConf</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/.hydra/config.yaml&quot;</span><span class="p">),</span>
@@ -684,12 +683,13 @@
 <div class="viewcode-block" id="InitOptimParamsCheckpointConnector">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html#cneuromax.fitting.deeplearning.utils.lightning.InitOptimParamsCheckpointConnector">[docs]</a>
 <span class="k">class</span> <span class="nc">InitOptimParamsCheckpointConnector</span><span class="p">(</span><span class="n">_CheckpointConnector</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tweaked :mod:`lightning` checkpoint connector.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tweaked `Lightning &lt;https://lightning.ai/&gt;`_ ckpt connector.</span>
 
 <span class="sd">    Allows to make use of the instantiated optimizers&#39;</span>
 <span class="sd">    hyper-parameters rather than the checkpointed hyper-parameters.</span>
 <span class="sd">    For use when resuming training with different optimizer</span>
-<span class="sd">    hyper-parameters (e.g. with a PBT :mod:`hydra` Sweeper).</span>
+<span class="sd">    hyper-parameters (e.g. with a PBT `hydra &lt;https://hydra.cc&gt;`_</span>
+<span class="sd">    Sweeper).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="InitOptimParamsCheckpointConnector.restore_optimizers">

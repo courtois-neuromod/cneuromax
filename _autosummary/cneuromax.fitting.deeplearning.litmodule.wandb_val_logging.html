@@ -236,7 +236,6 @@
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -363,13 +362,15 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.</span></span><span class="sig-name descname"><span class="pre">WandbValLoggingLightningModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logs_val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code></p>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code> that logs val data to <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
+<dd><p>Bases: <a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.core.LightningModule.html#lightning.pytorch.core.LightningModule" title="(in PyTorch Lightning v2.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code></a></p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code> that logs val data to <code class="docutils literal notranslate"><span class="pre">wandb</span></code>.</p>
+<p>Ref: <a class="reference external" href="https://wandb.ai/">wandb</a></p>
 <p>TODO: Save/load attributes to/from checkpoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"><strong>logs_val</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>) – Whether to activate <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code> validation
-data logging.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val"><strong>logs_val</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – <p>Whether to activate <a class="reference external" href="https://wandb.ai/">wandb</a>
+validation data logging.</p>
+</p>
 </dd>
 </dl>
 <dl class="py attribute">
@@ -438,10 +439,11 @@ containing validation data relating to one specific example
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start">
 <span class="sig-name descname"><span class="pre">on_fit_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/wandb_val_logging.html#WandbValLoggingLightningModule.on_fit_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start" title="Link to this definition">¶</a></dt>
-<dd><p>Instantiates <code class="xref py py-mod docutils literal notranslate"><span class="pre">wandb</span></code> attributes if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
+<dd><p>Instantiates <code class="docutils literal notranslate"><span class="pre">wandb</span></code> attributes if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
+<p>Ref: <a class="reference external" href="https://wandb.ai/">wandb</a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -452,7 +454,7 @@ containing validation data relating to one specific example
 <dd><p>Resets <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_wandb_data</span></code></a> if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -463,7 +465,7 @@ containing validation data relating to one specific example
 <dd><p>Uploads <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">val_wandb_data</span></code></a> if <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val"><code class="xref py py-attr docutils literal notranslate"><span class="pre">logs_val</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>

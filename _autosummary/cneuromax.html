@@ -236,7 +236,6 @@
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -370,16 +369,17 @@
 <h3>1. Quck definitions<a class="headerlink" href="#quck-definitions" title="Link to this heading">¶</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">subtask</span></code>: Sub-work unit of a <code class="docutils literal notranslate"><span class="pre">task</span></code> (ex: a model training run
 with a specific set of hyper-parameters).</p>
-<p><code class="docutils literal notranslate"><span class="pre">task</span></code>: Some work unit specified by a <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> config
-<code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file or a <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra-zen</span></code> Python config that specifies
-its execution (ex: the training of the same type of model with various
-hyper-parameters).</p>
+<p><code class="docutils literal notranslate"><span class="pre">task</span></code>: Some work unit specified by a <a class="reference external" href="https://hydra.cc">hydra</a>
+<code class="docutils literal notranslate"><span class="pre">.yaml</span></code> or a <a class="reference external" href="https://mit-ll-responsible-ai.github.io/hydra-zen/index.html" title="(in hydra-zen)"><span class="xref std std-doc">hydra-zen</span></a> Python config that
+specifies its execution (ex: the training of the same type of model
+with various hyper-parameters).</p>
 <p><code class="docutils literal notranslate"><span class="pre">project</span></code>: A collection of <code class="docutils literal notranslate"><span class="pre">tasks</span></code> + cross-<code class="docutils literal notranslate"><span class="pre">task</span></code>
-functionality (ex: a custom <code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> <code class="docutils literal notranslate"><span class="pre">datamodule</span></code>).</p>
+functionality (ex: a custom
+<a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.core.LightningDataModule.html#lightning.pytorch.core.LightningDataModule" title="(in PyTorch Lightning v2.4.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningDataModule</span></code></a>)</p>
 <p><code class="docutils literal notranslate"><span class="pre">service</span></code>: Contains cross-<code class="docutils literal notranslate"><span class="pre">project</span></code> functionality (ex: base
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">lightning</span></code> sub-classes).</p>
+<a class="reference external" href="https://lightning.ai/">Lightning</a> sub-classes).</p>
 <p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: Contains cross-<code class="docutils literal notranslate"><span class="pre">service</span></code> functionality (ex:
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> base configs).</p>
+<a class="reference external" href="https://hydra.cc">hydra</a> base configs).</p>
 </section>
 <section id="interface">
 <h3>2. Interface<a class="headerlink" href="#interface" title="Link to this heading">¶</a></h3>
@@ -460,11 +460,11 @@ the above class in the <code class="docutils literal notranslate"><span class="p
 <h3>5. Task<a class="headerlink" href="#task" title="Link to this heading">¶</a></h3>
 <section id="a-task-overview">
 <h4>a. Task overview<a class="headerlink" href="#a-task-overview" title="Link to this heading">¶</a></h4>
-<p>A <code class="docutils literal notranslate"><span class="pre">task</span></code> is a work unit specified by a <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> configuration
-<code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file located in
+<p>A <code class="docutils literal notranslate"><span class="pre">task</span></code> is a work unit specified by a <a class="reference external" href="https://hydra.cc">hydra</a>
+configuration <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file located in
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml</span></code> or a
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra-zen</span></code> Python config implemented in your overwritten
-<a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner.store_configs" title="cneuromax.runner.BaseTaskRunner.store_configs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseTaskRunner.store_configs()</span></code></a>.</p>
+<a class="reference external" href="https://mit-ll-responsible-ai.github.io/hydra-zen/index.html" title="(in hydra-zen)"><span class="xref std std-doc">hydra-zen</span></a> Python config implemented in your
+overwritten <a class="reference internal" href="cneuromax.runner.html#cneuromax.runner.BaseTaskRunner.store_configs" title="cneuromax.runner.BaseTaskRunner.store_configs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BaseTaskRunner.store_configs()</span></code></a>.</p>
 </section>
 <section id="b-example-tasks">
 <h4>b. Example tasks<a class="headerlink" href="#b-example-tasks" title="Link to this heading">¶</a></h4>
@@ -478,8 +478,8 @@ the above class in the <code class="docutils literal notranslate"><span class="p
 <code class="docutils literal notranslate"><span class="pre">cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml</span></code> and include
 <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">&#64;package</span> <span class="pre">_global_</span></code> at the top of the file (as shown
 in the first above example). Otherwise, you can create a
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra-zen</span></code> Python config that specifies its execution (as shown
-in the second above example).</p>
+<a class="reference external" href="https://mit-ll-responsible-ai.github.io/hydra-zen/index.html" title="(in hydra-zen)"><span class="xref std std-doc">hydra-zen</span></a> Python config that specifies its
+execution (as shown in the second above example).</p>
 </section>
 </section>
 </section>
@@ -516,7 +516,7 @@ in the second above example).</p>
 <td><p>Model serving.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="cneuromax.store.html#module-cneuromax.store" title="cneuromax.store"><code class="xref py py-obj docutils literal notranslate"><span class="pre">store</span></code></a></p></td>
-<td><p><a class="reference internal" href="#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a>-wide <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> config storing.</p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="cneuromax.testing.html#module-cneuromax.testing" title="cneuromax.testing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">testing</span></code></a></p></td>
 <td><p>Model testing/analytics.</p></td>

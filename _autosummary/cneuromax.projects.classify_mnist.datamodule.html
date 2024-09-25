@@ -236,7 +236,6 @@
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -367,7 +366,7 @@
 <p>Holds <a class="reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule" title="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">MNISTDataModule</span></code></a> config values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0.005</span></code>) – Percentage of the training dataset to use for
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage"><strong>val_percentage</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">0.005</span></code>) – Percentage of the training dataset to use for
 validation.</p>
 </dd>
 </dl>
@@ -399,7 +398,7 @@ split (sums to <cite>1</cite>).</p>
 <dt class="sig sig-object py" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.transform">
 <span class="sig-name descname"><span class="pre">transform</span></span><a class="headerlink" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.transform" title="Link to this definition">¶</a></dt>
 <dd><p>The
-<code class="xref py py-mod docutils literal notranslate"><span class="pre">torchvision</span></code> dataset transformations.</p>
+<a class="reference external" href="https://pytorch.org/vision/stable/index.html#module-torchvision" title="(in Torchvision v0.19)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torchvision</span></code></a> dataset transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Compose</span></code></p>
@@ -413,7 +412,7 @@ split (sums to <cite>1</cite>).</p>
 <dd><p>Downloads the MNIST dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -424,10 +423,10 @@ split (sums to <cite>1</cite>).</p>
 <dd><p>Creates the train/val/test datasets.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup.params.stage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Current stage type.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup.params.stage"></span><a class="paramname reference internal" href="#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Current stage type.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>

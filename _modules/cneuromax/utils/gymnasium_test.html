@@ -235,7 +235,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../_autosummary/cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -351,7 +350,7 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for cneuromax.utils.gymnasium_test</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;:mod:`gymnasium` tests.&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;`gymnasium &lt;https://gymnasium.farama.org/&gt;`_ tests.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">torchrl.envs.libs.gym</span> <span class="kn">import</span> <span class="n">GymEnv</span>
 
@@ -359,11 +358,12 @@
 <div class="viewcode-block" id="test_init_env">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.gymnasium_test.html#cneuromax.utils.gymnasium_test.test_init_env">[docs]</a>
 <span class="k">def</span> <span class="nf">test_init_env</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test :class:`GymEnv` initialization.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test initialization of a ``gymnasium`` environment.</span>
 
-<span class="sd">    Current latest version of :mod:`opencv-python` raises an error when</span>
-<span class="sd">    instantiating a :class:`GymEnv`. Remove this test when the issue is</span>
-<span class="sd">    resolved.</span>
+<span class="sd">    Current latest version of</span>
+<span class="sd">    `opencv-python &lt;https://github.com/opencv/opencv-python&gt;`_ raises an</span>
+<span class="sd">    error when instantiating a ``gymnasium`` environment.</span>
+<span class="sd">    Remove this test when the issue is resolved.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">GymEnv</span><span class="p">(</span><span class="n">env_name</span><span class="o">=</span><span class="s2">&quot;CartPole-v0&quot;</span><span class="p">)</span></div>
 

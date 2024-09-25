@@ -1,8 +1,0 @@
-type
-====
-
-.. automodule:: cneuromax.fitting.deeplearning.utils.type
-   :members:
-
-
-

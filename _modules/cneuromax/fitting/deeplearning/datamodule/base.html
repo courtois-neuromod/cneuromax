@@ -235,7 +235,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -372,7 +371,8 @@
 <span class="k">class</span> <span class="nc">Datasets</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds phase-specific :class:`~torch.utils.data.Dataset` objects.</span>
 
-<span class="sd">    Using the word ``phase`` to not overload :mod:`lightning` ``stage``</span>
+<span class="sd">    Using the word ``phase`` to not overload</span>
+<span class="sd">    `Lightning &lt;https://lightning.ai/&gt;`_ ``stage``</span>
 <span class="sd">    terminology used for ``fit``, ``validate`` and ``test``.</span>
 
 <span class="sd">    Args:</span>
@@ -424,7 +424,7 @@
 <div class="viewcode-block" id="BaseDataModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :mod:`lightning` ``DataModule``.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`~.lightning.pytorch.core.LightningDataModule`.</span>
 
 <span class="sd">    With ``&lt;phase&gt;`` being any of ``train``, ``val``, ``test`` or</span>
 <span class="sd">    ``predict``, subclasses need to properly define the</span>

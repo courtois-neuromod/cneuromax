@@ -236,7 +236,6 @@
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.utils.type.html">type</a></li>
 </ul>
 </li>
 </ul>
@@ -363,7 +362,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.runner.BaseTaskRunner">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.runner.</span></span><span class="sig-name descname"><span class="pre">BaseTaskRunner</span></span><a class="reference internal" href="../_modules/cneuromax/runner.html#BaseTaskRunner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.runner.BaseTaskRunner" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
 <p><code class="docutils literal notranslate"><span class="pre">task</span></code> runner.</p>
 <p>Stores configs and runs the <code class="docutils literal notranslate"><span class="pre">task</span></code>.</p>
 <dl class="py attribute">
@@ -389,7 +388,7 @@ used during the <code class="docutils literal notranslate"><span class="pre">tas
 method.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -402,12 +401,12 @@ method.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.runner.BaseTaskRunner.store_configs.params.cls"></span><a class="paramname reference internal" href="#cneuromax.runner.BaseTaskRunner.store_configs.params.cls"><strong>cls</strong></a> – See <a class="reference internal" href="#cneuromax.runner.BaseTaskRunner.store_configs_and_run_task.params.cls" title="cneuromax.runner.BaseTaskRunner.store_configs_and_run_task"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">cls</span></code></a>.</p></li>
-<li><p><span class="target" id="cneuromax.runner.BaseTaskRunner.store_configs.params.store"></span><a class="paramname reference internal" href="#cneuromax.runner.BaseTaskRunner.store_configs.params.store"><strong>store</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZenStore</span></code></span>) – A <code class="xref py py-class docutils literal notranslate"><span class="pre">hydra_zen.ZenStore</span></code> instance that manages
-the <code class="xref py py-mod docutils literal notranslate"><span class="pre">hydra</span></code> configuration store.</p></li>
+<li><p><span class="target" id="cneuromax.runner.BaseTaskRunner.store_configs.params.store"></span><a class="paramname reference internal" href="#cneuromax.runner.BaseTaskRunner.store_configs.params.store"><strong>store</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://mit-ll-responsible-ai.github.io/hydra-zen/generated/hydra_zen.ZenStore.html#hydra_zen.ZenStore" title="(in hydra-zen)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZenStore</span></code></a></span>) – A <a class="reference external" href="https://mit-ll-responsible-ai.github.io/hydra-zen/generated/hydra_zen.ZenStore.html#hydra_zen.ZenStore" title="(in hydra-zen)"><code class="xref py py-class docutils literal notranslate"><span class="pre">hydra_zen.ZenStore</span></code></a> instance that manages
+the <a class="reference external" href="https://hydra.cc">hydra</a> configuration store.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -419,7 +418,7 @@ the <code class="xref py py-mod docutils literal notranslate"><span class="pre">
 <p>This method is meant to hold the <code class="docutils literal notranslate"><span class="pre">subtask</span></code> execution logic.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
