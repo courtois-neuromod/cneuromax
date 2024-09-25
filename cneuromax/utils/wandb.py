@@ -1,4 +1,4 @@
-""":mod:`wandb` utilities."""
+"""`wandb <https://wandb.ai/>`_ utilities."""
 
 import os
 from pathlib import Path

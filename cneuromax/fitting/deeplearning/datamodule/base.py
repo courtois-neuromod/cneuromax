@@ -17,7 +17,8 @@ from cneuromax.utils.beartype import ge, not_empty, one_of
 class Datasets:
     """Holds phase-specific :class:`~torch.utils.data.Dataset` objects.
 
-    Using the word ``phase`` to not overload :mod:`lightning` ``stage``
+    Using the word ``phase`` to not overload
+    `Lightning <https://lightning.ai/>`_ ``stage``
     terminology used for ``fit``, ``validate`` and ``test``.
 
     Args:
@@ -63,7 +64,7 @@ class BaseDataModuleConfig:
 
 
 class BaseDataModule(LightningDataModule, ABC):
-    """Base :mod:`lightning` ``DataModule``.
+    """Base :class:`~.lightning.pytorch.core.LightningDataModule`.
 
     With ``<phase>`` being any of ``train``, ``val``, ``test`` or
     ``predict``, subclasses need to properly define the

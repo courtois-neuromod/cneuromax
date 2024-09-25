@@ -71,4 +71,4 @@ class BaseHydraConfig(
         ),
     ),
 ):
-    """Base :mod:`hydra.conf.HydraConf` config."""
+    """Base `hydra <https://hydra.cc>`_ config."""

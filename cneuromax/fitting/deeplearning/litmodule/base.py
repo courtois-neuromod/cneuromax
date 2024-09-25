@@ -14,8 +14,8 @@ from lightning.pytorch.utilities.types import (
 from torch import Tensor, nn
 from torch.optim import Optimizer  # type: ignore[attr-defined]
 from torch.optim.lr_scheduler import LRScheduler
+from transformers.tokenization_utils_base import BatchEncoding
 
-from cneuromax.fitting.deeplearning.utils.type import Batched_data_type
 from cneuromax.utils.beartype import one_of
 
 from .wandb_val_logging import WandbValLoggingLightningModule
@@ -26,19 +26,19 @@ class BaseLitModuleConfig:
     """Holds :class:`BaseLitModule` config values.
 
     Args:
-        log_val_wandb: Whether to log validation data to :mod:`wandb`.
+        log_val_wandb: Whether to log validation data to
+            `W&B <https://wandb.ai/>`_.
     """
 
     log_val_wandb: bool = False
 
 
 class BaseLitModule(WandbValLoggingLightningModule, ABC):
-    """Base :mod:`lightning` ``LitModule``.
+    """Base :class:`~.lightning.pytorch.core.LightningModule`.
 
     Subclasses need to implement the :meth:`step` method that inputs
-    both ``data`` (`:class:`.Batched_data_type``) and  ``stage``
-    (``str``) arguments while returning the loss value(s) in the form of
-    a :class:`torch.Tensor`.
+    both ``data`` and  ``stage`` arguments while returning the loss
+    value(s) in the form of a :class:`torch.Tensor`.
 
     Example definition:
 
@@ -58,7 +58,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     Note:
         ``data`` and loss value(s) type hints in this class are not \
         rendered properly in the documentation due to an \
-        incompatibility between :mod:`sphinx` and :mod:`jaxtyping`. \
+        incompatibility between `sphinx <https://www.sphinx-doc.org/>`_
+        and `jaxtyping <https://docs.kidger.site/jaxtyping/>`_. \
         Refer to the source code available next to the method \
         signatures to find the correct types.
 
@@ -115,7 +116,13 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def stage_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: (
+            Num[Tensor, " batch_size ..."]
+            | tuple[Num[Tensor, " batch_size ..."], ...]
+            | list[Num[Tensor, " batch_size ..."]]
+            | dict[str, Num[Tensor, " batch_size ..."]]
+            | BatchEncoding
+        ),
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " ..."]:
         """Generic stage wrapper around the :meth:`step` method.
@@ -140,7 +147,13 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def training_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: (
+            Num[Tensor, " batch_size ..."]
+            | tuple[Num[Tensor, " batch_size ..."], ...]
+            | list[Num[Tensor, " batch_size ..."]]
+            | dict[str, Num[Tensor, " batch_size ..."]]
+            | BatchEncoding
+        ),
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
@@ -155,7 +168,13 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def validation_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: (
+            Num[Tensor, " batch_size ..."]
+            | tuple[Num[Tensor, " batch_size ..."], ...]
+            | list[Num[Tensor, " batch_size ..."]]
+            | dict[str, Num[Tensor, " batch_size ..."]]
+            | BatchEncoding
+        ),
         # :paramref:`*args` & :paramref:`**kwargs` type annotations
         # cannot be more specific because of
         # :meth:`LightningModule.validation_step`\'s signature.
@@ -177,7 +196,13 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def test_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: (
+            Num[Tensor, " batch_size ..."]
+            | tuple[Num[Tensor, " batch_size ..."], ...]
+            | list[Num[Tensor, " batch_size ..."]]
+            | dict[str, Num[Tensor, " batch_size ..."]]
+            | BatchEncoding
+        ),
     ) -> Num[Tensor, " ..."]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 

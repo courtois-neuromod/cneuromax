@@ -60,7 +60,7 @@ class BaseTaskRunner(ABC):
         Args:
             cls: See :paramref:`~store_configs_and_run_task.cls`.
             store: A :class:`hydra_zen.ZenStore` instance that manages
-                the :mod:`hydra` configuration store.
+                the `hydra <https://hydra.cc>`_ configuration store.
         """
 
     @staticmethod

@@ -28,8 +28,9 @@ class BaseSpaceConfig:
 class BaseSpace(ABC):
     """Space Base class.
 
-    A ``Space`` is a :mod:`torchrl` environment wrapper with which
-    agents produce behaviour and receive fitness scores.
+    A ``Space`` is a `torchrl <https://pytorch.org/rl/>`_ environment
+    wrapper with which agents produce behaviour and receive fitness
+    scores.
 
     Args:
         config: See :class:`~.BaseSpaceConfig`.

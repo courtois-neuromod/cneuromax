@@ -16,9 +16,9 @@ from cneuromax.fitting.deeplearning.datamodule import (
 )
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
 from cneuromax.fitting.deeplearning.litmodule.store import (
+    store_basic_nnmodule_config,
     store_basic_optimizer_configs,
     store_basic_scheduler_configs,
-    store_mlp_config,
 )
 from cneuromax.fitting.deeplearning.store import (
     store_basic_trainer_config,
@@ -49,7 +49,7 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         super().store_configs(store)
         store_basic_optimizer_configs(store)
         store_basic_scheduler_configs(store)
-        store_mlp_config(store)
+        store_basic_nnmodule_config(store)
         store_basic_trainer_config(store)
         store_wandb_logger_configs(
             store,

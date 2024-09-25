@@ -1,4 +1,4 @@
-r""":mod:`cneuromax`\-wide :mod:`hydra` config storing."""
+r""":mod:`cneuromax` `hydra <https://hydra.cc>`_ config storing."""
 
 from collections.abc import Callable
 from typing import Any
@@ -13,13 +13,13 @@ def store_wandb_logger_configs(
     store: ZenStore,
     clb: Callable[..., Any],
 ) -> None:
-    """Stores :mod:`hydra` ``logger`` group configs.
+    """Stores `hydra <https://hydra.cc>`_ ``logger`` group configs.
 
     Config names: ``wandb``, ``wandb_simexp``.
 
     Args:
         store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
-        clb: :mod:`wandb` initialization callable.
+        clb: `W&B <https://wandb.ai/>`_ initialization callable.
     """
     dir_key = "save_dir" if clb == WandbLogger else "dir"
     base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]

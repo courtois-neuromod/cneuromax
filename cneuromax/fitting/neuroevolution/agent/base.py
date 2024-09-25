@@ -73,8 +73,9 @@ class BaseAgent(ABC):
             during the current evaluation.
         curr_eval_num_steps (``int``): The number of steps taken by the
             agent during the current evaluation.
-        saved_env (``torchrl.envs.EnvBase``): The :mod:`torchrl`
-            environment instance to resume from (only set if
+        saved_env (``torchrl.envs.EnvBase``): The
+            `torchrl <https://pytorch.org/rl/>`_ environment instance to
+            resume from (only set if
             :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
         saved_env_out (``tensordict.Tensordict``): The latest output
             from the environment to resume from (only set if

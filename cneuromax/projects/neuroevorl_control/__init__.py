@@ -22,7 +22,7 @@ class TaskRunner(NeuroevolutionTaskRunner):
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
-        """Stores :mod:`hydra` ``project`` configs.
+        """Stores `hydra <https://hydra.cc>`_ ``project`` configs.
 
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.

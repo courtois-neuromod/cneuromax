@@ -8,13 +8,15 @@ from lightning.pytorch import LightningModule
 
 
 class WandbValLoggingLightningModule(LightningModule):
-    """:class:`.LightningModule` that logs val data to :mod:`wandb`.
+    """:class:`.LightningModule` that logs val data to ``wandb``.
+
+    Ref: `wandb <https://wandb.ai/>`_
 
     TODO: Save/load attributes to/from checkpoint.
 
     Args:
-        logs_val: Whether to activate :mod:`wandb` validation
-            data logging.
+        logs_val: Whether to activate `wandb <https://wandb.ai/>`_
+            validation data logging.
 
     Attributes:
         logs_val (`bool`): See
@@ -41,7 +43,10 @@ class WandbValLoggingLightningModule(LightningModule):
         self.logs_val = logs_val
 
     def on_fit_start(self: "WandbValLoggingLightningModule") -> None:
-        """Instantiates :mod:`wandb` attributes if :attr:`logs_val`."""
+        """Instantiates ``wandb`` attributes if :attr:`logs_val`.
+
+        Ref: `wandb <https://wandb.ai/>`_
+        """
         if self.logs_val:
             self.curr_val_epoch = 0
             self.val_wandb_data: list[dict[str, Any]] = []

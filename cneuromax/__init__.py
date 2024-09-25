@@ -14,19 +14,20 @@ Terminology
 ``subtask``: Sub-work unit of a ``task`` (ex: a model training run
 with a specific set of hyper-parameters).
 
-``task``: Some work unit specified by a :mod:`hydra` config
-``.yaml`` file or a :mod:`hydra-zen` Python config that specifies
-its execution (ex: the training of the same type of model with various
-hyper-parameters).
+``task``: Some work unit specified by a `hydra <https://hydra.cc>`_
+``.yaml`` or a :doc:`hydra-zen <hydra-zen:index>` Python config that
+specifies its execution (ex: the training of the same type of model
+with various hyper-parameters).
 
 ``project``: A collection of ``tasks`` + cross-``task``
-functionality (ex: a custom :mod:`lightning` ``datamodule``).
+functionality (ex: a custom
+:class:`~.lightning.pytorch.core.LightningDataModule`)
 
 ``service``: Contains cross-``project`` functionality (ex: base
-:mod:`lightning` sub-classes).
+`Lightning <https://lightning.ai/>`_ sub-classes).
 
 ``interface``: Contains cross-``service`` functionality (ex:
-:mod:`hydra` base configs).
+`hydra <https://hydra.cc>`_ base configs).
 
 2. Interface
 ~~~~~~~~~~~~
@@ -132,11 +133,11 @@ the above class in the ``__init__.py`` file of your ``project``.
 a. Task overview
 ----------------
 
-A ``task`` is a work unit specified by a :mod:`hydra` configuration
-``.yaml`` file located in
+A ``task`` is a work unit specified by a `hydra <https://hydra.cc>`_
+configuration ``.yaml`` file located in
 ``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` or a
-:mod:`hydra-zen` Python config implemented in your overwritten
-:meth:`.BaseTaskRunner.store_configs`.
+:doc:`hydra-zen <hydra-zen:index>` Python config implemented in your
+overwritten :meth:`.BaseTaskRunner.store_configs`.
 
 b. Example tasks
 ----------------
@@ -155,8 +156,8 @@ Create ``TASK_NAME.yaml`` at path
 ``cneuromax/projects/PROJECT_NAME/task/TASK_NAME.yaml`` and include
 ``# @package _global_`` at the top of the file (as shown
 in the first above example). Otherwise, you can create a
-:mod:`hydra-zen` Python config that specifies its execution (as shown
-in the second above example).
+:doc:`hydra-zen <hydra-zen:index>` Python config that specifies its
+execution (as shown in the second above example).
 
 __main__.py
 ===========

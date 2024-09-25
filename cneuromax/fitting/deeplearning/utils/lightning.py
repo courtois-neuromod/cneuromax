@@ -1,4 +1,4 @@
-""":mod:`lightning` utilities."""
+"""`Lightning <https://lightning.ai/>`_ utilities."""
 
 import contextlib
 import copy
@@ -72,7 +72,7 @@ def instantiate_trainer(
     )
     # Instantiate the :class:`WandbLogger`.`
     logger = logger_partial(offline=offline)
-    # Feed the :mod:`hydra` config to :mod:`wandb`.
+    # Feed the Hydra (https://hydra.cc) config to W&B (https://wandb.ai).
     logger.experiment.config.update(
         OmegaConf.to_container(
             OmegaConf.load(f"{output_dir}/.hydra/config.yaml"),
@@ -317,12 +317,13 @@ def find_good_per_device_num_workers(
 
 
 class InitOptimParamsCheckpointConnector(_CheckpointConnector):
-    """Tweaked :mod:`lightning` checkpoint connector.
+    """Tweaked `Lightning <https://lightning.ai/>`_ ckpt connector.
 
     Allows to make use of the instantiated optimizers'
     hyper-parameters rather than the checkpointed hyper-parameters.
     For use when resuming training with different optimizer
-    hyper-parameters (e.g. with a PBT :mod:`hydra` Sweeper).
+    hyper-parameters (e.g. with a PBT `hydra <https://hydra.cc>`_
+    Sweeper).
     """
 
     def restore_optimizers(self: "InitOptimParamsCheckpointConnector") -> None:

@@ -22,7 +22,8 @@ class BaseReinforcementSpace(BaseSpace, ABC):
     """Reinforcement Base Space class.
 
     Args:
-        env: The :mod:`torchrl` environment to run the evaluation on.
+        env: The `torchrl <https://pytorch.org/rl/>`_ environment to run
+            the evaluation on.
         config: See :paramref:`~.BaseSpace.config`.
     """
 

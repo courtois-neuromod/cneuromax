@@ -32,6 +32,17 @@ autosummary_generate = True
 html_static_path = ["_static"]
 html_theme = "furo"
 html_title = "CNeuroMax"
+intersphinx_mapping = {
+    "gymnasium": ("https://gymnasium.farama.org/", None),
+    "hydra-zen": ("https://mit-ll-responsible-ai.github.io/hydra-zen/", None),
+    "jaxtyping": ("https://docs.kidger.site/jaxtyping/", None),
+    "lightning": ("https://lightning.ai/docs/pytorch/stable/", None),
+    "mpi4py": ("https://mpi4py.readthedocs.io/en/stable/", None),
+    "python": ("https://docs.python.org/3", None),
+    "torch": ("https://pytorch.org/docs/stable/", None),
+    "torchrl": ("https://pytorch.org/rl/stable/", None),
+    "torchvision": ("https://pytorch.org/vision/stable/", None),
+}
 paramlinks_hyperlink_param = "name"
 templates_path = ["_templates"]
 typehints_defaults = "comma"

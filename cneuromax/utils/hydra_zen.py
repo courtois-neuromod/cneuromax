@@ -1,4 +1,4 @@
-""":mod:`hydra-zen` utilities."""
+""":doc:`hydra-zen <hydra-zen:index>` utilities."""
 
 from dataclasses import is_dataclass
 from typing import Any
@@ -11,7 +11,7 @@ builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=False,
     hydra_convert="partial",
 )
-""":mod:`hydra-zen` custom build function.
+""":doc:`hydra-zen <hydra-zen:index>` custom build function.
 
 Args:
     populate_full_signature: Set to ``False``.
@@ -23,7 +23,7 @@ p_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=False,
     hydra_convert="partial",
 )
-""":mod:`hydra-zen` custom build function.
+""":doc:`hydra-zen <hydra-zen:index>` custom build function.
 
 Args:
     zen_partial: Set to ``True``.
@@ -35,7 +35,7 @@ fs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=True,
     hydra_convert="partial",
 )
-""":mod:`hydra-zen` custom build function.
+""":doc:`hydra-zen <hydra-zen:index>` custom build function.
 
 Args:
     populate_full_signature: Set to ``True``.
@@ -47,7 +47,7 @@ pfs_builds = make_custom_builds_fn(  # type: ignore[var-annotated]
     populate_full_signature=True,
     hydra_convert="partial",
 )
-""":mod:`hydra-zen` custom build function.
+""":doc:`hydra-zen <hydra-zen:index>` custom build function.
 
 Args:
     zen_partial: Set to ``True``.
@@ -57,7 +57,7 @@ Args:
 
 
 def destructure(x: Any) -> Any:  # noqa: ANN401
-    """Disables :mod:`hydra` config type checking.
+    """Disables `hydra <https://hydra.cc>`_ config type checking.
 
     See `discussion <https://github.com/mit-ll-responsible-ai/\
         hydra-zen/discussions/621#discussioncomment-7938326>`_.

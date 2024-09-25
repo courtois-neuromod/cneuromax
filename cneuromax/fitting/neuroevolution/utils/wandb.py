@@ -1,4 +1,4 @@
-""":mod:`wandb` utilities for Neuroevolution fitting."""
+"""`W&B <https://wandb.ai/>`_ utilities for Neuroevolution fitting."""
 
 from collections.abc import Callable
 from typing import Any
@@ -11,7 +11,7 @@ from cneuromax.utils.mpi4py import get_mpi_variables
 
 
 def setup_wandb(logger: Callable[..., Any], output_dir: str) -> None:
-    """Sets up :mod:`wandb` logging for all MPI processes.
+    """Sets up `W&B <https://wandb.ai/>`_ logging for all MPI processes.
 
     Args:
         logger: See :func:`~.wandb.init`.
@@ -30,7 +30,7 @@ def setup_wandb(logger: Callable[..., Any], output_dir: str) -> None:
 
 
 def terminate_wandb() -> None:
-    """Terminates :mod:`wandb` logging."""
+    """Terminates `W&B <https://wandb.ai/>`_ logging."""
     comm, rank, _ = get_mpi_variables()
     if rank != 0:
         return

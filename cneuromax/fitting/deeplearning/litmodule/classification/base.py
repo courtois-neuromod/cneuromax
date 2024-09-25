@@ -31,7 +31,9 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
 
 
 class BaseClassificationLitModule(BaseLitModule, ABC):
-    """Base Classification :mod:`lightning` ``LitModule``.
+    """Base Classification ``LightningModule``.
+
+    Ref: :class:`~.lightning.pytorch.core.LightningModule`
 
     If logging validation data to W&B, make sure to define the
     :attr:`wandb_columns` attribute in the subclass.
