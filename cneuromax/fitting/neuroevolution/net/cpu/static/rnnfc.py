@@ -1,4 +1,4 @@
-""":class:`CPUStaticRNN` & its config."""
+""":class:`.CPUStaticRNN` & its config."""
 
 from dataclasses import dataclass
 

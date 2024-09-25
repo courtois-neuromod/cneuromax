@@ -1,4 +1,4 @@
-""":class:`BaseLitModule` & its config."""
+""":class:`.BaseLitModule` & its config."""
 
 from abc import ABC
 from dataclasses import dataclass

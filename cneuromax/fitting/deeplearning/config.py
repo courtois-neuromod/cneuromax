@@ -1,4 +1,4 @@
-""":class:`DeepLearningTaskConfig`."""
+""":class:`.DeepLearningTaskConfig`."""
 
 from dataclasses import dataclass, field
 from typing import Any

@@ -1,4 +1,4 @@
-""":class:`NeuroevolutionTaskRunner`."""
+""":class:`.NeuroevolutionTaskRunner`."""
 
 from collections.abc import Callable
 from functools import partial

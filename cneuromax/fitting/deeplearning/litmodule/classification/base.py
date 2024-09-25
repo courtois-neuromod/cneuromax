@@ -1,4 +1,4 @@
-""":class:`BaseClassificationLitModule` & its config."""
+""":class:`.BaseClassificationLitModule` & its config."""
 
 from abc import ABC
 from collections.abc import Callable  # noqa: TCH003

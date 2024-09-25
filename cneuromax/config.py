@@ -1,4 +1,4 @@
-""":class:`BaseSubtaskConfig` & :class:`BaseHydraConfig`.
+""":class:`.BaseSubtaskConfig` & :class:`.BaseHydraConfig`.
 
 Check-out the `hydra docs \
 <https://hydra.cc/docs/tutorials/structured_config/intro/>`_

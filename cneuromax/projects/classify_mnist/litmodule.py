@@ -1,4 +1,4 @@
-""":class:`MNISTClassificationLitModule`."""
+""":class:`.MNISTClassificationLitModule`."""
 
 from typing import Any
 

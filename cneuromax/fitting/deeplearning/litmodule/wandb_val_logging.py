@@ -1,4 +1,4 @@
-""":class:`WandbValLoggingLightningModule`."""
+""":class:`.WandbValLoggingLightningModule`."""
 
 from copy import copy
 from typing import Any

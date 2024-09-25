@@ -1,4 +1,4 @@
-""":class:`GymReinforcementSpace` & its config."""
+""":class:`.GymReinforcementSpace` & its config."""
 
 from dataclasses import dataclass
 

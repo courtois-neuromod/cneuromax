@@ -1,4 +1,4 @@
-""":class:`BaseReinforcementSpace`."""
+""":class:`.BaseReinforcementSpace`."""
 
 import copy
 from abc import ABC

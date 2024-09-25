@@ -1,4 +1,4 @@
-""":class:`BaseAgent` & its config."""
+""":class:`.BaseAgent` & its config."""
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass

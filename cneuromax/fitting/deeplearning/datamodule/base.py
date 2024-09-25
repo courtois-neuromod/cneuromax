@@ -1,4 +1,4 @@
-""":class:`BaseDataModule` + its datasets/config classes."""
+""":class:`.BaseDataModule` + its datasets/config classes."""
 
 from abc import ABC
 from dataclasses import dataclass

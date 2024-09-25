@@ -1,4 +1,4 @@
-""":class:`MNISTDataModule` & its config."""
+""":class:`.MNISTDataModule` & its config."""
 
 from dataclasses import dataclass
 from typing import Annotated as An

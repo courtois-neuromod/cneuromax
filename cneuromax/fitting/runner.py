@@ -1,4 +1,4 @@
-""":class:`FittingTaskRunner`."""
+""":class:`.FittingTaskRunner`."""
 
 from hydra_zen import ZenStore
 
