@@ -15,5 +15,6 @@ utils
    :recursive:
    
       lightning
+      typing
 
 
