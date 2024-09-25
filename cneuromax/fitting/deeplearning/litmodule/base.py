@@ -14,8 +14,8 @@ from lightning.pytorch.utilities.types import (
 from torch import Tensor, nn
 from torch.optim import Optimizer  # type: ignore[attr-defined]
 from torch.optim.lr_scheduler import LRScheduler
-from transformers.tokenization_utils_base import BatchEncoding
 
+from cneuromax.fitting.deeplearning.utils.typing import Batched_data_type
 from cneuromax.utils.beartype import one_of
 
 from .wandb_val_logging import WandbValLoggingLightningModule
@@ -116,15 +116,9 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def stage_step(
         self: "BaseLitModule",
-        data: (
-            Num[Tensor, " batch_size ..."]
-            | tuple[Num[Tensor, " batch_size ..."], ...]
-            | list[Num[Tensor, " batch_size ..."]]
-            | dict[str, Num[Tensor, " batch_size ..."]]
-            | BatchEncoding
-        ),
+        data: Batched_data_type,
         stage: An[str, one_of("train", "val", "test", "predict")],
-    ) -> Num[Tensor, " ..."]:
+    ) -> Num[Tensor, " *_"]:
         """Generic stage wrapper around the :meth:`step` method.
 
         Verifies that the :meth:`step` method exists and is callable,
@@ -140,21 +134,15 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         """
         if isinstance(data, list):
             data = tuple(data)
-        loss: Num[Tensor, " ..."] = self.step(data, stage)
+        loss: Num[Tensor, " *_"] = self.step(data, stage)
         self.log(name=f"{stage}/loss", value=loss)
         return loss
 
     @final
     def training_step(
         self: "BaseLitModule",
-        data: (
-            Num[Tensor, " batch_size ..."]
-            | tuple[Num[Tensor, " batch_size ..."], ...]
-            | list[Num[Tensor, " batch_size ..."]]
-            | dict[str, Num[Tensor, " batch_size ..."]]
-            | BatchEncoding
-        ),
-    ) -> Num[Tensor, " ..."]:
+        data: Batched_data_type,
+    ) -> Num[Tensor, " *_"]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
@@ -168,19 +156,13 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def validation_step(
         self: "BaseLitModule",
-        data: (
-            Num[Tensor, " batch_size ..."]
-            | tuple[Num[Tensor, " batch_size ..."], ...]
-            | list[Num[Tensor, " batch_size ..."]]
-            | dict[str, Num[Tensor, " batch_size ..."]]
-            | BatchEncoding
-        ),
+        data: Batched_data_type,
         # :paramref:`*args` & :paramref:`**kwargs` type annotations
         # cannot be more specific because of
         # :meth:`LightningModule.validation_step`\'s signature.
         *args: Any,  # noqa: ANN401, ARG002
         **kwargs: Any,  # noqa: ANN401, ARG002
-    ) -> Num[Tensor, " ..."]:
+    ) -> Num[Tensor, " *_"]:
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
@@ -196,14 +178,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def test_step(
         self: "BaseLitModule",
-        data: (
-            Num[Tensor, " batch_size ..."]
-            | tuple[Num[Tensor, " batch_size ..."], ...]
-            | list[Num[Tensor, " batch_size ..."]]
-            | dict[str, Num[Tensor, " batch_size ..."]]
-            | BatchEncoding
-        ),
-    ) -> Num[Tensor, " ..."]:
+        data: Batched_data_type,
+    ) -> Num[Tensor, " *_"]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
