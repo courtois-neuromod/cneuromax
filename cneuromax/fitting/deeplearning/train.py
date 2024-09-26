@@ -1,4 +1,4 @@
-""":func:`train`."""
+""":func:`.train`."""
 
 from functools import partial
 
