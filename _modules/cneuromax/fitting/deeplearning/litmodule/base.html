@@ -392,7 +392,7 @@
 <div class="viewcode-block" id="BaseLitModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">WandbValLoggingLightningModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`~.lightning.pytorch.core.LightningModule`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`lightning.pytorch.core.LightningModule`.</span>
 
 <span class="sd">    Subclasses need to implement the :meth:`step` method that inputs</span>
 <span class="sd">    both ``data`` and  ``stage`` arguments while returning the loss</span>
@@ -422,7 +422,7 @@
 <span class="sd">        signatures to find the correct types.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`BaseLitModuleConfig`.</span>
+<span class="sd">        config</span>
 <span class="sd">        nnmodule: A :mod:`torch` ``nn.Module`` to be used by this</span>
 <span class="sd">            instance.</span>
 <span class="sd">        optimizer: A :mod:`torch` ``Optimizer`` to be used by this</span>
@@ -434,17 +434,18 @@
 <span class="sd">            :paramref:`optimizer` is required for its initialization.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        config (:class:`BaseLitModuleConfig`): See</span>
+<span class="sd">        config (BaseLitModuleConfig): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.config`.</span>
-<span class="sd">        nnmodule (:class:`torch.nn.Module`): See</span>
+<span class="sd">        nnmodule (torch.nn.Module): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.nnmodule`.</span>
-<span class="sd">        optimizer_partial (:class:`functools.partial`): See</span>
-<span class="sd">            :paramref:`~BaseLitModule.optimizer`.</span>
-<span class="sd">        scheduler_partial (:class:`functools.partial`): See</span>
+<span class="sd">        optimizer_partial (~functools.partial[torch.optim.Optimizer]):</span>
+<span class="sd">            See :paramref:`~BaseLitModule.optimizer`.</span>
+<span class="sd">        scheduler_partial (~functools.partial[\</span>
+<span class="sd">            torch.optim.lr_scheduler.LRScheduler]): See</span>
 <span class="sd">            :paramref:`~BaseLitModule.scheduler`.</span>
-<span class="sd">        optimizer (:class:`torch.optim.Optimizer`):</span>
+<span class="sd">        optimizer (torch.optim.Optimizer):</span>
 <span class="sd">            :paramref:`~BaseLitModule.optimizer` instantiated.</span>
-<span class="sd">        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`):</span>
+<span class="sd">        scheduler (torch.optim.lr_scheduler.LRScheduler):</span>
 <span class="sd">            :paramref:`~BaseLitModule.scheduler` instantiated.</span>
 
 <span class="sd">    Raises:</span>
@@ -533,8 +534,6 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            data: See :paramref:`~stage_step.data`.</span>
-<span class="sd">            *args: Additional positional arguments.</span>
-<span class="sd">            **kwargs: Additional keyword arguments.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The loss value(s).</span>
@@ -570,7 +569,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            This instance&#39;s</span>
 <span class="sd">                :attr:`~torch.optim.Optimizer` and</span>
-<span class="sd">                :class:`~torch.optim.lr_scheduler.LRScheduler`.</span>
+<span class="sd">                :class:`torch.optim.lr_scheduler.LRScheduler`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer_partial</span><span class="p">(</span><span class="n">params</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scheduler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scheduler_partial</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="p">)</span>

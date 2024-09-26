@@ -384,7 +384,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;CPU-running static architecture RNN w/ a final FC layer.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`CPUStaticRNNFCConfig`.</span>
+<span class="sd">        config</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CPUStaticRNNFCConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -417,14 +417,7 @@
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; input_size&quot;</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            x: Input tensor.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            Output tensor.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Forward pass.&quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; hidden_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">hx</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">=</span> <span class="n">x</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; output_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>

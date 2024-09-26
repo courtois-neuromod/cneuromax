@@ -391,19 +391,18 @@
     <span class="n">output_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">save_every_n_train_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Trainer</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiates a :class:`~lightning.pytorch.Trainer`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantiates :paramref:`trainer_partial`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        trainer_partial: See :class:`~lightning.pytorch.Trainer`.</span>
-<span class="sd">        logger_partial: See</span>
-<span class="sd">            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.</span>
+<span class="sd">        trainer_partial</span>
+<span class="sd">        logger_partial</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 <span class="sd">        save_every_n_train_steps: See</span>
 <span class="sd">            :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A :class:`~lightning.pytorch.Trainer` instance.</span>
+<span class="sd">        A :class:`lightning.pytorch.Trainer` instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">launcher_config</span> <span class="o">=</span> <span class="n">get_launcher_config</span><span class="p">()</span>
     <span class="c1"># Retrieve the `Trainer` callbacks specified in the config</span>
@@ -435,7 +434,7 @@
             <span class="n">throw_on_missing</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">)</span>
-    <span class="c1"># Instantiate the :class:`~lightning.pytorch.Trainer`.</span>
+    <span class="c1"># Instantiate the trainer.</span>
     <span class="k">return</span> <span class="n">trainer_partial</span><span class="p">(</span>
         <span class="n">devices</span><span class="o">=</span><span class="p">(</span>
             <span class="n">launcher_config</span><span class="o">.</span><span class="n">gpus_per_node</span> <span class="ow">or</span> <span class="mi">1</span>
@@ -464,9 +463,9 @@
 <span class="sd">    these variables&#39; values are determined.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        trainer: See :class:`~lightning.pytorch.Trainer`.</span>
-<span class="sd">        datamodule: See :class:`.BaseDataModule`.</span>
-<span class="sd">        litmodule: See :class:`.BaseLitModule`.</span>
+<span class="sd">        trainer</span>
+<span class="sd">        datamodule</span>
+<span class="sd">        litmodule</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -534,10 +533,10 @@
 <span class="sd">    same amount of VRAM.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        litmodule: See :class:`.BaseLitModule`.</span>
-<span class="sd">        datamodule: See :class:`.BaseDataModule`.</span>
+<span class="sd">        litmodule</span>
+<span class="sd">        datamodule</span>
 <span class="sd">        device: See :paramref:`~.FittingSubtaskConfig.device`.</span>
-<span class="sd">        device_ids: See :class:`~lightning.pytorch.Trainer.device_ids`.</span>
+<span class="sd">        device_ids: See :class:`lightning.pytorch.Trainer.device_ids`.</span>
 <span class="sd">        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.</span>
 
 <span class="sd">    Returns:</span>
@@ -629,7 +628,7 @@
 <span class="sd">    returning the value that yields the shortest time.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        datamodule: See :class:`.BaseDataModule`.</span>
+<span class="sd">        datamodule</span>
 <span class="sd">        per_device_batch_size: The return value of</span>
 <span class="sd">            :func:`find_good_per_device_batch_size`.</span>
 <span class="sd">        max_num_data_passes: Maximum number of data passes to iterate</span>

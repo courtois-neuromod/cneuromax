@@ -370,17 +370,17 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.Datasets">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Datasets</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds phase-specific :class:`~torch.utils.data.Dataset` objects.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds phase-specific :class:`torch.utils.data.Dataset` objects.</span>
 
 <span class="sd">    Using the word ``phase`` to not overload</span>
 <span class="sd">    `Lightning &lt;https://lightning.ai/&gt;`_ ``stage``</span>
 <span class="sd">    terminology used for ``fit``, ``validate`` and ``test``.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        train: Training dataset.</span>
-<span class="sd">        val: Validation dataset.</span>
-<span class="sd">        test: Testing dataset.</span>
-<span class="sd">        predict: Prediction dataset.</span>
+<span class="sd">        train</span>
+<span class="sd">        val</span>
+<span class="sd">        test</span>
+<span class="sd">        predict</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">train</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">[</span><span class="n">Tensor</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Tensor</span><span class="p">]]</span> <span class="o">|</span> <span class="n">HFDataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
@@ -425,28 +425,28 @@
 <div class="viewcode-block" id="BaseDataModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule">[docs]</a>
 <span class="k">class</span> <span class="nc">BaseDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`~.lightning.pytorch.core.LightningDataModule`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`lightning.pytorch.core.LightningDataModule`.</span>
 
 <span class="sd">    With ``&lt;phase&gt;`` being any of ``train``, ``val``, ``test`` or</span>
 <span class="sd">    ``predict``, subclasses need to properly define the</span>
 <span class="sd">    ``datasets.&lt;phase&gt;`` attribute(s) for each desired phase.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`BaseDataModuleConfig`.</span>
+<span class="sd">        config</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        config (:class:`BaseDataModuleConfig`): Self-explanatory.</span>
-<span class="sd">        datasets (:class:`Datasets`): Self-explanatory.</span>
-<span class="sd">        collate_fn (``callable``): See</span>
-<span class="sd">            :paramref:`torch.utils.data.DataLoader.collate_fn`.</span>
-<span class="sd">        pin_memory (``bool``): Whether to copy tensors into device</span>
+<span class="sd">        config (BaseDataModuleConfig)</span>
+<span class="sd">        datasets (Datasets)</span>
+<span class="sd">        collate_fn (typing.Callable): See ``collate_fn`` argument in</span>
+<span class="sd">            :class:`torch.utils.data.DataLoader`.</span>
+<span class="sd">        pin_memory (bool): Whether to copy tensors into device</span>
 <span class="sd">            pinned memory before returning them (is set to ``True`` by</span>
 <span class="sd">            default if :paramref:`~BaseDataModuleConfig.device` is</span>
 <span class="sd">            ``&quot;gpu&quot;``).</span>
-<span class="sd">        per_device_batch_size (``int``): Per-device number of samples</span>
+<span class="sd">        per_device_batch_size (int): Per-device number of samples</span>
 <span class="sd">            to load per iteration. Temporary value (``1``) is</span>
 <span class="sd">            overwritten in :func:`.set_batch_size_and_num_workers`.</span>
-<span class="sd">        per_device_num_workers (``int``): Per-device number of CPU</span>
+<span class="sd">        per_device_num_workers (int): Per-device number of CPU</span>
 <span class="sd">            processes to use for data loading (``0`` means that the</span>
 <span class="sd">            data will be loaded by each device&#39;s assigned CPU</span>
 <span class="sd">            process). Temporary value (``0``) is later overwritten</span>
@@ -506,20 +506,20 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">shuffle</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic :class:`~torch.utils.data.DataLoader` factory method.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic :class:`torch.utils.data.DataLoader` factory method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dataset: A :mod:`torch` ``Dataset`` to wrap with a</span>
-<span class="sd">                :class:`~torch.utils.data.DataLoader`</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader`</span>
 <span class="sd">            shuffle: Whether to shuffle the dataset when iterating</span>
 <span class="sd">                over it.</span>
 
 <span class="sd">        Raises:</span>
-<span class="sd">            AttributeError: If :paramref:`dataset` is ``None``.</span>
+<span class="sd">            AttributeError: If :paramref:`dataset` is :obj:`None`.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new</span>
-<span class="sd">                :class:`~torch.utils.data.DataLoader` instance</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader` instance</span>
 <span class="sd">                wrapping the :paramref:`dataset` argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">dataset</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -555,7 +555,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new validation</span>
-<span class="sd">                :class:`~torch.utils.data.DataLoader` instance.</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">val</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
@@ -568,7 +568,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new testing</span>
-<span class="sd">                :class:`~torch.utils.data.DataLoader` instance.</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader` instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">test</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
 
@@ -581,7 +581,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A new prediction</span>
-<span class="sd">                :class:`~torch.utils.data.DataLoader` instance that does</span>
+<span class="sd">                :class:`torch.utils.data.DataLoader` instance that does</span>
 <span class="sd">                not shuffle the dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">predict</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>

@@ -405,7 +405,7 @@
 <span class="sd">    an ``AgentContainer`` class rather than an ``Agent`` class.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`BaseAgentConfig`.</span>
+<span class="sd">        config</span>
 <span class="sd">        pop_idx: The agent&#39;s population index. An index of ``0`` means</span>
 <span class="sd">            that the agent is in the generator population while an</span>
 <span class="sd">            index of ``1`` means that the agent is in the</span>
@@ -414,10 +414,10 @@
 <span class="sd">            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.</span>
 
 <span class="sd">    Attributes:</span>
-<span class="sd">        config (:class:`BaseAgentConfig`): See :paramref:`config`.</span>
-<span class="sd">        role (``str``): The agent&#39;s role. Can be either ``&quot;generator&quot;``</span>
+<span class="sd">        config (BaseAgentConfig)</span>
+<span class="sd">        role (str): The agent&#39;s role. Can be either ``&quot;generator&quot;``</span>
 <span class="sd">            or ``&quot;discriminator&quot;``.</span>
-<span class="sd">        is_other_role_in_other_pop (``bool``): Whether the agent is the</span>
+<span class="sd">        is_other_role_in_other_pop (bool): Whether the agent is the</span>
 <span class="sd">            other role in the other population. If the two populations</span>
 <span class="sd">            are merged (see :paramref:`pops_are_merged`), then an</span>
 <span class="sd">            agent is both a generator and a discriminator. It is a</span>
@@ -425,26 +425,26 @@
 <span class="sd">            discriminator/generator in the other population. Such</span>
 <span class="sd">            type of agent needs to accomodate this property through</span>
 <span class="sd">            its network architecture.</span>
-<span class="sd">        total_num_steps (``int``): The total number of steps taken by</span>
+<span class="sd">        total_num_steps (int): The total number of steps taken by</span>
 <span class="sd">            the agent and all of its predecessors.</span>
-<span class="sd">        curr_eval_score (``float``): The score obtained by the agent</span>
+<span class="sd">        curr_eval_score (float): The score obtained by the agent</span>
 <span class="sd">            during the current evaluation.</span>
-<span class="sd">        curr_eval_num_steps (``int``): The number of steps taken by the</span>
+<span class="sd">        curr_eval_num_steps (int): The number of steps taken by the</span>
 <span class="sd">            agent during the current evaluation.</span>
-<span class="sd">        saved_env (``torchrl.envs.EnvBase``): The</span>
+<span class="sd">        saved_env (torchrl.envs.EnvBase): The</span>
 <span class="sd">            `torchrl &lt;https://pytorch.org/rl/&gt;`_ environment instance to</span>
 <span class="sd">            resume from (only set if</span>
 <span class="sd">            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).</span>
-<span class="sd">        saved_env_out (``tensordict.Tensordict``): The latest output</span>
+<span class="sd">        saved_env_out (tensordict.Tensordict): The latest output</span>
 <span class="sd">            from the environment to resume from (only set if</span>
 <span class="sd">            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).</span>
-<span class="sd">        curr_episode_score: The current episode score (only set if</span>
-<span class="sd">            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).</span>
-<span class="sd">        curr_episode_num_steps: The number of steps taken in the</span>
+<span class="sd">        curr_episode_score (float): The current episode score (only set</span>
+<span class="sd">            if :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).</span>
+<span class="sd">        curr_episode_num_steps (int): The number of steps taken in the</span>
 <span class="sd">            current episode (only set if</span>
 <span class="sd">            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).</span>
-<span class="sd">        continual_fitness: The agent&#39;s fitness in addition to all of</span>
-<span class="sd">            its predecessors&#39; fitnesses (only set if</span>
+<span class="sd">        continual_fitness (float): The agent&#39;s fitness in addition to</span>
+<span class="sd">            all of its predecessors&#39; fitnesses (only set if</span>
 <span class="sd">            :paramref:`~.BaseAgentConfig.fit_transfer` is ``True``).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 

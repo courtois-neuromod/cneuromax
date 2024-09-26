@@ -391,22 +391,15 @@
 <span class="k">class</span> <span class="nc">BaseClassificationLitModule</span><span class="p">(</span><span class="n">BaseLitModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base Classification ``LightningModule``.</span>
 
-<span class="sd">    Ref: :class:`~.lightning.pytorch.core.LightningModule`</span>
+<span class="sd">    Ref: :class:`lightning.pytorch.core.LightningModule`</span>
 
 <span class="sd">    If logging validation data to W&amp;B, make sure to define the</span>
 <span class="sd">    :attr:`wandb_columns` attribute in the subclass.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        config: See :class:`BaseClassificationLitModuleConfig`.</span>
-<span class="sd">        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.</span>
-<span class="sd">        optimizer: See :paramref:`~.BaseLitModule.optimizer`.</span>
-<span class="sd">        scheduler: See :paramref:`~.BaseLitModule.scheduler`.</span>
-
 <span class="sd">    Attributes:</span>
-<span class="sd">        accuracy</span>
-<span class="sd">            (:class:`~torchmetrics.classification.MulticlassAccuracy`):</span>
-<span class="sd">            The accuracy metric.</span>
-<span class="sd">        wandb_table (:class:`~wandb.Table`): A table to upload to W&amp;B</span>
+<span class="sd">        config (BaseClassificationLitModuleConfig)</span>
+<span class="sd">        accuracy (torchmetrics.classification.MulticlassAccuracy)</span>
+<span class="sd">        wandb_table (wandb.Table): A table to upload to W&amp;B</span>
 <span class="sd">            containing validation data.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
