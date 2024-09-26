@@ -58,7 +58,7 @@ dependencies = [
     "x-transformers==1.36.0", # Transformer utils
     "mambapy==1.2.0", # Mamba
     "denoising-diffusion-pytorch==2.0.17", # Diffusion models
-    "vector-quantize-pytorch==1.17.6", # Vector quantization utils
+    "vector-quantize-pytorch==1.17.8", # Vector quantization utils
     "accelerate==0.34.2", # PEFT crashing w/ 0.30.0
     "peft==0.13.0", # Fine-tuning
     # fMRI libraries
@@ -79,7 +79,7 @@ dependencies = [
     "myst-parser==4.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==24.8.0", # Python Formatter
-    "ruff==0.6.7", # Python Linter
+    "ruff==0.6.8", # Python Linter
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.35.1", # YAML linter
     "pre-commit==3.8.0", # Git commit hooks
