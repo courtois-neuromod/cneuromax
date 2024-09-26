@@ -59,7 +59,7 @@ def evaluate_on_cpu(
     Args:
         agents_batch: See
             :paramref:`~.compute_generation_results.agents_batch`.
-        space: The :class:`~.BaseSpace` instance used throughout the
+        space: The :class:`.BaseSpace` instance used throughout the
             execution.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
 

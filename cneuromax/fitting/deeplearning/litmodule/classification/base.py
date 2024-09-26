@@ -33,22 +33,15 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
 class BaseClassificationLitModule(BaseLitModule, ABC):
     """Base Classification ``LightningModule``.
 
-    Ref: :class:`~.lightning.pytorch.core.LightningModule`
+    Ref: :class:`lightning.pytorch.core.LightningModule`
 
     If logging validation data to W&B, make sure to define the
     :attr:`wandb_columns` attribute in the subclass.
 
-    Args:
-        config: See :class:`BaseClassificationLitModuleConfig`.
-        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
-        optimizer: See :paramref:`~.BaseLitModule.optimizer`.
-        scheduler: See :paramref:`~.BaseLitModule.scheduler`.
-
     Attributes:
-        accuracy
-            (:class:`~torchmetrics.classification.MulticlassAccuracy`):
-            The accuracy metric.
-        wandb_table (:class:`~wandb.Table`): A table to upload to W&B
+        config (BaseClassificationLitModuleConfig)
+        accuracy (torchmetrics.classification.MulticlassAccuracy)
+        wandb_table (wandb.Table): A table to upload to W&B
             containing validation data.
     """
 

@@ -14,13 +14,13 @@ from . import (
 
 @pytest.fixture
 def datamodule(tmp_path: Path) -> MNISTDataModule:
-    """:class:`~.MNISTDataModule` fixture.
+    """:class:`.MNISTDataModule` fixture.
 
     Args:
-        tmp_path: The temporary path for the :class:`~.MNISTDataModule`.
+        tmp_path: The temporary path for the :class:`.MNISTDataModule`.
 
     Returns:
-        A generic :class:`~.MNISTDataModule` instance.
+        A generic :class:`.MNISTDataModule` instance.
     """
     return MNISTDataModule(
         MNISTDataModuleConfig(
@@ -39,7 +39,7 @@ def test_setup_fit(datamodule: MNISTDataModule) -> None:
     ``"fit"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTDataModule`
+        datamodule: A generic :class:`.MNISTDataModule`
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()
@@ -60,7 +60,7 @@ def test_setup_test(datamodule: MNISTDataModule) -> None:
     ``"test"``.
 
     Args:
-        datamodule: A generic :class:`~.MNISTDataModule`
+        datamodule: A generic :class:`.MNISTDataModule`
             instance, see :func:`datamodule`.
     """
     datamodule.prepare_data()

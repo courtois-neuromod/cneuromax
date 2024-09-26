@@ -39,7 +39,7 @@ class GymAgent(BaseAgent):
     """``project`` :class:`BaseAgent`.
 
     Args:
-        config: See :paramref:`~.BaseAgent.config`.
+        config
         pop_idx: See :paramref:`~.BaseAgent.pop_idx`.
         pops_are_merged: See :paramref:`~.BaseAgent.pops_are_merged`.
     """

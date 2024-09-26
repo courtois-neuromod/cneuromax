@@ -37,12 +37,11 @@ def train(
     returns the final validation loss.
 
     Args:
-        trainer: See :class:`~lightning.pytorch.Trainer`.
-        datamodule: See :class:`.BaseDataModule`.
-        litmodule: See :class:`.BaseLitModule`.
-        logger: See
-            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
-        config: See :paramref:`.DeepLearningSubtaskConfig`.
+        trainer
+        datamodule
+        litmodule
+        logger
+        config
 
     Returns:
         The final validation loss.

@@ -15,17 +15,17 @@ from cneuromax.utils.beartype import ge, not_empty, one_of
 
 @dataclass
 class Datasets:
-    """Holds phase-specific :class:`~torch.utils.data.Dataset` objects.
+    """Holds phase-specific :class:`torch.utils.data.Dataset` objects.
 
     Using the word ``phase`` to not overload
     `Lightning <https://lightning.ai/>`_ ``stage``
     terminology used for ``fit``, ``validate`` and ``test``.
 
     Args:
-        train: Training dataset.
-        val: Validation dataset.
-        test: Testing dataset.
-        predict: Prediction dataset.
+        train
+        val
+        test
+        predict
     """
 
     train: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
@@ -64,28 +64,28 @@ class BaseDataModuleConfig:
 
 
 class BaseDataModule(LightningDataModule, ABC):
-    """Base :class:`~.lightning.pytorch.core.LightningDataModule`.
+    """Base :class:`lightning.pytorch.core.LightningDataModule`.
 
     With ``<phase>`` being any of ``train``, ``val``, ``test`` or
     ``predict``, subclasses need to properly define the
     ``datasets.<phase>`` attribute(s) for each desired phase.
 
     Args:
-        config: See :class:`BaseDataModuleConfig`.
+        config
 
     Attributes:
-        config (:class:`BaseDataModuleConfig`): Self-explanatory.
-        datasets (:class:`Datasets`): Self-explanatory.
-        collate_fn (``callable``): See
-            :paramref:`torch.utils.data.DataLoader.collate_fn`.
-        pin_memory (``bool``): Whether to copy tensors into device
+        config (BaseDataModuleConfig)
+        datasets (Datasets)
+        collate_fn (typing.Callable): See ``collate_fn`` argument in
+            :class:`torch.utils.data.DataLoader`.
+        pin_memory (bool): Whether to copy tensors into device
             pinned memory before returning them (is set to ``True`` by
             default if :paramref:`~BaseDataModuleConfig.device` is
             ``"gpu"``).
-        per_device_batch_size (``int``): Per-device number of samples
+        per_device_batch_size (int): Per-device number of samples
             to load per iteration. Temporary value (``1``) is
             overwritten in :func:`.set_batch_size_and_num_workers`.
-        per_device_num_workers (``int``): Per-device number of CPU
+        per_device_num_workers (int): Per-device number of CPU
             processes to use for data loading (``0`` means that the
             data will be loaded by each device's assigned CPU
             process). Temporary value (``0``) is later overwritten
@@ -137,20 +137,20 @@ class BaseDataModule(LightningDataModule, ABC):
         *,
         shuffle: bool = True,
     ) -> DataLoader[Tensor]:
-        """Generic :class:`~torch.utils.data.DataLoader` factory method.
+        """Generic :class:`torch.utils.data.DataLoader` factory method.
 
         Args:
             dataset: A :mod:`torch` ``Dataset`` to wrap with a
-                :class:`~torch.utils.data.DataLoader`
+                :class:`torch.utils.data.DataLoader`
             shuffle: Whether to shuffle the dataset when iterating
                 over it.
 
         Raises:
-            AttributeError: If :paramref:`dataset` is ``None``.
+            AttributeError: If :paramref:`dataset` is :obj:`None`.
 
         Returns:
             A new
-                :class:`~torch.utils.data.DataLoader` instance
+                :class:`torch.utils.data.DataLoader` instance
                 wrapping the :paramref:`dataset` argument.
         """
         if dataset is None:
@@ -180,7 +180,7 @@ class BaseDataModule(LightningDataModule, ABC):
 
         Returns:
             A new validation
-                :class:`~torch.utils.data.DataLoader` instance.
+                :class:`torch.utils.data.DataLoader` instance.
         """
         return self.x_dataloader(dataset=self.datasets.val, shuffle=False)
 
@@ -190,7 +190,7 @@ class BaseDataModule(LightningDataModule, ABC):
 
         Returns:
             A new testing
-                :class:`~torch.utils.data.DataLoader` instance.
+                :class:`torch.utils.data.DataLoader` instance.
         """
         return self.x_dataloader(dataset=self.datasets.test, shuffle=False)
 
@@ -200,7 +200,7 @@ class BaseDataModule(LightningDataModule, ABC):
 
         Returns:
             A new prediction
-                :class:`~torch.utils.data.DataLoader` instance that does
+                :class:`torch.utils.data.DataLoader` instance that does
                 not shuffle the dataset.
         """
         return self.x_dataloader(dataset=self.datasets.predict, shuffle=False)

@@ -26,7 +26,7 @@ class CPUStaticRNNFC(nn.Module):
     """CPU-running static architecture RNN w/ a final FC layer.
 
     Args:
-        config: See :class:`CPUStaticRNNFCConfig`.
+        config
     """
 
     def __init__(self: "CPUStaticRNNFC", config: CPUStaticRNNFCConfig) -> None:
@@ -54,14 +54,7 @@ class CPUStaticRNNFC(nn.Module):
         self: "CPUStaticRNNFC",
         x: Float32[Tensor, " input_size"],
     ) -> Tensor:
-        """Forward pass.
-
-        Args:
-            x: Input tensor.
-
-        Returns:
-            Output tensor.
-        """
+        """Forward pass."""
         x: Float32[Tensor, " hidden_size"] = self.rnn(input=x, hx=self.h)
         self.h = x
         x: Float32[Tensor, " output_size"] = self.fc(input=x)

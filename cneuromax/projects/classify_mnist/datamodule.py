@@ -30,12 +30,12 @@ class MNISTDataModule(BaseDataModule):
     """``project`` :class:`.BaseDataModule`.
 
     Args:
-        config: See :class:`MNISTDataModuleConfig`.
+        config
 
     Attributes:
-        train_val_split (`tuple[float, float]`): The train/validation
+        train_val_split (tuple[float, float]): The train/validation
             split (sums to `1`).
-        transform (:class:`~transforms.Compose`): The
+        transform (torchvision.transforms.Compose): The
             :mod:`torchvision` dataset transformations.
     """
 

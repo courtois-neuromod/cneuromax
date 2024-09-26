@@ -23,9 +23,10 @@ extensions = [
 ]
 autodoc_default_options = {
     "ignore-module-all": True,
+    "members": True,
     "private-members": True,
     "show-inheritance": True,
-    "special-members": "__main__",
+    "special-members": "__main__, __getitem__, __len__",
 }
 autodoc_member_order = "bysource"
 autosummary_generate = True
@@ -33,6 +34,7 @@ html_static_path = ["_static"]
 html_theme = "furo"
 html_title = "CNeuroMax"
 intersphinx_mapping = {
+    "datasets": ("https://huggingface.co/docs/datasets/main/en/", None),
     "gymnasium": ("https://gymnasium.farama.org/", None),
     "hydra-zen": ("https://mit-ll-responsible-ai.github.io/hydra-zen/", None),
     "jaxtyping": ("https://docs.kidger.site/jaxtyping/", None),

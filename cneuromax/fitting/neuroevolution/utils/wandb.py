@@ -14,7 +14,7 @@ def setup_wandb(logger: Callable[..., Any], output_dir: str) -> None:
     """Sets up `W&B <https://wandb.ai/>`_ logging for all MPI processes.
 
     Args:
-        logger: See :func:`~.wandb.init`.
+        logger: See :func:`wandb.init`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
     comm, rank, _ = get_mpi_variables()

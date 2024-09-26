@@ -66,10 +66,10 @@ def fit(
     variables are set in the Hydra launcher configuration.
 
     Args:
-        space: See :class:`.BaseSpace`.
-        agent: See :class:`~.BaseAgent`.
+        space
+        agent
         logger: See :func:`~.utils.wandb.setup_wandb`.
-        config: See :class:`.NeuroevolutionSubtaskConfig`.
+        config
     """
     if not isinstance(config, NeuroevolutionSubtaskTestConfig):
         evolve(space=space, agent=agent, logger=logger, config=config)
@@ -86,10 +86,10 @@ def evolve(
     """Neuroevolution.
 
     Args:
-        space: See :class:`.BaseSpace`.
-        agent: See :class:`~.BaseAgent`.
+        space
+        agent
         logger: See :func:`~.utils.wandb.setup_wandb`.
-        config: See :class:`.NeuroevolutionSubtaskConfig`.
+        config
     """
     seed_all(config.seed)
     comm, _, _ = get_mpi_variables()
@@ -236,8 +236,8 @@ def test(
     """Neuroevolution testing.
 
     Args:
-        space: See :class:`.BaseReinforcementSpace`.
-        config: See :paramref:`.NeuroevolutionTestingSubtaskConfig`.
+        space
+        config
     """
     # Get MPI info
     comm, rank, size = get_mpi_variables()

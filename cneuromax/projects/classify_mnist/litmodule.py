@@ -10,13 +10,7 @@ from cneuromax.fitting.deeplearning.litmodule.classification import (
 
 
 class MNISTClassificationLitModule(BaseClassificationLitModule):
-    """``project`` :class:`BaseClassificationLitModule`.
-
-    Args:
-        nnmodule: See :paramref:`~.BaseLitModule.nnmodule`.
-        optimizer: See :paramref:`~.BaseLitModule.optimizer`.
-        scheduler: See :paramref:`~.BaseLitModule.scheduler`.
-    """
+    """``project`` :class:`BaseClassificationLitModule`."""
 
     def __init__(
         self: "MNISTClassificationLitModule",

@@ -21,7 +21,7 @@ with various hyper-parameters).
 
 ``project``: A collection of ``tasks`` + cross-``task``
 functionality (ex: a custom
-:class:`~.lightning.pytorch.core.LightningDataModule`)
+:class:`lightning.pytorch.core.LightningDataModule`)
 
 ``service``: Contains cross-``project`` functionality (ex: base
 `Lightning <https://lightning.ai/>`_ sub-classes).

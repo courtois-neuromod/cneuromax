@@ -142,7 +142,7 @@ def initialize_agents(
     """Initializes a batch of agents.
 
     Args:
-        agent: See :class:`~.BaseAgent`.
+        agent
         len_agents_batch: The number of agents per population
             maintained in
             :paramref:`~.compute_generation_results.agents_batch`

@@ -54,11 +54,12 @@ class DeepLearningTaskConfig(
 
     Args:
         defaults: Hydra defaults.
-        trainer: See :class:`~lightning.pytorch.Trainer`.
+        trainer: See
+            :class:`lightning.pytorch.trainer.trainer.Trainer`.
         datamodule: See :class:`.BaseDataModule`.
         litmodule: See :class:`.BaseLitModule`.
         logger: See
-            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
+            :class:`lightning.pytorch.loggers.wandb.WandbLogger`.
         config: See :class:`DeepLearningSubtaskConfig`.
     """
 

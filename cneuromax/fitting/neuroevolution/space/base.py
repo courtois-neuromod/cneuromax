@@ -33,7 +33,7 @@ class BaseSpace(ABC):
     scores.
 
     Args:
-        config: See :class:`~.BaseSpaceConfig`.
+        config
         num_pops: Number of agents interacting with each other in a
             given space.
         evaluates_on_gpu: Whether GPU devices are used to evaluate

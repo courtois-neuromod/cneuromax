@@ -47,7 +47,7 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         """Validates the ``subtask`` config.
 
         Args:
-            config: See :class:`~.NeuroevolutionSubtaskConfig`.
+            config
 
         Raises:
             RuntimeError: If

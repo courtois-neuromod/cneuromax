@@ -19,16 +19,15 @@ class WandbValLoggingLightningModule(LightningModule):
             validation data logging.
 
     Attributes:
-        logs_val (`bool`): See
-            :paramref:`~WandbValLoggingMixin.logs_val`.
-        curr_val_epoch (`int`): The current validation epoch (can be
+        logs_val (bool): See :paramref:`logs_val`.
+        curr_val_epoch (int): The current validation epoch (can be
             different from training epoch if validation is called
             multiple times per training epoch).
-        wandb_table (:class:`~wandb.Table`): A table to upload to W&B
+        wandb_table wandb.Table): A table to upload to W&B
             containing validation data.
-        wandb_columns (`list[str]`): A list of strings representing
+        wandb_columns (list[str]): A list of strings representing
             the keys of the dictionaries in :attr:`val_wandb_data`.
-        val_wandb_data (`list[list[Any]]`): A list of dictionaries
+        val_wandb_data (list[list[typing.Any]]): A list of dictionaries
             containing validation data relating to one specific example
             (ex: `input_data`, `logits`, ...) meant to be logged in
             :attr:`val_wandb_data`.

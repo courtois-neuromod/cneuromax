@@ -36,19 +36,18 @@ def instantiate_trainer(
     output_dir: str,
     save_every_n_train_steps: int | None,
 ) -> Trainer:
-    """Instantiates a :class:`~lightning.pytorch.Trainer`.
+    """Instantiates :paramref:`trainer_partial`.
 
     Args:
-        trainer_partial: See :class:`~lightning.pytorch.Trainer`.
-        logger_partial: See
-            :class:`~lightning.pytorch.loggers.wandb.WandbLogger`.
+        trainer_partial
+        logger_partial
         device: See :paramref:`~.FittingSubtaskConfig.device`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
         save_every_n_train_steps: See
             :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.
 
     Returns:
-        A :class:`~lightning.pytorch.Trainer` instance.
+        A :class:`lightning.pytorch.Trainer` instance.
     """
     launcher_config = get_launcher_config()
     # Retrieve the `Trainer` callbacks specified in the config
@@ -80,7 +79,7 @@ def instantiate_trainer(
             throw_on_missing=True,
         ),
     )
-    # Instantiate the :class:`~lightning.pytorch.Trainer`.
+    # Instantiate the trainer.
     return trainer_partial(
         devices=(
             launcher_config.gpus_per_node or 1
@@ -106,9 +105,9 @@ def set_batch_size_and_num_workers(
     these variables' values are determined.
 
     Args:
-        trainer: See :class:`~lightning.pytorch.Trainer`.
-        datamodule: See :class:`.BaseDataModule`.
-        litmodule: See :class:`.BaseLitModule`.
+        trainer
+        datamodule
+        litmodule
         device: See :paramref:`~.FittingSubtaskConfig.device`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
     """
@@ -173,10 +172,10 @@ def find_good_per_device_batch_size(
     same amount of VRAM.
 
     Args:
-        litmodule: See :class:`.BaseLitModule`.
-        datamodule: See :class:`.BaseDataModule`.
+        litmodule
+        datamodule
         device: See :paramref:`~.FittingSubtaskConfig.device`.
-        device_ids: See :class:`~lightning.pytorch.Trainer.device_ids`.
+        device_ids: See :class:`lightning.pytorch.Trainer.device_ids`.
         output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
 
     Returns:
@@ -265,7 +264,7 @@ def find_good_per_device_num_workers(
     returning the value that yields the shortest time.
 
     Args:
-        datamodule: See :class:`.BaseDataModule`.
+        datamodule
         per_device_batch_size: The return value of
             :func:`find_good_per_device_batch_size`.
         max_num_data_passes: Maximum number of data passes to iterate

@@ -88,8 +88,8 @@ class NeuroevolutionTaskConfig(
 
     Args:
         defaults: Hydra defaults.
-        space: See :class:`~neuroevolution.space.BaseSpace`.
-        agent: See :class:`~neuroevolution.agent.BaseAgent`.
+        space: See :class:`.BaseSpace`.
+        agent: See :class:`.BaseAgent`.
         logger: See :func:`wandb.init`.
         config: See :class:`.NeuroevolutionSubtaskConfig`.
     """

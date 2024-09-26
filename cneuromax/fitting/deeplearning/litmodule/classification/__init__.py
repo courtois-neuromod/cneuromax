@@ -1,4 +1,4 @@
-r"""Classification :class:`~lightning.pytorch.LightningModule`\s."""
+r"""Classification :class:`lightning.pytorch.LightningModule`\s."""
 
 from cneuromax.fitting.deeplearning.litmodule.classification.base import (
     BaseClassificationLitModule,

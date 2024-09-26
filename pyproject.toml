@@ -112,6 +112,13 @@ ignore = [
             # `__init__` method because 1) `__init__` docstrings are
             # often redundant and 2) Our auto-documentation tool
             # renders better when the full docstring is in the class.
+    "D417", # `undocumented-param`
+            # Missing argument description in the docstring for {definition}: {name} Missing docstring in public `__init__`
+            # https://docs.astral.sh/ruff/rules/undocumented-param/
+            # This warning pops up even when the argument is simply
+            # mentioned in the argument section but not given a description.
+            # Disabled for flexibility of not giving a description for
+            # every argument.
     "F722", # `forward-annotation-syntax-error`
             # Syntax error in forward annotation: {body}.
             # https://docs.astral.sh/ruff/rules/forward-annotation-syntax-error/

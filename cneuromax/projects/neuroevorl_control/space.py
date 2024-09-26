@@ -26,7 +26,7 @@ class GymReinforcementSpace(BaseReinforcementSpace):
     """``project`` :class:`.BaseReinforcementSpace`.
 
     Args:
-        config: See :class:`GymReinforcementSpaceConfig`.
+        config
     """
 
     def __init__(

@@ -34,7 +34,7 @@ class BaseLitModuleConfig:
 
 
 class BaseLitModule(WandbValLoggingLightningModule, ABC):
-    """Base :class:`~.lightning.pytorch.core.LightningModule`.
+    """Base :class:`lightning.pytorch.core.LightningModule`.
 
     Subclasses need to implement the :meth:`step` method that inputs
     both ``data`` and  ``stage`` arguments while returning the loss
@@ -64,7 +64,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         signatures to find the correct types.
 
     Args:
-        config: See :class:`BaseLitModuleConfig`.
+        config
         nnmodule: A :mod:`torch` ``nn.Module`` to be used by this
             instance.
         optimizer: A :mod:`torch` ``Optimizer`` to be used by this
@@ -76,17 +76,18 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
             :paramref:`optimizer` is required for its initialization.
 
     Attributes:
-        config (:class:`BaseLitModuleConfig`): See
+        config (BaseLitModuleConfig): See
             :paramref:`~BaseLitModule.config`.
-        nnmodule (:class:`torch.nn.Module`): See
+        nnmodule (torch.nn.Module): See
             :paramref:`~BaseLitModule.nnmodule`.
-        optimizer_partial (:class:`functools.partial`): See
-            :paramref:`~BaseLitModule.optimizer`.
-        scheduler_partial (:class:`functools.partial`): See
+        optimizer_partial (~functools.partial[torch.optim.Optimizer]):
+            See :paramref:`~BaseLitModule.optimizer`.
+        scheduler_partial (~functools.partial[\
+            torch.optim.lr_scheduler.LRScheduler]): See
             :paramref:`~BaseLitModule.scheduler`.
-        optimizer (:class:`torch.optim.Optimizer`):
+        optimizer (torch.optim.Optimizer):
             :paramref:`~BaseLitModule.optimizer` instantiated.
-        scheduler (:class:`torch.optim.lr_scheduler.LRScheduler`):
+        scheduler (torch.optim.lr_scheduler.LRScheduler):
             :paramref:`~BaseLitModule.scheduler` instantiated.
 
     Raises:
@@ -167,8 +168,6 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
 
         Args:
             data: See :paramref:`~stage_step.data`.
-            *args: Additional positional arguments.
-            **kwargs: Additional keyword arguments.
 
         Returns:
             The loss value(s).
@@ -198,7 +197,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         Returns:
             This instance's
                 :attr:`~torch.optim.Optimizer` and
-                :class:`~torch.optim.lr_scheduler.LRScheduler`.
+                :class:`torch.optim.lr_scheduler.LRScheduler`.
         """
         self.optimizer = self.optimizer_partial(params=self.parameters())
         self.scheduler = self.scheduler_partial(optimizer=self.optimizer)

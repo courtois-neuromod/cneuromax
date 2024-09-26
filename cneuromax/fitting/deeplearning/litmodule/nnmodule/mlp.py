@@ -31,13 +31,13 @@ class MLP(nn.Module):
     dropout probability.
 
     Args:
-        config: See :class:`MLPConfig`.
+        config
         activation_fn: The singular activation function to use in
             between each layer.
 
     Attributes:
-        model (:class:`torch.nn.Sequential`): The internal
-            :class:`~torch.nn.Module` that holds the MLP's layers.
+        model (torch.nn.Sequential): The internal
+            :class:`torch.nn.Module` that holds the MLP's layers.
     """
 
     def __init__(

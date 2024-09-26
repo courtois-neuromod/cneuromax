@@ -47,7 +47,7 @@ class BaseAgent(ABC):
     an ``AgentContainer`` class rather than an ``Agent`` class.
 
     Args:
-        config: See :class:`BaseAgentConfig`.
+        config
         pop_idx: The agent's population index. An index of ``0`` means
             that the agent is in the generator population while an
             index of ``1`` means that the agent is in the
@@ -56,10 +56,10 @@ class BaseAgent(ABC):
             :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
 
     Attributes:
-        config (:class:`BaseAgentConfig`): See :paramref:`config`.
-        role (``str``): The agent's role. Can be either ``"generator"``
+        config (BaseAgentConfig)
+        role (str): The agent's role. Can be either ``"generator"``
             or ``"discriminator"``.
-        is_other_role_in_other_pop (``bool``): Whether the agent is the
+        is_other_role_in_other_pop (bool): Whether the agent is the
             other role in the other population. If the two populations
             are merged (see :paramref:`pops_are_merged`), then an
             agent is both a generator and a discriminator. It is a
@@ -67,26 +67,26 @@ class BaseAgent(ABC):
             discriminator/generator in the other population. Such
             type of agent needs to accomodate this property through
             its network architecture.
-        total_num_steps (``int``): The total number of steps taken by
+        total_num_steps (int): The total number of steps taken by
             the agent and all of its predecessors.
-        curr_eval_score (``float``): The score obtained by the agent
+        curr_eval_score (float): The score obtained by the agent
             during the current evaluation.
-        curr_eval_num_steps (``int``): The number of steps taken by the
+        curr_eval_num_steps (int): The number of steps taken by the
             agent during the current evaluation.
-        saved_env (``torchrl.envs.EnvBase``): The
+        saved_env (torchrl.envs.EnvBase): The
             `torchrl <https://pytorch.org/rl/>`_ environment instance to
             resume from (only set if
             :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
-        saved_env_out (``tensordict.Tensordict``): The latest output
+        saved_env_out (tensordict.Tensordict): The latest output
             from the environment to resume from (only set if
             :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
-        curr_episode_score: The current episode score (only set if
-            :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
-        curr_episode_num_steps: The number of steps taken in the
+        curr_episode_score (float): The current episode score (only set
+            if :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
+        curr_episode_num_steps (int): The number of steps taken in the
             current episode (only set if
             :paramref:`~.BaseAgentConfig.env_transfer` is ``True``).
-        continual_fitness: The agent's fitness in addition to all of
-            its predecessors' fitnesses (only set if
+        continual_fitness (float): The agent's fitness in addition to
+            all of its predecessors' fitnesses (only set if
             :paramref:`~.BaseAgentConfig.fit_transfer` is ``True``).
     """
 

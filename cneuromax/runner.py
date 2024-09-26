@@ -17,10 +17,6 @@ class BaseTaskRunner(ABC):
     """``task`` runner.
 
     Stores configs and runs the ``task``.
-
-    Attributes:
-        hydra_config: The structured :class:`hydra.HydraConf` config
-            used during the ``task`` execution.
     """
 
     hydra_config = BaseHydraConfig
