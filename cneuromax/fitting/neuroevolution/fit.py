@@ -1,4 +1,4 @@
-""":func:`fit`, :func:`train` and :func:`test`."""
+""":func:`.fit`, :func:`.evolve` and :func:`.fit.test`."""
 
 import logging
 import pickle
