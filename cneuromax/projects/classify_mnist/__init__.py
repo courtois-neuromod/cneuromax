@@ -24,7 +24,7 @@ class TaskRunner(DeepLearningTaskRunner):
 
     @classmethod
     def store_configs(cls: type["TaskRunner"], store: ZenStore) -> None:
-        """Stores `hydra <https://hydra.cc>`_ ``project`` configs.
+        """Stores `Hydra <https://hydra.cc>`_ ``project`` configs.
 
         Args:
             store: See :paramref:`~.BaseTaskRunner.store_configs.store`.

@@ -1,4 +1,4 @@
-r"""Fitting `hydra <https://hydra.cc>`_ config storing."""
+r"""Fitting `Hydra <https://hydra.cc>`_ config storing."""
 
 from typing import Any
 

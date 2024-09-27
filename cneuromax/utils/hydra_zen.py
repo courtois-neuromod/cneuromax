@@ -57,7 +57,7 @@ Args:
 
 
 def destructure(x: Any) -> Any:  # noqa: ANN401
-    """Disables `hydra <https://hydra.cc>`_ config type checking.
+    """Disables `Hydra <https://hydra.cc>`_ config type checking.
 
     See `discussion <https://github.com/mit-ll-responsible-ai/\
         hydra-zen/discussions/621#discussioncomment-7938326>`_.

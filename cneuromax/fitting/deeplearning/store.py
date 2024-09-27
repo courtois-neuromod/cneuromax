@@ -1,4 +1,4 @@
-"""Deep Learning `hydra <https://hydra.cc>`_ config store."""
+"""Deep Learning `Hydra <https://hydra.cc>`_ config store."""
 
 from hydra_zen import ZenStore
 from lightning.pytorch import Trainer
@@ -9,7 +9,7 @@ from cneuromax.utils.hydra_zen import (
 
 
 def store_basic_trainer_config(store: ZenStore) -> None:
-    """Stores `hydra <https://hydra.cc>`_ ``trainer`` group configs.
+    """Stores `Hydra <https://hydra.cc>`_ ``trainer`` group configs.
 
     Config name: ``base``.
 

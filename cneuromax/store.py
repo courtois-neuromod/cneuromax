@@ -1,4 +1,4 @@
-r""":mod:`cneuromax` `hydra <https://hydra.cc>`_ config storing."""
+r""":mod:`cneuromax` `Hydra <https://hydra.cc>`_ config storing."""
 
 from collections.abc import Callable
 from typing import Any
@@ -13,7 +13,7 @@ def store_wandb_logger_configs(
     store: ZenStore,
     clb: Callable[..., Any],
 ) -> None:
-    """Stores `hydra <https://hydra.cc>`_ ``logger`` group configs.
+    """Stores `Hydra <https://hydra.cc>`_ ``logger`` group configs.
 
     Config names: ``wandb``, ``wandb_simexp``.
 

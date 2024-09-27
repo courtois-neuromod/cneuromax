@@ -1,4 +1,4 @@
-""":class:`.BaseLitModule` `hydra <https://hydra.cc>`_ config store."""
+""":class:`.BaseLitModule` `Hydra <https://hydra.cc>`_ config store."""
 
 from hydra_zen import ZenStore
 from torch.optim import SGD, Adam, AdamW  # type: ignore[attr-defined]
@@ -20,7 +20,7 @@ from cneuromax.utils.hydra_zen import (
 def store_basic_nnmodule_config(store: ZenStore) -> None:
     """Stores ``hydra`` ``litmodule/nnmodule`` group config.
 
-    Ref: `hydra <https://hydra.cc>`_
+    Ref: `Hydra <https://hydra.cc>`_
 
     Config name: ``mlp``.
 
@@ -37,7 +37,7 @@ def store_basic_nnmodule_config(store: ZenStore) -> None:
 def store_basic_optimizer_configs(store: ZenStore) -> None:
     """Stores ``hydra`` ``litmodule/optimizer`` group configs.
 
-    Ref: `hydra <https://hydra.cc>`_.
+    Ref: `Hydra <https://hydra.cc>`_.
 
     Config names: ``adam``, ``adamw``, ``sgd``.
 
@@ -52,7 +52,7 @@ def store_basic_optimizer_configs(store: ZenStore) -> None:
 def store_basic_scheduler_configs(store: ZenStore) -> None:
     """Stores ``hydra`` ``litmodule/scheduler`` group configs.
 
-    Ref: `hydra <https://hydra.cc>`_.
+    Ref: `Hydra <https://hydra.cc>`_.
 
     Config names: ``constant``, ``linear_warmup``.
 

@@ -321,7 +321,7 @@ class InitOptimParamsCheckpointConnector(_CheckpointConnector):
     Allows to make use of the instantiated optimizers'
     hyper-parameters rather than the checkpointed hyper-parameters.
     For use when resuming training with different optimizer
-    hyper-parameters (e.g. with a PBT `hydra <https://hydra.cc>`_
+    hyper-parameters (e.g. with a PBT `Hydra <https://hydra.cc>`_
     Sweeper).
     """
 

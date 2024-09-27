@@ -71,4 +71,4 @@ class BaseHydraConfig(
         ),
     ),
 ):
-    """Base `hydra <https://hydra.cc>`_ config."""
+    """Base `Hydra <https://hydra.cc>`_ config."""
