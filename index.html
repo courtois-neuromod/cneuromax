@@ -383,9 +383,10 @@ management.</p></li>
 </ul>
 <p><strong>2. Simplify machine learning workflows:</strong></p>
 <ul class="simple">
-<li><p>Hyperparameter optimization with <a class="reference external" href="https://github.com/Epistimio/orion">Orion</a>
-through its
-<a class="reference external" href="https://github.com/Epistimio/hydra_orion_sweeper">Hydra Sweeper plugin</a>.</p></li>
+<li><p>Hyperparameter optimization with
+<a class="reference external" href="https://github.com/Epistimio/hydra_orion_sweeper">Orion</a>,
+<a class="reference external" href="https://github.com/facebookresearch/how-to-autorl">AutoRL-Sweepers</a> &amp;
+<a class="reference external" href="https://hydra.cc/docs/plugins/optuna_sweeper">Optuna</a></p></li>
 <li><p>SLURM job definition, queuing and monitoring with
 <a class="reference external" href="https://github.com/facebookincubator/submitit">Submitit</a> through its
 <a class="reference external" href="https://hydra.cc/docs/plugins/submitit_launcher/">Hydra Launcher plugin</a>.</p></li>
@@ -412,7 +413,11 @@ type-checking &amp; unit tests upon contribution to the <code class="docutils li
 <ul class="simple">
 <li><p>An object-oriented structure for code sharing &amp; reusability.</p></li>
 <li><p>A mono-repository workspace with task/experiment-specific subdirectories.</p></li>
-<li><p>A very informative &amp; clear to navigate Python API reference.</p></li>
+<li><p>A very informative &amp; clear to navigate Python API reference thanks to
+<a class="reference external" href="https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html">Autodoc</a>
+and plugins like
+<a class="reference external" href="https://github.com/tox-dev/sphinx-autodoc-typehints">sphinx-autodoc-typehints</a>
+and <a class="reference external" href="https://pypi.org/project/sphinx-paramlinks/">sphinx-paramlinks</a>.</p></li>
 <li><p>Shared logging with a <a class="reference external" href="https://wandb.ai/site">Weights &amp; Biases</a> team space.</p></li>
 </ul>
 <p><strong>5. Promote high-quality and reproducible code by:</strong></p>
