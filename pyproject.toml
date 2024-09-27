@@ -55,7 +55,7 @@ dependencies = [
     "diffusers==0.30.3", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
     "datasets==3.0.1", # Datasets published on Hugging Face
-    "x-transformers==1.36.0", # Transformer utils
+    "x-transformers==1.37.4", # Transformer utils
     "mambapy==1.2.0", # Mamba
     "denoising-diffusion-pytorch==2.0.17", # Diffusion models
     "vector-quantize-pytorch==1.17.8", # Vector quantization utils
