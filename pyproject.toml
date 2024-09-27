@@ -51,7 +51,7 @@ dependencies = [
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "torchaudio==2.4.1", # Tensor manipulation on audio data
     "torchvision==0.19.1", # Tensor manipulation on vision data
-    "transformers==4.45.0", # Pre-trained models published on Hugging Face
+    "transformers==4.45.1", # Pre-trained models published on Hugging Face
     "diffusers==0.30.3", # Diffusion models published on Hugging Face
     "timm==1.0.9", # Image models
     "datasets==3.0.1", # Datasets published on Hugging Face
