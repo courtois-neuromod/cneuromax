@@ -33,9 +33,10 @@ management.
 [PyTorch](https://github.com/pytorch/pytorch) code.
 
 **2. Simplify machine learning workflows:**
-* Hyperparameter optimization with [Orion](https://github.com/Epistimio/orion)
-through its
-[Hydra Sweeper plugin](https://github.com/Epistimio/hydra_orion_sweeper).
+* Hyperparameter optimization with
+[Orion](https://github.com/Epistimio/hydra_orion_sweeper),
+[AutoRL-Sweepers](https://github.com/facebookresearch/how-to-autorl) &
+[Optuna](https://hydra.cc/docs/plugins/optuna_sweeper)
 * SLURM job definition, queuing and monitoring with
 [Submitit](https://github.com/facebookincubator/submitit) through its
 [Hydra Launcher plugin](https://hydra.cc/docs/plugins/submitit_launcher/).
@@ -60,7 +61,12 @@ type-checking & unit tests upon contribution to the ``main`` branch using
 **4. Facilitate researcher collaboration through:**
 * An object-oriented structure for code sharing & reusability.
 * A mono-repository workspace with task/experiment-specific subdirectories.
-* A very informative & clear to navigate Python API reference.
+* A very informative & clear to navigate Python API reference thanks to
+[Autodoc](https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html)
+and plugins like
+[sphinx-autodoc-typehints](https://github.com/tox-dev/sphinx-autodoc-typehints)
+and [sphinx-paramlinks](https://pypi.org/project/sphinx-paramlinks/).
+
 * Shared logging with a [Weights & Biases](https://wandb.ai/site) team space.
 
 **5. Promote high-quality and reproducible code by:**
