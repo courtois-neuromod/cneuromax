@@ -184,6 +184,7 @@ from beartype.claw import beartype_this_package
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
 beartype_this_package(conf=BeartypeConf(is_pep484_tower=True))
 warnings.filterwarnings(action="ignore", module="beartype")
+warnings.filterwarnings(action="ignore", module="GPy")
 warnings.filterwarnings(action="ignore", module="hydra")
 warnings.filterwarnings(action="ignore", module="lightning")
 warnings.filterwarnings(action="ignore", module="gymnasium")
