@@ -6,6 +6,8 @@ from importlib import import_module
 from types import ModuleType
 from typing import Any
 
+from cneuromax.runner import BaseTaskRunner
+
 
 def get_project_and_task_names() -> tuple[str, str]:
     """Retrieves ``project`` and ``task`` from script arguments.
@@ -95,4 +97,10 @@ def get_task_runner_class() -> Any:  # noqa: ANN401
             "define a ``TaskRunner`` class."
         )
         raise RuntimeError(error_msg) from error
+    if not issubclass(task_runner, BaseTaskRunner):
+        error_msg = (
+            "Invalid ``TaskRunner`` definition. ``TaskRunner`` must "
+            "be a subclass of ``BaseTaskRunner``."
+        )
+        raise TypeError(error_msg)
     return task_runner
