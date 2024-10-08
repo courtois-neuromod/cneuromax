@@ -78,7 +78,7 @@ dependencies = [
     "sphinx-autodoc-typehints==2.4.4", # More type hint customization
     "myst-parser==4.0.0", # Embeds markdown in sphinx
     # DEVELOPMENT
-    "black[jupyter]==24.8.0", # Python Formatter
+    "black[jupyter]==24.10.0", # Python Formatter
     "ruff==0.6.9", # Python Linter
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.35.1", # YAML linter
