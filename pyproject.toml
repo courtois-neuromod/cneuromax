@@ -62,7 +62,7 @@ dependencies = [
     "accelerate==1.0.0", # PEFT crashing w/ 0.30.0
     "peft==0.13.1", # Fine-tuning
     # fMRI libraries
-    "nibabel==5.2.1", # Neuroimaging format accessor
+    "nibabel==5.3.0", # Neuroimaging format accessor
     "nilearn==0.10.4", # ML for neuroimaging
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==4.0.0", # Inter-process communication
