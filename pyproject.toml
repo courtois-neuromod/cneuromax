@@ -59,7 +59,7 @@ dependencies = [
     "mambapy==1.2.0", # Mamba
     "denoising-diffusion-pytorch==2.1.1", # Diffusion models
     "vector-quantize-pytorch==1.18.1", # Vector quantization utils
-    "accelerate==1.0.0", # PEFT crashing w/ 0.30.0
+    "accelerate==1.0.1", # PEFT crashing w/ 0.30.0
     "peft==0.13.2", # Fine-tuning
     # fMRI libraries
     "nibabel==5.3.0", # Neuroimaging format accessor
