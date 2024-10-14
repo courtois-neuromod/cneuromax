@@ -83,7 +83,7 @@ dependencies = [
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.35.1", # YAML linter
     "pre-commit==4.0.1", # Git commit hooks
-    "mypy==1.11.2", # Static type checker
+    "mypy==1.12.0", # Static type checker
     "pytest==8.3.3", # Testing framework
     "pytest-cov==5.0.0", # Test coverage
 ]
