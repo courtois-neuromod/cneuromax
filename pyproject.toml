@@ -94,7 +94,7 @@ torchaudio = { index = "torch-cu124" }
 torchvision = { index = "torch-cu124" }
 
 [tool.uv.indexes]
-torch-cu121 = "https://download.pytorch.org/whl/cu124"
+torch-cu124 = "https://download.pytorch.org/whl/cu124"
 
 [tool.black]
 line-length = 79
