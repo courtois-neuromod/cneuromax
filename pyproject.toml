@@ -89,12 +89,12 @@ dependencies = [
 ]
 
 [tool.uv.sources]
-torch = { index = "torch-cu121" }
-torchaudio = { index = "torch-cu121" }
-torchvision = { index = "torch-cu121" }
+torch = { index = "torch-cu124" }
+torchaudio = { index = "torch-cu124" }
+torchvision = { index = "torch-cu124" }
 
 [tool.uv.indexes]
-torch-cu121 = "https://download.pytorch.org/whl/cu121"
+torch-cu121 = "https://download.pytorch.org/whl/cu124"
 
 [tool.black]
 line-length = 79
