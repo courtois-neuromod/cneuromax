@@ -88,13 +88,14 @@ dependencies = [
     "pytest-cov==5.0.0", # Test coverage
 ]
 
-[tool.uv.sources]
-torch = { index = "torch-cu121" }
-torchaudio = { index = "torch-cu121" }
-torchvision = { index = "torch-cu121" }
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu124"
 
-[tool.uv.indexes]
-torch-cu121 = "https://download.pytorch.org/whl/cu121"
+[tool.uv.sources]
+torch = { index = "pytorch" }
+torchaudio = { index = "pytorch" }
+torchvision = { index = "pytorch" }
 
 [tool.black]
 line-length = 79
