@@ -38,6 +38,6 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN pip install uv \
+RUN pip install uv==0.4.25 \
     && uv pip install --preview --system --no-cache-dir -e /cneuromax \
     && uv pip uninstall --preview --system cneuromax
