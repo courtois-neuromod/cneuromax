@@ -10,7 +10,7 @@ version = "0.0.1"
 # The following assumes that we build on top of the NGC PyTorch Docker image.
 dependencies = [
     # MANDATORY for cneuromax/
-    "torch==2.4.1+cu121", # Tensor manipulation
+    "torch==2.4.1", # Tensor manipulation
     "hydra-core==1.3.2", # Configuration management
     "hydra-zen==0.13.0", # Cleaner Hydra configs
     "beartype==0.19.0", # Dynamic type checking
@@ -49,8 +49,8 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/deeplearning/
     "lightning==2.4.0", # PyTorch wrapper to decrease boilerplate
     # OPTIONAL for cneuromax/fitting/deeplearning/
-    "torchaudio==2.4.1+cu121", # Tensor manipulation on audio data
-    "torchvision==0.19.1+cu121", # Tensor manipulation on vision data
+    "torchaudio==2.4.1", # Tensor manipulation on audio data
+    "torchvision==0.19.1", # Tensor manipulation on vision data
     "transformers==4.45.2", # Pre-trained models published on Hugging Face
     "diffusers==0.31.0", # Diffusion models published on Hugging Face
     "timm==1.0.11", # Image models
