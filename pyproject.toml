@@ -67,7 +67,7 @@ dependencies = [
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==4.0.1", # Inter-process communication
     "torchrl==0.6.0", # For reinforcement/imitation Learning tasks
-    "gymnasium[mujoco]==0.29.1", # RL/IL environments
+    "gymnasium[mujoco]==1.0.0", # RL/IL environments
     "ordered-set==4.1.0", # Sets w/ deterministic order
     # MANDATORY for docs/
     "sphinx==8.1.3", # Documentation generator
