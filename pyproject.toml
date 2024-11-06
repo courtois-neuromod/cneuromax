@@ -58,7 +58,7 @@ dependencies = [
     "x-transformers==1.42.6", # Transformer utils
     "mambapy==1.2.0", # Mamba
     "denoising-diffusion-pytorch==2.1.1", # Diffusion models
-    "vector-quantize-pytorch==1.18.5", # Vector quantization utils
+    "vector-quantize-pytorch==1.18.6", # Vector quantization utils
     "accelerate==1.1.0", # PEFT crashing w/ 0.30.0
     "peft==0.13.2", # Fine-tuning
     # fMRI libraries
