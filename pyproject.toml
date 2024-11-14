@@ -64,6 +64,8 @@ dependencies = [
     # fMRI libraries
     "nibabel==5.3.2", # Neuroimaging format accessor
     "nilearn==0.10.4", # ML for neuroimaging
+    # Audio libraries
+    "librosa==0.10.2.post1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==4.0.1", # Inter-process communication
     "torchrl==0.6.0", # For reinforcement/imitation Learning tasks
