@@ -35,7 +35,7 @@ dependencies = [
     """
     autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
     c7bc16f133031950b73cf38140367e75775b261b""", # Hyperparameter optimization
-    "jaxtyping==0.2.35", # Torch tensor annotations
+    "jaxtyping==0.2.36", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.8.0", # Makes shape transformations more readable
     "jupyterlab==4.3.1", # Jupyter notebook
