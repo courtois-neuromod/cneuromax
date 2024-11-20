@@ -37,7 +37,7 @@ class DeepLearningSubtaskConfig(FittingSubtaskConfig):
 
     compile: bool = False
     save_every_n_train_steps: int | None = 1
-    ckpt_path: str = "last"
+    ckpt_path: str | None = "last"
 
 
 @dataclass
