@@ -374,6 +374,8 @@
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="compute_generation_results">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.compute.html#cneuromax.fitting.neuroevolution.utils.compute.compute_generation_results">[docs]</a>
@@ -595,8 +597,8 @@
     <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
     <span class="n">fitnesses_mean</span> <span class="o">=</span> <span class="n">fitnesses</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
     <span class="n">fitnesses_max</span> <span class="o">=</span> <span class="n">fitnesses</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">curr_gen</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fitnesses_mean</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">fitnesses_max</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">curr_gen</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">fitnesses_mean</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">fitnesses_max</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">wandb</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
         <span class="p">{</span>
             <span class="s2">&quot;gen&quot;</span><span class="p">:</span> <span class="n">curr_gen</span><span class="p">,</span>

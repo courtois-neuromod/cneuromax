@@ -405,6 +405,8 @@
 
 <span class="n">MAX_INT</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="mi">31</span> <span class="o">-</span> <span class="mi">1</span>
 
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="fit">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.fit">[docs]</a>
@@ -612,10 +614,10 @@
         <span class="c1"># Validate path &amp; load state</span>
         <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;state.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No saved state found at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No saved state found at </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;evaluation.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Already evaluated generation </span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Already evaluated generation </span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
             <span class="k">continue</span>
         <span class="k">with</span> <span class="p">(</span><span class="n">path</span> <span class="o">/</span> <span class="s2">&quot;state.pkl&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -639,7 +641,7 @@
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pop_size</span> <span class="o">//</span> <span class="mi">2</span><span class="p">):</span>
             <span class="n">agent</span><span class="p">:</span> <span class="n">BaseAgent</span> <span class="o">=</span> <span class="n">agents</span><span class="p">[</span><span class="n">selected_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]][</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">num_tests</span><span class="p">):</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test #</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, agent #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, generation #</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Test #</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">, agent #</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, generation #</span><span class="si">{</span><span class="n">gen</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
                 <span class="n">seed_all</span><span class="p">(</span><span class="n">MAX_INT</span> <span class="o">-</span> <span class="n">j</span><span class="p">)</span>
                 <span class="c1"># env,fit,env+fit,env+fit+mem: reset</span>
                 <span class="c1"># mem,mem+fit: no reset</span>
