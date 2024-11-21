@@ -28,6 +28,8 @@ from cneuromax.fitting.utils.hydra import get_launcher_config
 from cneuromax.utils.beartype import one_of
 from cneuromax.utils.misc import can_connect_to_internet
 
+log = logging.getLogger(__name__)
+
 
 def instantiate_trainer(
     trainer_partial: partial[Trainer],
@@ -230,7 +232,7 @@ def find_good_per_device_batch_size(
             default_root_dir=output_dir + "/lightning/tuner/",
             callbacks=[batch_size_finder],
         )
-        logging.info("Finding good `batch_size` parameter...")
+        log.info("Finding good `batch_size` parameter...")
         per_device_batch_size = None
         # Prevents the `fit` method from raising a `KeyError`, see:
         # https://github.com/Lightning-AI/pytorch-lightning/issues/18114
@@ -248,7 +250,7 @@ def find_good_per_device_batch_size(
         )
     if per_device_batch_size == 0:
         per_device_batch_size = 1
-    logging.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
+    log.info(f"Best `batch_size` parameter: {per_device_batch_size}.")
     return per_device_batch_size
 
 
@@ -274,9 +276,9 @@ def find_good_per_device_num_workers(
         A roughly optimal ``per_device_num_workers`` value.
     """
     launcher_config = get_launcher_config()
-    logging.info("Finding good `num_workers` parameter...")
+    log.info("Finding good `num_workers` parameter...")
     if launcher_config.cpus_per_task in [None, 1]:
-        logging.info("Only 1 worker available/provided. Returning 0.")
+        log.info("Only 1 worker available/provided. Returning 0.")
         return 0
     # Static type checking purposes, already narrowed down to `int`
     # through the `if` statement above.
@@ -298,7 +300,7 @@ def find_good_per_device_num_workers(
                 if num_data_passes == max_num_data_passes:
                     break
         times[num_workers] = time.time() - start_time
-        logging.info(
+        log.info(
             f"num_workers: {num_workers}, time taken: {times[num_workers]}",
         )
         # If the time taken is not decreasing, stop the search.
@@ -311,7 +313,7 @@ def find_good_per_device_num_workers(
         ):
             break
     best_time = int(np.argmin(times))
-    logging.info(f"Best `num_workers` parameter: {best_time}.")
+    log.info(f"Best `num_workers` parameter: {best_time}.")
     return best_time
 
 

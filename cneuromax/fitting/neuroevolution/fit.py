@@ -52,6 +52,8 @@ from .config import (
 
 MAX_INT = 2**31 - 1
 
+log = logging.getLogger(__name__)
+
 
 def fit(
     space: BaseSpace,
@@ -251,10 +253,10 @@ def test(
         # Validate path & load state
         path = Path(f"{config.output_dir}/{gen}/")
         if not (path / "state.pkl").is_file():
-            logging.info(f"No saved state found at {path}.")
+            log.info(f"No saved state found at {path}.")
             continue
         if (path / "evaluation.pkl").is_file():
-            logging.info(f"Already evaluated generation {gen}.")
+            log.info(f"Already evaluated generation {gen}.")
             continue
         with (path / "state.pkl").open(mode="rb") as f:
             state = pickle.load(f)
@@ -278,7 +280,7 @@ def test(
         for i in range(pop_size // 2):
             agent: BaseAgent = agents[selected_indices[i]][0]
             for j in range(config.num_tests):
-                logging.info(f"Test #{j}, agent #{i}, generation #{gen}.")
+                log.info(f"Test #{j}, agent #{i}, generation #{gen}.")
                 seed_all(MAX_INT - j)
                 # env,fit,env+fit,env+fit+mem: reset
                 # mem,mem+fit: no reset
