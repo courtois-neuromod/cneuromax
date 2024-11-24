@@ -9,7 +9,7 @@ from cneuromax.fitting.neuroevolution.space.reinforcement import (
 )
 
 __all__ = [
+    "BaseReinforcementSpace",
     "BaseSpace",
     "BaseSpaceConfig",
-    "BaseReinforcementSpace",
 ]

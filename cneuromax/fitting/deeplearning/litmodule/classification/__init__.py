@@ -5,4 +5,4 @@ from cneuromax.fitting.deeplearning.litmodule.classification.base import (
     BaseClassificationLitModuleConfig,
 )
 
-__all__ = ["BaseClassificationLitModuleConfig", "BaseClassificationLitModule"]
+__all__ = ["BaseClassificationLitModule", "BaseClassificationLitModuleConfig"]

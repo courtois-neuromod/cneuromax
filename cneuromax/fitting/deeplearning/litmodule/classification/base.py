@@ -1,7 +1,7 @@
 """:class:`.BaseClassificationLitModule` & its config."""
 
 from abc import ABC
-from collections.abc import Callable  # noqa: TCH003
+from collections.abc import Callable  # noqa: TC003
 from dataclasses import dataclass
 from typing import Annotated as An
 from typing import Any
