@@ -143,11 +143,11 @@ ignore = [
             # https://docs.astral.sh/ruff/rules/suspicious-pickle-usage/
             # Disabled due to current implementation of checkpointing
             # in `cneuromax.fitting.neuroevolution`.
-    "TCH001", # `typing-only-first-party-import`
+    "TC001", # `typing-only-first-party-import`
               # Move application import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
               # Disabled as we use Beartype for dynamic type checking.
-    "TCH002", # `typing-only-third-party-import`
+    "TC002", # `typing-only-third-party-import`
               # Move third-party import {} into a type-checking block
               # https://docs.astral.sh/ruff/rules/typing-only-third-party-import/
               # Disabled as we use Beartype for dynamic type checking.
