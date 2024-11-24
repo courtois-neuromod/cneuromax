@@ -12,10 +12,10 @@ from .datamodule import MNISTDataModule, MNISTDataModuleConfig
 from .litmodule import MNISTClassificationLitModule
 
 __all__ = [
-    "TaskRunner",
-    "MNISTDataModuleConfig",
-    "MNISTDataModule",
     "MNISTClassificationLitModule",
+    "MNISTDataModule",
+    "MNISTDataModuleConfig",
+    "TaskRunner",
 ]
 
 
