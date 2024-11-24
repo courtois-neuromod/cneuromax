@@ -12,7 +12,7 @@ from lightning.pytorch.utilities.types import (
     OptimizerLRSchedulerConfig,
 )
 from torch import Tensor, nn
-from torch.optim import Optimizer  # type: ignore[attr-defined]
+from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
 from cneuromax.fitting.deeplearning.utils.typing import Batched_data_type

@@ -21,6 +21,8 @@ from cneuromax.fitting.neuroevolution.utils.type import (
 from cneuromax.utils.beartype import ge
 from cneuromax.utils.mpi4py import get_mpi_variables
 
+log = logging.getLogger(__name__)
+
 
 def compute_generation_results(
     generation_results: Generation_results_type | None,
@@ -231,8 +233,8 @@ def compute_total_num_env_steps_and_process_fitnesses(
     elapsed_time = time.time() - start_time
     fitnesses_mean = fitnesses.mean(axis=0)
     fitnesses_max = fitnesses.max(axis=0)
-    logging.info(f"{curr_gen}: {elapsed_time}")
-    logging.info(f"{fitnesses_mean}\n{fitnesses_max}\n")
+    log.info(f"{curr_gen}: {elapsed_time}")
+    log.info(f"{fitnesses_mean}\n{fitnesses_max}\n")
     wandb.log(
         {
             "gen": curr_gen,

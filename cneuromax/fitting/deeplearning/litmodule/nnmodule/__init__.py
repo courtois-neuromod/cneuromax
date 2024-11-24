@@ -5,4 +5,4 @@ from cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp import (
     MLPConfig,
 )
 
-__all__ = ["MLPConfig", "MLP"]
+__all__ = ["MLP", "MLPConfig"]

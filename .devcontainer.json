@@ -17,10 +17,10 @@
           "black-formatter.args": [
               "--config=pyproject.toml"
           ],
-          "esbonio.server.pythonPath": "/usr/bin/python3",
-          "esbonio.sphinx.quiet": true,
           "esbonio.sphinx.buildDir": "${workspaceFolder}/docs/_build/html",
           "esbonio.sphinx.confDir": "${workspaceFolder}/docs/",
+          "esbonio.server.hideSphinxOutput": true,
+          "esbonio.server.pythonPath": "/usr/bin/python3",
           "esbonio.sphinx.srcDir": "${workspaceFolder}/docs/",
           "files.insertFinalNewline": true,
           "files.trimTrailingWhitespace": true,
@@ -28,12 +28,13 @@
           "mypy.configFile": "pyproject.toml",
           "notebook.formatOnSave.enabled": true,
           "notebook.codeActionsOnSave": {
-            "notebook.source.organizeImports": true
+            "notebook.source.organizeImports": "explicit"
           },
           "python.analysis.ignore": [
               "/**"
           ],
           "restructuredtext.linter.doc8.executablePath": "/usr/local/bin/doc8",
+          "restructuredtext.preview.sphinx.disabled": true,
           "restructuredtext.syntaxHighlighting.disabled": true,
           "ruff.lint.arg": [
               "--config=pyproject.toml"
@@ -48,9 +49,9 @@
         }
       }
     },
-    "postAttachCommand": "pre-commit install",
     "containerEnv": {
       "PYTHONPATH": "/workspaces/cneuromax",
       "CNEUROMAX_PATH": "/workspaces/cneuromax"
-    }
+    },
+    "postAttachCommand": "pre-commit install"
   }

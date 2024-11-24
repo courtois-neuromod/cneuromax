@@ -54,6 +54,7 @@ class BaseDataModuleConfig:
             this value skips the num workers search in
             :func:`.find_good_per_device_num_workers` which is
             not recommended for resource efficiency.
+        shuffle_val_dataset
     """
 
     data_dir: An[str, not_empty()] = "${config.data_dir}"
@@ -61,6 +62,7 @@ class BaseDataModuleConfig:
     max_per_device_batch_size: An[int, ge(1)] | None = None
     fixed_per_device_batch_size: An[int, ge(1)] | None = None
     fixed_per_device_num_workers: An[int, ge(0)] | None = None
+    shuffle_val_dataset: bool = True
 
 
 class BaseDataModule(LightningDataModule, ABC):
@@ -182,7 +184,10 @@ class BaseDataModule(LightningDataModule, ABC):
             A new validation
                 :class:`torch.utils.data.DataLoader` instance.
         """
-        return self.x_dataloader(dataset=self.datasets.val, shuffle=False)
+        return self.x_dataloader(
+            dataset=self.datasets.val,
+            shuffle=self.config.shuffle_val_dataset,
+        )
 
     @final
     def test_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:

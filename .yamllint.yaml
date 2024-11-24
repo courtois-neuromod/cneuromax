@@ -1,6 +1,3 @@
 rules:
-  line-length:
-    max: 79
-    allow-non-breakable-words: true
   indentation:
     spaces: consistent
