@@ -1,0 +1,4 @@
+db:
+  driver: toto
+  user: rico
+  password: popo

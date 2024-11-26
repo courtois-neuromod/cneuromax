@@ -86,13 +86,13 @@ def compute_save_points(
     """Compute generations at which to save the state.
 
     Args:
-        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
+        output_dir: See :paramref:`~.BaseRunConfig.output_dir`.
         total_num_gens: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.total_num_gens`.
+            :paramref:`~.NeuroevolutionRunConfig.total_num_gens`.
         save_interval: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.save_interval`.
+            :paramref:`~.NeuroevolutionRunConfig.save_interval`.
         save_first_gen: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.save_first_gen`.
+            :paramref:`~.NeuroevolutionRunConfig.save_first_gen`.
 
     Returns:
         The largest previous number of generations and
@@ -137,7 +137,7 @@ def compute_start_time_and_seeds(
         num_pops: See :meth:`~.BaseSpace.num_pops`.
         pop_size: Total number of agent per population.
         pop_merge: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionRunConfig.pop_merge`.
 
     Returns:
         The start time for the current generation,
@@ -206,7 +206,7 @@ def compute_total_num_env_steps_and_process_fitnesses(
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         start_time: Generation start time.
         pop_merge: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionRunConfig.pop_merge`.
 
     Returns:
         The updated total number of environment steps.

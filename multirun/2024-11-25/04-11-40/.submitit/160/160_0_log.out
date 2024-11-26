@@ -1,0 +1,8 @@
+submitit INFO (2024-11-25 04:11:52,351) - Starting with JobEnvironment(job_id=160, hostname=943360c8ccb3, local_rank=0(1), node=0(1), global_rank=0(1))
+submitit INFO (2024-11-25 04:11:52,351) - Loading pickle: /home/max/Dropbox/cneuromax/multirun/2024-11-25/04-11-40/.submitit/160/160_submitted.pkl
+cuf
+True
+submitit INFO (2024-11-25 04:11:56,138) - Job completed successfully
+[2024-11-25 04:11:56,138][submitit][INFO] - Job completed successfully
+submitit INFO (2024-11-25 04:11:56,142) - Exiting after successful completion
+[2024-11-25 04:11:56,142][submitit][INFO] - Exiting after successful completion

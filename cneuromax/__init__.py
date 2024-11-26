@@ -1,23 +1,105 @@
 """:mod:`cneuromax` package.
 
+Keywords
+========
+
+``interface``, ``service``, ``project``, ``schedule``, ``task``, ``run``
+
+Structure
+=========
+
+```
+cneuromax/
+├─ INTERFACE_NAME_1/ # ex: fitting
+│  ├─ SERVICE_NAME_1/ # ex: deeplearning
+│  │  └─ ...
+│  └─ ...
+├─ ...
+└─ projects/
+   ├─ PROJECT_NAME_1/ # ex: classify_mnist
+   │  ├─ schedule/
+   │  │  ├─ SCHEDULE_NAME_1.yaml
+   │  │  └─ ...
+   │  └─ task/
+   │     ├─ TASK_NAME_1.yaml # ex: mlp mnist classification
+   │     └─ ...
+   └─ ...
+```
+
+Examples
+========
+
+- ``project``
+
+MNIST classification: :mod:`cneuromax.projects.classify_mnist` (`source
+folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
+cneuromax/projects/classify_mnist>`_)
+
+Reinforcement Learning on Control Tasks w/ Neuroevolution:
+:mod:`cneuromax.projects.neuroevo_rl_control`
+(`source folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
+cneuromax/projects/neuroevo_rl_control>`_)
+
+- ``task``
+
+MLP MNIST classification: ``cneuromax/projects/classify_mnist/task/\
+mlp.yaml`` (`source file <https://github.com/courtois-neuromod/cneuromax/\
+tree/main/cneuromax/projects/classify_mnist/task/mlp.yaml>`_)
+
 Execution
 =========
 
+Running a ``task``:
+
 ``python -m cneuromax project=PROJECT_NAME task=TASK_NAME``.
 
-Terminology
-===========
+Running a ``schedule`` (a sequence of ``tasks``):
 
-1. Quck definitions
-~~~~~~~~~~~~~~~~~~~
+``python -m cneuromax project=PROJECT_NAME schedule=SCHEDULE_NAME``.
 
-``subtask``: Sub-work unit of a ``task`` (ex: a model training run
+I. Overview & Examples
+~~~~~~~~~~~~~~~~~~~~~~
+
+- ``project``
+
+
+
+- ``task``
+
+
+
+1. ``project``
+~~~~~~~~~~~~~~
+
+a. Examples
+-----------
+
+
+
+Contribution
+============
+
+To create ``PROJECT_NAME`` at path
+``cneuromax/projects/PROJECT_NAME/``, create a class to inherit from
+the :class:`.BaseTaskRunner` class/sub-class implemented by the
+``service`` or other ``project`` of your choice (ex:
+:class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
+You probabaly will want to override
+:meth:`~.BaseTaskRunner.store_configs`.
+
+For succinctness (will reduce your command length), we suggest writing
+the above class in the ``__init__.py`` file of your ``project``.
+
+
+``run``: Sub-work unit of a ``task`` (ex: a model training run
 with a specific set of hyper-parameters).
 
 ``task``: Some work unit specified by a `Hydra <https://hydra.cc>`_
 ``.yaml`` or a :doc:`hydra-zen <hydra-zen:index>` Python config that
 specifies its execution (ex: the training of the same type of model
 with various hyper-parameters).
+
+``scheduler``:
 
 ``project``: A collection of ``tasks`` + cross-``task``
 functionality (ex: a custom
@@ -90,42 +172,10 @@ To create ``SERVICE_NAME`` at path
 ``cneuromax/.../INTERFACE_LATEST_NAME/SERVICE_NAME``, create a class
 to inherit from the :class:`.BaseTaskRunner` class/sub-class implemented
 by ``INTERFACE_LATEST_NAME`` and implement as little as
-:meth:`.BaseTaskRunner.run_subtask` (ex:
+:meth:`.BaseTaskRunner.run` (ex:
 :class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
 
-4. Project
-~~~~~~~~~~
 
-a. Project overview
--------------------
-
-A ``project`` refers to a Python package located at
-``cneuromax/projects/PROJECT_NAME/``.
-
-b. Example projects
--------------------
-
-MNIST classification: :mod:`cneuromax.projects.classify_mnist` (`source
-folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
-cneuromax/projects/classify_mnist>`_)
-
-Control tasks neuroevolution: :mod:`cneuromax.projects.control_nevo`
-(`source folder <https://github.com/courtois-neuromod/cneuromax/tree/main/\
-cneuromax/projects/control_nevo>`_)
-
-c. Creating a new project
--------------------------
-
-To create ``PROJECT_NAME`` at path
-``cneuromax/projects/PROJECT_NAME/``, create a class to inherit from
-the :class:`.BaseTaskRunner` class/sub-class implemented by the
-``service`` or other ``project`` of your choice (ex:
-:class:`cneuromax.fitting.deeplearning.runner.DeepLearningTaskRunner`).
-You probabaly will want to override
-:meth:`~.BaseTaskRunner.store_configs`.
-
-For succinctness (will reduce your command length), we suggest writing
-the above class in the ``__init__.py`` file of your ``project``.
 
 5. Task
 ~~~~~~~
@@ -142,9 +192,7 @@ overwritten :meth:`.BaseTaskRunner.store_configs`.
 b. Example tasks
 ----------------
 
-MLP MNIST classification: ``cneuromax/projects/classify_mnist/task/\
-mlp.yaml`` (`source file <https://github.com/courtois-neuromod/cneuromax/\
-tree/main/cneuromax/projects/classify_mnist/task/mlp.yaml>`_)
+
 
 Acrobot neuroevolution: Check out the contents of
 :func:`cneuromax.projects.control_nevo.TaskRunner.store_configs`.
@@ -165,28 +213,57 @@ __main__.py
 .. highlight:: python
 .. code-block:: python
 
+    from omegaconf import OmegaConf
+
     from cneuromax.runner import BaseTaskRunner
     from cneuromax.utils.runner import get_task_runner_class
     from cneuromax.utils.wandb import login_wandb
 
     if __name__ == "__main__":
         TaskRunner: type[BaseTaskRunner] = get_task_runner_class()
+        OmegaConf.register_new_resolver("eval", eval)
         login_wandb()
-        TaskRunner.store_configs_and_run_task()
+        TaskRunner.store_configs_and_start_runs()
 """
 
-import os
-import warnings
+from collections.abc import Callable
+from typing import Any
 
 from beartype import BeartypeConf
 from beartype.claw import beartype_this_package
+from hydra_zen import ZenStore
+from lightning.pytorch.loggers.wandb import WandbLogger
 
-os.environ["OPENBLAS_NUM_THREADS"] = "1"
+from cneuromax.utils.hydra_zen import pfs_builds
+
 beartype_this_package(conf=BeartypeConf(is_pep484_tower=True))
-warnings.filterwarnings(action="ignore", module="beartype")
-warnings.filterwarnings(action="ignore", module="hydra")
-warnings.filterwarnings(action="ignore", module="hydra_plugins")
-warnings.filterwarnings(action="ignore", module="lightning")
-warnings.filterwarnings(action="ignore", module="gymnasium")
-warnings.filterwarnings(action="ignore", module="torchrl")
-warnings.simplefilter(action="ignore", category=FutureWarning)
+
+
+def store_wandb_logger_configs(
+    store: ZenStore,
+    clb: Callable[..., Any],
+) -> None:
+    """Stores `Hydra <https://hydra.cc>`_ ``logger`` group configs.
+
+    Config names: ``wandb``, ``wandb_simexp``.
+
+    Args:
+        store: See :paramref:`~.BaseTaskRunner.store_configs.store`.
+        clb: `W&B <https://wandb.ai/>`_ initialization callable.
+    """
+    dir_key = "save_dir" if clb == WandbLogger else "dir"
+    base_args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
+        "name": "${schedule}/${task}/${hydra:job.override_dirname}",
+        dir_key: "${hydra:sweep.dir}/${now:%Y-%m-%d-%H-%M-%S}",
+        "project": "${project}",
+    }
+    store(
+        pfs_builds(clb, **base_args),
+        group="logger",
+        name="wandb",
+    )
+    store(
+        pfs_builds(clb, **base_args, entity="cneuroml"),
+        group="logger",
+        name="wandb_simexp",
+    )

@@ -8,7 +8,7 @@ from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
 from cneuromax.fitting.deeplearning.config import (
-    DeepLearningSubtaskConfig,
+    DeepLearningRunConfig,
     DeepLearningTaskConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import (
@@ -58,15 +58,15 @@ class DeepLearningTaskRunner(FittingTaskRunner):
         store(DeepLearningTaskConfig, name="config")
 
     @classmethod
-    def run_subtask(
+    def run(
         cls: type["DeepLearningTaskRunner"],
         trainer: partial[Trainer],
         datamodule: BaseDataModule,
         litmodule: BaseLitModule,
         logger: partial[WandbLogger],
-        config: DeepLearningSubtaskConfig,
+        config: DeepLearningRunConfig,
     ) -> Any:  # noqa: ANN401
-        """Runs the ``subtask``."""
+        """Starts the ``run``."""
         return train(
             trainer=trainer,
             datamodule=datamodule,

@@ -43,10 +43,10 @@ def instantiate_trainer(
     Args:
         trainer_partial
         logger_partial
-        device: See :paramref:`~.FittingSubtaskConfig.device`.
-        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
+        device: See :paramref:`~.FittingRunConfig.device`.
+        output_dir: See :paramref:`~.BaseRunConfig.output_dir`.
         save_every_n_train_steps: See
-            :paramref:`~.DeepLearningSubtaskConfig.save_every_n_train_steps`.
+            :paramref:`~.DeepLearningRunConfig.save_every_n_train_steps`.
 
     Returns:
         A :class:`lightning.pytorch.Trainer` instance.
@@ -110,8 +110,8 @@ def set_batch_size_and_num_workers(
         trainer
         datamodule
         litmodule
-        device: See :paramref:`~.FittingSubtaskConfig.device`.
-        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
+        device: See :paramref:`~.FittingRunConfig.device`.
+        output_dir: See :paramref:`~.BaseRunConfig.output_dir`.
     """
     if not datamodule.config.fixed_per_device_batch_size:
         proposed_per_device_batch_size = find_good_per_device_batch_size(
@@ -176,9 +176,9 @@ def find_good_per_device_batch_size(
     Args:
         litmodule
         datamodule
-        device: See :paramref:`~.FittingSubtaskConfig.device`.
+        device: See :paramref:`~.FittingRunConfig.device`.
         device_ids: See :class:`lightning.pytorch.Trainer.device_ids`.
-        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
+        output_dir: See :paramref:`~.BaseRunConfig.output_dir`.
 
     Returns:
         A roughly optimal ``per_device_batch_size`` value.

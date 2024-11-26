@@ -18,7 +18,7 @@ def store_launcher_configs(store: ZenStore) -> None:
         store: See :meth:`~.BaseTaskRunner.store_configs`.
     """
     # Setting up the launchers is a little bit different from the other
-    # configs. Fields get resolved before the ``subtask`` is created.
+    # configs. Fields get resolved before the ``run`` is created.
     args: dict[str, Any] = {  # `fs_builds`` does not like dict[str, str]
         "submitit_folder": "${hydra.sweep.dir}/${now:%Y-%m-%d-%H-%M-%S}/",
         "stderr_to_stdout": True,

@@ -15,7 +15,7 @@ def setup_wandb(logger: Callable[..., Any], output_dir: str) -> None:
 
     Args:
         logger: See :func:`wandb.init`.
-        output_dir: See :paramref:`~.BaseSubtaskConfig.output_dir`.
+        output_dir: See :paramref:`~.BaseRunConfig.output_dir`.
     """
     comm, rank, _ = get_mpi_variables()
     if rank != 0:

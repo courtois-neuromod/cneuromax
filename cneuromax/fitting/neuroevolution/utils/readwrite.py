@@ -19,7 +19,7 @@ def find_existing_save_points(output_dir: str) -> list[int]:
 
     Args:
         output_dir: See
-            :paramref:`~.BaseSubtaskConfig.output_dir`.
+            :paramref:`~.BaseRunConfig.output_dir`.
 
     Returns:
         The list of existing save points.
@@ -48,11 +48,11 @@ def load_state(
 
     Args:
         prev_num_gens: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.prev_num_gens`.
+            :paramref:`~.NeuroevolutionRunConfig.prev_num_gens`.
         len_agents_batch: See
             :paramref:`~.initialize_agents.len_agents_batch`.
         output_dir: See
-            :paramref:`~.BaseSubtaskConfig.output_dir`.
+            :paramref:`~.BaseRunConfig.output_dir`.
 
     Returns:
         * See ~.compute_generation_results.agents_batch`.
@@ -105,7 +105,7 @@ def save_state(
             :paramref:`~.compute_total_num_env_steps_and_process_fitnesses.total_num_env_steps`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         output_dir: See
-            :paramref:`~.BaseSubtaskConfig.output_dir`.
+            :paramref:`~.BaseRunConfig.output_dir`.
     """
     comm, rank, _ = get_mpi_variables()
     batched_agents: list[list[list[BaseAgent]]] | None = comm.gather(

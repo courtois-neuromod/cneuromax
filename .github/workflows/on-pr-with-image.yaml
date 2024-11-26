@@ -72,7 +72,7 @@ jobs:
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=classify_mnist task=mlp
           logger.entity=maximilienlc litmodule.config.log_val_wandb=True
-  neuroevorl_control-acrobot:
+  neuroevo_rl_control-acrobot:
     needs: docker-build
     runs-on: self-hosted
     steps:
@@ -80,10 +80,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Create WANDB_KEY.txt file
         run: echo ${{ secrets.WANDB_KEY_MLC }} > ${PWD}/WANDB_KEY.txt
-      - name: Runs project=neuroevorl_control task=acrobot
+      - name: Runs project=neuroevo_rl_control task=acrobot
         run: >
           docker run --privileged --gpus all --rm -e CNEUROMAX_PATH=${PWD}
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
-          python3 -m cneuromax project=neuroevorl_control task=acrobot
+          python3 -m cneuromax project=neuroevo_rl_control task=acrobot
           logger.entity=maximilienlc config.total_num_gens=10

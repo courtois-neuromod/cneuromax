@@ -105,10 +105,10 @@ def evaluate_on_gpu(
         space: See :paramref:`~.evaluate_on_cpu.space`.
         curr_gen: See :paramref:`~.BaseSpace.curr_gen`.
         transfer: Whether any of
-            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`,
-            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`
+            :paramref:`~.NeuroevolutionRunConfig.env_transfer`,
+            :paramref:`~.NeuroevolutionRunConfig.fit_transfer`
             or
-            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`
+            :paramref:`~.NeuroevolutionRunConfig.mem_transfer`
             is ``True``.
 
     Returns:

@@ -1,4 +1,4 @@
-""":class:`.BaseSubtaskConfig` & :class:`.BaseHydraConfig`.
+""":class:`.BaseRunConfig` & :class:`.BaseHydraConfig`.
 
 Check-out the `hydra docs \
 <https://hydra.cc/docs/tutorials/structured_config/intro/>`_
@@ -26,12 +26,12 @@ from cneuromax.utils.hydra_zen import fs_builds
 
 
 @dataclass
-class BaseSubtaskConfig:
-    """Base ``subtask`` config.
+class BaseRunConfig:
+    """Base ``run`` config.
 
     Args:
-        output_dir: Path to the ``subtask`` output directory. Every
-            artifact generated during the ``subtask`` will be stored
+        output_dir: Path to the ``run`` output directory. Every
+            artifact generated during the ``run`` will be stored
             in this directory.
         data_dir: Path to the data directory. This directory is
             shared between ``task`` runs. It is used to store

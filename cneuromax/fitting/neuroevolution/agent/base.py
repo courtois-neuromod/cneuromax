@@ -17,11 +17,11 @@ class BaseAgentConfig:
 
     Args:
         env_transfer: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.env_transfer`.
+            :paramref:`~.NeuroevolutionRunConfig.env_transfer`.
         fit_transfer: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.fit_transfer`.
+            :paramref:`~.NeuroevolutionRunConfig.fit_transfer`.
         mem_transfer: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.mem_transfer`.
+            :paramref:`~.NeuroevolutionRunConfig.mem_transfer`.
     """
 
     env_transfer: bool = "${config.env_transfer}"  # type: ignore[assignment]
@@ -53,7 +53,7 @@ class BaseAgent(ABC):
             index of ``1`` means that the agent is in the
             discriminator population.
         pops_are_merged: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionRunConfig.pop_merge`.
 
     Attributes:
         config (BaseAgentConfig)

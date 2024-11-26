@@ -10,7 +10,7 @@ def validate_space(space: BaseSpace, *, pop_merge: bool) -> None:
     Args:
         space: See :paramref:`~.evaluate_on_cpu.space`.
         pop_merge: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.pop_merge`.
+            :paramref:`~.NeuroevolutionRunConfig.pop_merge`.
     """
     launcher_config = get_launcher_config()
     if pop_merge and space.num_pops != 2:  # noqa: PLR2004

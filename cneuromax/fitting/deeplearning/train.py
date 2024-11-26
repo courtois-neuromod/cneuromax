@@ -7,7 +7,7 @@ from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
 from cneuromax.fitting.deeplearning.config import (
-    DeepLearningSubtaskConfig,
+    DeepLearningRunConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import BaseDataModule
 from cneuromax.fitting.deeplearning.litmodule import BaseLitModule
@@ -25,7 +25,7 @@ def train(
     datamodule: BaseDataModule,
     litmodule: BaseLitModule,
     logger: partial[WandbLogger],
-    config: DeepLearningSubtaskConfig,
+    config: DeepLearningRunConfig,
 ) -> float:
     """Trains a Deep Neural Network.
 

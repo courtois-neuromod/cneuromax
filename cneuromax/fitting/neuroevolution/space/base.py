@@ -17,8 +17,8 @@ class BaseSpaceConfig:
 
     Args:
         eval_num_steps: See
-            :paramref:`~.NeuroevolutionSubtaskConfig.eval_num_steps`.
-        logging: See :paramref:`~.NeuroevolutionSubtaskConfig.logging`.
+            :paramref:`~.NeuroevolutionRunConfig.eval_num_steps`.
+        logging: See :paramref:`~.NeuroevolutionRunConfig.logging`.
     """
 
     eval_num_steps: An[int, ge(0)] = "${config.eval_num_steps}"  # type: ignore[assignment]

@@ -39,8 +39,8 @@ class BaseDataModuleConfig:
     """Holds :class:`BaseDataModule` config values.
 
     Args:
-        data_dir: See :paramref:`~.BaseSubtaskConfig.data_dir`.
-        device: See :paramref:`~.FittingSubtaskConfig.device`.
+        data_dir: See :paramref:`~.BaseRunConfig.data_dir`.
+        device: See :paramref:`~.FittingRunConfig.device`.
         max_per_device_batch_size: See
             :attr:`~BaseDataModule.per_device_batch_size`. Sets an
             upper bound on the aforementioned attribute.

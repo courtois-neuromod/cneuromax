@@ -9,8 +9,8 @@ from hydra_zen import ZenStore
 
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.config import (
-    NeuroevolutionSubtaskConfig,
-    NeuroevolutionSubtaskTestConfig,
+    NeuroevolutionRunConfig,
+    NeuroevolutionRunTestConfig,
     NeuroevolutionTaskConfig,
 )
 from cneuromax.fitting.neuroevolution.fit import fit
@@ -40,18 +40,18 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
         super().store_configs(store=store)
         store_wandb_logger_configs(store, clb=wandb.init)
         store(NeuroevolutionTaskConfig, name="config")
-        store(NeuroevolutionSubtaskTestConfig, group="config", name="test")
+        store(NeuroevolutionRunTestConfig, group="config", name="test")
 
     @staticmethod
-    def validate_subtask_config(config: NeuroevolutionSubtaskConfig) -> None:
-        """Validates the ``subtask`` config.
+    def validate_run_config(config: NeuroevolutionRunConfig) -> None:
+        """Validates the ``run`` config.
 
         Args:
             config
 
         Raises:
             RuntimeError: If
-                :paramref:`~.NeuroevolutionSubtaskConfig.device` is
+                :paramref:`~.NeuroevolutionRunConfig.device` is
                 set to ``gpu`` but CUDA is not available.
         """
         if config.eval_num_steps == 0 and config.env_transfer:
@@ -59,12 +59,12 @@ class NeuroevolutionTaskRunner(FittingTaskRunner):
             raise ValueError(error_msg)
 
     @classmethod
-    def run_subtask(
+    def run(
         cls: type["NeuroevolutionTaskRunner"],
         space: BaseSpace,
         agent: partial[BaseAgent],
         logger: Callable[..., Any],
-        config: NeuroevolutionSubtaskConfig,
+        config: NeuroevolutionRunConfig,
     ) -> Any:  # noqa: ANN401
-        """Runs the ``subtask``."""
+        """Starts the ``run``."""
         return fit(space=space, agent=agent, logger=logger, config=config)

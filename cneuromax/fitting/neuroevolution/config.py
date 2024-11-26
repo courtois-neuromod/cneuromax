@@ -1,4 +1,4 @@
-"""Neuroevolution ``subtask`` (regular + test) and ``task`` configs."""
+"""Neuroevolution ``run`` (regular + test) and ``task`` configs."""
 
 from dataclasses import dataclass, field
 from typing import Annotated as An
@@ -7,7 +7,7 @@ from typing import Any
 import wandb
 from hydra_zen import make_config
 
-from cneuromax.fitting.config import FittingSubtaskConfig
+from cneuromax.fitting.config import FittingRunConfig
 from cneuromax.fitting.neuroevolution.agent import BaseAgent
 from cneuromax.fitting.neuroevolution.space import BaseSpace
 from cneuromax.utils.beartype import ge
@@ -15,8 +15,8 @@ from cneuromax.utils.hydra_zen import builds, fs_builds, p_builds, pfs_builds
 
 
 @dataclass
-class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
-    """Neuroevolution ``subtask`` config.
+class NeuroevolutionRunConfig(FittingRunConfig):
+    """Neuroevolution ``run`` config.
 
     Args:
         agents_per_task: Number of agents per task (``num_tasks`` =
@@ -59,15 +59,15 @@ class NeuroevolutionSubtaskConfig(FittingSubtaskConfig):
 
 
 @dataclass
-class NeuroevolutionSubtaskTestConfig(NeuroevolutionSubtaskConfig):
-    """Neuroevolution ``subtask`` test config.
+class NeuroevolutionRunTestConfig(NeuroevolutionRunConfig):
+    """Neuroevolution ``run`` test config.
 
     Args:
         num_tests: Number of episodes to evaluate each agent on.
         test_num_steps: Number of environment steps to run each agent
             for during testing. ``0`` means that the agent will run
             until the environment terminates.
-        logging: See :paramref:`.NeuroevolutionSubtaskConfig.logging`.
+        logging: See :paramref:`.NeuroevolutionRunConfig.logging`.
     """
 
     num_tests: An[int, ge(1)] = 2
@@ -81,7 +81,7 @@ class NeuroevolutionTaskConfig(
         space=builds(BaseSpace),
         agent=p_builds(BaseAgent),
         logger=pfs_builds(wandb.init),
-        config=fs_builds(NeuroevolutionSubtaskConfig),
+        config=fs_builds(NeuroevolutionRunConfig),
     ),
 ):
     """Neuroevolution ``task`` config.
@@ -91,7 +91,7 @@ class NeuroevolutionTaskConfig(
         space: See :class:`.BaseSpace`.
         agent: See :class:`.BaseAgent`.
         logger: See :func:`wandb.init`.
-        config: See :class:`.NeuroevolutionSubtaskConfig`.
+        config: See :class:`.NeuroevolutionRunConfig`.
     """
 
     defaults: list[Any] = field(

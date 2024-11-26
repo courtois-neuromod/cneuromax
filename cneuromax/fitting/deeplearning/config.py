@@ -8,7 +8,7 @@ from lightning.pytorch import Trainer
 from lightning.pytorch.loggers.wandb import WandbLogger
 
 from cneuromax.fitting.config import (
-    FittingSubtaskConfig,
+    FittingRunConfig,
 )
 from cneuromax.fitting.deeplearning.datamodule import (
     BaseDataModule,
@@ -22,13 +22,13 @@ from cneuromax.utils.hydra_zen import (
 
 
 @dataclass
-class DeepLearningSubtaskConfig(FittingSubtaskConfig):
-    """Deep Learning ``subtask`` config.
+class DeepLearningRunConfig(FittingRunConfig):
+    """Deep Learning ``run`` config.
 
     Args:
         compile: Whether to compile the :class:`.BaseLitModule`
             before training. Requires
-            :paramref:`FittingSubtaskConfig.device` to be set to
+            :paramref:`FittingRunConfig.device` to be set to
             ``"gpu"`` & a CUDA 7+ compatible GPU.
         save_every_n_train_steps: The frequency at which to save
             training checkpoints.
@@ -47,7 +47,7 @@ class DeepLearningTaskConfig(
         datamodule=fs_builds(BaseDataModule, config=BaseDataModuleConfig()),
         litmodule=fs_builds(BaseLitModule),
         logger=pfs_builds(WandbLogger),
-        config=fs_builds(DeepLearningSubtaskConfig),
+        config=fs_builds(DeepLearningRunConfig),
     ),
 ):
     """Deep Learning ``task`` config.
@@ -60,7 +60,7 @@ class DeepLearningTaskConfig(
         litmodule: See :class:`.BaseLitModule`.
         logger: See
             :class:`lightning.pytorch.loggers.wandb.WandbLogger`.
-        config: See :class:`DeepLearningSubtaskConfig`.
+        config: See :class:`DeepLearningRunConfig`.
     """
 
     defaults: list[Any] = field(

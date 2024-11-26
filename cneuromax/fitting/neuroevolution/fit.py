@@ -46,8 +46,8 @@ from cneuromax.utils.misc import seed_all
 from cneuromax.utils.mpi4py import get_mpi_variables
 
 from .config import (
-    NeuroevolutionSubtaskConfig,
-    NeuroevolutionSubtaskTestConfig,
+    NeuroevolutionRunConfig,
+    NeuroevolutionRunTestConfig,
 )
 
 MAX_INT = 2**31 - 1
@@ -59,7 +59,7 @@ def fit(
     space: BaseSpace,
     agent: partial[BaseAgent],
     logger: Callable[..., Any],
-    config: NeuroevolutionSubtaskConfig,
+    config: NeuroevolutionRunConfig,
 ) -> None:
     """Neuroevolution + testing.
 
@@ -73,7 +73,7 @@ def fit(
         logger: See :func:`~.utils.wandb.setup_wandb`.
         config
     """
-    if not isinstance(config, NeuroevolutionSubtaskTestConfig):
+    if not isinstance(config, NeuroevolutionRunTestConfig):
         evolve(space=space, agent=agent, logger=logger, config=config)
     else:
         test(space=space, config=config)
@@ -83,7 +83,7 @@ def evolve(
     space: BaseSpace,
     agent: partial[BaseAgent],
     logger: Callable[..., Any],
-    config: NeuroevolutionSubtaskConfig,
+    config: NeuroevolutionRunConfig,
 ) -> None:
     """Neuroevolution.
 
@@ -233,7 +233,7 @@ def evolve(
 
 def test(
     space: BaseSpace,
-    config: NeuroevolutionSubtaskTestConfig,
+    config: NeuroevolutionRunTestConfig,
 ) -> None:
     """Neuroevolution testing.
 
