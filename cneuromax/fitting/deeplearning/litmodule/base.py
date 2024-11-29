@@ -15,7 +15,6 @@ from torch import Tensor, nn
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import LRScheduler
 
-from cneuromax.fitting.deeplearning.utils.typing import Batched_data_type
 from cneuromax.utils.beartype import one_of
 
 from .wandb_val_logging import WandbValLoggingLightningModule
@@ -117,7 +116,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def stage_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: Any,  # noqa: ANN401
         stage: An[str, one_of("train", "val", "test", "predict")],
     ) -> Num[Tensor, " *_"]:
         """Generic stage wrapper around the :meth:`step` method.
@@ -142,7 +141,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def training_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: Any,  # noqa: ANN401
     ) -> Num[Tensor, " *_"]:
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
@@ -157,7 +156,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def validation_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: Any,  # noqa: ANN401
         # :paramref:`*args` & :paramref:`**kwargs` type annotations
         # cannot be more specific because of
         # :meth:`LightningModule.validation_step`\'s signature.
@@ -177,7 +176,7 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
     @final
     def test_step(
         self: "BaseLitModule",
-        data: Batched_data_type,
+        data: Any,  # noqa: ANN401
     ) -> Num[Tensor, " *_"]:
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
