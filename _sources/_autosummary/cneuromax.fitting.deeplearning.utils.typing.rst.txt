@@ -1,8 +1,0 @@
-typing
-======
-
-.. automodule:: cneuromax.fitting.deeplearning.utils.typing
-   :members:
-
-
-

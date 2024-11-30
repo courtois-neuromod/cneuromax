@@ -235,7 +235,6 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.train.html">train</a></li>
 <li class="toctree-l4 has-children"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.html">utils</a><input class="toctree-checkbox" id="toctree-checkbox-8" name="toctree-checkbox-8" role="switch" type="checkbox"/><label for="toctree-checkbox-8"><div class="visually-hidden">Toggle navigation of utils</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.lightning.html">lightning</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.utils.typing.html">typing</a></li>
 </ul>
 </li>
 </ul>
@@ -368,7 +367,6 @@
 <span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.deeplearning.utils.typing</span> <span class="kn">import</span> <span class="n">Batched_data_type</span>
 <span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">one_of</span>
 
 <span class="kn">from</span> <span class="nn">.wandb_val_logging</span> <span class="kn">import</span> <span class="n">WandbValLoggingLightningModule</span>
@@ -477,7 +475,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">stage_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">)],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; *_&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generic stage wrapper around the :meth:`step` method.</span>
@@ -505,7 +503,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; *_&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`stage_step` with argument ``stage=&quot;train&quot;``.</span>
 
@@ -523,7 +521,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="c1"># :paramref:`*args` &amp; :paramref:`**kwargs` type annotations</span>
         <span class="c1"># cannot be more specific because of</span>
         <span class="c1"># :meth:`LightningModule.validation_step`\&#39;s signature.</span>
@@ -546,7 +544,7 @@
     <span class="nd">@final</span>
     <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="n">data</span><span class="p">:</span> <span class="n">Batched_data_type</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; *_&quot;</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`stage_step` with argument ``stage=&quot;test&quot;``.</span>
 
