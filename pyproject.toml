@@ -63,7 +63,7 @@ dependencies = [
     "peft==0.13.2", # Fine-tuning
     # fMRI libraries
     "nibabel==5.3.2", # Neuroimaging format accessor
-    "nilearn==0.10.4", # ML for neuroimaging
+    "nilearn==0.11.0", # ML for neuroimaging
     # Audio libraries
     "librosa==0.10.2.post1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
