@@ -60,7 +60,7 @@ dependencies = [
     "denoising-diffusion-pytorch==2.1.1", # Diffusion models
     "vector-quantize-pytorch==1.20.11", # Vector quantization utils
     "accelerate==1.1.1", # PEFT crashing w/ 0.30.0
-    "peft==0.13.2", # Fine-tuning
+    "peft==0.14.0", # Fine-tuning
     # fMRI libraries
     "nibabel==5.3.2", # Neuroimaging format accessor
     "nilearn==0.11.0", # ML for neuroimaging
