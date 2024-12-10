@@ -38,7 +38,7 @@ dependencies = [
     "jaxtyping==0.2.36", # Torch tensor annotations
     "nptyping==2.5.0", # Numpy array annotations
     "einops==0.8.0", # Makes shape transformations more readable
-    "jupyterlab==4.3.2", # Jupyter notebook
+    "jupyterlab==4.3.3", # Jupyter notebook
     "jupyterlab-code-formatter==3.0.2", # Jupyter code formatter
     "ipywidgets==8.1.5", # Jupyter widgets
     # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
