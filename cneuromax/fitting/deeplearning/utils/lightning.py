@@ -130,7 +130,7 @@ def set_batch_size_and_num_workers(
     else:
         per_device_batch_size = datamodule.config.fixed_per_device_batch_size
 
-    if not datamodule.config.fixed_per_device_num_workers:
+    if datamodule.config.fixed_per_device_num_workers is None:
         proposed_per_device_num_workers = find_good_per_device_num_workers(
             datamodule=datamodule,
             per_device_batch_size=per_device_batch_size,
