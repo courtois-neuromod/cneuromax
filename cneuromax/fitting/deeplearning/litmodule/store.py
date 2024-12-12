@@ -1,6 +1,7 @@
 """:class:`.BaseLitModule` `Hydra <https://hydra.cc>`_ config store."""
 
 from hydra_zen import ZenStore
+from schedulefree import AdamWScheduleFree
 from torch.optim import SGD, Adam, AdamW
 from transformers import (
     get_constant_schedule,
@@ -46,6 +47,11 @@ def store_basic_optimizer_configs(store: ZenStore) -> None:
     """
     store(pfs_builds(Adam), name="adam", group="litmodule/optimizer")
     store(pfs_builds(AdamW), name="adamw", group="litmodule/optimizer")
+    store(
+        pfs_builds(AdamWScheduleFree),
+        name="sfadamw",
+        group="litmodule/optimizer",
+    )
     store(pfs_builds(SGD), name="sgd", group="litmodule/optimizer")
 
 
