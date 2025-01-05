@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.neuroevolution.fit - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,52 +352,52 @@
           <h1>Source code for cneuromax.fitting.neuroevolution.fit</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:func:`.fit`, :func:`.evolve` and :func:`.fit.test`.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.agent</span> <span class="kn">import</span> <span class="n">BaseAgent</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.space</span> <span class="kn">import</span> <span class="n">BaseSpace</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.compute</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseAgent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.space</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSpace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.compute</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">compute_generation_results</span><span class="p">,</span>
     <span class="n">compute_save_points</span><span class="p">,</span>
     <span class="n">compute_start_time_and_seeds</span><span class="p">,</span>
     <span class="n">compute_total_num_env_steps_and_process_fitnesses</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.evolve</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.evolve</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">evaluate_on_cpu</span><span class="p">,</span>
     <span class="n">evaluate_on_gpu</span><span class="p">,</span>
     <span class="n">mutate</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.exchange</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.exchange</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">exchange_agents</span><span class="p">,</span>
     <span class="n">update_exchange_and_mutate_info</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.initialize</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.initialize</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">initialize_agents</span><span class="p">,</span>
     <span class="n">initialize_common_variables</span><span class="p">,</span>
     <span class="n">initialize_gpu_comm</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.readwrite</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.readwrite</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">find_existing_save_points</span><span class="p">,</span>
     <span class="n">load_state</span><span class="p">,</span>
     <span class="n">save_state</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.type</span> <span class="kn">import</span> <span class="n">Generation_results_type</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.validate</span> <span class="kn">import</span> <span class="n">validate_space</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.wandb</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.type</span><span class="w"> </span><span class="kn">import</span> <span class="n">Generation_results_type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.validate</span><span class="w"> </span><span class="kn">import</span> <span class="n">validate_space</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.wandb</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">setup_wandb</span><span class="p">,</span>
     <span class="n">terminate_wandb</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.misc</span> <span class="kn">import</span> <span class="n">seed_all</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">seed_all</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_mpi_variables</span>
 
-<span class="kn">from</span> <span class="nn">.config</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.config</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">NeuroevolutionSubtaskConfig</span><span class="p">,</span>
     <span class="n">NeuroevolutionSubtaskTestConfig</span><span class="p">,</span>
 <span class="p">)</span>
@@ -409,7 +409,7 @@
 
 <div class="viewcode-block" id="fit">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.fit">[docs]</a>
-<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
     <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
     <span class="n">agent</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">],</span>
     <span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -436,7 +436,7 @@
 
 <div class="viewcode-block" id="evolve">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.evolve">[docs]</a>
-<span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">evolve</span><span class="p">(</span>
     <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
     <span class="n">agent</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">],</span>
     <span class="n">logger</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -591,7 +591,7 @@
 
 <div class="viewcode-block" id="test">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.fit.html#cneuromax.fitting.neuroevolution.fit.test">[docs]</a>
-<span class="k">def</span> <span class="nf">test</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test</span><span class="p">(</span>
     <span class="n">space</span><span class="p">:</span> <span class="n">BaseSpace</span><span class="p">,</span>
     <span class="n">config</span><span class="p">:</span> <span class="n">NeuroevolutionSubtaskTestConfig</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

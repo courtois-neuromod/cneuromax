@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.neuroevolution.utils.initialize - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,31 +352,31 @@
           <h1>Source code for cneuromax.fitting.neuroevolution.utils.initialize</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Variable initialization for Neuroevolution fitting.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">MPI</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.agent</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.agent</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseAgent</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.utils.type</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.utils.type</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Exchange_and_mutate_info_batch_type</span><span class="p">,</span>
     <span class="n">Exchange_and_mutate_info_type</span><span class="p">,</span>
     <span class="n">Generation_results_batch_type</span><span class="p">,</span>
     <span class="n">Generation_results_type</span><span class="p">,</span>
     <span class="n">Seeds_batch_type</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.utils.hydra</span> <span class="kn">import</span> <span class="n">get_launcher_config</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">le</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.misc</span> <span class="kn">import</span> <span class="n">seed_all</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.mpi4py</span> <span class="kn">import</span> <span class="n">get_mpi_variables</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.utils.hydra</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_launcher_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.beartype</span><span class="w"> </span><span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">le</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.misc</span><span class="w"> </span><span class="kn">import</span> <span class="n">seed_all</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.mpi4py</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_mpi_variables</span>
 
 
 <div class="viewcode-block" id="initialize_common_variables">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html#cneuromax.fitting.neuroevolution.utils.initialize.initialize_common_variables">[docs]</a>
-<span class="k">def</span> <span class="nf">initialize_common_variables</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_common_variables</span><span class="p">(</span>
     <span class="n">agents_per_task</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span>
     <span class="n">num_pops</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">le</span><span class="p">(</span><span class="mi">2</span><span class="p">)],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span>
@@ -460,7 +460,7 @@
 
 <div class="viewcode-block" id="initialize_gpu_comm">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html#cneuromax.fitting.neuroevolution.utils.initialize.initialize_gpu_comm">[docs]</a>
-<span class="k">def</span> <span class="nf">initialize_gpu_comm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Comm</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_gpu_comm</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">MPI</span><span class="o">.</span><span class="n">Comm</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Initializes a communicator for GPU work queueing.</span>
 
 <span class="sd">    Assuming the experiment is ran with ``N`` MPI processes &amp;</span>
@@ -492,7 +492,7 @@
 
 <div class="viewcode-block" id="initialize_agents">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.neuroevolution.utils.initialize.html#cneuromax.fitting.neuroevolution.utils.initialize.initialize_agents">[docs]</a>
-<span class="k">def</span> <span class="nf">initialize_agents</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_agents</span><span class="p">(</span>
     <span class="n">agent</span><span class="p">:</span> <span class="n">partial</span><span class="p">[</span><span class="n">BaseAgent</span><span class="p">],</span>
     <span class="n">len_agents_batch</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span>
     <span class="n">num_pops</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">ge</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">le</span><span class="p">(</span><span class="mi">2</span><span class="p">)],</span>

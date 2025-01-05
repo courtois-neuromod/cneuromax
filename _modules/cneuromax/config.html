@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.config - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -365,22 +365,22 @@
 <span class="sd">hydra_zen.make_config.html&gt;`_).</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
 
-<span class="kn">from</span> <span class="nn">hydra</span> <span class="kn">import</span> <span class="n">conf</span> <span class="k">as</span> <span class="n">hc</span>
-<span class="kn">from</span> <span class="nn">hydra</span> <span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">ht</span>
-<span class="kn">from</span> <span class="nn">hydra.experimental.callbacks</span> <span class="kn">import</span> <span class="n">LogJobReturnCallback</span>
-<span class="kn">from</span> <span class="nn">hydra_zen</span> <span class="kn">import</span> <span class="n">make_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hydra</span><span class="w"> </span><span class="kn">import</span> <span class="n">conf</span> <span class="k">as</span> <span class="n">hc</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hydra</span><span class="w"> </span><span class="kn">import</span> <span class="n">types</span> <span class="k">as</span> <span class="n">ht</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hydra.experimental.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogJobReturnCallback</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hydra_zen</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_config</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.hydra_zen</span> <span class="kn">import</span> <span class="n">fs_builds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.beartype</span><span class="w"> </span><span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.hydra_zen</span><span class="w"> </span><span class="kn">import</span> <span class="n">fs_builds</span>
 
 
 <div class="viewcode-block" id="BaseSubtaskConfig">
 <a class="viewcode-back" href="../../_autosummary/cneuromax.config.html#cneuromax.config.BaseSubtaskConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BaseSubtaskConfig</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseSubtaskConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base ``subtask`` config.</span>
 
 <span class="sd">    Args:</span>
@@ -402,7 +402,7 @@
 <div class="viewcode-block" id="BaseHydraConfig">
 <a class="viewcode-back" href="../../_autosummary/cneuromax.config.html#cneuromax.config.BaseHydraConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BaseHydraConfig</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseHydraConfig</span><span class="p">(</span>
     <span class="n">make_config</span><span class="p">(</span>  <span class="c1"># type: ignore[misc]</span>
         <span class="n">bases</span><span class="o">=</span><span class="p">(</span><span class="n">hc</span><span class="o">.</span><span class="n">HydraConf</span><span class="p">,),</span>
         <span class="n">callbacks</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;log_job_return&quot;</span><span class="p">:</span> <span class="n">fs_builds</span><span class="p">(</span><span class="n">LogJobReturnCallback</span><span class="p">)},</span>

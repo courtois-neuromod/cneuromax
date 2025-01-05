@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.neuroevolution.config - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,24 +352,24 @@
           <h1>Source code for cneuromax.fitting.neuroevolution.config</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Neuroevolution ``subtask`` (regular + test) and ``task`` configs.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">wandb</span>
-<span class="kn">from</span> <span class="nn">hydra_zen</span> <span class="kn">import</span> <span class="n">make_config</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">wandb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hydra_zen</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_config</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.config</span> <span class="kn">import</span> <span class="n">FittingSubtaskConfig</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.agent</span> <span class="kn">import</span> <span class="n">BaseAgent</span>
-<span class="kn">from</span> <span class="nn">cneuromax.fitting.neuroevolution.space</span> <span class="kn">import</span> <span class="n">BaseSpace</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span>
-<span class="kn">from</span> <span class="nn">cneuromax.utils.hydra_zen</span> <span class="kn">import</span> <span class="n">builds</span><span class="p">,</span> <span class="n">fs_builds</span><span class="p">,</span> <span class="n">p_builds</span><span class="p">,</span> <span class="n">pfs_builds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">FittingSubtaskConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.agent</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseAgent</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.fitting.neuroevolution.space</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseSpace</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.beartype</span><span class="w"> </span><span class="kn">import</span> <span class="n">ge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.hydra_zen</span><span class="w"> </span><span class="kn">import</span> <span class="n">builds</span><span class="p">,</span> <span class="n">fs_builds</span><span class="p">,</span> <span class="n">p_builds</span><span class="p">,</span> <span class="n">pfs_builds</span>
 
 
 <div class="viewcode-block" id="NeuroevolutionSubtaskConfig">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html#cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">NeuroevolutionSubtaskConfig</span><span class="p">(</span><span class="n">FittingSubtaskConfig</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NeuroevolutionSubtaskConfig</span><span class="p">(</span><span class="n">FittingSubtaskConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution ``subtask`` config.</span>
 
 <span class="sd">    Args:</span>
@@ -416,7 +416,7 @@
 <div class="viewcode-block" id="NeuroevolutionSubtaskTestConfig">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html#cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskTestConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">NeuroevolutionSubtaskTestConfig</span><span class="p">(</span><span class="n">NeuroevolutionSubtaskConfig</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NeuroevolutionSubtaskTestConfig</span><span class="p">(</span><span class="n">NeuroevolutionSubtaskConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Neuroevolution ``subtask`` test config.</span>
 
 <span class="sd">    Args:</span>
@@ -436,7 +436,7 @@
 <div class="viewcode-block" id="NeuroevolutionTaskConfig">
 <a class="viewcode-back" href="../../../../_autosummary/cneuromax.fitting.neuroevolution.config.html#cneuromax.fitting.neuroevolution.config.NeuroevolutionTaskConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">NeuroevolutionTaskConfig</span><span class="p">(</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">NeuroevolutionTaskConfig</span><span class="p">(</span>
     <span class="n">make_config</span><span class="p">(</span>  <span class="c1"># type: ignore[misc]</span>
         <span class="n">space</span><span class="o">=</span><span class="n">builds</span><span class="p">(</span><span class="n">BaseSpace</span><span class="p">),</span>
         <span class="n">agent</span><span class="o">=</span><span class="n">p_builds</span><span class="p">(</span><span class="n">BaseAgent</span><span class="p">),</span>

@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.deeplearning.datamodule.base - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,23 +352,23 @@
           <h1>Source code for cneuromax.fitting.deeplearning.datamodule.base</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:class:`.BaseDataModule` + its datasets/config classes.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">final</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">final</span>
 
-<span class="kn">from</span> <span class="nn">datasets</span> <span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HFDataset</span>
-<span class="kn">from</span> <span class="nn">lightning.pytorch</span> <span class="kn">import</span> <span class="n">LightningDataModule</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
-<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span> <span class="k">as</span> <span class="n">HFDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningDataModule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">,</span> <span class="n">one_of</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.beartype</span><span class="w"> </span><span class="kn">import</span> <span class="n">ge</span><span class="p">,</span> <span class="n">not_empty</span><span class="p">,</span> <span class="n">one_of</span>
 
 
 <div class="viewcode-block" id="Datasets">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.Datasets">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Datasets</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Datasets</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds phase-specific :class:`torch.utils.data.Dataset` objects.</span>
 
 <span class="sd">    Using the word ``phase`` to not overload</span>
@@ -392,7 +392,7 @@
 <div class="viewcode-block" id="BaseDataModuleConfig">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BaseDataModuleConfig</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDataModuleConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseDataModule` config values.</span>
 
 <span class="sd">    Args:</span>
@@ -425,7 +425,7 @@
 
 <div class="viewcode-block" id="BaseDataModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDataModule</span><span class="p">(</span><span class="n">LightningDataModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`lightning.pytorch.core.LightningDataModule`.</span>
 
 <span class="sd">    With ``&lt;phase&gt;`` being any of ``train``, ``val``, ``test`` or</span>
@@ -454,7 +454,7 @@
 <span class="sd">            in :func:`.set_batch_size_and_num_workers`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseDataModuleConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">BaseDataModuleConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">datasets</span> <span class="o">=</span> <span class="n">Datasets</span><span class="p">()</span>
@@ -466,7 +466,7 @@
 <div class="viewcode-block" id="BaseDataModule.load_state_dict">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_state_dict</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span>
         <span class="n">state_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -484,7 +484,7 @@
 <div class="viewcode-block" id="BaseDataModule.state_dict">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.state_dict">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns instance attribute values.</span>
 
 <span class="sd">        Returns:</span>
@@ -501,7 +501,7 @@
 <div class="viewcode-block" id="BaseDataModule.x_dataloader">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.x_dataloader">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">x_dataloader</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">x_dataloader</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">,</span>
         <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]</span> <span class="o">|</span> <span class="n">HFDataset</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -538,7 +538,7 @@
 <div class="viewcode-block" id="BaseDataModule.train_dataloader">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.train_dataloader">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">train_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.train``.</span>
 
 <span class="sd">        Returns:</span>
@@ -551,7 +551,7 @@
 <div class="viewcode-block" id="BaseDataModule.val_dataloader">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.val_dataloader">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.val``.</span>
 
 <span class="sd">        Returns:</span>
@@ -567,7 +567,7 @@
 <div class="viewcode-block" id="BaseDataModule.test_dataloader">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.test_dataloader">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.test``.</span>
 
 <span class="sd">        Returns:</span>
@@ -580,7 +580,7 @@
 <div class="viewcode-block" id="BaseDataModule.predict_dataloader">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.predict_dataloader">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">predict_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseDataModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataLoader</span><span class="p">[</span><span class="n">Tensor</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.predict``.</span>
 
 <span class="sd">        Returns:</span>

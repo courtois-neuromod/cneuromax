@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.utils.torch - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,27 +352,27 @@
           <h1>Source code for cneuromax.utils.torch</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:mod:`torch` utilities.&quot;&quot;&quot;</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Float32</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jaxtyping</span><span class="w"> </span><span class="kn">import</span> <span class="n">Float32</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
 
 
 <div class="viewcode-block" id="RunningStandardization">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.torch.html#cneuromax.utils.torch.RunningStandardization">[docs]</a>
-<span class="k">class</span> <span class="nc">RunningStandardization</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">RunningStandardization</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Standardizes the running data.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        x_size: Size of the input tensor.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;RunningStandardization&quot;</span><span class="p">,</span> <span class="n">x_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;RunningStandardization&quot;</span><span class="p">,</span> <span class="n">x_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mean</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">x_size</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">x_size</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">std</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">x_size</span><span class="p">,))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; 1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,))</span>
 
-    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;RunningStandardization&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; x_size&quot;</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; x_size&quot;</span><span class="p">]:</span>

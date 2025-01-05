@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.utils.beartype - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,13 +352,13 @@
           <h1>Source code for cneuromax.utils.beartype</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;Type annotations validator using :mod:`beartype`.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">beartype.vale</span> <span class="kn">import</span> <span class="n">Is</span>
-<span class="kn">from</span> <span class="nn">beartype.vale._core._valecore</span> <span class="kn">import</span> <span class="n">BeartypeValidator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">beartype.vale</span><span class="w"> </span><span class="kn">import</span> <span class="n">Is</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">beartype.vale._core._valecore</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeartypeValidator</span>
 
 
 <div class="viewcode-block" id="not_empty">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.not_empty">[docs]</a>
-<span class="k">def</span> <span class="nf">not_empty</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">not_empty</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Makes sure the string is not empty.</span>
 
 <span class="sd">    Returns:</span>
@@ -367,7 +367,7 @@
 <span class="sd">            annotated value does not satisfy the condition.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_not_empty</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_not_empty</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_not_empty</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span></div>
@@ -376,7 +376,7 @@
 
 <div class="viewcode-block" id="equal">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.equal">[docs]</a>
-<span class="k">def</span> <span class="nf">equal</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">equal</span><span class="p">(</span><span class="n">element</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is equal to the input argument.</span>
 
 <span class="sd">    Args:</span>
@@ -386,7 +386,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_equal</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_equal</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">element</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">x</span> <span class="o">==</span> <span class="n">element</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_equal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">element</span><span class="p">)]</span></div>
@@ -395,7 +395,7 @@
 
 <div class="viewcode-block" id="one_of">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.one_of">[docs]</a>
-<span class="k">def</span> <span class="nf">one_of</span><span class="p">(</span><span class="o">*</span><span class="n">elements</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">one_of</span><span class="p">(</span><span class="o">*</span><span class="n">elements</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is one of the input arguments.</span>
 
 <span class="sd">    Used to replace :class:`typing.Literal` which is not supported by</span>
@@ -408,7 +408,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_one_of</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_one_of</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">elements</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">object</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">elements</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_one_of</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">elements</span><span class="p">)]</span></div>
@@ -417,7 +417,7 @@
 
 <div class="viewcode-block" id="ge">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.ge">[docs]</a>
-<span class="k">def</span> <span class="nf">ge</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ge</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is ``&gt; or =`` :paramref:`val`.</span>
 
 <span class="sd">    Args:</span>
@@ -427,7 +427,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_ge</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ge</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="n">val</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_ge</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">val</span><span class="p">)]</span></div>
@@ -436,7 +436,7 @@
 
 <div class="viewcode-block" id="gt">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.gt">[docs]</a>
-<span class="k">def</span> <span class="nf">gt</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">gt</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is ``&gt;`` :paramref:`val`.</span>
 
 <span class="sd">    Args:</span>
@@ -446,7 +446,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_gt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_gt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="n">val</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_gt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">val</span><span class="p">)]</span></div>
@@ -455,7 +455,7 @@
 
 <div class="viewcode-block" id="le">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.le">[docs]</a>
-<span class="k">def</span> <span class="nf">le</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">le</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is ``&lt; or =`` :paramref:`val`.</span>
 
 <span class="sd">    Args:</span>
@@ -465,7 +465,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_le</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_le</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">val</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_le</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">val</span><span class="p">)]</span></div>
@@ -474,7 +474,7 @@
 
 <div class="viewcode-block" id="lt">
 <a class="viewcode-back" href="../../../_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.lt">[docs]</a>
-<span class="k">def</span> <span class="nf">lt</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">lt</span><span class="p">(</span><span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BeartypeValidator</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Verifies that the annotated value is ``&lt;`` :paramref:`val`.</span>
 
 <span class="sd">    Args:</span>
@@ -484,7 +484,7 @@
 <span class="sd">        See return description of :func:`not_empty`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">_lt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_lt</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">val</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">val</span>
 
     <span class="k">return</span> <span class="n">Is</span><span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">_lt</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">val</span><span class="p">)]</span></div>

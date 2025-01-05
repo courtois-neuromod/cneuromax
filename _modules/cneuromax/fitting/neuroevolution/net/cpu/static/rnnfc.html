@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,17 +352,17 @@
           <h1>Source code for cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:class:`.CPUStaticRNN` &amp; its config.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Float32</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jaxtyping</span><span class="w"> </span><span class="kn">import</span> <span class="n">Float32</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
 
 
 <div class="viewcode-block" id="CPUStaticRNNFCConfig">
 <a class="viewcode-back" href="../../../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html#cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFCConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">CPUStaticRNNFCConfig</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CPUStaticRNNFCConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Config values for :class:`CPUStaticRNNFC`.</span>
 
 <span class="sd">    Args:</span>
@@ -379,14 +379,14 @@
 
 <div class="viewcode-block" id="CPUStaticRNNFC">
 <a class="viewcode-back" href="../../../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html#cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFC">[docs]</a>
-<span class="k">class</span> <span class="nc">CPUStaticRNNFC</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">CPUStaticRNNFC</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;CPU-running static architecture RNN w/ a final FC layer.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        config</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CPUStaticRNNFCConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">CPUStaticRNNFCConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rnn</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">RNNCell</span><span class="p">(</span>
             <span class="n">input_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">input_size</span><span class="p">,</span>
@@ -405,14 +405,14 @@
 
 <div class="viewcode-block" id="CPUStaticRNNFC.reset">
 <a class="viewcode-back" href="../../../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html#cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFC.reset">[docs]</a>
-    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Resets the hidden state of the RNN.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">h</span> <span class="o">*=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">h</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="CPUStaticRNNFC.forward">
 <a class="viewcode-back" href="../../../../../../../_autosummary/cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.html#cneuromax.fitting.neuroevolution.net.cpu.static.rnnfc.CPUStaticRNNFC.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;CPUStaticRNNFC&quot;</span><span class="p">,</span>
         <span class="n">x</span><span class="p">:</span> <span class="n">Float32</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; input_size&quot;</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>

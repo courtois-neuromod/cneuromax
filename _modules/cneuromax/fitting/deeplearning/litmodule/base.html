@@ -6,7 +6,7 @@
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
         <title>cneuromax.fitting.deeplearning.litmodule.base - CNeuroMax</title>
-      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=a746c00c" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../../../_static/paramlink_target_color.css?v=5605e3d9" />
@@ -352,30 +352,30 @@
           <h1>Source code for cneuromax.fitting.deeplearning.litmodule.base</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;:class:`.BaseLitModule` &amp; its config.&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span>
-<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">final</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span> <span class="k">as</span> <span class="n">An</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">final</span>
 
-<span class="kn">from</span> <span class="nn">jaxtyping</span> <span class="kn">import</span> <span class="n">Num</span>
-<span class="kn">from</span> <span class="nn">lightning.pytorch.utilities.types</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">jaxtyping</span><span class="w"> </span><span class="kn">import</span> <span class="n">Num</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.utilities.types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">LRSchedulerConfigType</span><span class="p">,</span>
     <span class="n">OptimizerLRSchedulerConfig</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
-<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Optimizer</span>
-<span class="kn">from</span> <span class="nn">torch.optim.lr_scheduler</span> <span class="kn">import</span> <span class="n">LRScheduler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">nn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optimizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim.lr_scheduler</span><span class="w"> </span><span class="kn">import</span> <span class="n">LRScheduler</span>
 
-<span class="kn">from</span> <span class="nn">cneuromax.utils.beartype</span> <span class="kn">import</span> <span class="n">one_of</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cneuromax.utils.beartype</span><span class="w"> </span><span class="kn">import</span> <span class="n">one_of</span>
 
-<span class="kn">from</span> <span class="nn">.wandb_val_logging</span> <span class="kn">import</span> <span class="n">WandbValLoggingLightningModule</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.wandb_val_logging</span><span class="w"> </span><span class="kn">import</span> <span class="n">WandbValLoggingLightningModule</span>
 
 
 <div class="viewcode-block" id="BaseLitModuleConfig">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig">[docs]</a>
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">BaseLitModuleConfig</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseLitModuleConfig</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds :class:`BaseLitModule` config values.</span>
 
 <span class="sd">    Args:</span>
@@ -389,7 +389,7 @@
 
 <div class="viewcode-block" id="BaseLitModule">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule">[docs]</a>
-<span class="k">class</span> <span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">WandbValLoggingLightningModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseLitModule</span><span class="p">(</span><span class="n">WandbValLoggingLightningModule</span><span class="p">,</span> <span class="n">ABC</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Base :class:`lightning.pytorch.core.LightningModule`.</span>
 
 <span class="sd">    Subclasses need to implement the :meth:`step` method that inputs</span>
@@ -451,7 +451,7 @@
 <span class="sd">            defined or callable.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
         <span class="n">config</span><span class="p">:</span> <span class="n">BaseLitModuleConfig</span><span class="p">,</span>
         <span class="n">nnmodule</span><span class="p">:</span> <span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span>
@@ -473,7 +473,7 @@
 <div class="viewcode-block" id="BaseLitModule.stage_step">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">stage_step</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">stage_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="n">stage</span><span class="p">:</span> <span class="n">An</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">one_of</span><span class="p">(</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="s2">&quot;val&quot;</span><span class="p">,</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="s2">&quot;predict&quot;</span><span class="p">)],</span>
@@ -501,7 +501,7 @@
 <div class="viewcode-block" id="BaseLitModule.training_step">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">training_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; *_&quot;</span><span class="p">]:</span>
@@ -519,7 +519,7 @@
 <div class="viewcode-block" id="BaseLitModule.validation_step">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validation_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
         <span class="c1"># :paramref:`*args` &amp; :paramref:`**kwargs` type annotations</span>
@@ -542,7 +542,7 @@
 <div class="viewcode-block" id="BaseLitModule.test_step">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step">[docs]</a>
     <span class="nd">@final</span>
-    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_step</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
         <span class="n">data</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Num</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="s2">&quot; *_&quot;</span><span class="p">]:</span>
@@ -559,7 +559,7 @@
 
 <div class="viewcode-block" id="BaseLitModule.configure_optimizers">
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers">[docs]</a>
-    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">configure_optimizers</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OptimizerLRSchedulerConfig</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a dict with :attr:`optimizer` and :attr:`scheduler`.</span>
