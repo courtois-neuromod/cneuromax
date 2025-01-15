@@ -135,7 +135,8 @@ class BaseLitModule(WandbValLoggingLightningModule, ABC):
         if isinstance(data, list):
             data = tuple(data)
         loss: Num[Tensor, " *_"] = self.step(data, stage)
-        self.log(name=f"{stage}/loss", value=loss)
+        self.log(name=f"{stage}_step/loss", value=loss, on_step=True)
+        self.log(name=f"{stage}_epoch/loss", value=loss, on_epoch=True)
         return loss
 
     @final

@@ -65,7 +65,7 @@ def instantiate_trainer(
     callbacks.append(
         ModelCheckpoint(
             dirpath=trainer_partial.keywords["default_root_dir"],
-            monitor="val/loss",
+            monitor="val_epoch/loss",
             save_last=True,
             save_top_k=1,
             every_n_train_steps=save_every_n_train_steps,

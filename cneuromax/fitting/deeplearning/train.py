@@ -77,5 +77,5 @@ def train(
     )
     """TODO: Add logic for HPO"""
     return trainer.validate(model=litmodule, datamodule=datamodule)[0][
-        "val/loss"
+        "val_epoch/loss"
     ]
