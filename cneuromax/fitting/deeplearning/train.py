@@ -69,8 +69,8 @@ def train(
         >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
     ):
         litmodule.nnmodule = torch.compile(litmodule.nnmodule)  # type: ignore [assignment]
-    if trainer.overfit_batches > 0:
-        datamodule.val_dataloader = datamodule.train_dataloader
+    if trainer.overfit_batches > 0:  # type: ignore [attr-defined]
+        datamodule.val_dataloader = datamodule.train_dataloader  # type: ignore [method-assign]
     trainer.fit(
         model=litmodule,
         datamodule=datamodule,
