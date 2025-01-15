@@ -69,7 +69,8 @@ def train(
         >= TORCH_COMPILE_MINIMUM_CUDA_VERSION
     ):
         litmodule.nnmodule = torch.compile(litmodule.nnmodule)  # type: ignore [assignment]
-    litmodule.trainer = trainer
+    if trainer.overfit_batches > 0:
+        datamodule.val_dataloader = datamodule.train_dataloader
     trainer.fit(
         model=litmodule,
         datamodule=datamodule,
@@ -77,5 +78,5 @@ def train(
     )
     """TODO: Add logic for HPO"""
     return trainer.validate(model=litmodule, datamodule=datamodule)[0][
-        "val_epoch/loss"
+        "val/loss"
     ]
