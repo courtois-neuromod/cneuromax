@@ -423,7 +423,8 @@
         <span class="o">&gt;=</span> <span class="n">TORCH_COMPILE_MINIMUM_CUDA_VERSION</span>
     <span class="p">):</span>
         <span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]</span>
-    <span class="n">litmodule</span><span class="o">.</span><span class="n">trainer</span> <span class="o">=</span> <span class="n">trainer</span>
+    <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">overfit_batches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span> <span class="o">=</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">train_dataloader</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
         <span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
         <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
@@ -431,7 +432,7 @@
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;TODO: Add logic for HPO&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">trainer</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span> <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span>
-        <span class="s2">&quot;val_epoch/loss&quot;</span>
+        <span class="s2">&quot;val/loss&quot;</span>
     <span class="p">]</span></div>
 
 </pre></div>
