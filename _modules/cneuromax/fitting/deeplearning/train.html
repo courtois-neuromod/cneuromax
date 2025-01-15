@@ -423,8 +423,8 @@
         <span class="o">&gt;=</span> <span class="n">TORCH_COMPILE_MINIMUM_CUDA_VERSION</span>
     <span class="p">):</span>
         <span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">litmodule</span><span class="o">.</span><span class="n">nnmodule</span><span class="p">)</span>  <span class="c1"># type: ignore [assignment]</span>
-    <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">overfit_batches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span> <span class="o">=</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">train_dataloader</span>
+    <span class="k">if</span> <span class="n">trainer</span><span class="o">.</span><span class="n">overfit_batches</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># type: ignore [attr-defined]</span>
+        <span class="n">datamodule</span><span class="o">.</span><span class="n">val_dataloader</span> <span class="o">=</span> <span class="n">datamodule</span><span class="o">.</span><span class="n">train_dataloader</span>  <span class="c1"># type: ignore [method-assign]</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
         <span class="n">model</span><span class="o">=</span><span class="n">litmodule</span><span class="p">,</span>
         <span class="n">datamodule</span><span class="o">=</span><span class="n">datamodule</span><span class="p">,</span>
