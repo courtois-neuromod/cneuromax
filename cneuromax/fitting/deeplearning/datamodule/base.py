@@ -176,7 +176,6 @@ class BaseDataModule(LightningDataModule, ABC):
         """
         return self.x_dataloader(dataset=self.datasets.train)
 
-    @final
     def val_dataloader(self: "BaseDataModule") -> DataLoader[Tensor]:
         """Calls :meth:`x_dataloader` w/ :attr:`datasets` ``.val``.
 
