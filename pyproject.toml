@@ -52,7 +52,7 @@ dependencies = [
     "torchaudio==2.5.1+cu124", # Tensor manipulation on audio data
     "torchvision==0.20.1+cu124", # Tensor manipulation on vision data
     "schedulefree==1.4", # Automatic learning rate scheduler
-    "transformers==4.48.0", # Pre-trained models published on Hugging Face
+    "transformers==4.48.1", # Pre-trained models published on Hugging Face
     "diffusers==0.32.2", # Diffusion models published on Hugging Face
     "timm==1.0.14", # Image models
     "datasets==3.2.0", # Datasets published on Hugging Face
