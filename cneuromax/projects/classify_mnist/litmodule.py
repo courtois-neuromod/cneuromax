@@ -18,4 +18,4 @@ class MNISTClassificationLitModule(BaseClassificationLitModule):
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().__init__(*args, **kwargs)
-        self.wandb_input_data_wrapper = wandb.Image
+        self.wandb_x_wrapper = wandb.Image

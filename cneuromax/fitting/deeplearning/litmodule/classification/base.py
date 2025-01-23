@@ -24,10 +24,17 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`BaseClassificationLitModule` config values.
 
     Args:
-        num_classes: Number of classes to classify between.
+        num_classes
+        wandb_columns
     """
 
     num_classes: An[int, ge(2)] = 2
+    wandb_column_names: list[str] = [  # noqa: RUF008
+        "x",
+        "y",
+        "y_hat",
+        "logits",
+    ]
 
 
 class BaseClassificationLitModule(BaseLitModule, ABC):
@@ -55,9 +62,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
             num_classes=self.config.num_classes,
         )
-        if self.config.log_val_wandb:
-            self.wandb_columns = ["x", "y", "y_hat", "logits"]
-            self.wandb_input_data_wrapper: Callable[..., Any] = lambda x: x
+        self.wandb_x_wrapper: Callable[..., Any] = lambda x: x
 
     def step(
         self: "BaseClassificationLitModule",
@@ -84,25 +89,32 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         y_hat: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
         accuracy: Float[Tensor, " "] = self.accuracy(preds=y_hat, target=y)
         self.log(name=f"{stage}/acc", value=accuracy)
-        if stage == "val" and self.config.log_val_wandb:
-            self.save_val_data(x=x, y=y, y_hat=y_hat, logits=logits)
+        self.save_wandb_data(stage, x, y, y_hat, logits)
         return f.cross_entropy(input=logits, target=y)
 
-    def save_val_data(
+    def save_wandb_data(
         self: "BaseClassificationLitModule",
+        stage: An[str, one_of("train", "val", "test")],
         x: Float[Tensor, " batch_size *x_dim"],
         y: Int[Tensor, " batch_size"],
         y_hat: Int[Tensor, " batch_size"],
         logits: Float[Tensor, " batch_size num_classes"],
     ) -> None:
-        """Saves data computed during validation for later use.
+        """Saves rich data to be logged to W&B.
 
         Args:
-            x: The input data.
-            y: The target class.
-            y_hat: The predicted class.
+            stage
+            x
+            y
+            y_hat
             logits: The raw `num_classes` network outputs.
         """
+        if stage == "train":
+            data = self.wandb_train_data
+        else:  # stage == "val"
+            data = self.wandb_val_data
+        if data:
+            return
         for x_i, y_i, y_hat_i, logits_i in zip(
             x.cpu(),
             y.cpu(),
@@ -110,11 +122,13 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
             logits.cpu(),
             strict=False,
         ):
-            self.val_wandb_data.append(
+            data.append(
                 {
-                    "x": self.wandb_input_data_wrapper(x_i),
+                    "x": self.wandb_x_wrapper(x_i),
                     "y": y_i,
                     "y_hat": y_hat_i,
                     "logits": logits_i.tolist(),
                 },
             )
+            if len(data) >= self.config.wandb_num_samples:
+                break
