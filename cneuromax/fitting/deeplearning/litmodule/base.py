@@ -28,7 +28,7 @@ class BaseLitModuleConfig:
     """
 
     wandb_column_names: str
-    wandb_train_log_interval: int = 100  # type: ignore[assignment]
+    wandb_train_log_interval: int = 100
     wandb_num_samples: An[int, ge(1)] = 1
 
 
@@ -100,6 +100,7 @@ class BaseLitModule(LightningModule, ABC):
         optimizer: partial[Optimizer],
         scheduler: partial[LRScheduler],
     ) -> None:
+        super().__init__()
         self.config = config
         self.nnmodule = nnmodule
         self.optimizer_partial = optimizer
