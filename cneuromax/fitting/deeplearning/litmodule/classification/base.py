@@ -1,6 +1,6 @@
 """:class:`.BaseClassificationLitModule` & its config."""
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from collections.abc import Callable  # noqa: TC003
 from dataclasses import dataclass
 from typing import Annotated as An
@@ -51,10 +51,15 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     ) -> None:
         super().__init__(*args, **kwargs)
         self.config: BaseClassificationLitModuleConfig
-        self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
+        self.accuracy = MulticlassAccuracy(
             num_classes=self.config.num_classes,
         )
         self.to_wandb_media: Callable[..., Any] = lambda x: x
+
+    @property
+    @abstractmethod
+    def wandb_media_x(self):  # type: ignore[no-untyped-def] # noqa: ANN201
+        """Converts a tensor to a W&B media object."""
 
     def step(
         self: "BaseClassificationLitModule",
@@ -116,7 +121,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         ):
             data.append(
                 {
-                    "x": self.to_wandb_media(x_i),
+                    "x": self.wandb_media_x(x_i),
                     "y": y_i,
                     "y_hat": y_hat_i,
                     "logits": logits_i.tolist(),

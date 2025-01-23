@@ -28,8 +28,8 @@ class BaseLitModuleConfig:
     """
 
     wandb_column_names: str
-    wandb_train_log_interval: int = 100
-    wandb_num_samples: An[int, ge(1)] = 1
+    wandb_train_log_interval: int = 50
+    wandb_num_samples: An[int, ge(1)] = 3
 
 
 class BaseLitModule(LightningModule, ABC):
@@ -59,10 +59,10 @@ class BaseLitModule(LightningModule, ABC):
         definition from the Lightning module definition for (arguably)
         better code organization, reuse & readability. As a result, each
         Lightning module receives a PyTorch module as an argument which
-        it turns into a instance attribute. This is in contrast with the
-        suggested Lightning best practices where Lightning modules
-        subclass PyTorch modules, and thus have PyTorch module method
-        definitions alongside the Lightning module class definition.
+        it turns into an instance attribute. This is in contrast with
+        the suggested Lightning best practices where Lightning modules
+        subclass PyTorch modules, and thus allow PyTorch module method
+        definitions in the Lightning module.
 
     Args:
         config
@@ -87,10 +87,6 @@ class BaseLitModule(LightningModule, ABC):
         wandb_val_table (wandb.Table): See :attr:`wandb_train_table`.
         wandb_val_data (list[dict[str, Any]]): See
             :attr:`wandb_train_data`.
-
-    Raises:
-        NotImplementedError: If the :meth:`step` method is not
-            defined or callable.
     """
 
     def __init__(
@@ -105,12 +101,6 @@ class BaseLitModule(LightningModule, ABC):
         self.nnmodule = nnmodule
         self.optimizer_partial = optimizer
         self.scheduler_partial = scheduler
-        # Verify `step` method.
-        if not callable(getattr(self, "step", None)):
-            error_msg = (
-                "The `BaseLitModule.step` method is not defined/not callable."
-            )
-            raise NotImplementedError(error_msg)
         self.curr_train_step = 0
         self.curr_val_epoch = 0
         self.initialize_wandb_objects()

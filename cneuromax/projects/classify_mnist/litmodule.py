@@ -1,7 +1,5 @@
 """:class:`.MNISTClassificationLitModule`."""
 
-from typing import Any
-
 import wandb
 
 from cneuromax.fitting.deeplearning.litmodule.classification import (
@@ -12,10 +10,6 @@ from cneuromax.fitting.deeplearning.litmodule.classification import (
 class MNISTClassificationLitModule(BaseClassificationLitModule):
     """``project`` :class:`BaseClassificationLitModule`."""
 
-    def __init__(
-        self: "MNISTClassificationLitModule",
-        *args: Any,  # noqa: ANN401
-        **kwargs: Any,  # noqa: ANN401
-    ) -> None:
-        super().__init__(*args, **kwargs)
-        self.to_wandb_media = wandb.Image
+    @property
+    def wandb_media_x(self):  # type: ignore[no-untyped-def] # noqa: ANN201, D102
+        return wandb.Image
