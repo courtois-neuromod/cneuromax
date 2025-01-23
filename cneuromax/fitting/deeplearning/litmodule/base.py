@@ -27,7 +27,7 @@ class BaseLitModuleConfig:
         wandb_num_samples
     """
 
-    wandb_column_names: str
+    wandb_column_names: list[str]
     wandb_train_log_interval: int = 50
     wandb_num_samples: An[int, ge(1)] = 3
 
@@ -110,11 +110,11 @@ class BaseLitModule(LightningModule, ABC):
             columns=[
                 "data_idx",
                 iter_type,
-                *self.config.wandb_column_names.split(),
+                *self.config.wandb_column_names,
             ],
         )
-        self.wandb_train_table = create_wandb_table("train_step")
-        self.wandb_val_table = create_wandb_table("val_epoch")
+        self.wandb_train_table = create_wandb_table("train_step")  # type: ignore[no-untyped-call]
+        self.wandb_val_table = create_wandb_table("val_epoch")  # type: ignore[no-untyped-call]
         self.wandb_train_data: list[dict[str, Any]] = []
         self.wandb_val_data: list[dict[str, Any]] = []
 
@@ -177,10 +177,7 @@ class BaseLitModule(LightningModule, ABC):
             table.add_data(  # type: ignore[no-untyped-call]
                 i,
                 it,
-                *[
-                    data_i[key]
-                    for key in self.config.wandb_column_names.split()
-                ],
+                *[data_i[key] for key in self.config.wandb_column_names],
             )
         # 1) Static type checking discrepancy:
         # `logger.experiment` is a `wandb.wandb_run.Run` instance.
@@ -198,7 +195,12 @@ class BaseLitModule(LightningModule, ABC):
             raise ValueError(error_msg) from e
 
     @abstractmethod
-    def step(self, data, stage): ...  # type: ignore [no-untyped-def]  # noqa: ANN001, ANN201, D102
+    def step(  # noqa: D102
+        self: "BaseLitModule",
+        data,  # noqa: ANN001
+        stage: An[str, one_of("train", "val", "test", "predict")],
+    ) -> Num[Tensor, " *_"]:  # type: ignore [no-untyped-def]
+        ...
 
     @final
     def stage_step(
@@ -208,13 +210,9 @@ class BaseLitModule(LightningModule, ABC):
     ) -> Num[Tensor, " *_"]:
         """Generic stage wrapper around the :meth:`step` method.
 
-        Verifies that the :meth:`step` method exists and is callable,
-        calls it and logs the loss value(s).
-
         Args:
-            data: The batched input data.
-            stage: The current stage (``train``, ``val``, ``test`` or
-                ``predict``).
+            data
+            stage
 
         Returns:
             The loss value(s).
@@ -233,7 +231,7 @@ class BaseLitModule(LightningModule, ABC):
         """Calls :meth:`stage_step` with argument ``stage="train"``.
 
         Args:
-            data: See :paramref:`~stage_step.data`.
+            data
 
         Returns:
             The loss value(s).
@@ -253,7 +251,7 @@ class BaseLitModule(LightningModule, ABC):
         """Calls :meth:`stage_step` with argument ``stage="val"``.
 
         Args:
-            data: See :paramref:`~stage_step.data`.
+            data
 
         Returns:
             The loss value(s).
@@ -268,7 +266,7 @@ class BaseLitModule(LightningModule, ABC):
         """Calls :meth:`stage_step` with argument ``stage="test"``.
 
         Args:
-            data: See :paramref:`~stage_step.data`.
+            data
 
         Returns:
             The loss value(s).

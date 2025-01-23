@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable  # noqa: TC003
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Annotated as An
 from typing import Any
 
@@ -29,7 +29,9 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
     """
 
     num_classes: An[int, ge(2)] = 2
-    wandb_column_names: str = "x y y_hat logits"
+    wandb_column_names: list[str] = field(
+        default_factory=lambda: ["x", "y", "y_hat", "logits"],
+    )
 
 
 class BaseClassificationLitModule(BaseLitModule, ABC):
