@@ -227,7 +227,6 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
-<li class="toctree-l5"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -353,7 +352,6 @@
 <span></span><span class="sd">&quot;&quot;&quot;:class:`.BaseLitModule` `Hydra &lt;https://hydra.cc&gt;`_ config store.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">hydra_zen</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZenStore</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">schedulefree</span><span class="w"> </span><span class="kn">import</span> <span class="n">AdamWScheduleFree</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">SGD</span><span class="p">,</span> <span class="n">Adam</span><span class="p">,</span> <span class="n">AdamW</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">get_constant_schedule</span><span class="p">,</span>
@@ -404,11 +402,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">store</span><span class="p">(</span><span class="n">pfs_builds</span><span class="p">(</span><span class="n">Adam</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;adam&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;litmodule/optimizer&quot;</span><span class="p">)</span>
     <span class="n">store</span><span class="p">(</span><span class="n">pfs_builds</span><span class="p">(</span><span class="n">AdamW</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;adamw&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;litmodule/optimizer&quot;</span><span class="p">)</span>
-    <span class="n">store</span><span class="p">(</span>
-        <span class="n">pfs_builds</span><span class="p">(</span><span class="n">AdamWScheduleFree</span><span class="p">),</span>
-        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sfadamw&quot;</span><span class="p">,</span>
-        <span class="n">group</span><span class="o">=</span><span class="s2">&quot;litmodule/optimizer&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
     <span class="n">store</span><span class="p">(</span><span class="n">pfs_builds</span><span class="p">(</span><span class="n">SGD</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;sgd&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;litmodule/optimizer&quot;</span><span class="p">)</span></div>
 
 

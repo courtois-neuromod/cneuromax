@@ -226,7 +226,6 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
-<li class="toctree-l5"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="_autosummary/cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -429,12 +428,12 @@
 </li>
         <li><a href="_autosummary/cneuromax.config.html#cneuromax.config.BaseHydraConfig">BaseHydraConfig (class in cneuromax.config)</a>
 </li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule">BaseLitModule (class in cneuromax.fitting.deeplearning.litmodule.base)</a>
 </li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig">BaseLitModuleConfig (class in cneuromax.fitting.deeplearning.litmodule.base)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html#cneuromax.fitting.neuroevolution.space.reinforcement.BaseReinforcementSpace">BaseReinforcementSpace (class in cneuromax.fitting.neuroevolution.space.reinforcement)</a>
 </li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.base.html#cneuromax.fitting.neuroevolution.space.base.BaseSpace">BaseSpace (class in cneuromax.fitting.neuroevolution.space.base)</a>
@@ -445,6 +444,14 @@
 </li>
         <li><a href="_autosummary/cneuromax.runner.html#cneuromax.runner.BaseTaskRunner">BaseTaskRunner (class in cneuromax.runner)</a>
 </li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch">batch (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start parameter)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch_idx">batch_idx (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start parameter)</a>
+
+        <ul>
+          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.batch_idx">(cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step parameter)</a>
+</li>
+        </ul></li>
         <li><a href="_autosummary/cneuromax.utils.hydra_zen.html#cneuromax.utils.hydra_zen.builds">builds() (in module cneuromax.utils.hydra_zen)</a>
 </li>
     </ul></td>
@@ -457,6 +464,12 @@
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.utils.misc.html#cneuromax.utils.misc.can_connect_to_internet">can_connect_to_internet() (in module cneuromax.utils.misc)</a>
 </li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint.params.checkpoint">checkpoint (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint parameter)</a>
+
+        <ul>
+          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint.params.checkpoint">(cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint parameter)</a>
+</li>
+        </ul></li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.config.html#cneuromax.fitting.deeplearning.config.DeepLearningSubtaskConfig.params.ckpt_path">ckpt_path (cneuromax.fitting.deeplearning.config.DeepLearningSubtaskConfig parameter)</a>
 </li>
         <li><a href="_autosummary/cneuromax.store.html#cneuromax.store.store_wandb_logger_configs.params.clb">clb (cneuromax.store.store_wandb_logger_configs parameter)</a>
@@ -574,13 +587,6 @@
 
         <ul>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html#module-cneuromax.fitting.deeplearning.litmodule.store">module</a>
-</li>
-        </ul></li>
-        <li>
-    cneuromax.fitting.deeplearning.litmodule.wandb_val_logging
-
-        <ul>
-          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#module-cneuromax.fitting.deeplearning.litmodule.wandb_val_logging">module</a>
 </li>
         </ul></li>
         <li>
@@ -1052,7 +1058,9 @@
           <li><a href="_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html#cneuromax.fitting.neuroevolution.utils.wandb.gather.params.curr_gen">(cneuromax.fitting.neuroevolution.utils.wandb.gather parameter)</a>
 </li>
         </ul></li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.curr_val_epoch">curr_val_epoch (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule attribute)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_train_step">curr_train_step (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_val_epoch">curr_val_epoch (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -1166,16 +1174,18 @@
           <li><a href="_autosummary/cneuromax.fitting.neuroevolution.config.html#cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskConfig.params.env_transfer">(cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskConfig parameter)</a>
 </li>
         </ul></li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.epoch">epoch (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step parameter)</a>
+</li>
         <li><a href="_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.equal">equal() (in module cneuromax.utils.beartype)</a>
 </li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.config.html#cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskConfig.params.eval_num_steps">eval_num_steps (cneuromax.fitting.neuroevolution.config.NeuroevolutionSubtaskConfig parameter)</a>
 
         <ul>
           <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.base.html#cneuromax.fitting.neuroevolution.space.base.BaseSpaceConfig.params.eval_num_steps">(cneuromax.fitting.neuroevolution.space.base.BaseSpaceConfig parameter)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.base.html#cneuromax.fitting.neuroevolution.space.base.BaseSpace.evaluate">evaluate() (cneuromax.fitting.neuroevolution.space.base.BaseSpace method)</a>
 
         <ul>
@@ -1380,8 +1390,6 @@
 </li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.load_state_dict">load_state_dict() (cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule method)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.log_val_wandb">log_val_wandb (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig parameter)</a>
-</li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.utils.wandb.html#cneuromax.fitting.neuroevolution.utils.wandb.gather.params.logged_score">logged_score (cneuromax.fitting.neuroevolution.utils.wandb.gather parameter)</a>
 </li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.config.html#cneuromax.fitting.deeplearning.config.DeepLearningTaskConfig.params.logger">logger (cneuromax.fitting.deeplearning.config.DeepLearningTaskConfig parameter)</a>
@@ -1412,14 +1420,8 @@
         </ul></li>
         <li><a href="_autosummary/cneuromax.utils.wandb.html#cneuromax.utils.wandb.login_wandb">login_wandb() (in module cneuromax.utils.wandb)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data.params.logits">logits (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data parameter)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data.params.logits">logits (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data parameter)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.logs_val">logs_val (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule attribute)</a>
-
-        <ul>
-          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.params.logs_val">(cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule parameter)</a>
-</li>
-        </ul></li>
         <li><a href="_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.lt">lt() (in module cneuromax.utils.beartype)</a>
 </li>
     </ul></td>
@@ -1485,8 +1487,6 @@
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#module-cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp">cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp</a>
 </li>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html#module-cneuromax.fitting.deeplearning.litmodule.store">cneuromax.fitting.deeplearning.litmodule.store</a>
-</li>
-          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#module-cneuromax.fitting.deeplearning.litmodule.wandb_val_logging">cneuromax.fitting.deeplearning.litmodule.wandb_val_logging</a>
 </li>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.runner.html#module-cneuromax.fitting.deeplearning.runner">cneuromax.fitting.deeplearning.runner</a>
 </li>
@@ -1665,11 +1665,15 @@
   <h2>O</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_fit_start">on_fit_start() (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule method)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint">on_load_checkpoint() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_epoch_end">on_validation_epoch_end() (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule method)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint">on_save_checkpoint() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.on_validation_start">on_validation_start() (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule method)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start">on_train_batch_start() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end">on_validation_epoch_end() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start">on_validation_start() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
 </li>
         <li><a href="_autosummary/cneuromax.utils.beartype.html#cneuromax.utils.beartype.one_of">one_of() (in module cneuromax.utils.beartype)</a>
 </li>
@@ -1678,17 +1682,23 @@
         <ul>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer">(cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule parameter)</a>
 </li>
+          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer">(cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step parameter)</a>
+</li>
         </ul></li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer_closure">optimizer_closure (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step parameter)</a>
+</li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial">optimizer_partial (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
 </li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step">optimizer_step() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html#cneuromax.fitting.neuroevolution.space.reinforcement.BaseReinforcementSpace.env_done_reset.params.out">out (cneuromax.fitting.neuroevolution.space.reinforcement.BaseReinforcementSpace.env_done_reset parameter)</a>
 
         <ul>
           <li><a href="_autosummary/cneuromax.fitting.neuroevolution.space.reinforcement.html#cneuromax.fitting.neuroevolution.space.reinforcement.BaseReinforcementSpace.run_post_eval.params.out">(cneuromax.fitting.neuroevolution.space.reinforcement.BaseReinforcementSpace.run_post_eval parameter)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.config.html#cneuromax.config.BaseSubtaskConfig.params.output_dir">output_dir (cneuromax.config.BaseSubtaskConfig parameter)</a>
 
         <ul>
@@ -1851,7 +1861,7 @@
         </ul></li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.utils.readwrite.html#cneuromax.fitting.neuroevolution.utils.readwrite.save_state">save_state() (in module cneuromax.fitting.neuroevolution.utils.readwrite)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data">save_val_data() (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule method)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data">save_wandb_data() (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule method)</a>
 </li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.agent.base.html#cneuromax.fitting.neuroevolution.agent.base.BaseAgent.saved_env">saved_env (cneuromax.fitting.neuroevolution.agent.base.BaseAgent attribute)</a>
 </li>
@@ -1904,6 +1914,8 @@
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage">stage (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step parameter)</a>
 
         <ul>
+          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data.params.stage">(cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data parameter)</a>
+</li>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.step.params.stage">(cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.step parameter)</a>
 </li>
           <li><a href="_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup.params.stage">(cneuromax.projects.classify_mnist.datamodule.MNISTDataModule.setup parameter)</a>
@@ -1919,8 +1931,12 @@
 </li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.datamodule.base.html#cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule.state_dict">state_dict() (cneuromax.fitting.deeplearning.datamodule.base.BaseDataModule method)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.step">step() (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule method)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step">step() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
+
+        <ul>
+          <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.step">(cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule method)</a>
 </li>
+        </ul></li>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.store.html#cneuromax.fitting.deeplearning.litmodule.store.store_basic_nnmodule_config.params.store">store (cneuromax.fitting.deeplearning.litmodule.store.store_basic_nnmodule_config parameter)</a>
 
         <ul>
@@ -2060,6 +2076,10 @@
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.utils.exchange.html#cneuromax.fitting.neuroevolution.utils.exchange.update_exchange_and_mutate_info">update_exchange_and_mutate_info() (in module cneuromax.fitting.neuroevolution.utils.exchange)</a>
 </li>
     </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.update_wandb_data_before_log">update_wandb_data_before_log() (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule method)</a>
+</li>
+    </ul></td>
   </tr></table>
 </section>
 
@@ -2085,8 +2105,6 @@
 </li>
         <li><a href="_autosummary/cneuromax.projects.classify_mnist.datamodule.html#cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig.params.val_percentage">val_percentage (cneuromax.projects.classify_mnist.datamodule.MNISTDataModuleConfig parameter)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.val_wandb_data">val_wandb_data (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule attribute)</a>
-</li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.utils.validate.html#cneuromax.fitting.neuroevolution.utils.validate.validate_space">validate_space() (in module cneuromax.fitting.neuroevolution.utils.validate)</a>
 </li>
         <li><a href="_autosummary/cneuromax.fitting.neuroevolution.runner.html#cneuromax.fitting.neuroevolution.runner.NeuroevolutionTaskRunner.validate_subtask_config">validate_subtask_config() (cneuromax.fitting.neuroevolution.runner.NeuroevolutionTaskRunner static method)</a>
@@ -2101,13 +2119,31 @@
   <h2>W</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule.wandb_columns">wandb_columns (cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule attribute)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_column_names">wandb_column_names (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig parameter)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModuleConfig.params.wandb_columns">wandb_columns (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModuleConfig parameter)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.wandb_media_x">wandb_media_x (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule property)</a>
+
+        <ul>
+          <li><a href="_autosummary/cneuromax.projects.classify_mnist.litmodule.html#cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule.wandb_media_x">(cneuromax.projects.classify_mnist.litmodule.MNISTClassificationLitModule property)</a>
+</li>
+        </ul></li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_num_samples">wandb_num_samples (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig parameter)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.wandb_table">wandb_table (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule attribute)</a>
 </li>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule">WandbValLoggingLightningModule (class in cneuromax.fitting.deeplearning.litmodule.wandb_val_logging)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data">wandb_train_data (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval">wandb_train_log_interval (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig parameter)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table">wandb_train_table (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_data">wandb_val_data (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
+</li>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_table">wandb_val_table (cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule attribute)</a>
 </li>
     </ul></td>
   </tr></table>
@@ -2117,7 +2153,7 @@
   <h2>X</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data.params.x">x (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data parameter)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data.params.x">x (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data parameter)</a>
 
         <ul>
           <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.html#cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.forward.params.x">(cneuromax.fitting.deeplearning.litmodule.nnmodule.mlp.MLP.forward parameter)</a>
@@ -2141,11 +2177,11 @@
   <h2>Y</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data.params.y">y (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data parameter)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data.params.y">y (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data parameter)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data.params.y_hat">y_hat (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_val_data parameter)</a>
+        <li><a href="_autosummary/cneuromax.fitting.deeplearning.litmodule.classification.base.html#cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data.params.y_hat">y_hat (cneuromax.fitting.deeplearning.litmodule.classification.base.BaseClassificationLitModule.save_wandb_data parameter)</a>
 </li>
     </ul></td>
   </tr></table>

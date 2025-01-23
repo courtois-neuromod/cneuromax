@@ -228,7 +228,6 @@
 </ul>
 </li>
 <li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.store.html">store</a></li>
-<li class="toctree-l5"><a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html">wandb_val_logging</a></li>
 </ul>
 </li>
 <li class="toctree-l4"><a class="reference internal" href="cneuromax.fitting.deeplearning.runner.html">runner</a></li>
@@ -361,13 +360,16 @@
 <p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a> &amp; its config.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_val_wandb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModuleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModuleConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wandb_column_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wandb_train_log_interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wandb_num_samples</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModuleConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Holds <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModule</span></code></a> config values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.log_val_wandb"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.log_val_wandb"><strong>log_val_wandb</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">False</span></code>) – Whether to log validation data to
-<a class="reference external" href="https://wandb.ai/">W&amp;B</a>.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_column_names"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_column_names"><strong>wandb_column_names</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"><strong>wandb_train_log_interval</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_num_samples"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_num_samples"><strong>wandb_num_samples</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">3</span></code>)</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -375,9 +377,9 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cneuromax.fitting.deeplearning.litmodule.base.</span></span><span class="sig-name descname"><span class="pre">BaseLitModule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nnmodule</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scheduler</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.html#cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule" title="cneuromax.fitting.deeplearning.litmodule.wandb_val_logging.WandbValLoggingLightningModule"><code class="xref py py-class docutils literal notranslate"><span class="pre">WandbValLoggingLightningModule</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.core.LightningModule.html#lightning.pytorch.core.LightningModule" title="(in PyTorch Lightning v2.5.0.post0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LightningModule</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></a></p>
 <p>Base <a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.core.LightningModule.html#lightning.pytorch.core.LightningModule" title="(in PyTorch Lightning v2.5.0.post0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">lightning.pytorch.core.LightningModule</span></code></a>.</p>
-<p>Subclasses need to implement the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method that inputs
+<p>Subclasses need to implement the <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method that inputs
 both <code class="docutils literal notranslate"><span class="pre">data</span></code> and  <code class="docutils literal notranslate"><span class="pre">stage</span></code> arguments while returning the loss
 value(s) in the form of a <a class="reference external" href="https://pytorch.org/docs/stable/tensors.html#torch.Tensor" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">torch.Tensor</span></code></a>.</p>
 <p>Example definition:</p>
@@ -394,112 +396,277 @@ value(s) in the form of a <a class="reference external" href="https://pytorch.or
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">data</span></code> and loss value(s) type hints in this class are not         rendered properly in the documentation due to an         incompatibility between <a class="reference external" href="https://www.sphinx-doc.org/">sphinx</a>
-and <a class="reference external" href="https://docs.kidger.site/jaxtyping/">jaxtyping</a>.         Refer to the source code available next to the method         signatures to find the correct types.</p>
+<p>In <a class="reference internal" href="cneuromax.html#module-cneuromax" title="cneuromax"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cneuromax</span></code></a>, we propose to split the PyTorch module
+definition from the Lightning module definition for (arguably)
+better code organization, reuse &amp; readability. As a result, each
+Lightning module receives a PyTorch module as an argument which
+it turns into an instance attribute. This is in contrast with
+the suggested Lightning best practices where Lightning modules
+subclass PyTorch modules, and thus allow PyTorch module method
+definitions in the Lightning module.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config"><strong>config</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseLitModuleConfig</span></code></a></span>)</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"><strong>nnmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></span>) – A <a class="reference external" href="https://pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.5)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> <code class="docutils literal notranslate"><span class="pre">nn.Module</span></code> to be used by this
-instance.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"><strong>optimizer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>]</span>) – A <a class="reference external" href="https://pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.5)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> <code class="docutils literal notranslate"><span class="pre">Optimizer</span></code> to be used by this
-instance. It is partial as an argument as the
-<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a> parameters are required for its
-initialization.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"><strong>scheduler</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.LRScheduler.html#torch.optim.lr_scheduler.LRScheduler" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code></a>]</span>) – A <a class="reference external" href="https://pytorch.org/docs/stable/torch.html#module-torch" title="(in PyTorch v2.5)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">torch</span></code></a> <code class="docutils literal notranslate"><span class="pre">Scheduler</span></code> to be used by this
-instance. It is partial as an argument as the
-<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a> is required for its initialization.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule"><strong>nnmodule</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></a></span>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer"><strong>optimizer</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>]</span>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler"><strong>scheduler</strong></a> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">partial</span></code>[<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.LRScheduler.html#torch.optim.lr_scheduler.LRScheduler" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code></a>]</span>)</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.config">
 <span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.config" title="Link to this definition">¶</a></dt>
-<dd><p>See
-<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">config</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig">BaseLitModuleConfig</a></p>
-</dd>
-</dl>
+<dd><p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.config" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">config</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule">
 <span class="sig-name descname"><span class="pre">nnmodule</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.nnmodule" title="Link to this definition">¶</a></dt>
-<dd><p>See
-<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module" title="(in PyTorch v2.5)">torch.nn.Module</a></p>
-</dd>
-</dl>
+<dd><p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.nnmodule" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">nnmodule</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial">
 <span class="sig-name descname"><span class="pre">optimizer_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_partial" title="Link to this definition">¶</a></dt>
 <dd><p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>partial</em>[<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch v2.5)">torch.optim.Optimizer</a>]</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial">
 <span class="sig-name descname"><span class="pre">scheduler_partial</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial" title="Link to this definition">¶</a></dt>
-<dd><p>See
-<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>partial</em>[            <a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.LRScheduler.html#torch.optim.lr_scheduler.LRScheduler" title="(in PyTorch v2.5)">torch.optim.lr_scheduler.LRScheduler</a>]</p>
-</dd>
-</dl>
+<dd><p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer">
 <span class="sig-name descname"><span class="pre">optimizer</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer" title="Link to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">optimizer</span></code></a> instantiated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch v2.5)">torch.optim.Optimizer</a></p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler">
 <span class="sig-name descname"><span class="pre">scheduler</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler" title="Link to this definition">¶</a></dt>
 <dd><p><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.params.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">scheduler</span></code></a> instantiated.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_train_step">
+<span class="sig-name descname"><span class="pre">curr_train_step</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_train_step" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_val_epoch">
+<span class="sig-name descname"><span class="pre">curr_val_epoch</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_val_epoch" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table">
+<span class="sig-name descname"><span class="pre">wandb_train_table</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table" title="Link to this definition">¶</a></dt>
+<dd><p>Table containing the rich
+training data that gets logged to W&amp;B.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.LRScheduler.html#torch.optim.lr_scheduler.LRScheduler" title="(in PyTorch v2.5)">torch.optim.lr_scheduler.LRScheduler</a></p>
+<dd class="field-odd"><p>wandb.Table</p>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data">
+<span class="sig-name descname"><span class="pre">wandb_train_data</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data" title="Link to this definition">¶</a></dt>
+<dd><p>A list of dictionaries
+containing validation data relating to one specific example
+(ex: <cite>input_data</cite>, <cite>logits</cite>, …).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#NotImplementedError" title="(in Python v3.13)"><strong>NotImplementedError</strong></a> – If the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method is not
-    defined or callable.</p>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, Any]]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_table">
+<span class="sig-name descname"><span class="pre">wandb_val_table</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_table" title="Link to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table"><code class="xref py py-attr docutils literal notranslate"><span class="pre">wandb_train_table</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>wandb.Table</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_data">
+<span class="sig-name descname"><span class="pre">wandb_val_data</span></span><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_data" title="Link to this definition">¶</a></dt>
+<dd><p>See
+<a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data"><code class="xref py py-attr docutils literal notranslate"><span class="pre">wandb_train_data</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)">str</a>, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step">
-<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stage_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.stage_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step" title="Link to this definition">¶</a></dt>
-<dd><p>Generic stage wrapper around the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method.</p>
-<p>Verifies that the <code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code> method exists and is callable,
-calls it and logs the loss value(s).</p>
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint">
+<span class="sig-name descname"><span class="pre">on_save_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_save_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Called by Lightning when saving a checkpoint to give you a chance to store anything else you might want to
+save.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint.params.checkpoint"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint.params.checkpoint"><strong>checkpoint</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – The full checkpoint dictionary before it gets dumped to a file.
+Implementations of this hook can insert additional data into this dictionary.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">):</span>
+    <span class="c1"># 99% of use cases you don&#39;t need to implement this method</span>
+    <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;something_cool_i_want_to_save&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_cool_pickable_object</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Lightning saves all aspects of training (epoch, global step, etc…)
+including amp scaling.
+There is no need for you to store anything about training.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint">
+<span class="sig-name descname"><span class="pre">on_load_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">checkpoint</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_load_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint" title="Link to this definition">¶</a></dt>
+<dd><p>Called by Lightning to restore your model. If you saved something with <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">on_save_checkpoint()</span></code></a> this is
+your chance to restore this.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint.params.checkpoint"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint.params.checkpoint"><strong>checkpoint</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a>]</span>) – Loaded checkpoint</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">on_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">):</span>
+    <span class="c1"># 99% of the time you don&#39;t need to implement this method</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">something_cool_i_want_to_save</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;something_cool_i_want_to_save&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Lightning auto-restores global step, epoch, and train state including amp scaling.
+There is no need for you to restore anything regarding training.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start">
+<span class="sig-name descname"><span class="pre">on_train_batch_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_train_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start" title="Link to this definition">¶</a></dt>
+<dd><p>Called in the training loop before anything happens for that batch.</p>
+<p>If you return -1 here, you will skip training for the rest of the current epoch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – The batched input data.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The current stage (<code class="docutils literal notranslate"><span class="pre">train</span></code>, <code class="docutils literal notranslate"><span class="pre">val</span></code>, <code class="docutils literal notranslate"><span class="pre">test</span></code> or
-<code class="docutils literal notranslate"><span class="pre">predict</span></code>).</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch"><strong>batch</strong></a> – The batched data as it is returned by the training DataLoader.</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch_idx"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch_idx"><strong>batch_idx</strong></a> – the index of the batch</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start">
+<span class="sig-name descname"><span class="pre">on_validation_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start" title="Link to this definition">¶</a></dt>
+<dd><p>Called at the beginning of validation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step">
+<span class="sig-name descname"><span class="pre">optimizer_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.optimizer_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step" title="Link to this definition">¶</a></dt>
+<dd><p>Override this method to adjust the default way the <a class="reference external" href="https://lightning.ai/docs/pytorch/stable/api/lightning.pytorch.trainer.trainer.Trainer.html#lightning.pytorch.trainer.trainer.Trainer" title="(in PyTorch Lightning v2.5.0.post0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a> calls
+the optimizer.</p>
+<p>By default, Lightning calls <code class="docutils literal notranslate"><span class="pre">step()</span></code> and <code class="docutils literal notranslate"><span class="pre">zero_grad()</span></code> as shown in the example.
+This method (and <code class="docutils literal notranslate"><span class="pre">zero_grad()</span></code>) won’t be called during the accumulation phase when
+<code class="docutils literal notranslate"><span class="pre">Trainer(accumulate_grad_batches</span> <span class="pre">!=</span> <span class="pre">1)</span></code>. Overriding this hook has no benefit with manual optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.epoch"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.epoch"><strong>epoch</strong></a> – Current epoch</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.batch_idx"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.batch_idx"><strong>batch_idx</strong></a> – Index of current batch</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer"><strong>optimizer</strong></a> – A PyTorch optimizer</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer_closure"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step.params.optimizer_closure"><strong>optimizer_closure</strong></a> – The optimizer closure. This closure must be executed as it includes the
+calls to <code class="docutils literal notranslate"><span class="pre">training_step()</span></code>, <code class="docutils literal notranslate"><span class="pre">optimizer.zero_grad()</span></code>, and <code class="docutils literal notranslate"><span class="pre">backward()</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+<p>Examples:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">optimizer_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epoch</span><span class="p">,</span> <span class="n">batch_idx</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">optimizer_closure</span><span class="p">):</span>
+    <span class="c1"># Add your custom logic to run directly before `optimizer.step()`</span>
+
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">closure</span><span class="o">=</span><span class="n">optimizer_closure</span><span class="p">)</span>
+
+    <span class="c1"># Add your custom logic to run directly after `optimizer.step()`</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end">
+<span class="sig-name descname"><span class="pre">on_validation_epoch_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_epoch_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end" title="Link to this definition">¶</a></dt>
+<dd><p>Called in the validation loop at the very end of the epoch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.update_wandb_data_before_log">
+<span class="sig-name descname"><span class="pre">update_wandb_data_before_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.update_wandb_data_before_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.update_wandb_data_before_log" title="Link to this definition">¶</a></dt>
+<dd><p>Hook for subclasses to run a final update to W&amp;B data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step" title="Link to this definition">¶</a></dt>
+<dd><p>Method to be implemented by subclasses.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Num[Tensor,</span> <span class="pre">'*_']</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step">
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stage_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stage</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.stage_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step" title="Link to this definition">¶</a></dt>
+<dd><p>Generic stage wrapper around the <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.stage"><strong>stage</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
@@ -517,7 +684,7 @@ calls it and logs the loss value(s).</p>
 <dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stage_step()</span></code></a> with argument <code class="docutils literal notranslate"><span class="pre">stage=&quot;train&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Num[Tensor,</span> <span class="pre">'*_']</span></code></span></p>
@@ -534,7 +701,7 @@ calls it and logs the loss value(s).</p>
 <dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stage_step()</span></code></a> with argument <code class="docutils literal notranslate"><span class="pre">stage=&quot;val&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Num[Tensor,</span> <span class="pre">'*_']</span></code></span></p>
@@ -551,7 +718,7 @@ calls it and logs the loss value(s).</p>
 <dd><p>Calls <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stage_step()</span></code></a> with argument <code class="docutils literal notranslate"><span class="pre">stage=&quot;test&quot;</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – See <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step.params.data" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="xref py py-paramref docutils literal notranslate"><span class="pre">data</span></code></a>.</p>
+<dd class="field-odd"><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step.params.data"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.test_step.params.data"><strong>data</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.13)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Num[Tensor,</span> <span class="pre">'*_']</span></code></span></p>
@@ -564,11 +731,11 @@ calls it and logs the loss value(s).</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers">
-<span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">final</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">configure_optimizers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.configure_optimizers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.configure_optimizers" title="Link to this definition">¶</a></dt>
 <dd><p>Returns a dict with <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">optimizer</span></code></a> and <a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler" title="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler"><code class="xref py py-attr docutils literal notranslate"><span class="pre">scheduler</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimizerLRSchedulerConfig</span></code></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://pytorch.org/docs/stable/optim.html#torch.optim.Optimizer" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>], <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.LRScheduler.html#torch.optim.lr_scheduler.LRScheduler" title="(in PyTorch v2.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">LRScheduler</span></code></a>]]</span></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><dl class="simple">
@@ -649,6 +816,20 @@ calls it and logs the loss value(s).</p>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler_partial"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.scheduler_partial</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.scheduler"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.scheduler</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_train_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.curr_train_step</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.curr_val_epoch"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.curr_val_epoch</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_table"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.wandb_train_table</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_train_data"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.wandb_train_data</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_table"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.wandb_val_table</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_data"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.wandb_val_data</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_save_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_load_checkpoint()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_train_batch_start()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_start()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer_step()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_epoch_end()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.update_wandb_data_before_log"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.update_wandb_data_before_log()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.stage_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.stage_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.training_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.training_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.validation_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.validation_step()</span></code></a></li>

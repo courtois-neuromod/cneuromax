@@ -18,6 +18,5 @@ litmodule
       classification
       nnmodule
       store
-      wandb_val_logging
 
 
