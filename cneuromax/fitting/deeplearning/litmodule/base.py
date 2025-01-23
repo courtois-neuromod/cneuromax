@@ -28,7 +28,7 @@ class BaseLitModuleConfig:
     """
 
     wandb_column_names: str
-    wandb_train_log_interval: int = "${trainer.val_check_interval}"  # type: ignore[assignment]
+    wandb_train_log_interval: int = 100  # type: ignore[assignment]
     wandb_num_samples: An[int, ge(1)] = 1
 
 
