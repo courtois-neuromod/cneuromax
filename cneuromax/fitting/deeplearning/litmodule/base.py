@@ -113,6 +113,20 @@ class BaseLitModule(LightningModule, ABC):
             raise NotImplementedError(error_msg)
         self.curr_train_step = 0
         self.curr_val_epoch = 0
+        self.wandb_train_table = wandb.Table(  # type: ignore[no-untyped-call]
+            columns=[
+                "data_idx",
+                "train_step",
+                *self.config.wandb_column_names.split(),
+            ],
+        )
+        self.wandb_val_table = wandb.Table(  # type: ignore[no-untyped-call]
+            columns=[
+                "data_idx",
+                "val_epoch",
+                *self.config.wandb_column_names.split(),
+            ],
+        )
 
     def on_save_checkpoint(  # noqa: D102
         self: "BaseLitModule",
@@ -129,24 +143,6 @@ class BaseLitModule(LightningModule, ABC):
         self.curr_train_step = checkpoint["curr_train_step"]
         self.curr_val_epoch = checkpoint["curr_val_epoch"]
         return super().on_load_checkpoint(checkpoint)
-
-    def on_fit_start(self: "BaseLitModule") -> None:
-        """Initializes rich data W&B tables."""
-        self.wandb_train_table = wandb.Table(  # type: ignore[no-untyped-call]
-            columns=[
-                "data_idx",
-                "train_step",
-                *self.config.wandb_column_names.split(),
-            ],
-        )
-        self.wandb_val_table = wandb.Table(  # type: ignore[no-untyped-call]
-            columns=[
-                "data_idx",
-                "val_epoch",
-                *self.config.wandb_column_names.split(),
-            ],
-        )
-        super().on_fit_start()
 
     def on_train_batch_start(  # noqa: D102
         self: "BaseLitModule",
