@@ -195,12 +195,12 @@ class BaseLitModule(LightningModule, ABC):
             raise ValueError(error_msg) from e
 
     @abstractmethod
-    def step(  # noqa: D102
+    def step(  # type: ignore[no-untyped-def]
         self: "BaseLitModule",
         data,  # noqa: ANN001
         stage: An[str, one_of("train", "val", "test", "predict")],
-    ) -> Num[Tensor, " *_"]:  # type: ignore [no-untyped-def]
-        ...
+    ) -> Num[Tensor, " *_"]:
+        """Method to be implemented by subclasses."""
 
     @final
     def stage_step(
@@ -219,7 +219,7 @@ class BaseLitModule(LightningModule, ABC):
         """
         if isinstance(data, list):
             data = tuple(data)
-        loss: Num[Tensor, " *_"] = self.step(data, stage)  # type: ignore [no-untyped-call]
+        loss: Num[Tensor, " *_"] = self.step(data, stage)
         self.log(name=f"{stage}/loss", value=loss)
         return loss
 
