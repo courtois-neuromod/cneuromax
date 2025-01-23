@@ -113,6 +113,9 @@ class BaseLitModule(LightningModule, ABC):
             raise NotImplementedError(error_msg)
         self.curr_train_step = 0
         self.curr_val_epoch = 0
+        self.initialize_wandb_objects()
+
+    def initialize_wandb_objects(self: "BaseLitModule") -> None:  # noqa: D102
         self.wandb_train_table = wandb.Table(  # type: ignore[no-untyped-call]
             columns=[
                 "data_idx",
@@ -127,6 +130,8 @@ class BaseLitModule(LightningModule, ABC):
                 *self.config.wandb_column_names.split(),
             ],
         )
+        self.wandb_train_data: list[dict[str, Any]] = []
+        self.wandb_val_data: list[dict[str, Any]] = []
 
     def on_save_checkpoint(  # noqa: D102
         self: "BaseLitModule",
@@ -149,11 +154,11 @@ class BaseLitModule(LightningModule, ABC):
         *args: Any,  # noqa: ANN401
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
-        self.wandb_train_data: list[dict[str, Any]] = []
+        self.wandb_train_data = []
         super().on_train_batch_start(*args, **kwargs)
 
     def on_validation_start(self: "BaseLitModule") -> None:  # noqa: D102
-        self.wandb_val_data: list[dict[str, Any]] = []
+        self.wandb_val_data = []
         super().on_validation_start()
 
     def optimizer_step(  # noqa: D102

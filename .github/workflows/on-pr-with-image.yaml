@@ -86,4 +86,4 @@ jobs:
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=neuroevorl_control task=acrobot
-          logger.entity=maximilienlc config.total_num_gens=10
+          logger.entity=maximilienlc config.total_num_gens=3
