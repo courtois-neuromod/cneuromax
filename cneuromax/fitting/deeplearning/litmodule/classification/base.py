@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Callable  # noqa: TC003
 from dataclasses import dataclass, field
 from typing import Annotated as An
-from typing import Any
+from typing import Any, final
 
 import torch
 import torch.nn.functional as f
@@ -63,6 +63,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     def wandb_media_x(self):  # type: ignore[no-untyped-def] # noqa: ANN201
         """Converts a tensor to a W&B media object."""
 
+    @final
     def step(
         self: "BaseClassificationLitModule",
         data: tuple[
@@ -91,6 +92,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         self.save_wandb_data(stage, x, y, y_hat, logits)
         return f.cross_entropy(input=logits, target=y)
 
+    @final
     def save_wandb_data(
         self: "BaseClassificationLitModule",
         stage: An[str, one_of("train", "val", "test")],

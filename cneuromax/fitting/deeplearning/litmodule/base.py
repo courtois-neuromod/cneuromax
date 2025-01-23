@@ -105,6 +105,7 @@ class BaseLitModule(LightningModule, ABC):
         self.curr_val_epoch = 0
         self.initialize_wandb_objects()
 
+    @final
     def initialize_wandb_objects(self: "BaseLitModule") -> None:  # noqa: D102
         create_wandb_table = lambda iter_type: wandb.Table(  # type: ignore[no-untyped-call]  # noqa: E731
             columns=[
@@ -161,10 +162,18 @@ class BaseLitModule(LightningModule, ABC):
         self.log_table(self.wandb_val_data)
         self.curr_val_epoch += 1
 
+    def update_wandb_data_before_log(
+        self: "BaseLitModule",
+        data: list[dict[str, Any]],
+    ) -> None:
+        """Hook for subclasses to run a final update to W&B data."""
+
+    @final
     def log_table(  # noqa: D102
         self: "BaseLitModule",
         data: list[dict[str, Any]],
     ) -> None:
+        self.update_wandb_data_before_log(data)
         if data is self.wandb_train_data:
             name = "train_data"
             table = self.wandb_train_table
@@ -273,6 +282,7 @@ class BaseLitModule(LightningModule, ABC):
         """
         return self.stage_step(data=data, stage="test")
 
+    @final
     def configure_optimizers(
         self: "BaseLitModule",
     ) -> tuple[list[Optimizer], list[LRScheduler]]:
