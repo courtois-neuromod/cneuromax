@@ -1,10 +1,10 @@
 """:class:`.BaseClassificationLitModule` & its config."""
 
-from abc import ABC
+from abc import ABC, abstractmethod
 from collections.abc import Callable  # noqa: TC003
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Annotated as An
-from typing import Any
+from typing import Any, final
 
 import torch
 import torch.nn.functional as f
@@ -24,19 +24,20 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
     """Holds :class:`BaseClassificationLitModule` config values.
 
     Args:
-        num_classes: Number of classes to classify between.
+        num_classes
+        wandb_columns
     """
 
     num_classes: An[int, ge(2)] = 2
+    wandb_column_names: list[str] = field(
+        default_factory=lambda: ["x", "y", "y_hat", "logits"],
+    )
 
 
 class BaseClassificationLitModule(BaseLitModule, ABC):
     """Base Classification ``LightningModule``.
 
     Ref: :class:`lightning.pytorch.core.LightningModule`
-
-    If logging validation data to W&B, make sure to define the
-    :attr:`wandb_columns` attribute in the subclass.
 
     Attributes:
         config (BaseClassificationLitModuleConfig)
@@ -52,13 +53,17 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
     ) -> None:
         super().__init__(*args, **kwargs)
         self.config: BaseClassificationLitModuleConfig
-        self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
+        self.accuracy = MulticlassAccuracy(
             num_classes=self.config.num_classes,
         )
-        if self.config.log_val_wandb:
-            self.wandb_columns = ["x", "y", "y_hat", "logits"]
-            self.wandb_input_data_wrapper: Callable[..., Any] = lambda x: x
+        self.to_wandb_media: Callable[..., Any] = lambda x: x
 
+    @property
+    @abstractmethod
+    def wandb_media_x(self):  # type: ignore[no-untyped-def] # noqa: ANN201
+        """Converts a tensor to a W&B media object."""
+
+    @final
     def step(
         self: "BaseClassificationLitModule",
         data: tuple[
@@ -84,37 +89,42 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         y_hat: Int[Tensor, " batch_size"] = torch.argmax(input=logits, dim=1)
         accuracy: Float[Tensor, " "] = self.accuracy(preds=y_hat, target=y)
         self.log(name=f"{stage}/acc", value=accuracy)
-        if stage == "val" and self.config.log_val_wandb:
-            self.save_val_data(x=x, y=y, y_hat=y_hat, logits=logits)
+        self.save_wandb_data(stage, x, y, y_hat, logits)
         return f.cross_entropy(input=logits, target=y)
 
-    def save_val_data(
+    @final
+    def save_wandb_data(
         self: "BaseClassificationLitModule",
+        stage: An[str, one_of("train", "val", "test")],
         x: Float[Tensor, " batch_size *x_dim"],
         y: Int[Tensor, " batch_size"],
         y_hat: Int[Tensor, " batch_size"],
         logits: Float[Tensor, " batch_size num_classes"],
     ) -> None:
-        """Saves data computed during validation for later use.
+        """Saves rich data to be logged to W&B.
 
         Args:
-            x: The input data.
-            y: The target class.
-            y_hat: The predicted class.
+            stage
+            x
+            y
+            y_hat
             logits: The raw `num_classes` network outputs.
         """
-        for x_i, y_i, y_hat_i, logits_i in zip(
-            x.cpu(),
-            y.cpu(),
-            y_hat.cpu(),
-            logits.cpu(),
-            strict=False,
-        ):
-            self.val_wandb_data.append(
+        data = (
+            self.wandb_train_data if stage == "train" else self.wandb_val_data
+        )
+        if data or self.global_rank != 0:
+            return
+        x, y, y_hat, logits = x.cpu(), y.cpu(), y_hat.cpu(), logits.cpu()
+        for i in range(self.config.wandb_num_samples):
+            index = (
+                self.curr_val_epoch * self.config.wandb_num_samples + i
+            ) % len(x)
+            data.append(
                 {
-                    "x": self.wandb_input_data_wrapper(x_i),
-                    "y": y_i,
-                    "y_hat": y_hat_i,
-                    "logits": logits_i.tolist(),
+                    "x": self.wandb_media_x(x[index]),
+                    "y": y[index],
+                    "y_hat": y_hat[index],
+                    "logits": logits[index].tolist(),
                 },
             )

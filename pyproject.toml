@@ -51,7 +51,6 @@ dependencies = [
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "torchaudio==2.5.1+cu124", # Tensor manipulation on audio data
     "torchvision==0.20.1+cu124", # Tensor manipulation on vision data
-    "schedulefree==1.4", # Automatic learning rate scheduler
     "transformers==4.48.1", # Pre-trained models published on Hugging Face
     "diffusers==0.32.2", # Diffusion models published on Hugging Face
     "timm==1.0.14", # Image models
@@ -88,7 +87,7 @@ dependencies = [
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.35.1", # YAML linter
     "pre-commit==4.1.0", # Git commit hooks
-    "mypy==1.14.1", # Static type checker
+    "mypy==1.13.0", # Static type checker
     "pytest==8.3.4", # Testing framework
     "pytest-cov==6.0.0", # Test coverage
 ]

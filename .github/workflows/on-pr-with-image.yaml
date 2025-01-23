@@ -71,7 +71,7 @@ jobs:
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=classify_mnist task=mlp
-          logger.entity=maximilienlc litmodule.config.log_val_wandb=True
+          logger.entity=maximilienlc
   neuroevorl_control-acrobot:
     needs: docker-build
     runs-on: self-hosted
@@ -86,4 +86,4 @@ jobs:
           -v ${PWD}:${PWD} -e PYTHONPATH=${PYTHONPATH}:${PWD}
           -v /dev/shm:/dev/shm -w ${PWD} cneuromod/cneuromax:test
           python3 -m cneuromax project=neuroevorl_control task=acrobot
-          logger.entity=maximilienlc config.total_num_gens=10
+          logger.entity=maximilienlc config.total_num_gens=3
