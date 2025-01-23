@@ -192,7 +192,10 @@ class BaseLitModule(LightningModule, ABC):
             table.add_data(  # type: ignore[no-untyped-call]
                 i,
                 it,
-                *[data_i[key] for key in self.config.wandb_column_names],
+                *[
+                    data_i[key]
+                    for key in self.config.wandb_column_names.split()
+                ],
             )
         # 1) Static type checking discrepancy:
         # `logger.experiment` is a `wandb.wandb_run.Run` instance.
