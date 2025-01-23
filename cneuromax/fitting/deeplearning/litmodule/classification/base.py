@@ -111,7 +111,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         data = (
             self.wandb_train_data if stage == "train" else self.wandb_val_data
         )
-        if data:
+        if data or self.global_rank != 0:
             return
         x, y, y_hat, logits = x.cpu(), y.cpu(), y_hat.cpu(), logits.cpu()
         for i in range(self.config.wandb_num_samples):
