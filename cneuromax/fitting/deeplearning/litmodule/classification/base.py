@@ -29,21 +29,13 @@ class BaseClassificationLitModuleConfig(BaseLitModuleConfig):
     """
 
     num_classes: An[int, ge(2)] = 2
-    wandb_column_names: list[str] = [  # noqa: RUF008
-        "x",
-        "y",
-        "y_hat",
-        "logits",
-    ]
+    wandb_column_names: str = "x y y_hat logits"
 
 
 class BaseClassificationLitModule(BaseLitModule, ABC):
     """Base Classification ``LightningModule``.
 
     Ref: :class:`lightning.pytorch.core.LightningModule`
-
-    If logging validation data to W&B, make sure to define the
-    :attr:`wandb_columns` attribute in the subclass.
 
     Attributes:
         config (BaseClassificationLitModuleConfig)
@@ -62,7 +54,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         self.accuracy: MulticlassAccuracy = MulticlassAccuracy(
             num_classes=self.config.num_classes,
         )
-        self.wandb_x_wrapper: Callable[..., Any] = lambda x: x
+        self.to_wandb_media: Callable[..., Any] = lambda x: x
 
     def step(
         self: "BaseClassificationLitModule",
@@ -124,7 +116,7 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
         ):
             data.append(
                 {
-                    "x": self.wandb_x_wrapper(x_i),
+                    "x": self.to_wandb_media(x_i),
                     "y": y_i,
                     "y_hat": y_hat_i,
                     "logits": logits_i.tolist(),

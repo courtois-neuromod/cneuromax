@@ -27,7 +27,7 @@ class BaseLitModuleConfig:
         wandb_num_samples
     """
 
-    wandb_column_names: list[str]
+    wandb_column_names: str
     wandb_train_log_interval: int = "${trainer.val_check_interval}"  # type: ignore[assignment]
     wandb_num_samples: An[int, ge(1)] = 1
 
@@ -135,11 +135,15 @@ class BaseLitModule(LightningModule, ABC):
             columns=[
                 "data_idx",
                 "train_step",
-                *self.config.wandb_column_names,
+                *self.config.wandb_column_names.split(),
             ],
         )
         self.wandb_val_table = wandb.Table(  # type: ignore[no-untyped-call]
-            columns=["data_idx", "val_epoch", *self.config.wandb_column_names],
+            columns=[
+                "data_idx",
+                "val_epoch",
+                *self.config.wandb_column_names.split(),
+            ],
         )
         super().on_fit_start()
 
