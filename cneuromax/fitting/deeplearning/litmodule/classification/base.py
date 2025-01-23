@@ -106,26 +106,21 @@ class BaseClassificationLitModule(BaseLitModule, ABC):
             y_hat
             logits: The raw `num_classes` network outputs.
         """
-        if stage == "train":
-            data = self.wandb_train_data
-        else:  # stage == "val"
-            data = self.wandb_val_data
+        data = (
+            self.wandb_train_data if stage == "train" else self.wandb_val_data
+        )
         if data:
             return
-        for x_i, y_i, y_hat_i, logits_i in zip(
-            x.cpu(),
-            y.cpu(),
-            y_hat.cpu(),
-            logits.cpu(),
-            strict=False,
-        ):
+        x, y, y_hat, logits = x.cpu(), y.cpu(), y_hat.cpu(), logits.cpu()
+        for i in range(self.config.wandb_num_samples):
+            index = (
+                self.curr_val_epoch * self.config.wandb_num_samples + i
+            ) % len(x)
             data.append(
                 {
-                    "x": self.wandb_media_x(x_i),
-                    "y": y_i,
-                    "y_hat": y_hat_i,
-                    "logits": logits_i.tolist(),
+                    "x": self.wandb_media_x(x[index]),
+                    "y": y[index],
+                    "y_hat": y_hat[index],
+                    "logits": logits[index].tolist(),
                 },
             )
-            if len(data) >= self.config.wandb_num_samples:
-                break

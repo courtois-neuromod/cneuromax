@@ -106,20 +106,15 @@ class BaseLitModule(LightningModule, ABC):
         self.initialize_wandb_objects()
 
     def initialize_wandb_objects(self: "BaseLitModule") -> None:  # noqa: D102
-        self.wandb_train_table = wandb.Table(  # type: ignore[no-untyped-call]
+        create_wandb_table = lambda iter_type: wandb.Table(  # type: ignore[no-untyped-call]  # noqa: E731
             columns=[
                 "data_idx",
-                "train_step",
+                iter_type,
                 *self.config.wandb_column_names.split(),
             ],
         )
-        self.wandb_val_table = wandb.Table(  # type: ignore[no-untyped-call]
-            columns=[
-                "data_idx",
-                "val_epoch",
-                *self.config.wandb_column_names.split(),
-            ],
-        )
+        self.wandb_train_table = create_wandb_table("train_step")
+        self.wandb_val_table = create_wandb_table("val_epoch")
         self.wandb_train_data: list[dict[str, Any]] = []
         self.wandb_val_data: list[dict[str, Any]] = []
 
