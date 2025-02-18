@@ -70,7 +70,7 @@ dependencies = [
     "librosa==0.10.2.post1",
     # MANDATORY for cneuromax/fitting/neuroevolution/
     "mpi4py==4.0.3", # Inter-process communication
-    "torchrl==0.7.0", # For reinforcement/imitation Learning tasks
+    "torchrl==0.7.1", # For reinforcement/imitation Learning tasks
     "gymnasium[mujoco]==0.29.1", # RL/IL environments
     "ordered-set==4.1.0", # Sets w/ deterministic order
     # MANDATORY for docs/
