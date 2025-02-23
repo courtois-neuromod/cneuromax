@@ -51,7 +51,6 @@ dependencies = [
     # OPTIONAL for cneuromax/fitting/deeplearning/
     "torchaudio==2.6.0+cu124", # Tensor manipulation on audio data
     "torchvision==0.21.0+cu124", # Tensor manipulation on vision data
-    "torchao==0.8.0+cu124", # Lower precision training/inference
     "transformers==4.49.0", # Pre-trained models published on Hugging Face
     "diffusers==0.32.2", # Diffusion models published on Hugging Face
     "timm==1.0.15", # Image models
@@ -97,7 +96,6 @@ dependencies = [
 torch = { index = "pytorch" }
 torchaudio = { index = "pytorch" }
 torchvision = { index = "pytorch" }
-torchao = { index = "pytorch" }
 
 [[tool.uv.index]]
 name = "pytorch"
