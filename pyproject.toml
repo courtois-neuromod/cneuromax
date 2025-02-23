@@ -53,7 +53,7 @@ dependencies = [
     "torchvision==0.21.0+cu124", # Tensor manipulation on vision data
     "transformers==4.49.0", # Pre-trained models published on Hugging Face
     "diffusers==0.32.2", # Diffusion models published on Hugging Face
-    "timm==1.0.14", # Image models
+    "timm==1.0.15", # Image models
     "datasets==3.3.2", # Datasets published on Hugging Face
     "x-transformers==2.0.5", # Transformer utils
     """
