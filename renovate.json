@@ -15,5 +15,6 @@
   "pre-commit": {
     "enabled": true
   },
-  "prConcurrentLimit": 1
+  "prConcurrentLimit": 1,
+  "ignoreDeps": ["nvcr.io/nvidia/cuda", "gymnasium", "sphinx", "sphinx-autodoc-typehints", "mypy"]
 }
