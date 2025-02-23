@@ -376,7 +376,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        wandb_column_names</span>
-<span class="sd">        wandb_train_log_interval</span>
+<span class="sd">        wandb_train_log_interval: `0` means no logging.</span>
 <span class="sd">        wandb_num_samples</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -497,22 +497,12 @@
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_load_checkpoint</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="BaseLitModule.on_train_batch_start">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">on_train_batch_start</span><span class="p">(</span>  <span class="c1"># noqa: D102</span>
-        <span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">,</span>
-        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
-        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="BaseLitModule.on_validation_end">
+<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_end">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">on_validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wandb_train_data</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_train_batch_start</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="BaseLitModule.on_validation_start">
-<a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">on_validation_start</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wandb_val_data</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_validation_start</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_validation_end</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="BaseLitModule.optimizer_step">
@@ -523,7 +513,11 @@
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># noqa: ANN401</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">optimizer_step</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_train_step</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">wandb_train_log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">wandb_train_log_interval</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">curr_train_step</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">wandb_train_log_interval</span>
+            <span class="o">==</span> <span class="mi">0</span>
+        <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">log_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_train_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curr_train_step</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
@@ -532,7 +526,8 @@
 <a class="viewcode-back" href="../../../../../_autosummary/cneuromax.fitting.deeplearning.litmodule.base.html#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_validation_epoch_end</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="s2">&quot;BaseLitModule&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># noqa: D102</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_validation_epoch_end</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_val_data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">wandb_train_log_interval</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">log_table</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wandb_val_data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">curr_val_epoch</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
 

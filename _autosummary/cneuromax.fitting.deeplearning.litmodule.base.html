@@ -367,7 +367,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_column_names"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_column_names"><strong>wandb_column_names</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span>)</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"><strong>wandb_train_log_interval</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">50</span></code>)</p></li>
+<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_train_log_interval"><strong>wandb_train_log_interval</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">50</span></code>) – <cite>0</cite> means no logging.</p></li>
 <li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_num_samples"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModuleConfig.params.wandb_num_samples"><strong>wandb_num_samples</strong></a> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></span>, default: <code class="docutils literal notranslate"><span class="pre">3</span></code>)</p></li>
 </ul>
 </dd>
@@ -564,27 +564,9 @@ There is no need for you to restore anything regarding training.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start">
-<span class="sig-name descname"><span class="pre">on_train_batch_start</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_train_batch_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start" title="Link to this definition">¶</a></dt>
-<dd><p>Called in the training loop before anything happens for that batch.</p>
-<p>If you return -1 here, you will skip training for the rest of the current epoch.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch"><strong>batch</strong></a> – The batched data as it is returned by the training DataLoader.</p></li>
-<li><p><span class="target" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch_idx"></span><a class="paramname reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start.params.batch_idx"><strong>batch_idx</strong></a> – the index of the batch</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start">
-<span class="sig-name descname"><span class="pre">on_validation_start</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_start"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start" title="Link to this definition">¶</a></dt>
-<dd><p>Called at the beginning of validation.</p>
+<dt class="sig sig-object py" id="cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_end">
+<span class="sig-name descname"><span class="pre">on_validation_end</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/cneuromax/fitting/deeplearning/litmodule/base.html#BaseLitModule.on_validation_end"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_end" title="Link to this definition">¶</a></dt>
+<dd><p>Called at the end of validation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.13)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
@@ -824,8 +806,7 @@ calls to <code class="docutils literal notranslate"><span class="pre">training_s
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.wandb_val_data"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.wandb_val_data</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_save_checkpoint"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_save_checkpoint()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_load_checkpoint"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_load_checkpoint()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_train_batch_start"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_train_batch_start()</span></code></a></li>
-<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_start"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_start()</span></code></a></li>
+<li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_end"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_end()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.optimizer_step"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.optimizer_step()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.on_validation_epoch_end"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.on_validation_epoch_end()</span></code></a></li>
 <li><a class="reference internal" href="#cneuromax.fitting.deeplearning.litmodule.base.BaseLitModule.update_wandb_data_before_log"><code class="docutils literal notranslate"><span class="pre">BaseLitModule.update_wandb_data_before_log()</span></code></a></li>
