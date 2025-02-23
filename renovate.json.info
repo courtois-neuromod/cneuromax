@@ -1,0 +1,6 @@
+"ignoreDeps": ["nvcr.io/nvidia/cuda", "gymnasium", "sphinx", "sphinx-autodoc-typehints", "mypy"]
+nvcr.io/nvidia/cuda: Until published PyTorch wheels use more recent CUDA versions
+gymnasium: Until https://github.com/pytorch/rl/discussions/2483 is resolved
+sphinx: Until `nvcr.io/nvidia/cuda` upgrades Python version
+sphinx-autodoc-typehints: Until `nvcr.io/nvidia/cuda` upgrades Python version
+mypy: Crashes in VSCode starting late 2024, unclear when will it be resolved, can re-attempt in a few months
