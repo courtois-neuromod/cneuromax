@@ -166,6 +166,7 @@ class BaseDataModule(LightningDataModule, ABC):
             num_workers=self.per_device_num_workers,
             collate_fn=self.collate_fn,
             pin_memory=self.pin_memory,
+            drop_last=True,
         )
 
     @final

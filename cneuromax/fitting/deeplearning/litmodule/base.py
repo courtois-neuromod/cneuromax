@@ -23,7 +23,7 @@ class BaseLitModuleConfig:
 
     Args:
         wandb_column_names
-        wandb_train_log_interval
+        wandb_train_log_interval: `0` means no logging.
         wandb_num_samples
     """
 
@@ -135,17 +135,10 @@ class BaseLitModule(LightningModule, ABC):
         self.curr_val_epoch = checkpoint["curr_val_epoch"]
         return super().on_load_checkpoint(checkpoint)
 
-    def on_train_batch_start(  # noqa: D102
-        self: "BaseLitModule",
-        *args: Any,  # noqa: ANN401
-        **kwargs: Any,  # noqa: ANN401
-    ) -> None:
+    def on_validation_end(self: "BaseLitModule") -> None:  # noqa: D102
         self.wandb_train_data = []
-        super().on_train_batch_start(*args, **kwargs)
-
-    def on_validation_start(self: "BaseLitModule") -> None:  # noqa: D102
         self.wandb_val_data = []
-        super().on_validation_start()
+        super().on_validation_end()
 
     def optimizer_step(  # noqa: D102
         self: "BaseLitModule",
@@ -153,13 +146,18 @@ class BaseLitModule(LightningModule, ABC):
         **kwargs: Any,  # noqa: ANN401
     ) -> None:
         super().optimizer_step(*args, **kwargs)
-        if self.curr_train_step % self.config.wandb_train_log_interval == 0:
+        if (
+            self.config.wandb_train_log_interval
+            and self.curr_train_step % self.config.wandb_train_log_interval
+            == 0
+        ):
             self.log_table(self.wandb_train_data)
         self.curr_train_step += 1
 
     def on_validation_epoch_end(self: "BaseLitModule") -> None:  # noqa: D102
         super().on_validation_epoch_end()
-        self.log_table(self.wandb_val_data)
+        if self.config.wandb_train_log_interval:
+            self.log_table(self.wandb_val_data)
         self.curr_val_epoch += 1
 
     def update_wandb_data_before_log(

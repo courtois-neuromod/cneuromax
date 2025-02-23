@@ -220,7 +220,7 @@ def find_good_per_device_batch_size(
                 launcher_config.cpus_per_task
             )
         batch_size_finder = BatchSizeFinder(
-            mode="power",
+            mode="binsearch",
             batch_arg_name="per_device_batch_size",
             max_trials=int(math.log2(max_per_device_batch_size)),
         )
