@@ -77,6 +77,11 @@ def train(
         ckpt_path=config.ckpt_path,
     )
     """TODO: Add logic for HPO"""
+    test = trainer.validate(model=litmodule, datamodule=datamodule)[0][
+        "val/loss"
+    ]
+    print(test)
+    q
     return trainer.validate(model=litmodule, datamodule=datamodule)[0][
         "val/loss"
     ]
