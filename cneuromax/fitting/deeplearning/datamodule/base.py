@@ -56,6 +56,8 @@ class BaseDataModuleConfig:
             not recommended for resource efficiency.
         shuffle_train_dataset
         shuffle_val_dataset
+        drop_last: See
+            :paramref:`~torch.utils.data.DataLoader.drop_last`.
     """
 
     data_dir: An[str, not_empty()] = "${config.data_dir}"
@@ -65,6 +67,7 @@ class BaseDataModuleConfig:
     fixed_per_device_num_workers: An[int, ge(0)] | None = None
     shuffle_train_dataset: bool = True
     shuffle_val_dataset: bool = True
+    drop_last: bool = False
 
 
 class BaseDataModule(LightningDataModule, ABC):
@@ -166,7 +169,7 @@ class BaseDataModule(LightningDataModule, ABC):
             num_workers=self.per_device_num_workers,
             collate_fn=self.collate_fn,
             pin_memory=self.pin_memory,
-            drop_last=True,
+            drop_last=self.config.drop_last,
         )
 
     @final
