@@ -85,7 +85,7 @@ dependencies = [
     "black[jupyter]==25.1.0", # Python Formatter
     "ruff==0.9.10", # Python Linter
     "doc8==1.1.2", # Documentation linter
-    "yamllint==1.35.1", # YAML linter
+    "yamllint==1.36.0", # YAML linter
     "pre-commit==4.1.0", # Git commit hooks
     "mypy==1.13.0", # Static type checker
     "pytest==8.3.5", # Testing framework
