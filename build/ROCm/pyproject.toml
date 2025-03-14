@@ -1,0 +1,172 @@
+[tool.setuptools.packages.find]
+include = ["cneuromax"]
+
+[project]
+name = "cneuromax"
+requires-python = ">=3.10" # Did not test with lower versions
+authors = [{ name = "The SIMEXP Laboratory", email = "simexp.lab@gmail.com" }]
+description = "The CNeuromod project's centralized Machine Learning repository"
+version = "0.0.1"
+# The following assumes that we build on top of the NGC PyTorch Docker image.
+dependencies = [
+    # MANDATORY for cneuromax/
+    "hydra-core==1.3.2", # Configuration management
+    "hydra-zen==0.14.0", # Cleaner Hydra configs
+    "beartype==0.20.0", # Dynamic type checking
+    "wandb==0.19.8", # Logging
+    """
+    submitit@git+https://github.com/courtois-neuromod/submitit@\
+    b289f81004ab063b185dc97982934c266e605fad""", # Local & SLURM job launcher
+    # CNeuroMod fork that launches the `tasks_per_node` with `mpi` rather
+    # than the original `submitit` method. Used for
+    # `cneuromax/fitting/neuroevolution/`.
+    """
+    hydra-submitit-launcher@git+https://github.com/courtois-neuromod/hydra@\
+    4c84b7185f496fe201e7ae8e48b7cae9e66df5f3\
+    #subdirectory=plugins/hydra_submitit_launcher/""", # Launcher config
+    # CNeuroMod fork that implements the missing connecting feature to
+    # `submitit`'s `python` option. Also modifies the `local` launcher
+    # so that it queues the jobs sequentially rather than in parallel.
+    # OPTIONAL for cneuromax/
+    "matplotlib==3.10.1", # Plotting
+    "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
+    "hydra-optuna-sweeper==1.2.0", # Hyperparameter optimization
+    """
+    autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
+    c7bc16f133031950b73cf38140367e75775b261b""", # Hyperparameter optimization
+    "jaxtyping==0.2.38", # Torch tensor annotations
+    "nptyping==2.5.0", # Numpy array annotations
+    "einops==0.8.1", # Makes shape transformations more readable
+    "jupyterlab==4.3.5", # Jupyter notebook
+    "jupyterlab-code-formatter==3.0.2", # Jupyter code formatter
+    "ipywidgets==8.1.5", # Jupyter widgets
+    # Replaces `pytorch_lightning` w/ `lightning.pytorch` to adress
+    # https://github.com/Lightning-AI/pytorch-lightning/issues/17485
+    # Also loops while an epoch is not done syncing.
+    "h5py==3.13.0", # HDF5 file format load/save
+    "opencv-python==4.11.0.86", # Image processing
+    # MANDATORY for cneuromax/fitting/deeplearning/
+    "lightning==2.5.0.post0", # PyTorch wrapper to decrease boilerplate
+    # OPTIONAL for cneuromax/fitting/deeplearning/
+    "transformers==4.49.0", # Pre-trained models published on Hugging Face
+    "diffusers==0.32.2", # Diffusion models published on Hugging Face
+    "timm==1.0.15", # Image models
+    "datasets==3.3.2", # Datasets published on Hugging Face
+    "x-transformers==2.1.15", # Transformer utils
+    "denoising-diffusion-pytorch==2.1.1", # Diffusion models
+    "vector-quantize-pytorch==1.22.1", # Vector quantization utils
+    "accelerate==1.4.0", # PEFT crashing w/ 0.30.0
+    "peft==0.14.0", # Fine-tuning
+    # fMRI libraries
+    "nibabel==5.3.2", # Neuroimaging format accessor
+    "nilearn==0.11.1", # ML for neuroimaging
+    # Audio libraries
+    "librosa==0.10.2.post1",
+    # MANDATORY for cneuromax/fitting/neuroevolution/
+    "mpi4py==4.0.3", # Inter-process communication
+    "torchrl==0.7.1", # For reinforcement/imitation Learning tasks
+    "gymnasium[mujoco]==0.29.1", # RL/IL environments
+    "ordered-set==4.1.0", # Sets w/ deterministic order
+    # MANDATORY for docs/
+    "sphinx==8.1.3", # Documentation generator
+    "esbonio==0.16.5", # Language server to render sphinx
+    "furo==2024.8.6", # Documentation theme
+    "sphinx-copybutton==0.5.2", # Copy button for code blocks
+    "sphinx-paramlinks==0.6.0", # Links to parameters in other pages
+    "sphinx-autodoc-typehints==3.0.1", # More type hint customization
+    "myst-parser==4.0.1", # Embeds markdown in sphinx
+    # DEVELOPMENT
+    "black[jupyter]==25.1.0", # Python Formatter
+    "ruff==0.9.10", # Python Linter
+    "doc8==1.1.2", # Documentation linter
+    "yamllint==1.35.1", # YAML linter
+    "pre-commit==4.1.0", # Git commit hooks
+    "mypy==1.13.0", # Static type checker
+    "pytest==8.3.5", # Testing framework
+    "pytest-cov==6.0.0", # Test coverage
+]
+
+[tool.black]
+line-length = 79
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D107", # `undocumented-public-init`
+            # Missing docstring in public `__init__`
+            # https://docs.astral.sh/ruff/rules/undocumented-public-init/
+            # Disabled as we combine the docstring of the class and the
+            # `__init__` method because 1) `__init__` docstrings are
+            # often redundant and 2) Our auto-documentation tool
+            # renders better when the full docstring is in the class.
+    "D417", # `undocumented-param`
+            # Missing argument description in the docstring for {definition}: {name} Missing docstring in public `__init__`
+            # https://docs.astral.sh/ruff/rules/undocumented-param/
+            # This warning pops up even when the argument is simply
+            # mentioned in the argument section but not given a description.
+            # Disabled for flexibility of not giving a description for
+            # every argument.
+    "F722", # `forward-annotation-syntax-error`
+            # Syntax error in forward annotation: {body}.
+            # https://docs.astral.sh/ruff/rules/forward-annotation-syntax-error/
+            # Disabled to be able to utilize Jaxtyping, see:
+            # https://docs.kidger.site/jaxtyping/faq/#flake8-or-ruff-are-throwing-an-error
+    "G004", # `logging-f-string`
+            # Logging statement uses f-string.
+            # https://docs.astral.sh/ruff/rules/logging-f-string/
+            # Disabled to make it less verbose to log since printing is
+            # disabled, see: https://docs.astral.sh/ruff/rules/print/
+    "NPY002", # `numpy-legacy-random`
+              # Replace legacy np.random.{method_name} call with
+              # np.random.Generator
+              # Disabled for legacy purposes.
+    "S301", # `suspicious-pickle-usage`
+            # `pickle` and modules that wrap it can be unsafe when used to
+            # deserialize untrusted data, possible security issue
+            # https://docs.astral.sh/ruff/rules/suspicious-pickle-usage/
+            # Disabled due to current implementation of checkpointing
+            # in `cneuromax.fitting.neuroevolution`.
+    "TC001", # `typing-only-first-party-import`
+              # Move application import {} into a type-checking block
+              # https://docs.astral.sh/ruff/rules/typing-only-first-party-import/
+              # Disabled as we use Beartype for dynamic type checking.
+    "TC002", # `typing-only-third-party-import`
+              # Move third-party import {} into a type-checking block
+              # https://docs.astral.sh/ruff/rules/typing-only-third-party-import/
+              # Disabled as we use Beartype for dynamic type checking.
+]
+
+
+[tool.ruff.lint.pycodestyle]
+max-doc-length = 72
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"*_test.py" = [
+    "S101",  # `assert`
+             # Use of assert detected.
+             # https://docs.astral.sh/ruff/rules/assert/
+             # Disabled to be able to use assertions in test files.
+    "PLR2004", # `magic-value-comparison`
+               # Magic value used in comparison, consider replacing {value}
+               # with a constant variable.
+               # https://docs.astral.sh/ruff/rules/magic-value-comparison/
+               # Disabled to be able to use magic values in test files.
+]
+
+[tool.doc8]
+max-line-length = 79
+# docs/index.rst:1: D000 Error in "include" directive:
+# invalid option value: (option: "parser"; value: 'myst_parser.sphinx_')
+# Parser "myst_parser.sphinx_" not found. No module named 'myst_parser'.
+ignore = ["D000"]
+
+[tool.mypy]
+strict = true
+allow_redefinition = true
+ignore_missing_imports = true
