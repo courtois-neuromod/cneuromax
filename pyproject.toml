@@ -55,7 +55,7 @@ dependencies = [
     "diffusers==0.32.2", # Diffusion models published on Hugging Face
     "timm==1.0.15", # Image models
     "datasets==3.4.1", # Datasets published on Hugging Face
-    "x-transformers==2.1.29", # Transformer utils
+    "x-transformers==2.1.35", # Transformer utils
     """
     mambapy@git+https://github.com/alxndrTL/mamba.py@\
     2cc168c78b2494557f45072c4b8daa9d6f5608c7""", # Mamba
