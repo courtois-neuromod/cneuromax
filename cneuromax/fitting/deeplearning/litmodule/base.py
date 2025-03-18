@@ -151,18 +151,19 @@ class BaseLitModule(LightningModule, ABC):
             and self.curr_train_step % self.config.wandb_train_log_interval
             == 0
         ):
-            self.log_table(self.wandb_train_data)
+            self.log_table(self.wandb_train_data, "train")
         self.curr_train_step += 1
 
     def on_validation_epoch_end(self: "BaseLitModule") -> None:  # noqa: D102
         super().on_validation_epoch_end()
         if self.config.wandb_train_log_interval:
-            self.log_table(self.wandb_val_data)
+            self.log_table(self.wandb_val_data, "val")
         self.curr_val_epoch += 1
 
     def update_wandb_data_before_log(
         self: "BaseLitModule",
         data: list[dict[str, Any]],
+        stage: An[str, one_of("train", "val")],
     ) -> None:
         """Hook for subclasses to run a final update to W&B data."""
 
@@ -170,8 +171,9 @@ class BaseLitModule(LightningModule, ABC):
     def log_table(  # noqa: D102
         self: "BaseLitModule",
         data: list[dict[str, Any]],
+        stage: An[str, one_of("train", "val")],
     ) -> None:
-        self.update_wandb_data_before_log(data)
+        self.update_wandb_data_before_log(data, stage)
         if data is self.wandb_train_data:
             name = "train_data"
             table = self.wandb_train_table

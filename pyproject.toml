@@ -124,7 +124,10 @@ ignore = [
             # This warning pops up even when the argument is simply
             # mentioned in the argument section but not given a description.
             # Disabled for flexibility of not giving a description for
-            # every argument.
+    "EXE002", # `shebang-missing-executable-file`
+            # The file is executable but no shebang is present
+            # https://docs.astral.sh/ruff/rules/shebang-missing-executable-file/
+            # Says it's not enforced in WSL, but looks like it is.
     "F722", # `forward-annotation-syntax-error`
             # Syntax error in forward annotation: {body}.
             # https://docs.astral.sh/ruff/rules/forward-annotation-syntax-error/
