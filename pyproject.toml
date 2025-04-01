@@ -89,7 +89,7 @@ dependencies = [
     "pre-commit==4.2.0", # Git commit hooks
     "mypy==1.13.0", # Static type checker
     "pytest==8.3.5", # Testing framework
-    "pytest-cov==6.0.0", # Test coverage
+    "pytest-cov==6.1.0", # Test coverage
 ]
 
 [tool.uv.sources]
