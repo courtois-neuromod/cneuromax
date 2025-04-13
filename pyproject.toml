@@ -60,7 +60,7 @@ dependencies = [
     mambapy@git+https://github.com/alxndrTL/mamba.py@\
     2cc168c78b2494557f45072c4b8daa9d6f5608c7""", # Mamba
     "denoising-diffusion-pytorch==2.1.1", # Diffusion models
-    "vector-quantize-pytorch==1.22.6", # Vector quantization utils
+    "vector-quantize-pytorch==1.22.12", # Vector quantization utils
     "accelerate==1.6.0", # PEFT crashing w/ 0.30.0
     "peft==0.15.1", # Fine-tuning
     # fMRI libraries
