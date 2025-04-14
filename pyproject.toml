@@ -83,7 +83,7 @@ dependencies = [
     "myst-parser==4.0.1", # Embeds markdown in sphinx
     # DEVELOPMENT
     "black[jupyter]==25.1.0", # Python Formatter
-    "ruff==0.11.3", # Python Linter
+    "ruff==0.11.5", # Python Linter
     "doc8==1.1.2", # Documentation linter
     "yamllint==1.37.0", # YAML linter
     "pre-commit==4.2.0", # Git commit hooks
