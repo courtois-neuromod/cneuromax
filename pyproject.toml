@@ -30,7 +30,6 @@ dependencies = [
     # so that it queues the jobs sequentially rather than in parallel.
     # OPTIONAL for cneuromax/
     "matplotlib==3.10.1", # Plotting
-    "hydra-orion-sweeper==1.6.4", # Hyperparameter optimization
     "hydra-optuna-sweeper==1.2.0", # Hyperparameter optimization
     """
     autorl-sweepers@git+https://github.com/courtois-neuromod/autorl-sweepers@\
