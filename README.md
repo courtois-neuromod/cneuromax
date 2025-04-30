@@ -19,8 +19,8 @@ CNeuroMax is a Machine Learning workspace for model fitting
 ([Deep Learning](https://en.wikipedia.org/wiki/Deep_learning) +
 [Neuroevolution](https://en.wikipedia.org/wiki/Neuroevolution) +
 [HPO](https://en.wikipedia.org/wiki/Hyperparameter_optimization)
-w/ [Oríon](https://github.com/Epistimio/orion)), testing
-and serving (with [Lightning Apps](https://lightning.ai/docs/app/stable/))
+w/ [Optuna](https://optuna.org/)), testing and serving
+(with [Lightning Apps](https://lightning.ai/docs/app/stable/))
 AI/ML models. CNeuroMax aims to:
 
 **1. Reduce code & configuration boilerplate with:**
@@ -34,9 +34,8 @@ management.
 
 **2. Simplify machine learning workflows:**
 * Hyperparameter optimization with
-[Orion](https://github.com/Epistimio/hydra_orion_sweeper),
 [AutoRL-Sweepers](https://github.com/facebookresearch/how-to-autorl) &
-[Optuna](https://hydra.cc/docs/plugins/optuna_sweeper)
+[Optuna](https://hydra.cc/docs/plugins/optuna_sweeper).
 * SLURM job definition, queuing and monitoring with
 [Submitit](https://github.com/facebookincubator/submitit) through its
 [Hydra Launcher plugin](https://hydra.cc/docs/plugins/submitit_launcher/).
@@ -66,7 +65,6 @@ type-checking & unit tests upon contribution to the ``main`` branch using
 and plugins like
 [sphinx-autodoc-typehints](https://github.com/tox-dev/sphinx-autodoc-typehints)
 and [sphinx-paramlinks](https://pypi.org/project/sphinx-paramlinks/).
-
 * Shared logging with a [Weights & Biases](https://wandb.ai/site) team space.
 
 **5. Promote high-quality and reproducible code by:**
