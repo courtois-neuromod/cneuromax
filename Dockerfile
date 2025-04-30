@@ -5,7 +5,7 @@
 # for development purposes.
 # ----------------------------------------------------------------------------#
 # ~ CUDA + cuDNN on Ubuntu ~ #
-FROM nvcr.io/nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04
+FROM nvcr.io/nvidia/cuda:12.8.1-cudnn-devel-ubuntu24.04
 # Prevents Python from creating __pycache__/ and .pyc/ folders in the project
 # folder
 ENV PYTHONPYCACHEPREFIX=/.cache/python/
@@ -38,7 +38,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Add the pyproject.toml and cneuromax folder to the container
 ADD pyproject.toml /cneuromax/pyproject.toml
 # Install Python dependencies
-RUN pip install uv==0.4.25 \
+RUN pip install uv==0.7.1 \
     && uv pip install --preview --system --no-cache-dir -e /cneuromax \
     && uv pip install --preview --system --no-cache-dir --no-build-isolation mamba-ssm==2.2.4 causal-conv1d==1.5.0.post8 \
     && uv pip uninstall --preview --system cneuromax
