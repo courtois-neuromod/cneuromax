@@ -15,7 +15,7 @@
 
 <h2>Info</h2>
 
-This repository has moved to [MaximilienLC/ml](https://github.com/MaximilienLC/ml).
+This repository has moved to [MaximilienLC/ai_exps](https://github.com/MaximilienLC/ai_exps).
 
 <h2>Overview</h2>
 
