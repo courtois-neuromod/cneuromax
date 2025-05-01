@@ -6,6 +6,7 @@ from typing import Annotated as An
 from typing import final
 
 from datasets import Dataset as HFDataset
+from datasets import DatasetDict as HFDatasetDict
 from lightning.pytorch import LightningDataModule
 from torch import Tensor
 from torch.utils.data import DataLoader, Dataset
@@ -28,10 +29,18 @@ class Datasets:
         predict
     """
 
-    train: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
-    val: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
-    test: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
-    predict: Dataset[Tensor | dict[str, Tensor]] | HFDataset | None = None
+    train: (
+        Dataset[Tensor | dict[str, Tensor]] | HFDataset | HFDatasetDict | None
+    ) = None
+    val: (
+        Dataset[Tensor | dict[str, Tensor]] | HFDataset | HFDatasetDict | None
+    ) = None
+    test: (
+        Dataset[Tensor | dict[str, Tensor]] | HFDataset | HFDatasetDict | None
+    ) = None
+    predict: (
+        Dataset[Tensor | dict[str, Tensor]] | HFDataset | HFDatasetDict | None
+    ) = None
 
 
 @dataclass
