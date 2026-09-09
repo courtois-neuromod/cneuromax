@@ -13,10 +13,6 @@
     https://img.shields.io/badge/code%20style-black-000000.svg)](
         https://github.com/psf/black)
 
-<h2>Info</h2>
-
-This repository has moved to [MaximilienLC/ai_repo](https://github.com/MaximilienLC/ai_repo).
-
 <h2>Overview</h2>
 
 CNeuroMax is a Machine Learning workspace for model fitting
